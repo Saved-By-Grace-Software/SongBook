@@ -1,5 +1,7 @@
-package com.sbgsoft.tabapp;
+package com.sbgsoft.tabapp.main;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
@@ -7,6 +9,7 @@ import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,23 +21,32 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.sbgsoft.tabapp.R;
 import com.sbgsoft.tabapp.db.DBAdapter;
-import com.sbgsoft.tabapp.main.SetsTab;
-import com.sbgsoft.tabapp.main.SongsTab;
+import com.sbgsoft.tabapp.sets.SetsTab;
+import com.sbgsoft.tabapp.songs.SongActivity;
+import com.sbgsoft.tabapp.songs.SongsTab;
 
 public class MainActivity extends FragmentActivity {
+	public static final String SONG_NAME_KEY = "songName";
+	public static final String SONG_TEXT_KEY = "songText";
+	
 	FragmentTransaction transaction;
 	static ViewPager mViewPager;
 	public static DBAdapter dbAdapter;
 	private Cursor setsCursor;
 	private Cursor songsCursor;
+
 	
-    /** Called when the activity is first created. */
+    /**
+     *  Called when the activity is first created. 
+     **/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +128,9 @@ public class MainActivity extends FragmentActivity {
 	        	return true;
 	        case R.id.menu_songs_create:
 	        	createSong();
+	        	return true;
+	        case R.id.menu_songs_import:
+	        	importSong();
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -231,7 +246,7 @@ public class MainActivity extends FragmentActivity {
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		dbAdapter.deleteAllSongs();
-	        	setsCursor.requery();
+	        	songsCursor.requery();
 			}
     	});
 
@@ -275,7 +290,60 @@ public class MainActivity extends FragmentActivity {
         SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.songs_row, songsCursor, from, to);
         ListView lv = ((ListView)v.findViewById(R.id.songs_list));
         lv.setEmptyView(findViewById(R.id.empty_songs));
+        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
+            	// Get the song to show
+            	songsCursor.moveToPosition(position);
+            	String songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+            	String songText = getSongText(songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_FILE)));
+            	
+            	// Show the song activity
+            	SongActivity song = new SongActivity();
+            	Intent showSong = new Intent(v.getContext(), song.getClass());
+            	showSong.putExtra(SONG_NAME_KEY, songName);
+            	showSong.putExtra(SONG_TEXT_KEY, songText);
+                startActivity(showSong);
+            }
+        });
         lv.setAdapter(songs);
+    }
+    
+    /**
+     * Gets the text from the specified file
+     * @return The song text
+     */
+    private String getSongText(String fileName) {
+    	String songText = "";
+    	
+    	
+        try {
+        	BufferedReader br = new BufferedReader(new FileReader(fileName));
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                sb.append(System.getProperty("line.separator"));
+                line = br.readLine();
+            }
+            songText = sb.toString();
+            br.close();
+        } catch (Exception e) {
+    		Toast.makeText(getApplicationContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+        }     	
+    	
+    	return songText;
+    }
+    
+    /**
+     * Imports a song text file into the db
+     */
+    private void importSong() {
+    	// Import the song text file
+    	
+    	
+    	// Add the song to the database
+    	createSong();
     }
     
     /*****************************************************************************

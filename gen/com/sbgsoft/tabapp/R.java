@@ -10,52 +10,79 @@ package com.sbgsoft.tabapp;
 public final class R {
     public static final class attr {
     }
+    public static final class color {
+        public static final int gray=0x7f050000;
+    }
     public static final class drawable {
-        public static final int ic_action_search=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
+        public static final int file=0x7f020000;
+        public static final int folder=0x7f020001;
+        public static final int ic_action_search=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int icon=0x7f020004;
     }
     public static final class id {
-        public static final int empty_sets=0x7f070009;
-        public static final int empty_songs=0x7f07000c;
-        public static final int imageButton1=0x7f070002;
-        public static final int imageButton2=0x7f070004;
-        public static final int menu_sets=0x7f07000e;
-        public static final int menu_sets_clear=0x7f070011;
-        public static final int menu_sets_create=0x7f07000f;
-        public static final int menu_sets_find=0x7f070010;
-        public static final int menu_settings=0x7f07000d;
-        public static final int menu_songs=0x7f070012;
-        public static final int menu_songs_clear=0x7f070016;
-        public static final int menu_songs_create=0x7f070013;
-        public static final int menu_songs_find=0x7f070015;
-        public static final int menu_songs_import=0x7f070014;
-        public static final int pager=0x7f070000;
-        public static final int sets_list=0x7f070008;
-        public static final int sets_row_text=0x7f070005;
-        public static final int song_text=0x7f070001;
-        public static final int songs_list=0x7f07000b;
-        public static final int songs_row_text=0x7f070006;
-        public static final int tabSets=0x7f070007;
-        public static final int tabSongs=0x7f07000a;
-        public static final int textView1=0x7f070003;
+        public static final int empty_sets=0x7f080016;
+        public static final int empty_songs=0x7f080019;
+        public static final int fdButtonCancel=0x7f08000d;
+        public static final int fdButtonCreate=0x7f08000e;
+        public static final int fdButtonNew=0x7f080008;
+        public static final int fdButtonSelect=0x7f080009;
+        public static final int fdEditTextFile=0x7f08000c;
+        public static final int fdLinearLayoutCreate=0x7f08000a;
+        public static final int fdLinearLayoutList=0x7f080006;
+        public static final int fdLinearLayoutSelect=0x7f080007;
+        public static final int fdrowimage=0x7f080010;
+        public static final int fdrowtext=0x7f080011;
+        public static final int imageButton1=0x7f080002;
+        public static final int imageButton2=0x7f080004;
+        public static final int menu_sets=0x7f08001b;
+        public static final int menu_sets_clear=0x7f08001e;
+        public static final int menu_sets_create=0x7f08001c;
+        public static final int menu_sets_find=0x7f08001d;
+        public static final int menu_settings=0x7f08001a;
+        public static final int menu_songs=0x7f08001f;
+        public static final int menu_songs_clear=0x7f080023;
+        public static final int menu_songs_create=0x7f080020;
+        public static final int menu_songs_find=0x7f080022;
+        public static final int menu_songs_import=0x7f080021;
+        public static final int pager=0x7f080000;
+        public static final int path=0x7f08000f;
+        public static final int relativeLayout01=0x7f080005;
+        public static final int sets_list=0x7f080015;
+        public static final int sets_row_text=0x7f080012;
+        public static final int song_text=0x7f080001;
+        public static final int songs_list=0x7f080018;
+        public static final int songs_row_text=0x7f080013;
+        public static final int tabSets=0x7f080014;
+        public static final int tabSongs=0x7f080017;
+        public static final int textView1=0x7f080003;
+        public static final int textViewFilename=0x7f08000b;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_song=0x7f030001;
-        public static final int sets_row=0x7f030002;
-        public static final int songs_row=0x7f030003;
-        public static final int tab_sets=0x7f030004;
-        public static final int tab_songs=0x7f030005;
+        public static final int file_dialog_main=0x7f030002;
+        public static final int file_dialog_row=0x7f030003;
+        public static final int sets_row=0x7f030004;
+        public static final int songs_row=0x7f030005;
+        public static final int tab_sets=0x7f030006;
+        public static final int tab_songs=0x7f030007;
     }
     public static final class menu {
-        public static final int menu_main=0x7f060000;
-        public static final int view_song_menu=0x7f060001;
+        public static final int menu_main=0x7f070000;
+        public static final int view_song_menu=0x7f070001;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
+        public static final int cancel=0x7f040017;
+        public static final int cant_read_folder=0x7f040013;
+        public static final int create=0x7f040018;
         public static final int down_arrow=0x7f040011;
         public static final int empty_song=0x7f04000e;
+        public static final int err=0x7f04001a;
+        public static final int file_name=0x7f040016;
         public static final int font_arrows=0x7f04000f;
+        public static final int location=0x7f040012;
         public static final int menu_sets=0x7f040004;
         public static final int menu_sets_clear=0x7f04000b;
         public static final int menu_sets_create=0x7f040005;
@@ -66,12 +93,15 @@ public final class R {
         public static final int menu_songs_create=0x7f040008;
         public static final int menu_songs_find=0x7f04000a;
         public static final int menu_songs_import=0x7f040009;
+        public static final int nnew=0x7f040014;
+        public static final int no_data=0x7f040019;
         public static final int no_sets=0x7f040002;
         public static final int no_songs=0x7f040003;
+        public static final int select=0x7f040015;
         public static final int title_activity_song=0x7f04000d;
         public static final int up_arrow=0x7f040010;
     }
     public static final class style {
-        public static final int AppTheme=0x7f050000;
+        public static final int AppTheme=0x7f060000;
     }
 }
