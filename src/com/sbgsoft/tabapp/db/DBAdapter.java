@@ -65,7 +65,7 @@ public class DBAdapter {
 	public boolean createSet(String setName) {
 		// Create a new set with the specified name
 		try {
-			mDb.execSQL( "insert into " + SETS_TABLE + "(setName, songs) values ('" + setName + "', '' );" );
+			mDb.execSQL( "INSERT INTO " + SETS_TABLE + "(" + TBLSETS_NAME + ", " + TBLSETS_SONGS + ") VALUES ('" + setName + "', '' );" );
 		} catch (SQLiteException e) {
 			return false;
 		}
@@ -82,7 +82,7 @@ public class DBAdapter {
 	public boolean createSet(String setName, String songs) {
 		// Create a new set with the specified name
 		try {
-			mDb.execSQL( "INSERT INTO " + SETS_TABLE + "(setName, songs) VALUES ('" + setName + "', '" + songs + "' );" );
+			mDb.execSQL( "INSERT INTO " + SETS_TABLE + "(" + TBLSETS_NAME + ", " + TBLSETS_SONGS + ") VALUES ('" + setName + "', '" + songs + "' );" );
 		} catch (SQLiteException e) {
 			return false;
 		}
@@ -99,7 +99,7 @@ public class DBAdapter {
 	public boolean createSong(String songName, String fileName) {
 		// Create a new set with the specified name
 		try {
-			mDb.execSQL( "insert into " + SONGS_TABLE + "(songName, fileName) values ('" + 
+			mDb.execSQL( "insert into " + SONGS_TABLE + "(" + TBLSONG_NAME + ", " + TBLSONG_FILE + ") values ('" + 
 					songName + "', '" + fileName + "' );" );
 		} catch (SQLiteException e) {
 			return false;
@@ -113,7 +113,7 @@ public class DBAdapter {
 	 * @return Cursor to the query
 	 */	
 	public Cursor getSetNames() {
-		return mDb.rawQuery("SELECT setID as _id, setName FROM " + SETS_TABLE, null);
+		return mDb.rawQuery("SELECT " + TBLSETS_ID + " as _id, " + TBLSETS_NAME + " FROM " + SETS_TABLE, null);
 	}
 	
 	/**
@@ -121,7 +121,7 @@ public class DBAdapter {
 	 * @return Cursor to the query
 	 */	
 	public Cursor getSongNames() {
-		return mDb.rawQuery("SELECT songID as _id, songName FROM " + SONGS_TABLE, null);
+		return mDb.rawQuery("SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + " FROM " + SONGS_TABLE, null);
 	}
 	
 	/**
