@@ -266,7 +266,7 @@ public class MainActivity extends FragmentActivity {
      * @param v The view for the list
      */
     public void fillSongsList(View v) {
-    	setsCursor = dbAdapter.getSongNames();
+    	songsCursor = dbAdapter.getSongNames();
     	startManagingCursor(songsCursor);
     	
     	String[] from = new String[] { "songName" };
