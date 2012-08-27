@@ -15,9 +15,19 @@ public class DBAdapter {
 	private static final String TAG = "TabAppDBAdapter";
     private static final String DATABASE_NAME = "tabAppDB";
     private static final int DATABASE_VERSION = 1;
-    private static final String SETS_TABLE = "tblSets";
-    private static final String SONGS_TABLE = "tblSongs";
-    private static final String GROUPS_TABLE = "tblGroups";
+    public static final String SETS_TABLE = "tblSets";
+    public static final String SONGS_TABLE = "tblSongs";
+    public static final String GROUPS_TABLE = "tblGroups";
+    public static final String TBLSONG_ID = "songID";
+    public static final String TBLSONG_NAME = "songName";
+    public static final String TBLSONG_FILE = "fileName";
+    public static final String TBLSONG_GROUP = "groupID";
+    public static final String TBLSETS_ID = "setID";
+    public static final String TBLSETS_NAME = "setName";
+    public static final String TBLSETS_SONGS = "songs";
+    public static final String TBLGROUPS_ID = "groupID";
+    public static final String TBLGROUPS_NAME = "groupName";
+    public static final String TBLGROUPS_PARENT = "parentID";
 
     private final Context mCtx;
 	
@@ -146,24 +156,24 @@ public class DBAdapter {
     			
     			// Sets table
     			db.execSQL("create table " + SETS_TABLE +
-    					"(setID integer PRIMARY KEY autoincrement, " + 
-    					" setName text UNIQUE, "+ 
-    					" songs text ); " );
+    					"(" + TBLSETS_ID + " integer PRIMARY KEY autoincrement, " + 
+    					TBLSETS_NAME + " text UNIQUE, "+ 
+    					TBLSETS_SONGS + " text ); " );
     			
     			// Songs table
     			db.execSQL("create table " + SONGS_TABLE +
-    					"(songID integer PRIMARY KEY autoincrement, " + 
-    					" songName text UNIQUE, " + 
-    					" fileName text, " + 
-    					" groupID int ); " );
+    					"(" + TBLSONG_ID + " integer PRIMARY KEY autoincrement, " + 
+    					TBLSONG_NAME + " text UNIQUE, " + 
+    					TBLSONG_FILE + " text, " + 
+    					TBLSONG_GROUP + " int ); " );
     			
     			// Group table
     			db.execSQL("create table " + GROUPS_TABLE +
-    					"(groupID integer PRIMARY KEY autoincrement, " + 
-    					" groupName text UNIQUE, " + 
-    					" parentID int ); " );
+    					"(" + TBLGROUPS_ID + " integer PRIMARY KEY autoincrement, " + 
+    					TBLGROUPS_NAME + " text UNIQUE, " + 
+    					TBLGROUPS_PARENT + " int ); " );
     			
-    			db.execSQL("insert into " + GROUPS_TABLE + "(groupName, parentID) values ('Uncategorized', '-1' );" );
+    			db.execSQL("insert into " + GROUPS_TABLE + "(" + TBLGROUPS_NAME + ", " + TBLGROUPS_PARENT + ") values ('Uncategorized', '-1' );" );
     			
     			db.setTransactionSuccessful(); 
     		}catch(SQLiteException e) {
