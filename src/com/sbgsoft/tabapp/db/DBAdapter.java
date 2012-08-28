@@ -129,7 +129,11 @@ public class DBAdapter {
 	 * @return True if success, False if failure
 	 */
 	public boolean deleteAllSets() {
+		try {
 		mDb.execSQL("DELETE from " + SETS_TABLE);
+		} catch (SQLException e) {
+			return false;
+		}
 		return true;
 	}
 	
@@ -138,8 +142,40 @@ public class DBAdapter {
 	 * @return True if success, False if failure
 	 */
 	public boolean deleteAllSongs() {
+		try {
 		mDb.execSQL("DELETE from " + SONGS_TABLE);
+		} catch (SQLException e) {
+			return false;
+		}
 		return true;
+	}
+	
+	/**
+	 * Deletes the specified song
+	 * @param songName The song name to delete
+	 * @return True if success, False if failure
+	 */
+	public boolean deleteSong(String songName) {
+		try {
+			mDb.execSQL("DELETE from " + SONGS_TABLE + " WHERE " + TBLSONG_NAME + " = '" + songName + "'");
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	public String getSongFile(String songName) {
+		try {
+			Cursor c = mDb.rawQuery("SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + " FROM " + SONGS_TABLE +
+					" WHERE " + TBLSONG_NAME + " = '" + songName + "'", null);
+			c.moveToFirst();
+			return c.getString(c.getColumnIndexOrThrow(TBLSONG_FILE));
+		} catch (IndexOutOfBoundsException e) {
+			return "";
+		} catch (SQLiteException s) {
+			return "";
+		}
+		
 	}
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper {
