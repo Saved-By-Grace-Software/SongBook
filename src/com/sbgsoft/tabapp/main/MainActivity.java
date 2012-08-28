@@ -1,7 +1,13 @@
 package com.sbgsoft.tabapp.main;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
@@ -27,6 +33,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.lamerman.FileDialog;
 import com.sbgsoft.tabapp.R;
 import com.sbgsoft.tabapp.db.DBAdapter;
 import com.sbgsoft.tabapp.sets.SetsTab;
@@ -36,12 +43,14 @@ import com.sbgsoft.tabapp.songs.SongsTab;
 public class MainActivity extends FragmentActivity {
 	public static final String SONG_NAME_KEY = "songName";
 	public static final String SONG_TEXT_KEY = "songText";
+	public static final String SONG_FILE_PATH = "/data/data/com.sbgsoft.tabapp/songs/";
 	
 	FragmentTransaction transaction;
 	static ViewPager mViewPager;
 	public static DBAdapter dbAdapter;
 	private Cursor setsCursor;
 	private Cursor songsCursor;
+	private String importFilePath = "";
 
 	
     /**
@@ -179,7 +188,7 @@ public class MainActivity extends FragmentActivity {
     private void createSong() {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-    	alert.setTitle("Create Song");
+    	alert.setTitle("Add Song");
     	alert.setMessage("Please enter the name of the song (must be unique)");
 
     	// Set an EditText view to get user input 
@@ -190,10 +199,53 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		String value = input.getText().toString();
 	    		if (value.length() > 0) {
-		    		if(!dbAdapter.createSong(value, "/data/data/com.sbgsoft.tabapp/songs/" + value + ".txt"))
+	    			String songFile = SONG_FILE_PATH + value + ".txt";
+		    		if(!dbAdapter.createSong(value, songFile))
 		    			Toast.makeText(getApplicationContext(), "Failed to create song!", Toast.LENGTH_LONG).show();
 		    		else
+		    		{
+		    			// If a file is waiting to be imported
+		    			if (importFilePath != "")
+		    			{
+		    				// Copy the file into the tabapp songs directory
+		    				try {
+			    				InputStream in = new FileInputStream(importFilePath);
+			    				OutputStream out = new FileOutputStream(songFile);
+			    				byte[] buf = new byte[1024];
+			    				int len;
+			    				while ((len = in.read(buf)) > 0) {
+			    				   out.write(buf, 0, len);
+			    				}
+			    				in.close();
+			    				out.close(); 
+		    				} catch (Exception e) {
+		    					// Delete the song since the file could not be imported
+		    					dbAdapter.deleteSong(value);
+		    					
+		    					// Alert that the song failed
+		    					Toast.makeText(getApplicationContext(), "Could not import file, Song deleted.", Toast.LENGTH_LONG).show();
+		    				}
+
+		    				// Clear the import file path
+		    				importFilePath = "";
+		    			}
+		    			else {
+		    				File file = new File(songFile);
+		    				try {
+		    					file.createNewFile();
+		    				} catch (IOException e) {
+		    					// Delete the song since the file could not be imported
+		    					dbAdapter.deleteSong(value);
+		    					
+		    					// Alert that the song failed
+		    					Toast.makeText(getApplicationContext(), "Could not create song file, Song deleted.", Toast.LENGTH_LONG).show();
+		    				}
+		    				
+		    			}
+		    			
+		    			// Refresh song list
 		    			songsCursor.requery();
+		    		}
 	    		}
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a song with no name!", Toast.LENGTH_LONG).show();
@@ -235,7 +287,7 @@ public class MainActivity extends FragmentActivity {
     }
     
     /**
-     * Prompts the user to confirm then deletes all sets
+     * Prompts the user to confirm then deletes all songs
      */
     private void deleteAllSongs() {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -246,6 +298,42 @@ public class MainActivity extends FragmentActivity {
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		dbAdapter.deleteAllSongs();
+	        	songsCursor.requery();
+			}
+    	});
+
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    	    // Canceled.
+	    	}
+    	});
+
+    	alert.show();
+    }
+    
+    /**
+     * Prompts the user to confirm then deletes the specified song
+     */
+    private void deleteSong(final String songName) {
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Delete Song?!");
+    	alert.setMessage("Are you sure you want to delete '" + songName + "'???");
+
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Get song file
+	    		String fileToDelete = dbAdapter.getSongFile(songName);
+	    		if (fileToDelete != "") {
+	    			// Delete song file
+		    		File delFile = new File(fileToDelete);
+		    		delFile.delete();
+		    		
+		    		// Delete song from database
+		    		dbAdapter.deleteSong(songName);
+	    		}
+	    		
+	    		// Refresh song list
 	        	songsCursor.requery();
 			}
     	});
@@ -290,6 +378,8 @@ public class MainActivity extends FragmentActivity {
         SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.songs_row, songsCursor, from, to);
         ListView lv = ((ListView)v.findViewById(R.id.songs_list));
         lv.setEmptyView(findViewById(R.id.empty_songs));
+        
+        // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
             	// Get the song to show
@@ -303,6 +393,20 @@ public class MainActivity extends FragmentActivity {
             	showSong.putExtra(SONG_NAME_KEY, songName);
             	showSong.putExtra(SONG_TEXT_KEY, songText);
                 startActivity(showSong);
+            }
+        });
+        
+        // Set the long click listener for each item
+        lv.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> a, View v, int position, long row) {
+            	// TODO: Show the delete menu option
+            	            	
+            	// Delete the song
+            	songsCursor.moveToPosition(position);
+            	String songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+                deleteSong(songName);
+            	
+                return true;
             }
         });
         lv.setAdapter(songs);
@@ -339,12 +443,32 @@ public class MainActivity extends FragmentActivity {
      * Imports a song text file into the db
      */
     private void importSong() {
-    	// Import the song text file
-    	
-    	
-    	// Add the song to the database
-    	createSong();
+    	// Create the file dialog intent
+    	Intent intent = new Intent(getBaseContext(), FileDialog.class);
+        intent.putExtra(FileDialog.START_PATH, "/");
+        
+        // User cannot select directories
+        intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
+        
+        // Set the file filter to text files
+        intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "txt" });
+        
+        // Start the activity
+        startActivityForResult(intent, 1);
     }
+    
+    /**
+     * Get the return from the file dialog activity
+     */
+    public synchronized void onActivityResult(final int requestCode,
+        int resultCode, final Intent data) {
+
+        if (resultCode == Activity.RESULT_OK) {
+            importFilePath = data.getStringExtra(FileDialog.RESULT_PATH);
+            createSong();
+        } 
+    }
+    
     
     /*****************************************************************************
      * 
