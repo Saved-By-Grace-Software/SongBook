@@ -297,7 +297,17 @@ public class MainActivity extends FragmentActivity {
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		dbAdapter.deleteAllSongs();
+	    		if(dbAdapter.deleteAllSongs()) {
+	    			File directory = new File(SONG_FILE_PATH);
+
+	    			// Get all files in directory
+	    			File[] files = directory.listFiles();
+	    			for (File file : files)
+	    			{
+	    			   // Delete each file
+	    			   file.delete();
+	    			}
+	    		}
 	        	songsCursor.requery();
 			}
     	});

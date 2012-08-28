@@ -143,7 +143,7 @@ public class DBAdapter {
 	 */
 	public boolean deleteAllSongs() {
 		try {
-		mDb.execSQL("DELETE from " + SONGS_TABLE);
+			mDb.execSQL("DELETE from " + SONGS_TABLE);
 		} catch (SQLException e) {
 			return false;
 		}
