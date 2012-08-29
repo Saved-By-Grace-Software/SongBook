@@ -164,6 +164,25 @@ public class DBAdapter {
 		return true;
 	}
 	
+	/**
+	 * Deletes the specified set
+	 * @param setName The set name to delete
+	 * @return True if success, False if failure
+	 */
+	public boolean deleteSet(String setName) {
+		try {
+			mDb.execSQL("DELETE from " + SETS_TABLE + " WHERE " + TBLSETS_NAME + " = '" + setName + "'");
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Gets the file name of the specified song
+	 * @param songName The song to get the file for
+	 * @return The file name
+	 */
 	public String getSongFile(String songName) {
 		try {
 			Cursor c = mDb.rawQuery("SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + " FROM " + SONGS_TABLE +

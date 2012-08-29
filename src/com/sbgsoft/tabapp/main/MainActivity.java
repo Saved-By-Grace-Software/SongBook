@@ -52,8 +52,6 @@ public class MainActivity extends FragmentActivity {
 	private Cursor songsCursor;
 	private String importFilePath = "";
 	
-
-	
     /**
      *  Called when the activity is first created. 
      **/
@@ -358,6 +356,34 @@ public class MainActivity extends FragmentActivity {
     }
     
     /**
+     * Prompts the user to confirm then deletes the specified set
+     */
+    private void deleteSet(final String setName) {
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Delete Song?!");
+    	alert.setMessage("Are you sure you want to delete '" + setName + "'???");
+
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Delete set from database
+	    		dbAdapter.deleteSet(setName);
+	    		
+	    		// Refresh song list
+	        	setsCursor.requery();
+			}
+    	});
+
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    	    // Canceled.
+	    	}
+    	});
+
+    	alert.show();
+    }
+    
+    /**
      * Fills the sets list
      * @param v The view for the list
      */
@@ -371,6 +397,21 @@ public class MainActivity extends FragmentActivity {
         SimpleCursorAdapter sets = new SimpleCursorAdapter(this, R.layout.sets_row, setsCursor, from, to);
         ListView lv = ((ListView)v.findViewById(R.id.sets_list));
         lv.setEmptyView(findViewById(R.id.empty_sets));
+        
+        // Set the long click listener for each item
+        lv.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> a, View v, int position, long row) {
+            	// TODO: Show the delete menu option
+            	            	
+            	// Delete the song
+            	setsCursor.moveToPosition(position);
+            	String setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
+                deleteSet(setName);
+            	
+                return true;
+            }
+        });
+        
         lv.setAdapter(sets);
     }
     
