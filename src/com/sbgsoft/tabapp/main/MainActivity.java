@@ -1,12 +1,12 @@
 package com.sbgsoft.tabapp.main;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -14,6 +14,7 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -43,7 +44,6 @@ import com.sbgsoft.tabapp.songs.SongsTab;
 public class MainActivity extends FragmentActivity {
 	public static final String SONG_NAME_KEY = "songName";
 	public static final String SONG_TEXT_KEY = "songText";
-	public static final String SONG_FILE_PATH = "/data/data/com.sbgsoft.tabapp/songs/";
 	
 	FragmentTransaction transaction;
 	static ViewPager mViewPager;
@@ -51,6 +51,7 @@ public class MainActivity extends FragmentActivity {
 	private Cursor setsCursor;
 	private Cursor songsCursor;
 	private String importFilePath = "";
+	
 
 	
     /**
@@ -199,7 +200,8 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		String value = input.getText().toString();
 	    		if (value.length() > 0) {
-	    			String songFile = SONG_FILE_PATH + value + ".txt";
+	    			//String songFile = getFilesDir() + "/" + value + ".txt";
+	    			String songFile = value + ".txt";
 		    		if(!dbAdapter.createSong(value, songFile))
 		    			Toast.makeText(getApplicationContext(), "Failed to create song!", Toast.LENGTH_LONG).show();
 		    		else
@@ -210,7 +212,8 @@ public class MainActivity extends FragmentActivity {
 		    				// Copy the file into the tabapp songs directory
 		    				try {
 			    				InputStream in = new FileInputStream(importFilePath);
-			    				OutputStream out = new FileOutputStream(songFile);
+			    				//OutputStream out = new FileOutputStream(songFile);
+			    				OutputStream out = openFileOutput(songFile, Context.MODE_PRIVATE);
 			    				byte[] buf = new byte[1024];
 			    				int len;
 			    				while ((len = in.read(buf)) > 0) {
@@ -298,14 +301,12 @@ public class MainActivity extends FragmentActivity {
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		if(dbAdapter.deleteAllSongs()) {
-	    			File directory = new File(SONG_FILE_PATH);
-
-	    			// Get all files in directory
-	    			File[] files = directory.listFiles();
-	    			for (File file : files)
-	    			{
-	    			   // Delete each file
-	    			   file.delete();
+	    			// Get a list of all internal files
+	    			String[] files = fileList();
+	    			
+	    			// Delete each file
+	    			for (String file : files) {
+	    				deleteFile(file);
 	    			}
 	    		}
 	        	songsCursor.requery();
@@ -336,8 +337,7 @@ public class MainActivity extends FragmentActivity {
 	    		String fileToDelete = dbAdapter.getSongFile(songName);
 	    		if (fileToDelete != "") {
 	    			// Delete song file
-		    		File delFile = new File(fileToDelete);
-		    		delFile.delete();
+	    			deleteFile(fileToDelete);
 		    		
 		    		// Delete song from database
 		    		dbAdapter.deleteSong(songName);
@@ -429,9 +429,10 @@ public class MainActivity extends FragmentActivity {
     private String getSongText(String fileName) {
     	String songText = "";
     	
-    	
         try {
-        	BufferedReader br = new BufferedReader(new FileReader(fileName));
+        	FileInputStream fis = openFileInput(fileName);
+        	DataInputStream in = new DataInputStream(fis);
+        	BufferedReader br = new BufferedReader(new InputStreamReader(in));
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
 
