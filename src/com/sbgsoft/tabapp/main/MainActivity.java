@@ -2,7 +2,6 @@ package com.sbgsoft.tabapp.main;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +15,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -25,6 +25,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -162,13 +163,67 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		String value = input.getText().toString();
 	    		if (value.length() > 0) {
-		    		if(!dbAdapter.createSet(value))
-		    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
-		    		else
-		    			setsCursor.requery();
+		    		//if(!dbAdapter.createSet(value))
+		    		//	Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
+		    		//else
+		    		//{
+		    		//	setsCursor.requery();
+		    			selectSetSongs(value);
+		    		//}
 	    		}
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
+			}
+    	});
+
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    	    // Canceled.
+	    	}
+    	});
+
+    	alert.show();
+    }
+    
+    /**
+     * Selects the songs for the set
+     */
+    private void selectSetSongs(final String setName) {
+    	songsCursor = dbAdapter.getSongNames();
+    	startManagingCursor(songsCursor);
+    	
+    	final CharSequence[] songNames = new CharSequence[songsCursor.getCount()];
+    	int counter = 0;
+    	while(songsCursor.moveToNext()) {
+    		songNames[counter++] = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+    	}
+    	
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Select Songs");
+    	alert.setMultiChoiceItems( songNames, null, new OnMultiChoiceClickListener() {
+    		public void onClick (DialogInterface dialog, int whichItem, boolean isChecked) {}
+    	});
+
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+				// Set all selected items to the songs for the set
+	    		SparseBooleanArray checkedSongs = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
+	    		String setSongs = "";
+	    		for (int i = 0; i < songNames.length; i++) {
+	    			if(checkedSongs.valueAt(i)) {
+	    				setSongs += songNames[i].toString() + ",";
+	    			}
+	    		}
+	    		
+	    		// Strip the last comma from setSongs
+	    		setSongs = setSongs.replaceAll("\\,$", "");
+	    		
+	    		// Create the set
+	    		if(!dbAdapter.createSet(setName, setSongs))
+	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
+	    		else
+	    			setsCursor.requery();
 			}
     	});
 
@@ -231,9 +286,9 @@ public class MainActivity extends FragmentActivity {
 		    				importFilePath = "";
 		    			}
 		    			else {
-		    				File file = new File(songFile);
 		    				try {
-		    					file.createNewFile();
+		    					OutputStream out = openFileOutput(songFile, Context.MODE_PRIVATE);
+		    					out.close();
 		    				} catch (IOException e) {
 		    					// Delete the song since the file could not be imported
 		    					dbAdapter.deleteSong(value);

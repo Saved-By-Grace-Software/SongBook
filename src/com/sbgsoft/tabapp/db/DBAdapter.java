@@ -76,7 +76,7 @@ public class DBAdapter {
 	/**
 	 * Creates a new set with the specified song string
 	 * @param setName The name of the set
-	 * @param songs The string of song IDs
+	 * @param songs The string of song names
 	 * @return True if success, False if failure
 	 */
 	public boolean createSet(String setName, String songs) {
@@ -121,7 +121,8 @@ public class DBAdapter {
 	 * @return Cursor to the query
 	 */	
 	public Cursor getSongNames() {
-		return mDb.rawQuery("SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + " FROM " + SONGS_TABLE, null);
+		return mDb.rawQuery("SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + 
+				" FROM " + SONGS_TABLE + " ORDER BY " + TBLSONG_NAME, null);
 	}
 	
 	/**
