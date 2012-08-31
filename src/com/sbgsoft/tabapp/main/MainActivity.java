@@ -44,8 +44,15 @@ import com.sbgsoft.tabapp.songs.SongActivity;
 import com.sbgsoft.tabapp.songs.SongsTab;
 
 public class MainActivity extends FragmentActivity {
+	
+	/*****************************************************************************
+     * 
+     * Class Variables
+     * 
+     *****************************************************************************/
 	public static final String SONG_NAME_KEY = "songName";
 	public static final String SONG_TEXT_KEY = "songText";
+	private static int currentTab = 1;
 	
 	public Fragment currSetFragment;
 	public Fragment setsFragment;
@@ -59,6 +66,12 @@ public class MainActivity extends FragmentActivity {
 	private Cursor currSetCursor;
 	private String importFilePath = "";
 	
+	
+	/*****************************************************************************
+     * 
+     * Class Functions
+     * 
+     *****************************************************************************/
     /**
      *  Called when the activity is first created. 
      **/
@@ -171,13 +184,22 @@ public class MainActivity extends FragmentActivity {
        stopManagingCursor(setsCursor);
     }
     
+    /**
+     * Called when the activity is started    
+     */
     @Override
     protected void onStart() {
     	super.onStart();
     	
-    	mViewPager.setCurrentItem(1);
+    	mViewPager.setCurrentItem(currentTab);
     }
     
+    
+    /*****************************************************************************
+     * 
+     * Set Functions
+     * 
+     *****************************************************************************/
     /**
      * Prompts the user for a name and creates the set
      */
@@ -250,18 +272,135 @@ public class MainActivity extends FragmentActivity {
 	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
 	    		else
 	    			setsCursor.requery();
+	    		
+	    		// Set the current tab
+	        	currentTab = 2;
 			}
     	});
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    	    // Canceled.
+	    		// Set the current tab
+	        	currentTab = 2;
 	    	}
     	});
 
     	alert.show();
     }
     
+    /**
+     * Prompts the user to confirm then deletes all sets
+     */
+    private void deleteAllSets() {
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Delete All?!");
+    	alert.setMessage("Are you sure you want to delete ALL sets???");
+
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		dbAdapter.deleteAllSets();
+	        	setsCursor.requery();
+	        	
+	        	// Set the current tab
+	        	currentTab = 2;
+			}
+    	});
+
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Set the current tab
+	        	currentTab = 2;
+	    	}
+    	});
+
+    	alert.show();
+    }
+    
+    /**
+     * Prompts the user to confirm then deletes the specified set
+     */
+    private void deleteSet(final String setName) {
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Delete Song?!");
+    	alert.setMessage("Are you sure you want to delete '" + setName + "'???");
+
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Delete set from database
+	    		dbAdapter.deleteSet(setName);
+	    		
+	    		// Refresh song list
+	        	setsCursor.requery();
+	        	
+	        	// Set the current tab
+	        	currentTab = 2;
+			}
+    	});
+
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Set the current tab
+	        	currentTab = 2;
+	    	}
+    	});
+
+    	alert.show();
+    }
+    
+    /**
+     * Fills the sets list
+     * @param v The view for the list
+     */
+    public void fillSetsList(View v) {
+    	setsCursor = dbAdapter.getSetNames();
+    	startManagingCursor(setsCursor);
+    	
+    	String[] from = new String[] { "setName" };
+        int[] to = new int[] { R.id.sets_row_text };
+        
+        SimpleCursorAdapter sets = new SimpleCursorAdapter(this, R.layout.sets_row, setsCursor, from, to);
+        ListView lv = ((ListView)v.findViewById(R.id.sets_list));
+        lv.setEmptyView(findViewById(R.id.empty_sets));
+        
+        // Set the on click listener for each item
+        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
+            	// Get the set to show
+            	setsCursor.moveToPosition(position);
+            	String setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
+            	
+            	// Set the current set and show it
+            	dbAdapter.setCurrentSet(setName);
+            	((CurrentSetTab)currSetFragment).refreshCurrentSet();
+            	mViewPager.setCurrentItem(0, true);
+            }
+        });
+        
+        // Set the long click listener for each item
+        lv.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> a, View v, int position, long row) {
+            	// TODO: Show the long click menu
+            	            	
+            	// Delete the song
+            	setsCursor.moveToPosition(position);
+            	String setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
+                deleteSet(setName);
+            	
+                return true;
+            }
+        });
+        
+        lv.setAdapter(sets);
+    }
+    
+    
+    /*****************************************************************************
+     * 
+     * Song Functions
+     * 
+     *****************************************************************************/
     /**
      * Prompts the user for a name and creates the set
      */
@@ -327,35 +466,13 @@ public class MainActivity extends FragmentActivity {
 		    			
 		    			// Refresh song list
 		    			songsCursor.requery();
+		    			
+		    			// Set the current tab
+			        	currentTab = 3;
 		    		}
 	    		}
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a song with no name!", Toast.LENGTH_LONG).show();
-			}
-    	});
-
-    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    	    // Canceled.
-	    	}
-    	});
-
-    	alert.show();
-    }
-    
-    /**
-     * Prompts the user to confirm then deletes all sets
-     */
-    private void deleteAllSets() {
-    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-    	alert.setTitle("Delete All?!");
-    	alert.setMessage("Are you sure you want to delete ALL sets???");
-
-    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		dbAdapter.deleteAllSets();
-	        	setsCursor.requery();
 			}
     	});
 
@@ -389,12 +506,16 @@ public class MainActivity extends FragmentActivity {
 	    			}
 	    		}
 	        	songsCursor.requery();
+	        	
+	        	// Set the current tab
+	        	currentTab = 3;
 			}
     	});
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    	    // Canceled.
+	    		// Set the current tab
+	        	currentTab = 3;
 	    	}
     	});
 
@@ -424,117 +545,20 @@ public class MainActivity extends FragmentActivity {
 	    		
 	    		// Refresh song list
 	        	songsCursor.requery();
+	        	
+	        	// Set the current tab
+	        	currentTab = 3;
 			}
     	});
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    	    // Canceled.
+	    		// Set the current tab
+	        	currentTab = 3;
 	    	}
     	});
 
     	alert.show();
-    }
-    
-    /**
-     * Prompts the user to confirm then deletes the specified set
-     */
-    private void deleteSet(final String setName) {
-    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-    	alert.setTitle("Delete Song?!");
-    	alert.setMessage("Are you sure you want to delete '" + setName + "'???");
-
-    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Delete set from database
-	    		dbAdapter.deleteSet(setName);
-	    		
-	    		// Refresh song list
-	        	setsCursor.requery();
-			}
-    	});
-
-    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    	    // Canceled.
-	    	}
-    	});
-
-    	alert.show();
-    }
-    
-    /**
-     * Fills the sets list
-     * @param v The view for the list
-     */
-    public void fillSetsList(View v) {
-    	setsCursor = dbAdapter.getSetNames();
-    	startManagingCursor(setsCursor);
-    	
-    	String[] from = new String[] { "setName" };
-        int[] to = new int[] { R.id.sets_row_text };
-        
-        SimpleCursorAdapter sets = new SimpleCursorAdapter(this, R.layout.sets_row, setsCursor, from, to);
-        ListView lv = ((ListView)v.findViewById(R.id.sets_list));
-        lv.setEmptyView(findViewById(R.id.empty_sets));
-        
-        // Set the on click listener for each item
-        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-            	// Get the set to show
-            	setsCursor.moveToPosition(position);
-            	String setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
-            	
-            	// Set the current set and show it
-            	dbAdapter.setCurrentSet(setName);
-            	((CurrentSetTab)currSetFragment).refreshCurrentSet();
-            	mViewPager.setCurrentItem(0, true);
-            }
-        });
-        
-        // Set the long click listener for each item
-        lv.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> a, View v, int position, long row) {
-            	// TODO: Show the long click menu
-            	            	
-            	// Delete the song
-            	setsCursor.moveToPosition(position);
-            	String setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
-                deleteSet(setName);
-            	
-                return true;
-            }
-        });
-        
-        lv.setAdapter(sets);
-    }
-    
-    /**
-     * Fills the current set list
-     * @param v The view for the list
-     */
-    public void fillCurrentSetList(View v) {
-    	currSetCursor = dbAdapter.getSetSongs();
-    	startManagingCursor(currSetCursor);
-    	
-    	String[] from = new String[] { DBAdapter.TBLSONG_NAME };
-        int[] to = new int[] { R.id.curr_sets_row_text };
-        
-        SimpleCursorAdapter current = new SimpleCursorAdapter(this, R.layout.current_set_row, currSetCursor, from, to);
-        ListView lv = ((ListView)v.findViewById(R.id.current_list));
-        lv.setEmptyView(findViewById(R.id.empty_current));
-        
-        // Set the long click listener for each item
-        lv.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> a, View v, int position, long row) {
-            	// TODO: Show the long click menu
-            	            	            	
-                return true;
-            }
-        });
-        
-        lv.setAdapter(current);
     }
     
     /**
@@ -646,10 +670,42 @@ public class MainActivity extends FragmentActivity {
     
     /*****************************************************************************
      * 
+     * Song Functions
+     * 
+     *****************************************************************************/
+    /**
+     * Fills the current set list
+     * @param v The view for the list
+     */
+    public void fillCurrentSetList(View v) {
+    	currSetCursor = dbAdapter.getSetSongs();
+    	startManagingCursor(currSetCursor);
+    	
+    	String[] from = new String[] { DBAdapter.TBLSONG_NAME };
+        int[] to = new int[] { R.id.curr_sets_row_text };
+        
+        SimpleCursorAdapter current = new SimpleCursorAdapter(this, R.layout.current_set_row, currSetCursor, from, to);
+        ListView lv = ((ListView)v.findViewById(R.id.current_list));
+        lv.setEmptyView(findViewById(R.id.empty_current));
+        
+        // Set the long click listener for each item
+        lv.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> a, View v, int position, long row) {
+            	// TODO: Show the long click menu
+            	            	            	
+                return true;
+            }
+        });
+        
+        lv.setAdapter(current);
+    }
+    
+    
+    /*****************************************************************************
+     * 
      * Classes
      * 
      *****************************************************************************/
-    
     /**
      * Tab Listener class for displaying each tab
      * @author SamIAm
