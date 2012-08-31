@@ -476,9 +476,14 @@ public class MainActivity extends FragmentActivity {
             	setsCursor.moveToPosition(position);
             	String setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
             	
+            	
             	// Set the current set
             	dbAdapter.setCurrentSet(setName);
-            	//currSetCursor.requery();
+            	currSetCursor = dbAdapter.getSetSongs();
+            	if (currSetCursor != null) {
+	            	startManagingCursor(currSetCursor);
+	            	currSetCursor.requery();
+            	}
             }
         });
         

@@ -126,9 +126,9 @@ public class DBAdapter {
 	public Cursor getSetSongs() {
 		try {
 			// Get the list of songs from the sets table
-			Cursor c = mDb.rawQuery("SELECT " + TBLSETS_ID + " as _id, " + TBLSETS_SONGS + 
+			Cursor c = mDb.rawQuery("SELECT " + SETS_TABLE + "." + TBLSETS_ID + " as _id, " + TBLSETS_NAME + ", " + TBLSETS_SONGS + 
 					" FROM " + SETS_TABLE + ", " + CURRSET_TABLE +
-					" WHERE " + TBLSETS_ID + " = " + TBLCURRSET_SET, null);
+					" WHERE " + SETS_TABLE + "." + TBLSETS_ID + " = " + TBLCURRSET_SET, null);
 			
 			if (c.getCount() == 0)
 				return null;
