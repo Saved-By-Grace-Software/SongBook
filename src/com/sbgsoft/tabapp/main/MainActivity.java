@@ -47,6 +47,10 @@ public class MainActivity extends FragmentActivity {
 	public static final String SONG_NAME_KEY = "songName";
 	public static final String SONG_TEXT_KEY = "songText";
 	
+	public Fragment currSetFragment;
+	public Fragment setsFragment;
+	public Fragment songsFragment;
+	
 	FragmentTransaction transaction;
 	static ViewPager mViewPager;
 	public static DBAdapter dbAdapter;
@@ -63,14 +67,14 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        Fragment tabOneFragment = new SetsTab();
-        Fragment tabTwoFragment = new SongsTab();
-        Fragment tabThreeFragment = new CurrentSetTab();
+        setsFragment = new SetsTab();
+        songsFragment = new SongsTab();
+        currSetFragment = new CurrentSetTab();
         
         PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        mPagerAdapter.addFragment(tabThreeFragment);
-        mPagerAdapter.addFragment(tabOneFragment);
-        mPagerAdapter.addFragment(tabTwoFragment);
+        mPagerAdapter.addFragment(currSetFragment);
+        mPagerAdapter.addFragment(setsFragment);
+        mPagerAdapter.addFragment(songsFragment);
        
         
         //transaction = getSupportFragmentManager().beginTransaction();
@@ -78,7 +82,6 @@ public class MainActivity extends FragmentActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mPagerAdapter);
 		mViewPager.setOffscreenPageLimit(3);
-	    mViewPager.setCurrentItem(1);
 		
 		mViewPager.setOnPageChangeListener(
 	            new ViewPager.SimpleOnPageChangeListener() {
@@ -166,6 +169,13 @@ public class MainActivity extends FragmentActivity {
        stopManagingCursor(songsCursor);
        stopManagingCursor(currSetCursor);
        stopManagingCursor(setsCursor);
+    }
+    
+    @Override
+    protected void onStart() {
+    	super.onStart();
+    	
+    	mViewPager.setCurrentItem(1);
     }
     
     /**
@@ -476,14 +486,10 @@ public class MainActivity extends FragmentActivity {
             	setsCursor.moveToPosition(position);
             	String setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
             	
-            	
-            	// Set the current set
+            	// Set the current set and show it
             	dbAdapter.setCurrentSet(setName);
-            	currSetCursor = dbAdapter.getSetSongs();
-            	if (currSetCursor != null) {
-	            	startManagingCursor(currSetCursor);
-	            	currSetCursor.requery();
-            	}
+            	((CurrentSetTab)currSetFragment).refreshCurrentSet();
+            	mViewPager.setCurrentItem(0, true);
             }
         });
         

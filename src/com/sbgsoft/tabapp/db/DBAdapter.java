@@ -126,9 +126,10 @@ public class DBAdapter {
 	public Cursor getSetSongs() {
 		try {
 			// Get the list of songs from the sets table
-			Cursor c = mDb.rawQuery("SELECT " + SETS_TABLE + "." + TBLSETS_ID + " as _id, " + TBLSETS_NAME + ", " + TBLSETS_SONGS + 
+			String query = "SELECT " + SETS_TABLE + "." + TBLSETS_ID + " as _id, " + TBLSETS_NAME + ", " + TBLSETS_SONGS + 
 					" FROM " + SETS_TABLE + ", " + CURRSET_TABLE +
-					" WHERE " + SETS_TABLE + "." + TBLSETS_ID + " = " + TBLCURRSET_SET, null);
+					" WHERE " + SETS_TABLE + "." + TBLSETS_ID + " = " + CURRSET_TABLE + "." + TBLCURRSET_SET;
+			Cursor c = mDb.rawQuery(query, null);
 			
 			if (c.getCount() == 0)
 				return null;
@@ -138,7 +139,7 @@ public class DBAdapter {
 			
 			// Create the query to get the list of songs
 			String[] songsArray = songs.split(",");
-			String query = "SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + 
+			query = "SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + 
 					" FROM " + SONGS_TABLE + 
 					" WHERE " + TBLSONG_NAME + " IN (";
 			
@@ -163,7 +164,6 @@ public class DBAdapter {
 		return mDb.rawQuery("SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + 
 				" FROM " + SONGS_TABLE + " ORDER BY " + TBLSONG_NAME, null);
 	}
-	
 	
 	/**
 	 * Sets the current set
