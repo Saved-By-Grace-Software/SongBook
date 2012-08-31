@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.lamerman.FileDialog;
 import com.sbgsoft.tabapp.R;
 import com.sbgsoft.tabapp.db.DBAdapter;
+import com.sbgsoft.tabapp.sets.CurrentSetTab;
 import com.sbgsoft.tabapp.sets.SetsTab;
 import com.sbgsoft.tabapp.songs.SongActivity;
 import com.sbgsoft.tabapp.songs.SongsTab;
@@ -51,6 +52,7 @@ public class MainActivity extends FragmentActivity {
 	public static DBAdapter dbAdapter;
 	private Cursor setsCursor;
 	private Cursor songsCursor;
+	private Cursor currSetCursor;
 	private String importFilePath = "";
 	
     /**
@@ -63,17 +65,20 @@ public class MainActivity extends FragmentActivity {
         
         Fragment tabOneFragment = new SetsTab();
         Fragment tabTwoFragment = new SongsTab();
+        Fragment tabThreeFragment = new CurrentSetTab();
         
         PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        mPagerAdapter.addFragment(tabThreeFragment);
         mPagerAdapter.addFragment(tabOneFragment);
         mPagerAdapter.addFragment(tabTwoFragment);
+       
         
         //transaction = getSupportFragmentManager().beginTransaction();
         
         mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mPagerAdapter);
-		mViewPager.setOffscreenPageLimit(2);
-	    mViewPager.setCurrentItem(0);
+		mViewPager.setOffscreenPageLimit(3);
+	    mViewPager.setCurrentItem(1);
 		
 		mViewPager.setOnPageChangeListener(
 	            new ViewPager.SimpleOnPageChangeListener() {
@@ -89,6 +94,10 @@ public class MainActivity extends FragmentActivity {
         ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         ab.setDisplayShowTitleEnabled(true);
         ab.setDisplayShowHomeEnabled(true);
+        Tab tab3 = ab.newTab().setText("Current Set")
+				.setTabListener(new TabListener<CurrentSetTab>(
+						this, "tabcurrent", CurrentSetTab.class)); 
+        
         Tab tab1 = ab.newTab().setText("Sets")
         		.setTabListener(new TabListener<SetsTab>(
                         this, "tabsets", SetsTab.class));
@@ -97,6 +106,7 @@ public class MainActivity extends FragmentActivity {
 				.setTabListener(new TabListener<SongsTab>(
                         this, "tabsongs", SongsTab.class));
 		
+		ab.addTab(tab3);
 		ab.addTab(tab1);
 		ab.addTab(tab2);
 				
@@ -147,6 +157,18 @@ public class MainActivity extends FragmentActivity {
     }
     
     /**
+     * Called when the activity is stopped
+     */
+    @Override
+    protected void onStop(){
+       super.onStop();
+
+       stopManagingCursor(songsCursor);
+       stopManagingCursor(currSetCursor);
+       stopManagingCursor(setsCursor);
+    }
+    
+    /**
      * Prompts the user for a name and creates the set
      */
     private void createSet() {
@@ -163,13 +185,7 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		String value = input.getText().toString();
 	    		if (value.length() > 0) {
-		    		//if(!dbAdapter.createSet(value))
-		    		//	Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
-		    		//else
-		    		//{
-		    		//	setsCursor.requery();
 		    			selectSetSongs(value);
-		    		//}
 	    		}
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
@@ -453,10 +469,23 @@ public class MainActivity extends FragmentActivity {
         ListView lv = ((ListView)v.findViewById(R.id.sets_list));
         lv.setEmptyView(findViewById(R.id.empty_sets));
         
+        // Set the on click listener for each item
+        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
+            	// Get the set to show
+            	setsCursor.moveToPosition(position);
+            	String setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
+            	
+            	// Set the current set
+            	dbAdapter.setCurrentSet(setName);
+            	//currSetCursor.requery();
+            }
+        });
+        
         // Set the long click listener for each item
         lv.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> a, View v, int position, long row) {
-            	// TODO: Show the delete menu option
+            	// TODO: Show the long click menu
             	            	
             	// Delete the song
             	setsCursor.moveToPosition(position);
@@ -468,6 +497,33 @@ public class MainActivity extends FragmentActivity {
         });
         
         lv.setAdapter(sets);
+    }
+    
+    /**
+     * Fills the current set list
+     * @param v The view for the list
+     */
+    public void fillCurrentSetList(View v) {
+    	currSetCursor = dbAdapter.getSetSongs();
+    	startManagingCursor(currSetCursor);
+    	
+    	String[] from = new String[] { DBAdapter.TBLSONG_NAME };
+        int[] to = new int[] { R.id.curr_sets_row_text };
+        
+        SimpleCursorAdapter current = new SimpleCursorAdapter(this, R.layout.current_set_row, currSetCursor, from, to);
+        ListView lv = ((ListView)v.findViewById(R.id.current_list));
+        lv.setEmptyView(findViewById(R.id.empty_current));
+        
+        // Set the long click listener for each item
+        lv.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
+            public boolean onItemLongClick(AdapterView<?> a, View v, int position, long row) {
+            	// TODO: Show the long click menu
+            	            	            	
+                return true;
+            }
+        });
+        
+        lv.setAdapter(current);
     }
     
     /**

@@ -18,6 +18,7 @@ public class DBAdapter {
     public static final String SETS_TABLE = "tblSets";
     public static final String SONGS_TABLE = "tblSongs";
     public static final String GROUPS_TABLE = "tblGroups";
+    public static final String CURRSET_TABLE = "tblCurrSet";
     public static final String TBLSONG_ID = "songID";
     public static final String TBLSONG_NAME = "songName";
     public static final String TBLSONG_FILE = "fileName";
@@ -28,6 +29,8 @@ public class DBAdapter {
     public static final String TBLGROUPS_ID = "groupID";
     public static final String TBLGROUPS_NAME = "groupName";
     public static final String TBLGROUPS_PARENT = "parentID";
+    public static final String TBLCURRSET_ID = "currSetID";
+    public static final String TBLCURRSET_SET = "setID";
 
     private final Context mCtx;
 	
@@ -117,12 +120,64 @@ public class DBAdapter {
 	}
 	
 	/**
+	 * Gets the songs for the set
+	 * @return Cursor to the songs
+	 */
+	public Cursor getSetSongs() {
+		try {
+			// Get the list of songs from the sets table
+			Cursor c = mDb.rawQuery("SELECT " + TBLSETS_ID + " as _id, " + TBLSETS_SONGS + 
+					" FROM " + SETS_TABLE + ", " + CURRSET_TABLE +
+					" WHERE " + TBLSETS_ID + " = " + TBLCURRSET_SET, null);
+			
+			if (c.getCount() == 0)
+				return null;
+			
+			c.moveToFirst();
+			String  songs = c.getString(c.getColumnIndexOrThrow(TBLSETS_SONGS));
+			
+			// Create the query to get the list of songs
+			String[] songsArray = songs.split(",");
+			String query = "SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + 
+					" FROM " + SONGS_TABLE + 
+					" WHERE " + TBLSONG_NAME + " IN (";
+			
+			for (String song : songsArray) {
+				query += "'" + song + "',";
+			}
+			query = query.replaceAll("\\,$", "");
+			query += ") ORDER BY " + TBLSONG_NAME;
+			
+			// Return the cursor to the songs list
+			return mDb.rawQuery(query, null);
+		} catch (SQLiteException s) {
+			return null;
+		}
+	}
+	
+	/**
 	 * Gets all existing set names
 	 * @return Cursor to the query
 	 */	
 	public Cursor getSongNames() {
 		return mDb.rawQuery("SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + 
 				" FROM " + SONGS_TABLE + " ORDER BY " + TBLSONG_NAME, null);
+	}
+	
+	
+	/**
+	 * Sets the current set
+	 * @param setName The set name to set as current
+	 * @return True if success, False if failure
+	 */
+	public boolean setCurrentSet(String setName) {
+		try {
+			mDb.execSQL("UPDATE " + CURRSET_TABLE + " SET " + TBLCURRSET_SET + 
+					" = (SELECT " + TBLSETS_ID + " FROM " + SETS_TABLE + " WHERE " + TBLSETS_NAME + " = '" + setName + "')");
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
 	}
 	
 	/**
@@ -229,7 +284,13 @@ public class DBAdapter {
     					TBLGROUPS_NAME + " text UNIQUE, " + 
     					TBLGROUPS_PARENT + " int ); " );
     			
+    			// Current Set table
+    			db.execSQL("create table " + CURRSET_TABLE +
+    					"(" + TBLCURRSET_ID + " integer PRIMARY KEY autoincrement, " + 
+    					TBLCURRSET_SET + " int ); " );
+    			
     			db.execSQL("insert into " + GROUPS_TABLE + "(" + TBLGROUPS_NAME + ", " + TBLGROUPS_PARENT + ") values ('Uncategorized', '-1' );" );
+    			db.execSQL("insert into " + CURRSET_TABLE + "(" + TBLCURRSET_SET + ") values (0);" );
     			
     			db.setTransactionSuccessful(); 
     		}catch(SQLiteException e) {
