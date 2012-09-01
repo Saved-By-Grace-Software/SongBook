@@ -42,6 +42,41 @@ public class SongActivity extends Activity {
                 song.setText(songName + System.getProperty("line.separator") + songText);
             }
         }
+        
+        // Keep the screen on
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+    
+    @Override
+    public void onStart() {
+    	super.onStart();
+    	
+    	// Keep the screen on
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+    
+    @Override
+    public void onResume() {
+    	super.onResume();
+    	
+    	// Keep the screen on
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+    
+    @Override 
+    public void onPause() {
+    	super.onPause();
+    	
+    	// Keep the screen on
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+    
+    @Override
+    public void onStop() {
+    	super.onStop();
+    	
+    	// Keep the screen on
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
