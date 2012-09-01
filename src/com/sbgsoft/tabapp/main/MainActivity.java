@@ -39,6 +39,7 @@ import com.lamerman.FileDialog;
 import com.sbgsoft.tabapp.R;
 import com.sbgsoft.tabapp.db.DBAdapter;
 import com.sbgsoft.tabapp.sets.CurrentSetTab;
+import com.sbgsoft.tabapp.sets.SetActivity;
 import com.sbgsoft.tabapp.sets.SetsTab;
 import com.sbgsoft.tabapp.songs.SongActivity;
 import com.sbgsoft.tabapp.songs.SongsTab;
@@ -46,7 +47,7 @@ import com.sbgsoft.tabapp.songs.SongsTab;
 public class MainActivity extends FragmentActivity {
 	
 	/*****************************************************************************
-     * 
+     *
      * Class Variables
      * 
      *****************************************************************************/
@@ -190,6 +191,13 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStart() {
     	super.onStart();
+    	
+    	mViewPager.setCurrentItem(currentTab);
+    }
+    
+    @Override
+    public void onResume() {
+    	super.onResume();
     	
     	mViewPager.setCurrentItem(currentTab);
     }
@@ -687,6 +695,23 @@ public class MainActivity extends FragmentActivity {
         SimpleCursorAdapter current = new SimpleCursorAdapter(this, R.layout.current_set_row, currSetCursor, from, to);
         ListView lv = ((ListView)v.findViewById(R.id.current_list));
         lv.setEmptyView(findViewById(R.id.empty_current));
+        
+        // Set the on click listener for each item
+        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
+            	// Get the song to show
+            	currSetCursor.moveToPosition(position);
+            	String songName = currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+            	String songText = getSongText(currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_FILE)));
+            	
+            	// Show the song activity
+            	SetActivity song = new SetActivity();
+            	Intent showSong = new Intent(v.getContext(), song.getClass());
+            	showSong.putExtra(SONG_NAME_KEY, songName);
+            	showSong.putExtra(SONG_TEXT_KEY, songText);
+                startActivity(showSong);
+            }
+    	});
         
         // Set the long click listener for each item
         lv.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
