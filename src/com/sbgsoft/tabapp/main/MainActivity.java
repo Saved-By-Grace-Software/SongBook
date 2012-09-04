@@ -106,6 +106,7 @@ public class MainActivity extends FragmentActivity {
 	                    // When swiping between pages, select the
 	                    // corresponding tab.
 	                    getActionBar().setSelectedNavigationItem(position);
+	                    currentTab = position;
 	                }
 	            });
         
@@ -185,6 +186,18 @@ public class MainActivity extends FragmentActivity {
        stopManagingCursor(songsCursor);
        stopManagingCursor(currSetCursor);
        stopManagingCursor(setsCursor);
+       
+       currentTab = mViewPager.getCurrentItem();
+    }
+    
+    /**
+     * Called when the activity is paused
+     */
+    @Override
+    protected void onPause() {
+    	super.onPause();
+    	
+    	currentTab = mViewPager.getCurrentItem();
     }
     
     /**
