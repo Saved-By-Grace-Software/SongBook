@@ -704,20 +704,23 @@ public class MainActivity extends FragmentActivity {
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-            	// Get the songs to show
-//            	currSetCursor.moveToPosition(position);
-//            	String songName = currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
-//            	String songText = getSongText(currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_FILE)));
+            	// Create the string array of the song text
+            	int songCounter = 0;
+            	String[] setSongs = new String[currSetCursor.getCount()];
+            	currSetCursor.moveToFirst();
             	
-            	String[] setSongs = new String[3];
-            	setSongs[0] = "Song 1" + System.getProperty("line.separator") + "This is the text for song 1";
-            	setSongs[1] = "Song 2" + System.getProperty("line.separator") + "This is the text for song 2";
-            	setSongs[2] = "Song 3" + System.getProperty("line.separator") + "This is the text for song 3";
+            	// Loop through each song in the current set and add it to the array
+            	while(!currSetCursor.isAfterLast()) {
+            		String songName = currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+                	String songText = getSongText(currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_FILE)));
+                	setSongs[songCounter++] = songName + System.getProperty("line.separator") + songText;
+                	currSetCursor.moveToNext();
+            	}
             	
             	// Show the set activity
             	SetActivity song = new SetActivity();
             	Intent showSong = new Intent(v.getContext(), song.getClass());
-            	showSong.putExtra(CURRENT_SONG_KEY, 1);
+            	showSong.putExtra(CURRENT_SONG_KEY, position);
             	showSong.putExtra(SET_SONGS_KEY, setSongs);
                 startActivity(showSong);
             }
