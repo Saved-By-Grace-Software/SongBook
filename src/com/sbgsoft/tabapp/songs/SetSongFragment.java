@@ -5,24 +5,37 @@ import com.sbgsoft.tabapp.main.MainActivity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class SetSongFragment extends Fragment {
-	private MainActivity mainActivity;
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
-		//mainActivity = (MainActivity)getActivity();
-		//mainActivity.fillSongsList(getView());
     }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.set_song, container, false);
+		
+		// Get the song textview
+        TextView song = (TextView)view.findViewById(R.id.set_song_text);
+        song.setMovementMethod(new ScrollingMovementMethod());
+        
+        // Populate it with the song text
+        Bundle extras = getArguments();
+        if (extras != null) {
+            String songText = extras.getString(MainActivity.SONG_TEXT_KEY);
+            
+            if (songText != "") {
+                song.setText(songText);
+            }
+        }
+		
 		return view;
 	}
 }

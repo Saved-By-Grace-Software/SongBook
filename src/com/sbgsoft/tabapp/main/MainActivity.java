@@ -53,6 +53,8 @@ public class MainActivity extends FragmentActivity {
      *****************************************************************************/
 	public static final String SONG_NAME_KEY = "songName";
 	public static final String SONG_TEXT_KEY = "songText";
+	public static final String CURRENT_SONG_KEY = "setCurrentSong";
+	public static final String SET_SONGS_KEY = "setSongs";
 	private static int currentTab = 1;
 	
 	public Fragment currSetFragment;
@@ -195,6 +197,9 @@ public class MainActivity extends FragmentActivity {
     	mViewPager.setCurrentItem(currentTab);
     }
     
+    /**
+     * Called when the activity is resumed
+     */
     @Override
     public void onResume() {
     	super.onResume();
@@ -699,16 +704,21 @@ public class MainActivity extends FragmentActivity {
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-            	// Get the song to show
-            	currSetCursor.moveToPosition(position);
-            	String songName = currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
-            	String songText = getSongText(currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_FILE)));
+            	// Get the songs to show
+//            	currSetCursor.moveToPosition(position);
+//            	String songName = currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+//            	String songText = getSongText(currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_FILE)));
             	
-            	// Show the song activity
+            	String[] setSongs = new String[3];
+            	setSongs[0] = "Song 1" + System.getProperty("line.separator") + "This is the text for song 1";
+            	setSongs[1] = "Song 2" + System.getProperty("line.separator") + "This is the text for song 2";
+            	setSongs[2] = "Song 3" + System.getProperty("line.separator") + "This is the text for song 3";
+            	
+            	// Show the set activity
             	SetActivity song = new SetActivity();
             	Intent showSong = new Intent(v.getContext(), song.getClass());
-            	showSong.putExtra(SONG_NAME_KEY, songName);
-            	showSong.putExtra(SONG_TEXT_KEY, songText);
+            	showSong.putExtra(CURRENT_SONG_KEY, 1);
+            	showSong.putExtra(SET_SONGS_KEY, setSongs);
                 startActivity(showSong);
             }
     	});
