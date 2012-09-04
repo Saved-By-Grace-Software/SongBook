@@ -22,10 +22,10 @@ public final class R {
     }
     public static final class id {
         public static final int curr_sets_row_text=0x7f080009;
-        public static final int current_list=0x7f08001a;
-        public static final int empty_current=0x7f08001b;
-        public static final int empty_sets=0x7f08001e;
-        public static final int empty_songs=0x7f080021;
+        public static final int current_list=0x7f08001e;
+        public static final int empty_current=0x7f08001f;
+        public static final int empty_sets=0x7f080022;
+        public static final int empty_songs=0x7f080025;
         public static final int fdButtonCancel=0x7f080012;
         public static final int fdButtonCreate=0x7f080013;
         public static final int fdButtonNew=0x7f08000d;
@@ -36,34 +36,38 @@ public final class R {
         public static final int fdLinearLayoutSelect=0x7f08000c;
         public static final int fdrowimage=0x7f080015;
         public static final int fdrowtext=0x7f080016;
-        public static final int menu_sets=0x7f080023;
-        public static final int menu_sets_clear=0x7f080026;
-        public static final int menu_sets_create=0x7f080024;
-        public static final int menu_sets_find=0x7f080025;
-        public static final int menu_settings=0x7f080022;
-        public static final int menu_songs=0x7f080027;
-        public static final int menu_songs_clear=0x7f08002b;
-        public static final int menu_songs_create=0x7f080028;
-        public static final int menu_songs_find=0x7f08002a;
-        public static final int menu_songs_import=0x7f080029;
+        public static final int menu_sets=0x7f080027;
+        public static final int menu_sets_clear=0x7f08002a;
+        public static final int menu_sets_create=0x7f080028;
+        public static final int menu_sets_find=0x7f080029;
+        public static final int menu_settings=0x7f080026;
+        public static final int menu_songs=0x7f08002b;
+        public static final int menu_songs_clear=0x7f08002f;
+        public static final int menu_songs_create=0x7f08002c;
+        public static final int menu_songs_find=0x7f08002e;
+        public static final int menu_songs_import=0x7f08002d;
         public static final int pager=0x7f080000;
         public static final int path=0x7f080014;
         public static final int relativeLayout01=0x7f08000a;
         public static final int set_down_button=0x7f080004;
         public static final int set_font_text=0x7f080003;
+        public static final int set_song_down_button=0x7f08001a;
+        public static final int set_song_font_text=0x7f080019;
+        public static final int set_song_text=0x7f080017;
+        public static final int set_song_up_button=0x7f080018;
         public static final int set_text=0x7f080001;
         public static final int set_up_button=0x7f080002;
-        public static final int sets_list=0x7f08001d;
-        public static final int sets_row_text=0x7f080017;
+        public static final int sets_list=0x7f080021;
+        public static final int sets_row_text=0x7f08001b;
         public static final int song_down_button=0x7f080008;
         public static final int song_font_text=0x7f080007;
         public static final int song_text=0x7f080005;
         public static final int song_up_button=0x7f080006;
-        public static final int songs_list=0x7f080020;
-        public static final int songs_row_text=0x7f080018;
-        public static final int tabSets=0x7f08001c;
-        public static final int tabSongs=0x7f08001f;
-        public static final int tab_current=0x7f080019;
+        public static final int songs_list=0x7f080024;
+        public static final int songs_row_text=0x7f08001c;
+        public static final int tabSets=0x7f080020;
+        public static final int tabSongs=0x7f080023;
+        public static final int tab_current=0x7f08001d;
         public static final int textViewFilename=0x7f080010;
     }
     public static final class layout {
@@ -73,11 +77,12 @@ public final class R {
         public static final int current_set_row=0x7f030003;
         public static final int file_dialog_main=0x7f030004;
         public static final int file_dialog_row=0x7f030005;
-        public static final int sets_row=0x7f030006;
-        public static final int songs_row=0x7f030007;
-        public static final int tab_current_set=0x7f030008;
-        public static final int tab_sets=0x7f030009;
-        public static final int tab_songs=0x7f03000a;
+        public static final int set_song=0x7f030006;
+        public static final int sets_row=0x7f030007;
+        public static final int songs_row=0x7f030008;
+        public static final int tab_current_set=0x7f030009;
+        public static final int tab_sets=0x7f03000a;
+        public static final int tab_songs=0x7f03000b;
     }
     public static final class menu {
         public static final int activity_set=0x7f070000;
