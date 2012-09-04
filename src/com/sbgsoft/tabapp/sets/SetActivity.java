@@ -28,6 +28,9 @@ public class SetActivity extends FragmentActivity {
 	static ViewPager mViewPager;
 	private static int currentSong = 0;
 	
+	/**
+	 * Called when the activity is first created
+	 */
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);

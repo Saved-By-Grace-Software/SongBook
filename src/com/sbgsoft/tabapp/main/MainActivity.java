@@ -25,7 +25,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -197,6 +196,10 @@ public class MainActivity extends FragmentActivity {
     protected void onPause() {
     	super.onPause();
     	
+    	stopManagingCursor(songsCursor);
+        stopManagingCursor(currSetCursor);
+        stopManagingCursor(setsCursor);
+    	
     	currentTab = mViewPager.getCurrentItem();
     }
     
@@ -267,8 +270,12 @@ public class MainActivity extends FragmentActivity {
     	startManagingCursor(songsCursor);
     	
     	final CharSequence[] songNames = new CharSequence[songsCursor.getCount()];
+    	final boolean[] songsChecked = new boolean[songsCursor.getCount()];
     	int counter = 0;
+    	
+    	// Add songs to list view
     	while(songsCursor.moveToNext()) {
+    		songsChecked[counter] = false;
     		songNames[counter++] = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
     	}
     	
@@ -276,16 +283,18 @@ public class MainActivity extends FragmentActivity {
 
     	alert.setTitle("Select Songs");
     	alert.setMultiChoiceItems( songNames, null, new OnMultiChoiceClickListener() {
-    		public void onClick (DialogInterface dialog, int whichItem, boolean isChecked) {}
+    		public void onClick (DialogInterface dialog, int whichItem, boolean isChecked) {
+    			// Set item checked/unchecked
+    			songsChecked[whichItem] = isChecked;
+    		}
     	});
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-				// Set all selected items to the songs for the set
-	    		SparseBooleanArray checkedSongs = ((AlertDialog) dialog).getListView().getCheckedItemPositions();
+				// Set all selected items to the songs for the set	    		
 	    		String setSongs = "";
-	    		for (int i = 0; i < songNames.length; i++) {
-	    			if(checkedSongs.valueAt(i)) {
+	    		for (int i = 0; i < songsChecked.length; i++) {
+	    			if(songsChecked[i]) {
 	    				setSongs += songNames[i].toString() + ",";
 	    			}
 	    		}
@@ -696,7 +705,7 @@ public class MainActivity extends FragmentActivity {
     
     /*****************************************************************************
      * 
-     * Song Functions
+     * Current Set Functions
      * 
      *****************************************************************************/
     /**
