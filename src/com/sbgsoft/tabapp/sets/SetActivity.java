@@ -121,7 +121,8 @@ public class SetActivity extends FragmentActivity {
      * @param v
      */
     public void incFontSize(View v) {
-    	song.setTextSize(song.getTextSize() + 1);
+    	TextView tv = (TextView)findViewById(R.id.set_song_text);
+    	tv.setTextSize(tv.getTextSize() + 1);
     }
     
     /**
@@ -129,17 +130,9 @@ public class SetActivity extends FragmentActivity {
      * @param v
      */
     public void decFontSize(View v) {
-    	song.setTextSize(song.getTextSize() - 1);
+    	TextView tv = (TextView)findViewById(R.id.set_song_text);
+    	tv.setTextSize(tv.getTextSize() - 1);
     }
-    
-    /**
-     * Populates the text view with the song text
-     * @param songText The song text to add to the view
-     */
-    public void populateSongText(String songText) {
-    	song.setText(songText);
-    }
-    
     
     /*****************************************************************************
      * 

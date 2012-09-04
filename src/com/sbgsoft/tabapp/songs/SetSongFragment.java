@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class SetSongFragment extends Fragment {
+	private TextView song;
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -23,7 +24,7 @@ public class SetSongFragment extends Fragment {
 		View view = inflater.inflate(R.layout.set_song, container, false);
 		
 		// Get the song textview
-        TextView song = (TextView)view.findViewById(R.id.set_song_text);
+        song = (TextView)view.findViewById(R.id.set_song_text);
         song.setMovementMethod(new ScrollingMovementMethod());
         
         // Populate it with the song text
@@ -38,4 +39,5 @@ public class SetSongFragment extends Fragment {
 		
 		return view;
 	}
+
 }
