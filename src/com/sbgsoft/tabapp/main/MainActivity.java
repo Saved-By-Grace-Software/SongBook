@@ -36,6 +36,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.ericharlow.DragNDrop.DragNDropListActivity;
 import com.lamerman.FileDialog;
 import com.sbgsoft.tabapp.R;
 import com.sbgsoft.tabapp.db.DBAdapter;
@@ -244,8 +245,13 @@ public class MainActivity extends FragmentActivity {
     			setsCursor.moveToPosition(info.position);
             	setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
             	
+            	// Get the set songs
+            	String[] setSongs = { "a", "b", "c" };
+            	
             	// Edit the set
-    			Toast.makeText(getApplicationContext(), "Edit set: " + setName, Toast.LENGTH_LONG).show();
+            	Intent i = new Intent(getBaseContext(), DragNDropListActivity.class);
+            	i.putExtra(SET_SONGS_KEY, setSongs);
+            	startActivity(i);
     			break;
     	}
     	return true;
