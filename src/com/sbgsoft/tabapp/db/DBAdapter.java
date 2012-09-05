@@ -186,7 +186,8 @@ public class DBAdapter {
 	 */
 	public boolean deleteAllSets() {
 		try {
-		mDb.execSQL("DELETE from " + SETS_TABLE);
+			mDb.execSQL("DELETE from " + SETS_TABLE);
+			mDb.execSQL("UPDATE " + CURRSET_TABLE + " SET " + TBLCURRSET_SET + " = 0");
 		} catch (SQLException e) {
 			return false;
 		}
@@ -199,6 +200,7 @@ public class DBAdapter {
 	 */
 	public boolean deleteAllSongs() {
 		try {
+			deleteAllSets();
 			mDb.execSQL("DELETE from " + SONGS_TABLE);
 		} catch (SQLException e) {
 			return false;

@@ -335,7 +335,10 @@ public class MainActivity extends FragmentActivity {
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		dbAdapter.deleteAllSets();
+	    		
+	    		// Refresh the views
 	        	setsCursor.requery();
+	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
 	        	
 	        	// Set the current tab
 	        	currentTab = 2;
@@ -527,7 +530,8 @@ public class MainActivity extends FragmentActivity {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Delete All?!");
-    	alert.setMessage("Are you sure you want to delete ALL songs???");
+    	alert.setMessage("Are you sure you want to delete ALL songs???" + System.getProperty("line.separator") +
+    			"This will delete all sets as well...");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
@@ -540,7 +544,11 @@ public class MainActivity extends FragmentActivity {
 	    				deleteFile(file);
 	    			}
 	    		}
-	        	songsCursor.requery();
+	    		
+	    		// Refresh the views
+	    		((SongsTab)songsFragment).refreshSongsList();
+	        	setsCursor.requery();
+	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
 	        	
 	        	// Set the current tab
 	        	currentTab = 3;

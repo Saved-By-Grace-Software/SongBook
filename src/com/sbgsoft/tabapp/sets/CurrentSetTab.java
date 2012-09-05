@@ -25,6 +25,9 @@ public class CurrentSetTab extends Fragment {
 		return view;
 	}
 	
+	/**
+	 * Refreshes the current set list
+	 */
 	public void refreshCurrentSet() {
 		mainActivity = (MainActivity)getActivity();
 		mainActivity.fillCurrentSetList(getView());

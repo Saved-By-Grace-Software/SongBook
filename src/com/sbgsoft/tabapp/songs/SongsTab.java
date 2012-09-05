@@ -16,13 +16,20 @@ public class SongsTab extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		mainActivity = (MainActivity)getActivity();
-		mainActivity.fillSongsList(getView());
+		refreshSongsList();
     }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.tab_songs, container, false);
 		return view;
+	}
+	
+	/**
+	 * Refreshes song list
+	 */
+	public void refreshSongsList() {
+		mainActivity = (MainActivity)getActivity();
+		mainActivity.fillSongsList(getView());
 	}
 }
