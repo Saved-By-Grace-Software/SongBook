@@ -42,6 +42,7 @@ import com.sbgsoft.tabapp.db.DBAdapter;
 import com.sbgsoft.tabapp.sets.CurrentSetTab;
 import com.sbgsoft.tabapp.sets.SetActivity;
 import com.sbgsoft.tabapp.sets.SetsTab;
+import com.sbgsoft.tabapp.songs.EditSongActivity;
 import com.sbgsoft.tabapp.songs.SongActivity;
 import com.sbgsoft.tabapp.songs.SongsTab;
 
@@ -211,23 +212,39 @@ public class MainActivity extends FragmentActivity {
     	AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
     	switch (item.getItemId()) {
     		case DELETE_SONG:
+    			// Get the song selected
     			songsCursor.moveToPosition(info.position);
             	songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+            	
+            	// Delete the song
                 deleteSong(songName);
     			break;
     		case EDIT_SONG:
+    			// Get the song selected
     			songsCursor.moveToPosition(info.position);
             	songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
-    			Toast.makeText(getApplicationContext(), "Edit song: " + songName, Toast.LENGTH_LONG).show();
+            	
+            	// Create the edit activity intent
+            	Intent intent = new Intent(getBaseContext(), EditSongActivity.class);
+                intent.putExtra(SONG_NAME_KEY, songName);
+                
+                // Start the activity
+                startActivity(intent);
     			break;
     		case DELETE_SET:
+    			// Get the set selected
     			setsCursor.moveToPosition(info.position);
             	setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
+            	
+            	// Delete the set
                 deleteSet(setName);
     			break;
     		case EDIT_SET:
+    			// Get the set selected
     			setsCursor.moveToPosition(info.position);
             	setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
+            	
+            	// Edit the set
     			Toast.makeText(getApplicationContext(), "Edit set: " + setName, Toast.LENGTH_LONG).show();
     			break;
     	}
