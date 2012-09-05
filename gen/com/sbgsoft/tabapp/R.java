@@ -90,6 +90,10 @@ public final class R {
         public static final int app_name=0x7f040000;
         public static final int cancel=0x7f040017;
         public static final int cant_read_folder=0x7f040013;
+        public static final int cmenu_sets_delete=0x7f040020;
+        public static final int cmenu_sets_edit=0x7f040021;
+        public static final int cmenu_songs_delete=0x7f04001e;
+        public static final int cmenu_songs_edit=0x7f04001f;
         public static final int create=0x7f040018;
         public static final int down_arrow=0x7f040011;
         public static final int empty_current=0x7f04001a;

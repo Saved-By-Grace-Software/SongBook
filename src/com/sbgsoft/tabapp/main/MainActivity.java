@@ -25,6 +25,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,15 +56,20 @@ public class MainActivity extends FragmentActivity {
 	public static final String SONG_TEXT_KEY = "songText";
 	public static final String CURRENT_SONG_KEY = "setCurrentSong";
 	public static final String SET_SONGS_KEY = "setSongs";
+	private static final int DELETE_SONG = 1;
+	private static final int EDIT_SONG = 2;
+	private static final int DELETE_SET = 3;
+	private static final int EDIT_SET = 4;
+	
 	private static int currentTab = 1;
+	public static DBAdapter dbAdapter;
+	static ViewPager mViewPager;
 	
 	public Fragment currSetFragment;
 	public Fragment setsFragment;
 	public Fragment songsFragment;
 	
 	FragmentTransaction transaction;
-	static ViewPager mViewPager;
-	public static DBAdapter dbAdapter;
 	private Cursor setsCursor;
 	private Cursor songsCursor;
 	private Cursor currSetCursor;
@@ -173,6 +180,58 @@ public class MainActivity extends FragmentActivity {
 	        default:
 	            return super.onOptionsItemSelected(item);
         }
+    }
+    
+    /**
+     * Creates the context menu
+     */
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    	// Songs context menu
+    	if (v.getId() == R.id.songs_list) {
+    		menu.setHeaderTitle("Song Menu");
+    		menu.add(Menu.NONE, DELETE_SONG, DELETE_SONG, R.string.cmenu_songs_delete);
+    		menu.add(Menu.NONE, EDIT_SONG, EDIT_SONG, R.string.cmenu_songs_edit);
+    	}
+    	// Songs context menu
+    	else if (v.getId() == R.id.sets_list) {
+    		menu.setHeaderTitle("Sets Menu");
+    		menu.add(Menu.NONE, DELETE_SET, DELETE_SET, R.string.cmenu_sets_delete);
+    		menu.add(Menu.NONE, EDIT_SET, EDIT_SET, R.string.cmenu_sets_edit);
+    	}
+    }
+    
+    /**
+     * Responds to context menu click
+     */
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+    	String setName = "";
+    	String songName = "";
+    	AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+    	switch (item.getItemId()) {
+    		case DELETE_SONG:
+    			songsCursor.moveToPosition(info.position);
+            	songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+                deleteSong(songName);
+    			break;
+    		case EDIT_SONG:
+    			songsCursor.moveToPosition(info.position);
+            	songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+    			Toast.makeText(getApplicationContext(), "Edit song: " + songName, Toast.LENGTH_LONG).show();
+    			break;
+    		case DELETE_SET:
+    			setsCursor.moveToPosition(info.position);
+            	setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
+                deleteSet(setName);
+    			break;
+    		case EDIT_SET:
+    			setsCursor.moveToPosition(info.position);
+            	setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
+    			Toast.makeText(getApplicationContext(), "Edit set: " + setName, Toast.LENGTH_LONG).show();
+    			break;
+    	}
+    	return true;
     }
     
     /**
@@ -415,21 +474,9 @@ public class MainActivity extends FragmentActivity {
             	mViewPager.setCurrentItem(0, true);
             }
         });
-        
-        // Set the long click listener for each item
-        lv.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> a, View v, int position, long row) {
-            	// TODO: Show the long click menu
-            	            	
-            	// Delete the song
-            	setsCursor.moveToPosition(position);
-            	String setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
-                deleteSet(setName);
-            	
-                return true;
-            }
-        });
-        
+
+        // Register the context menu and set the adapter
+        registerForContextMenu(lv);
         lv.setAdapter(sets);
     }
     
@@ -636,19 +683,8 @@ public class MainActivity extends FragmentActivity {
             }
         });
         
-        // Set the long click listener for each item
-        lv.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> a, View v, int position, long row) {
-            	// TODO: Show the delete menu option
-            	            	
-            	// Delete the song
-            	songsCursor.moveToPosition(position);
-            	String songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
-                deleteSong(songName);
-            	
-                return true;
-            }
-        });
+        // Register the context menu and add the adapter
+        registerForContextMenu(lv);
         lv.setAdapter(songs);
     }
     
