@@ -58,10 +58,15 @@ public class MainActivity extends FragmentActivity {
 	public static final String SONG_TEXT_KEY = "songText";
 	public static final String CURRENT_SONG_KEY = "setCurrentSong";
 	public static final String SET_SONGS_KEY = "setSongs";
+	public static final String SET_NAME_KEY = "setName";
+	public static final String ACTIVITY_RESPONSE_TYPE = "activityResponseType";
+	public static final String REORDER_ACTIVITY = "reorderActivity";
+	public static final String FILE_ACTIVITY = "fileActivity";
 	private static final int DELETE_SONG = 1;
 	private static final int EDIT_SONG = 2;
 	private static final int DELETE_SET = 3;
 	private static final int EDIT_SET = 4;
+	private static final int REORDER_SET = 5;
 	
 	private static int currentTab = 1;
 	public static DBAdapter dbAdapter;
@@ -200,6 +205,7 @@ public class MainActivity extends FragmentActivity {
     		menu.setHeaderTitle("Sets Menu");
     		menu.add(Menu.NONE, DELETE_SET, DELETE_SET, R.string.cmenu_sets_delete);
     		menu.add(Menu.NONE, EDIT_SET, EDIT_SET, R.string.cmenu_sets_edit);
+    		menu.add(Menu.NONE, REORDER_SET, REORDER_SET, R.string.cmenu_sets_reorder);
     	}
     }
     
@@ -240,19 +246,39 @@ public class MainActivity extends FragmentActivity {
             	// Delete the set
                 deleteSet(setName);
     			break;
-    		case EDIT_SET:
+    		case REORDER_SET:
     			// Get the set selected
     			setsCursor.moveToPosition(info.position);
             	setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
             	
             	// Get the set songs
-            	String[] setSongs = { "a", "b", "c" };
+            	Cursor c = dbAdapter.getSetSongs(setName);
+            	startManagingCursor(c);
+            	String[] setSongs = new String[c.getCount()];
+            	c.moveToFirst();
+            	int songCounter = 0;
+            	
+            	// Loop through each song in the current set and add it to the array
+            	while(!c.isAfterLast()) {
+            		String song = c.getString(c.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+                	setSongs[songCounter++] = song;
+                	c.moveToNext();
+            	}
+            	
+            	stopManagingCursor(c);
             	
             	// Edit the set
             	Intent i = new Intent(getBaseContext(), DragNDropListActivity.class);
             	i.putExtra(SET_SONGS_KEY, setSongs);
-            	startActivity(i);
+            	i.putExtra(SET_NAME_KEY, setName);
+            	startActivityForResult(i, 1);
     			break;
+    		case EDIT_SET:
+    			// Get the set selected
+    			setsCursor.moveToPosition(info.position);
+            	setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
+            	
+            	break;
     	}
     	return true;
     }
@@ -303,6 +329,34 @@ public class MainActivity extends FragmentActivity {
     	super.onResume();
     	
     	mViewPager.setCurrentItem(currentTab);
+    }
+    
+    /**
+     * Get the return from the file dialog activity
+     */
+    public synchronized void onActivityResult(final int requestCode,
+        int resultCode, final Intent data) {
+
+        if (resultCode == Activity.RESULT_OK) {
+        	String activityType = data.getStringExtra(ACTIVITY_RESPONSE_TYPE);
+        	
+        	// If returning from the file activity
+        	if (activityType.equals(FILE_ACTIVITY)) {
+	            importFilePath = data.getStringExtra(FileDialog.RESULT_PATH);
+	            createSong();
+        	}
+        	
+        	// If returning from the reorder activity
+        	if (activityType.equals(REORDER_ACTIVITY)) {
+        		String[] newOrder = data.getStringArrayExtra(SET_SONGS_KEY);
+        		String setName = data.getStringExtra(SET_NAME_KEY);
+        		
+        		if(!dbAdapter.updateSet(setName, newOrder)) {
+        			Toast.makeText(getApplicationContext(), "Could not update set order!", Toast.LENGTH_LONG).show();
+        		}
+        	}
+        } 
+
     }
     
     
@@ -374,15 +428,12 @@ public class MainActivity extends FragmentActivity {
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 				// Set all selected items to the songs for the set	    		
-	    		String setSongs = "";
+	    		ArrayList<String> setSongs = new ArrayList<String>();
 	    		for (int i = 0; i < songsChecked.length; i++) {
 	    			if(songsChecked[i]) {
-	    				setSongs += songNames[i].toString() + ",";
+	    				setSongs.add(songNames[i].toString());
 	    			}
 	    		}
-	    		
-	    		// Strip the last comma from setSongs
-	    		setSongs = setSongs.replaceAll("\\,$", "");
 	    		
 	    		// Create the set
 	    		if(!dbAdapter.createSet(setName, setSongs))
@@ -757,18 +808,6 @@ public class MainActivity extends FragmentActivity {
         startActivityForResult(intent, 1);
     }
     
-    /**
-     * Get the return from the file dialog activity
-     */
-    public synchronized void onActivityResult(final int requestCode,
-        int resultCode, final Intent data) {
-
-        if (resultCode == Activity.RESULT_OK) {
-            importFilePath = data.getStringExtra(FileDialog.RESULT_PATH);
-            createSong();
-        } 
-    }
-    
     
     /*****************************************************************************
      * 
@@ -780,7 +819,7 @@ public class MainActivity extends FragmentActivity {
      * @param v The view for the list
      */
     public void fillCurrentSetList(View v) {
-    	currSetCursor = dbAdapter.getSetSongs();
+    	currSetCursor = dbAdapter.getCurrentSetSongs();
     	startManagingCursor(currSetCursor);
     	
     	String[] from = new String[] { DBAdapter.TBLSONG_NAME };

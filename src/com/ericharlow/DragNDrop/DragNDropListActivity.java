@@ -31,6 +31,7 @@ import com.sbgsoft.tabapp.main.MainActivity;
 public class DragNDropListActivity extends ListActivity {
 	//private static String[] mListContent={"Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7"};
 	private static String[] mListContent;
+	private String setName = "";
 	
     /** Called when the activity is first created. */
     @Override
@@ -43,7 +44,7 @@ public class DragNDropListActivity extends ListActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String[] songs = extras.getStringArray(MainActivity.SET_SONGS_KEY);
-
+            setName = extras.getString(MainActivity.SET_NAME_KEY);
             mListContent = songs;
         }
         
@@ -67,7 +68,17 @@ public class DragNDropListActivity extends ListActivity {
      * @param v
      */
     public void onSaveClick(View v) {
-    	// Save the set order
+    	// Get the new set order
+    	String[] newOrder = new String[getListView().getCount()];
+    	for (int i = 0; i < getListView().getCount(); i++) {
+    		newOrder[i] = (String)getListView().getItemAtPosition(i);
+    	}
+    	
+    	// Send the new order back to the main activity
+    	getIntent().putExtra(MainActivity.ACTIVITY_RESPONSE_TYPE, MainActivity.REORDER_ACTIVITY);
+    	getIntent().putExtra(MainActivity.SET_SONGS_KEY, newOrder);
+    	getIntent().putExtra(MainActivity.SET_NAME_KEY, setName);
+		setResult(RESULT_OK, getIntent());    	
     	
     	// Finish the activity
     	finish();
