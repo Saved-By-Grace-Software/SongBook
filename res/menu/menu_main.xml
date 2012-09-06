@@ -2,7 +2,7 @@
     <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:showAsAction="never" android:enabled="false"/>
     <item android:id="@+id/menu_sets" android:menuCategory="container" android:title="@string/menu_sets">
         <menu>
             <item android:id="@+id/menu_sets_create" android:title="@string/menu_sets_create"/>
