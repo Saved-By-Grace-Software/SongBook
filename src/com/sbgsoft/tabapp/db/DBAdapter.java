@@ -113,9 +113,11 @@ public class DBAdapter {
 			
 			// Add the songs to the set
 			for(String song : setSongs) {
-				mDb.execSQL( "INSERT INTO " + SETLOOKUP_TABLE + "(" + TBLSLOOKUP_SET + ", " + TBLSLOOKUP_SONG + ") " + 
-						" VALUES ((SELECT " + TBLSETS_ID + " FROM " + SETS_TABLE + " WHERE " + TBLSETS_NAME + " = '" + setName + "'), " + 
-						" (SELECT " + TBLSONG_ID + " FROM " + SONGS_TABLE + " WHERE " + TBLSONG_NAME + " = '" + song + "') );" );
+				if (song != "") {
+					mDb.execSQL( "INSERT INTO " + SETLOOKUP_TABLE + "(" + TBLSLOOKUP_SET + ", " + TBLSLOOKUP_SONG + ") " + 
+							" VALUES ((SELECT " + TBLSETS_ID + " FROM " + SETS_TABLE + " WHERE " + TBLSETS_NAME + " = '" + setName + "'), " + 
+							" (SELECT " + TBLSONG_ID + " FROM " + SONGS_TABLE + " WHERE " + TBLSONG_NAME + " = '" + song + "') );" );
+				}
 			}
 		} catch (SQLiteException e) {
 			return false;
@@ -139,9 +141,11 @@ public class DBAdapter {
 						
 			// Add the songs in the new order
 			for(String song : songs) {
-				mDb.execSQL( "INSERT INTO " + SETLOOKUP_TABLE + "(" + TBLSLOOKUP_SET + ", " + TBLSLOOKUP_SONG + ") " + 
-						" VALUES ((SELECT " + TBLSETS_ID + " FROM " + SETS_TABLE + " WHERE " + TBLSETS_NAME + " = '" + setName + "'), " + 
-						" (SELECT " + TBLSONG_ID + " FROM " + SONGS_TABLE + " WHERE " + TBLSONG_NAME + " = '" + song + "') );" );
+				if (song != "") {
+					mDb.execSQL( "INSERT INTO " + SETLOOKUP_TABLE + "(" + TBLSLOOKUP_SET + ", " + TBLSLOOKUP_SONG + ") " + 
+							" VALUES ((SELECT " + TBLSETS_ID + " FROM " + SETS_TABLE + " WHERE " + TBLSETS_NAME + " = '" + setName + "'), " + 
+							" (SELECT " + TBLSONG_ID + " FROM " + SONGS_TABLE + " WHERE " + TBLSONG_NAME + " = '" + song + "') );" );
+				}
 			}
 		} catch (SQLiteException e) {
 			return false;
@@ -231,6 +235,32 @@ public class DBAdapter {
 		return true;
 	}
 	
+	/**
+	 * Determines if the song exists in the set
+	 * @param songName The song name to check
+	 * @param setName The set to check against
+	 * @return True if it exists in the set, False if it does not exist in the set
+	 */
+	public boolean isSongInSet(String songName, String setName) {
+		try {
+			// Query for song
+			String query = "SELECT " + TBLSLOOKUP_ID + " as _id " +
+					" FROM " + SETLOOKUP_TABLE + " as L " +
+					" INNER JOIN " + SETS_TABLE + " as E ON E." + TBLSETS_ID + " = L." + TBLSLOOKUP_SET +
+					" INNER JOIN " + SONGS_TABLE + " as O ON O." + TBLSONG_ID + " = L." + TBLSLOOKUP_SONG +
+					" WHERE L." + TBLSLOOKUP_SET + "= (SELECT " + TBLSETS_ID + " FROM " + SETS_TABLE + " WHERE " + TBLSETS_NAME + " = '" + setName + "') AND " +
+					" L." + TBLSLOOKUP_SONG + "= (SELECT " + TBLSONG_ID + " FROM " + SONGS_TABLE + " WHERE " + TBLSONG_NAME + " = '" + songName + "') ";
+			Cursor c = mDb.rawQuery(query, null);
+			
+			// Check record for song
+			if(c.getCount() == 0)
+				return false;
+			else
+				return true;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
 	
 	/*****************************************************************************
     *

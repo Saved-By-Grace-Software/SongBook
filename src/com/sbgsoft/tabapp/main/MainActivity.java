@@ -278,6 +278,8 @@ public class MainActivity extends FragmentActivity {
     			setsCursor.moveToPosition(info.position);
             	setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBAdapter.TBLSETS_NAME));
             	
+            	// Show the dialog to edit songs
+            	updateSetSongs(setName);
             	break;
     	}
     	return true;
@@ -354,6 +356,9 @@ public class MainActivity extends FragmentActivity {
         		if(!dbAdapter.updateSet(setName, newOrder)) {
         			Toast.makeText(getApplicationContext(), "Could not update set order!", Toast.LENGTH_LONG).show();
         		}
+        		
+        		// Refresh the views
+	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
         	}
         } 
 
@@ -418,7 +423,7 @@ public class MainActivity extends FragmentActivity {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Select Songs");
-    	alert.setMultiChoiceItems( songNames, null, new OnMultiChoiceClickListener() {
+    	alert.setMultiChoiceItems( songNames, songsChecked, new OnMultiChoiceClickListener() {
     		public void onClick (DialogInterface dialog, int whichItem, boolean isChecked) {
     			// Set item checked/unchecked
     			songsChecked[whichItem] = isChecked;
@@ -437,6 +442,65 @@ public class MainActivity extends FragmentActivity {
 	    		
 	    		// Create the set
 	    		if(!dbAdapter.createSet(setName, setSongs))
+	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
+	    		else
+	    			setsCursor.requery();
+	    		
+	    		// Set the current tab
+	        	currentTab = 2;
+			}
+    	});
+
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Set the current tab
+	        	currentTab = 2;
+	    	}
+    	});
+
+    	alert.show();
+    }
+    
+    /**
+     * Updates the songs for the set
+     */
+    private void updateSetSongs(final String setName) {
+    	songsCursor = dbAdapter.getSongNames();
+    	startManagingCursor(songsCursor);
+    	
+    	final CharSequence[] songNames = new CharSequence[songsCursor.getCount()];
+    	final boolean[] songsChecked = new boolean[songsCursor.getCount()];
+    	int counter = 0;
+    	
+    	// Add songs to list view
+    	while(songsCursor.moveToNext()) {
+    		String songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+    		songsChecked[counter] = dbAdapter.isSongInSet(songName, setName);
+    		songNames[counter++] = songName;
+    	}
+    	
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Select Songs");
+    	alert.setMultiChoiceItems( songNames, songsChecked, new OnMultiChoiceClickListener() {
+    		public void onClick (DialogInterface dialog, int whichItem, boolean isChecked) {
+    			// Set item checked/unchecked
+    			songsChecked[whichItem] = isChecked;
+    		}
+    	});
+
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+				// Set all selected items to the songs for the set	    		
+	    		ArrayList<String> setSongs = new ArrayList<String>();
+	    		for (int i = 0; i < songsChecked.length; i++) {
+	    			if(songsChecked[i]) {
+	    				setSongs.add(songNames[i].toString());
+	    			}
+	    		}
+	    		
+	    		// Create the set
+	    		if(!dbAdapter.updateSet(setName, setSongs.toArray(new String[setSongs.size()])))
 	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
 	    		else
 	    			setsCursor.requery();
