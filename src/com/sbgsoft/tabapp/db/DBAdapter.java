@@ -42,6 +42,8 @@ public class DBAdapter {
     public static final String TBLSLOOKUP_ID = "ID";
     public static final String TBLSLOOKUP_SET = "setID";
     public static final String TBLSLOOKUP_SONG = "songID";
+    public static final String SONG_LIST_NAME = "sgName";
+    public static final String SONG_LIST_TYPE = "type";
 
     private final Context mCtx;
     
@@ -262,6 +264,7 @@ public class DBAdapter {
 		}
 	}
 	
+	
 	/*****************************************************************************
     *
     * Song Functions
@@ -276,8 +279,8 @@ public class DBAdapter {
 	public boolean createSong(String songName, String fileName) {
 		// Create a new set with the specified name
 		try {
-			mDb.execSQL( "insert into " + SONGS_TABLE + "(" + TBLSONG_NAME + ", " + TBLSONG_FILE + ") values ('" + 
-					songName + "', '" + fileName + "' );" );
+			mDb.execSQL( "insert into " + SONGS_TABLE + "(" + TBLSONG_NAME + ", " + TBLSONG_FILE + ", " + TBLSONG_GROUP + ") values ('" + 
+					songName + "', '" + fileName + "', -1 );" );
 		} catch (SQLiteException e) {
 			return false;
 		}
@@ -341,6 +344,25 @@ public class DBAdapter {
 		
 	}
 	
+	/**
+	 * Updates the song to add it to the specified group
+	 * @param songName The song to update
+	 * @param groupName The group to add the song to
+	 * @return True if success, False if failure
+	 */
+	public boolean addSongToGroup(String songName, String groupName) {
+		try {
+			if(!groupName.equals("No Group")) {
+				mDb.execSQL("UPDATE " + SONGS_TABLE + " SET " + TBLSONG_GROUP + 
+						" = (SELECT " + TBLGROUPS_ID + " FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " = '" + groupName + "') " +
+						" WHERE " + TBLSONG_NAME + " = '" + songName + "'");
+			}
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
 	
 	/*****************************************************************************
     *
@@ -356,6 +378,80 @@ public class DBAdapter {
 		try {
 			mDb.execSQL("UPDATE " + CURRSET_TABLE + " SET " + TBLCURRSET_SET + 
 					" = (SELECT " + TBLSETS_ID + " FROM " + SETS_TABLE + " WHERE " + TBLSETS_NAME + " = '" + setName + "')");
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	
+	/*****************************************************************************
+    *
+    * Groups Functions
+    * 
+    *****************************************************************************/
+	/**
+	 * Gets the list of songs/groups within the specified group
+	 * @param groupName The group to get
+	 * @return A cursor to the results list
+	 */
+	public Cursor getGroupsList(String groupName) {
+		String query = "";
+		if(groupName.equals("root")){
+			query = "SELECT " + TBLGROUPS_ID + " as _id, " + TBLGROUPS_NAME + " as " + SONG_LIST_NAME + ", " + 
+					TBLGROUPS_PARENT + ", 'group' as " + SONG_LIST_TYPE +
+					" FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_PARENT + " = -1 " +
+					" UNION SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + " as " + SONG_LIST_NAME + ", " + 
+					TBLSONG_GROUP + ", 'song' as " + SONG_LIST_TYPE +
+					" FROM " + SONGS_TABLE + " WHERE " + TBLSONG_GROUP + " = -1 " +
+					" ORDER BY " + SONG_LIST_TYPE + ", " + SONG_LIST_NAME;
+		}
+		else {
+			query = "SELECT 1 as _id, '..' as " + SONG_LIST_NAME + ", -1, 'agroup' as " + SONG_LIST_TYPE + " UNION " +
+					"SELECT " + TBLGROUPS_ID + " as _id, " + TBLGROUPS_NAME + " as " + SONG_LIST_NAME + ", " + 
+					TBLGROUPS_PARENT + ", 'group' as " + SONG_LIST_TYPE +
+					" FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_PARENT + " = " +
+					" (SELECT " + TBLGROUPS_ID + " FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " = '" + groupName + "') " +
+					" UNION SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + " as " + SONG_LIST_NAME + ", " + 
+					TBLSONG_GROUP + ", 'song' as " + SONG_LIST_TYPE +
+					" FROM " + SONGS_TABLE + " WHERE " + TBLSONG_GROUP + " = " +
+					" (SELECT " + TBLGROUPS_ID + " FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " = '" + groupName + "') " +
+					" ORDER BY " + SONG_LIST_TYPE + ", " + SONG_LIST_NAME;
+		}
+		return mDb.rawQuery(query, null);
+	}
+	
+	/**
+	 * Gets a list of the group names
+	 * @return A cursor to the query results
+	 */
+	public Cursor getGroupNames() {
+		return mDb.rawQuery("SELECT " + TBLGROUPS_ID + " as _id, " + TBLGROUPS_NAME + " FROM " + GROUPS_TABLE, null);
+	}
+	
+	/**
+	 * Creates a group with the specified name
+	 * @param groupName The name of the group
+	 * @return True if success, False if failure
+	 */
+	public boolean createGroup(String groupName) {
+		try {
+			mDb.execSQL( "INSERT INTO " + GROUPS_TABLE + "(" + TBLGROUPS_NAME + ", " + TBLGROUPS_PARENT + ") values ('" + 
+					groupName + "', -1 );" );
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Deletes the specified group
+	 * @param groupName The group to delete
+	 * @return True if success, False if failure
+	 */
+	public boolean deleteGroup(String groupName) {
+		try {
+			mDb.execSQL("DELETE from " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " = '" + groupName + "'");
 		} catch (SQLException e) {
 			return false;
 		}
@@ -409,7 +505,6 @@ public class DBAdapter {
     					TBLSLOOKUP_SET + " int, " + 
     					TBLSLOOKUP_SONG + " int ); " );
     			
-    			db.execSQL("insert into " + GROUPS_TABLE + "(" + TBLGROUPS_NAME + ", " + TBLGROUPS_PARENT + ") values ('Uncategorized', '-1' );" );
     			db.execSQL("insert into " + CURRSET_TABLE + "(" + TBLCURRSET_SET + ") values (0);" );
     			
     			db.setTransactionSuccessful(); 

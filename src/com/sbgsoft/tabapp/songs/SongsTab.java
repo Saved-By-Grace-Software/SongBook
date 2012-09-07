@@ -30,6 +30,7 @@ public class SongsTab extends Fragment {
 	 */
 	public void refreshSongsList() {
 		mainActivity = (MainActivity)getActivity();
-		mainActivity.fillSongsList(getView());
+		//mainActivity.fillSongsList(getView());
+		mainActivity.fillGroupsList(getView(), "root");
 	}
 }

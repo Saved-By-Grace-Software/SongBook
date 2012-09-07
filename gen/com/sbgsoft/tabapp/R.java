@@ -45,6 +45,7 @@ public final class R {
         public static final int menu_sets_find=0x7f08002d;
         public static final int menu_settings=0x7f08002a;
         public static final int menu_songs=0x7f08002f;
+        public static final int menu_songs_add_group=0x7f080034;
         public static final int menu_songs_clear=0x7f080033;
         public static final int menu_songs_create=0x7f080030;
         public static final int menu_songs_find=0x7f080032;
@@ -102,6 +103,7 @@ public final class R {
         public static final int app_name=0x7f040000;
         public static final int cancel=0x7f040017;
         public static final int cant_read_folder=0x7f040013;
+        public static final int cmenu_groups_delete=0x7f040027;
         public static final int cmenu_sets_delete=0x7f040020;
         public static final int cmenu_sets_edit=0x7f040021;
         public static final int cmenu_sets_reorder=0x7f040025;
@@ -122,6 +124,7 @@ public final class R {
         public static final int menu_sets_find=0x7f040006;
         public static final int menu_settings=0x7f040001;
         public static final int menu_songs=0x7f040007;
+        public static final int menu_songs_add_group=0x7f040026;
         public static final int menu_songs_clear=0x7f04000c;
         public static final int menu_songs_create=0x7f040008;
         public static final int menu_songs_find=0x7f04000a;
