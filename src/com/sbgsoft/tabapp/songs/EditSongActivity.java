@@ -13,8 +13,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -26,15 +24,7 @@ public class EditSongActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        
-        // Hide title bar
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        
-        // Hide status bar
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        
+        super.onCreate(savedInstanceState);       
         setContentView(R.layout.activity_edit_song);
         
         // Get the song name from the bundle

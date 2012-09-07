@@ -33,7 +33,8 @@
         </activity>
         <activity
             android:name=".songs.EditSongActivity"
-            android:label="@string/title_activity_edit_song" >
+            android:label="@string/title_activity_edit_song"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
         </activity>
         <activity 
             android:name="com.ericharlow.DragNDrop.DragNDropListActivity"
