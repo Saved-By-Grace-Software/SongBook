@@ -2,6 +2,8 @@ package com.sbgsoft.tabapp.db;
 
 import java.util.ArrayList;
 
+import com.sbgsoft.tabapp.songs.SongsTab;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -27,6 +29,7 @@ public class DBAdapter {
     public static final String GROUPS_TABLE = "tblGroups";
     public static final String CURRSET_TABLE = "tblCurrSet";
     public static final String SETLOOKUP_TABLE = "tblSetLookup";
+    public static final String GPLOOKUP_TABLE = "tblGroupLookup";
     public static final String TBLSONG_ID = "songID";
     public static final String TBLSONG_NAME = "songName";
     public static final String TBLSONG_FILE = "fileName";
@@ -42,6 +45,9 @@ public class DBAdapter {
     public static final String TBLSLOOKUP_ID = "ID";
     public static final String TBLSLOOKUP_SET = "setID";
     public static final String TBLSLOOKUP_SONG = "songID";
+    public static final String TBLGPLOOKUP_ID = "ID";
+    public static final String TBLGPLOOKUP_SONG = "songID";
+    public static final String TBLGPLOOKUP_GROUP = "groupID";
     public static final String SONG_LIST_NAME = "sgName";
     public static final String SONG_LIST_TYPE = "type";
 
@@ -279,8 +285,8 @@ public class DBAdapter {
 	public boolean createSong(String songName, String fileName) {
 		// Create a new set with the specified name
 		try {
-			mDb.execSQL( "insert into " + SONGS_TABLE + "(" + TBLSONG_NAME + ", " + TBLSONG_FILE + ", " + TBLSONG_GROUP + ") values ('" + 
-					songName + "', '" + fileName + "', -1 );" );
+			mDb.execSQL( "insert into " + SONGS_TABLE + "(" + TBLSONG_NAME + ", " + TBLSONG_FILE + ") values ('" + 
+					songName + "', '" + fileName + "' );" );
 		} catch (SQLiteException e) {
 			return false;
 		}
@@ -292,9 +298,22 @@ public class DBAdapter {
 	 * Gets all existing song names
 	 * @return Cursor to the query
 	 */	
-	public Cursor getSongNames() {
-		return mDb.rawQuery("SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + 
-				" FROM " + SONGS_TABLE + " ORDER BY " + TBLSONG_NAME, null);
+	public Cursor getSongNames(String groupName) {
+		String query = "";
+		
+		// Check if the group is the all songs group
+		if (groupName.equals(SongsTab.ALL_SONGS_LABEL)) {
+			query = "SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + 
+					" FROM " + SONGS_TABLE + " ORDER BY " + TBLSONG_NAME;
+		} else {
+			query = "SELECT " + SONGS_TABLE + "." + TBLSONG_ID + " as _id, " + SONGS_TABLE + "." + TBLSONG_NAME + ", " + SONGS_TABLE + "." + TBLSONG_FILE + 
+					" FROM " + SONGS_TABLE + 
+					" INNER JOIN " + GPLOOKUP_TABLE + " ON " + SONGS_TABLE + "." + TBLSONG_ID + " = " + GPLOOKUP_TABLE + "." + TBLGPLOOKUP_SONG +
+					" INNER JOIN " + GROUPS_TABLE + " ON " + GROUPS_TABLE + "." + TBLGROUPS_ID + " = " + GPLOOKUP_TABLE + "." + TBLGPLOOKUP_GROUP +
+					" WHERE " + GROUPS_TABLE + "." + TBLGROUPS_NAME + " = '" + groupName + "'" +
+					" ORDER BY " + TBLSONG_NAME;
+		}
+		return mDb.rawQuery(query, null);
 	}
 
 	/**
@@ -352,10 +371,33 @@ public class DBAdapter {
 	 */
 	public boolean addSongToGroup(String songName, String groupName) {
 		try {
-			if(!groupName.equals("No Group")) {
-				mDb.execSQL("UPDATE " + SONGS_TABLE + " SET " + TBLSONG_GROUP + 
-						" = (SELECT " + TBLGROUPS_ID + " FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " = '" + groupName + "') " +
-						" WHERE " + TBLSONG_NAME + " = '" + songName + "'");
+			if(!groupName.equals(SongsTab.ALL_SONGS_LABEL)) {
+				mDb.execSQL("INSERT INTO " + GPLOOKUP_TABLE + " (" + TBLGPLOOKUP_SONG + ", " + TBLGPLOOKUP_GROUP + ") " +
+						" VALUES ( " +
+						" (SELECT " + TBLSONG_ID + " FROM " + SONGS_TABLE + " WHERE " + TBLSONG_NAME + " = '" + songName + "'), " +
+						" (SELECT " + TBLGROUPS_ID + " FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " = '" + groupName + "'))");
+			}
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Removes the song from the specified group
+	 * @param songName The song to remove
+	 * @param groupName The group to remove the song from
+	 * @return True if success, False if failure
+	 */
+	public boolean removeSongFromGroup(String songName, String groupName) {
+		try {
+			if(!groupName.equals(SongsTab.ALL_SONGS_LABEL)) {
+				String query = "DELETE FROM " + GPLOOKUP_TABLE +
+						" WHERE " + TBLGPLOOKUP_SONG + " = " +
+						" (SELECT " + TBLSONG_ID + " FROM " + SONGS_TABLE + " WHERE " + TBLSONG_NAME + " = '" + songName + "') " +
+						" AND " + TBLGPLOOKUP_GROUP + " = " +
+						" (SELECT " + TBLGROUPS_ID + " FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " = '" + groupName + "')";
+				mDb.execSQL(query);
 			}
 		} catch (SQLException e) {
 			return false;
@@ -426,7 +468,9 @@ public class DBAdapter {
 	 * @return A cursor to the query results
 	 */
 	public Cursor getGroupNames() {
-		return mDb.rawQuery("SELECT " + TBLGROUPS_ID + " as _id, " + TBLGROUPS_NAME + " FROM " + GROUPS_TABLE, null);
+		String query = "SELECT 0 as _id, '" + SongsTab.ALL_SONGS_LABEL + "' as " + TBLGROUPS_NAME + " FROM " + GROUPS_TABLE + " UNION " +
+				" SELECT " + TBLGROUPS_ID + " as _id, " + TBLGROUPS_NAME + " FROM " + GROUPS_TABLE;
+		return mDb.rawQuery(query, null);
 	}
 	
 	/**
@@ -485,8 +529,7 @@ public class DBAdapter {
     			db.execSQL("create table " + SONGS_TABLE +
     					"(" + TBLSONG_ID + " integer PRIMARY KEY autoincrement, " + 
     					TBLSONG_NAME + " text UNIQUE, " + 
-    					TBLSONG_FILE + " text, " + 
-    					TBLSONG_GROUP + " int ); " );
+    					TBLSONG_FILE + " text); " );
     			
     			// Group table
     			db.execSQL("create table " + GROUPS_TABLE +
@@ -504,6 +547,12 @@ public class DBAdapter {
     					"(" + TBLSLOOKUP_ID + " integer PRIMARY KEY autoincrement, " + 
     					TBLSLOOKUP_SET + " int, " + 
     					TBLSLOOKUP_SONG + " int ); " );
+    			
+    			// Group lookup table
+    			db.execSQL("create table " + GPLOOKUP_TABLE +
+    					"(" + TBLGPLOOKUP_ID + " integer PRIMARY KEY autoincrement, " + 
+    					TBLGPLOOKUP_SONG + " int, " + 
+    					TBLGPLOOKUP_GROUP + " int ); " );
     			
     			db.execSQL("insert into " + CURRSET_TABLE + "(" + TBLCURRSET_SET + ") values (0);" );
     			

@@ -34,6 +34,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ericharlow.DragNDrop.DragNDropListActivity;
@@ -67,7 +68,8 @@ public class MainActivity extends FragmentActivity {
 	private static final int DELETE_SET = 3;
 	private static final int EDIT_SET = 4;
 	private static final int REORDER_SET = 5;
-	private static final int DELETE_GROUP = 6;
+	private static final int SONG_GROUPS_ADD = 6;
+	private static final int SONG_GROUPS_DEL = 7;
 	
 	private static int currentTab = 1;
 	public static DBAdapter dbAdapter;
@@ -186,8 +188,11 @@ public class MainActivity extends FragmentActivity {
 	        case R.id.menu_songs_import:
 	        	importSong();
 	        	return true;
-	        case R.id.menu_songs_add_group:
+	        case R.id.menu_groups_create:
 	        	createGroup();
+	        	return true;
+	        case R.id.menu_groups_delete:
+	        	deleteGroup("");
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -204,7 +209,8 @@ public class MainActivity extends FragmentActivity {
     		menu.setHeaderTitle("Song Menu");
     		menu.add(Menu.NONE, DELETE_SONG, DELETE_SONG, R.string.cmenu_songs_delete);
     		menu.add(Menu.NONE, EDIT_SONG, EDIT_SONG, R.string.cmenu_songs_edit);
-    		menu.add(Menu.NONE, DELETE_GROUP, DELETE_GROUP, R.string.cmenu_groups_delete);
+    		menu.add(Menu.NONE, SONG_GROUPS_ADD, SONG_GROUPS_ADD, R.string.cmenu_songs_group_add);
+    		menu.add(Menu.NONE, SONG_GROUPS_DEL, SONG_GROUPS_DEL, R.string.cmenu_songs_group_delete);
     	}
     	// Sets context menu
     	else if (v.getId() == R.id.sets_list) {
@@ -220,57 +226,56 @@ public class MainActivity extends FragmentActivity {
      */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-    	String setName = "", songName = "", type = "", groupName = "";
+    	String setName = "", songName = "", groupName = "";
     	AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
     	switch (item.getItemId()) {
     		case DELETE_SONG:
-    			// Get the type
-    			groupsCursor.moveToPosition(info.position);
-    			type = groupsCursor.getString(groupsCursor.getColumnIndexOrThrow(DBAdapter.SONG_LIST_TYPE));
-    			
-    			if (type.equals("song")) {
-    				// Delete the song
-    				songName = groupsCursor.getString(groupsCursor.getColumnIndexOrThrow(DBAdapter.SONG_LIST_NAME));
-                    deleteSong(songName);
-    			}
-    			else
-    				Toast.makeText(getBaseContext(), "Sorry, that is not a song.", Toast.LENGTH_LONG).show();
+    			// Get the song name and delete it
+    			songsCursor.moveToPosition(info.position);
+				songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+                deleteSong(songName);
             	
-    			break;
+                return true;
     		case EDIT_SONG:
-    			// Get the type
-    			groupsCursor.moveToPosition(info.position);
-    			type = groupsCursor.getString(groupsCursor.getColumnIndexOrThrow(DBAdapter.SONG_LIST_TYPE));
-    			
-    			if (type.equals("song")) {
-    				// Get the song name
-    				songName = groupsCursor.getString(groupsCursor.getColumnIndexOrThrow(DBAdapter.SONG_LIST_NAME));
+    			// Get the song name
+    			songsCursor.moveToPosition(info.position);
+    			songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
                     
-    				// Create the edit activity intent
-                	Intent intent = new Intent(getBaseContext(), EditSongActivity.class);
-                    intent.putExtra(SONG_NAME_KEY, songName);
-                    
-                    // Start the activity
-                    startActivity(intent);
-    			}
-    			else
-    				Toast.makeText(getBaseContext(), "Sorry, that is not a song.", Toast.LENGTH_LONG).show();
+				// Create the edit activity intent
+            	Intent intent = new Intent(getBaseContext(), EditSongActivity.class);
+                intent.putExtra(SONG_NAME_KEY, songName);
+                
+                // Start the activity
+                startActivity(intent);
             	
-    			break;
-    		case DELETE_GROUP:
-    			// Get the type
-    			groupsCursor.moveToPosition(info.position);
-    			type = groupsCursor.getString(groupsCursor.getColumnIndexOrThrow(DBAdapter.SONG_LIST_TYPE));
+                return true;
+    		case SONG_GROUPS_ADD:
+    			// Get the song name
+    			songsCursor.moveToPosition(info.position);
+    			songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
     			
-    			if (type.equals("group")) {
-    				// Delete the group
-    				groupName = groupsCursor.getString(groupsCursor.getColumnIndexOrThrow(DBAdapter.SONG_LIST_NAME));
-                    deleteGroup(groupName);
-    			}
+    			// Edit the songs groups
+    			addSongToGroup(songName);
+    			
+    			return true;
+    		case SONG_GROUPS_DEL:
+    			// Get the song name
+    			songsCursor.moveToPosition(info.position);
+    			songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+    			
+    			// Get the current group
+    			Spinner s = (Spinner)findViewById(R.id.song_group_spinner);
+    			int position = s.getSelectedItemPosition();
+    			groupsCursor.moveToPosition(position);
+    			groupName = groupsCursor.getString(groupsCursor.getColumnIndexOrThrow(DBAdapter.TBLGROUPS_NAME));
+    			
+    			// Remove the song from the group
+    			if (!groupName.equals(SongsTab.ALL_SONGS_LABEL))
+    				removeSongFromGroup(songName, groupName);
     			else
-    				Toast.makeText(getBaseContext(), "Sorry, that is not a group.", Toast.LENGTH_LONG).show();
+    				Toast.makeText(getBaseContext(), "Cannot remove song from " + SongsTab.ALL_SONGS_LABEL + " group", Toast.LENGTH_LONG).show();
     			
-    			break;
+    			return true;
     		case DELETE_SET:
     			// Get the set selected
     			setsCursor.moveToPosition(info.position);
@@ -278,7 +283,7 @@ public class MainActivity extends FragmentActivity {
             	
             	// Delete the set
                 deleteSet(setName);
-    			break;
+                return true;
     		case REORDER_SET:
     			// Get the set selected
     			setsCursor.moveToPosition(info.position);
@@ -305,7 +310,7 @@ public class MainActivity extends FragmentActivity {
             	i.putExtra(SET_SONGS_KEY, setSongs);
             	i.putExtra(SET_NAME_KEY, setName);
             	startActivityForResult(i, 1);
-    			break;
+            	return true;
     		case EDIT_SET:
     			// Get the set selected
     			setsCursor.moveToPosition(info.position);
@@ -313,9 +318,9 @@ public class MainActivity extends FragmentActivity {
             	
             	// Show the dialog to edit songs
             	updateSetSongs(setName);
-            	break;
+            	return true;
     	}
-    	return true;
+    	return false;
     }
     
     /**
@@ -440,7 +445,7 @@ public class MainActivity extends FragmentActivity {
      * Selects the songs for the set
      */
     private void selectSetSongs(final String setName) {
-    	songsCursor = dbAdapter.getSongNames();
+    	songsCursor = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
     	startManagingCursor(songsCursor);
     	
     	final CharSequence[] songNames = new CharSequence[songsCursor.getCount()];
@@ -498,7 +503,7 @@ public class MainActivity extends FragmentActivity {
      * Updates the songs for the set
      */
     private void updateSetSongs(final String setName) {
-    	songsCursor = dbAdapter.getSongNames();
+    	songsCursor = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
     	startManagingCursor(songsCursor);
     	
     	final CharSequence[] songNames = new CharSequence[songsCursor.getCount()];
@@ -749,9 +754,8 @@ public class MainActivity extends FragmentActivity {
     	Cursor c = dbAdapter.getGroupNames();
     	startManagingCursor(c);
     	
-    	final CharSequence[] groupNames = new CharSequence[c.getCount() + 1];
-    	int counter = 1;
-    	groupNames[0] = "No Group";
+    	final CharSequence[] groupNames = new CharSequence[c.getCount()];
+    	int counter = 0;
     	
     	// Add groups to list view
     	while(c.moveToNext()) {
@@ -769,9 +773,42 @@ public class MainActivity extends FragmentActivity {
 				dbAdapter.addSongToGroup(songName, groupNames[which].toString());
 				
 				// Refresh song list
-    			groupsCursor.requery();
+    			//groupsCursor.requery();
+				((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
 			}
 		});
+
+    	alert.show();
+    }
+    
+    private void removeSongFromGroup(final String songName, final String groupName) {
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Remove Song From Group?!");
+    	alert.setMessage("Are you sure you want to remove '" + songName + "' from '" + groupName + "'???");
+
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Remove song from the group
+	    		dbAdapter.removeSongFromGroup(songName, groupName);
+	    		
+	    		// Refresh the views
+	    		((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
+	    		groupsCursor.requery();
+	        	setsCursor.requery();
+	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
+	        	
+	        	// Set the current tab
+	        	currentTab = 3;
+			}
+    	});
+
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Set the current tab
+	        	currentTab = 3;
+	    	}
+    	});
 
     	alert.show();
     }
@@ -799,7 +836,7 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		
 	    		// Refresh the views
-	    		//((SongsTab)songsFragment).refreshSongsList();
+	    		((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
 	    		groupsCursor.requery();
 	        	setsCursor.requery();
 	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
@@ -840,9 +877,11 @@ public class MainActivity extends FragmentActivity {
 		    		dbAdapter.deleteSong(songName);
 	    		}
 	    		
-	    		// Refresh song list
-	        	//songsCursor.requery();
+	    		// Refresh the views
+	    		((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
 	    		groupsCursor.requery();
+	        	setsCursor.requery();
+	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
 	        	
 	        	// Set the current tab
 	        	currentTab = 3;
@@ -862,9 +901,10 @@ public class MainActivity extends FragmentActivity {
     /**
      * Fills the songs list
      * @param v The view for the list
+     * @param groupName The name of the group to populate
      */
-    public void fillSongsList(View v) {
-    	songsCursor = dbAdapter.getSongNames();
+    public void fillSongsList(View v, String groupName) {
+    	songsCursor = dbAdapter.getSongNames(groupName);
     	startManagingCursor(songsCursor);
     	
     	String[] from = new String[] { DBAdapter.TBLSONG_NAME };
@@ -1003,63 +1043,49 @@ public class MainActivity extends FragmentActivity {
     
     /*****************************************************************************
      * 
-     * Song Functions
+     * Group Functions
      * 
      *****************************************************************************/
     /**
-     * Fills the song / group list
+     * Fills the group list
      * @param v
-     * @param groupName The group to display
      */
-    public void fillGroupsList(final View view, String groupName) {
-    	groupsCursor = dbAdapter.getGroupsList(groupName);
+    public void fillGroupsList(final View view) {
+    	//groupsCursor = dbAdapter.getGroupsList(groupName);
+    	groupsCursor = dbAdapter.getGroupNames();
     	startManagingCursor(groupsCursor);
     	
-    	String[] from = new String[] { DBAdapter.SONG_LIST_NAME };
-        int[] to = new int[] { R.id.songs_row_text };
-        
-        SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.songs_row, groupsCursor, from, to);
-        ListView lv = ((ListView)view.findViewById(R.id.songs_list));
-        lv.setEmptyView(findViewById(R.id.empty_songs));
-        
-        // Set the on click listener for each item
-        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-            	// Get the type of the selected item
+    	String[] from = new String[] { DBAdapter.TBLGROUPS_NAME };
+        int[] to = new int[] { android.R.id.text1 };
+      
+        SimpleCursorAdapter songs = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, groupsCursor, from, to);
+        songs.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+    	Spinner groupSpinner = (Spinner) findViewById(R.id.song_group_spinner);
+    	
+    	
+    	// Set the on click listener for each item
+    	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+            	// Get the selected item and populate the songs list
             	groupsCursor.moveToPosition(position);
-            	String type = groupsCursor.getString(groupsCursor.getColumnIndexOrThrow(DBAdapter.SONG_LIST_TYPE));
+            	String groupName = groupsCursor.getString(groupsCursor.getColumnIndexOrThrow(DBAdapter.TBLGROUPS_NAME));
+            	fillSongsList(view, groupName);
             	
-            	// Song clicked
-            	if (type.equals("song")) {
-            		// Get the song to show
-                	String songName = groupsCursor.getString(groupsCursor.getColumnIndexOrThrow(DBAdapter.SONG_LIST_NAME));
-                	String songText = getSongText(dbAdapter.getSongFile(songName));
-                	
-                	// Show the song activity
-                	SongActivity song = new SongActivity();
-                	Intent showSong = new Intent(v.getContext(), song.getClass());
-                	showSong.putExtra(SONG_NAME_KEY, songName);
-                	showSong.putExtra(SONG_TEXT_KEY, songText);
-                    startActivity(showSong);
-            	}
-            	
-            	// Group clicked
-            	if (type.equals("group")) {
-            		// Get the group to show and update the list
-                	String groupName = groupsCursor.getString(groupsCursor.getColumnIndexOrThrow(DBAdapter.SONG_LIST_NAME));
-                	fillGroupsList(view, groupName);
-            	}
-            	
-            	// Root clicked
-            	if (type.equals("agroup")) {
-            		fillGroupsList(view, "root");
-            	}
+            	// Refresh the views
+            	songsCursor.requery();
+	    		groupsCursor.requery();
+	        	setsCursor.requery();
+	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
+            }
+            
+            public void onNothingSelected(AdapterView<?> arg0) {
+            	// Nothing was clicked so ignore it
             }
         });
-        
-        // Register the context menu and add the adapter
-        registerForContextMenu(lv);
-        lv.setAdapter(songs);
+
+    	
+    	
+    	groupSpinner.setAdapter(songs);
     }
     
     /**
