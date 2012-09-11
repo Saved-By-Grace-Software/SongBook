@@ -950,6 +950,7 @@ public class MainActivity extends FragmentActivity {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
 
+            // Read each line of the file
             while (line != null) {
                 sb.append(line);
                 sb.append(System.getProperty("line.separator"));
@@ -976,7 +977,7 @@ public class MainActivity extends FragmentActivity {
         intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
         
         // Set the file filter to text files
-        intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "txt" });
+        intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "txt", "pro", "chordpro", "chopro" });
         
         // Start the activity
         startActivityForResult(intent, 1);
@@ -1027,16 +1028,7 @@ public class MainActivity extends FragmentActivity {
                 startActivity(showSong);
             }
     	});
-        
-        // Set the long click listener for each item
-        lv.setOnItemLongClickListener(new ListView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> a, View v, int position, long row) {
-            	// TODO: Show the long click menu
-            	            	            	
-                return true;
-            }
-        });
-        
+      
         lv.setAdapter(current);
     }
     
