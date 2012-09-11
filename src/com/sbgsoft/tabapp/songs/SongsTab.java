@@ -10,13 +10,15 @@ import com.sbgsoft.tabapp.R;
 import com.sbgsoft.tabapp.main.MainActivity;
 
 public class SongsTab extends Fragment {
+	public static final String ALL_SONGS_LABEL = "All Songs";
+	
 	private MainActivity mainActivity;
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		refreshSongsList();
+		refreshSongsList(ALL_SONGS_LABEL);
     }
 
 	@Override
@@ -28,8 +30,9 @@ public class SongsTab extends Fragment {
 	/**
 	 * Refreshes song list
 	 */
-	public void refreshSongsList() {
+	public void refreshSongsList(String groupName) {
 		mainActivity = (MainActivity)getActivity();
-		mainActivity.fillSongsList(getView());
+		mainActivity.fillSongsList(getView(), groupName);
+		mainActivity.fillGroupsList(getView());
 	}
 }
