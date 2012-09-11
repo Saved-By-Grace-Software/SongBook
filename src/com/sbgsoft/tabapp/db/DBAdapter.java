@@ -48,8 +48,6 @@ public class DBAdapter {
     public static final String TBLGPLOOKUP_ID = "ID";
     public static final String TBLGPLOOKUP_SONG = "songID";
     public static final String TBLGPLOOKUP_GROUP = "groupID";
-    public static final String SONG_LIST_NAME = "sgName";
-    public static final String SONG_LIST_TYPE = "type";
 
     private final Context mCtx;
     
@@ -431,38 +429,7 @@ public class DBAdapter {
     *
     * Groups Functions
     * 
-    *****************************************************************************/
-	/**
-	 * Gets the list of songs/groups within the specified group
-	 * @param groupName The group to get
-	 * @return A cursor to the results list
-	 */
-	public Cursor getGroupsList(String groupName) {
-		String query = "";
-		if(groupName.equals("root")){
-			query = "SELECT " + TBLGROUPS_ID + " as _id, " + TBLGROUPS_NAME + " as " + SONG_LIST_NAME + ", " + 
-					TBLGROUPS_PARENT + ", 'group' as " + SONG_LIST_TYPE +
-					" FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_PARENT + " = -1 " +
-					" UNION SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + " as " + SONG_LIST_NAME + ", " + 
-					TBLSONG_GROUP + ", 'song' as " + SONG_LIST_TYPE +
-					" FROM " + SONGS_TABLE + " WHERE " + TBLSONG_GROUP + " = -1 " +
-					" ORDER BY " + SONG_LIST_TYPE + ", " + SONG_LIST_NAME;
-		}
-		else {
-			query = "SELECT 1 as _id, '..' as " + SONG_LIST_NAME + ", -1, 'agroup' as " + SONG_LIST_TYPE + " UNION " +
-					"SELECT " + TBLGROUPS_ID + " as _id, " + TBLGROUPS_NAME + " as " + SONG_LIST_NAME + ", " + 
-					TBLGROUPS_PARENT + ", 'group' as " + SONG_LIST_TYPE +
-					" FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_PARENT + " = " +
-					" (SELECT " + TBLGROUPS_ID + " FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " = '" + groupName + "') " +
-					" UNION SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + " as " + SONG_LIST_NAME + ", " + 
-					TBLSONG_GROUP + ", 'song' as " + SONG_LIST_TYPE +
-					" FROM " + SONGS_TABLE + " WHERE " + TBLSONG_GROUP + " = " +
-					" (SELECT " + TBLGROUPS_ID + " FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " = '" + groupName + "') " +
-					" ORDER BY " + SONG_LIST_TYPE + ", " + SONG_LIST_NAME;
-		}
-		return mDb.rawQuery(query, null);
-	}
-	
+    *****************************************************************************/	
 	/**
 	 * Gets a list of the group names
 	 * @return A cursor to the query results
