@@ -942,6 +942,8 @@ public class MainActivity extends FragmentActivity {
      */
     private String getSongText(String fileName) {
     	String songText = "";
+    	String chordLine = "";
+    	String lyricLine = "";
     	
         try {
         	FileInputStream fis = openFileInput(fileName);
@@ -952,10 +954,96 @@ public class MainActivity extends FragmentActivity {
 
             // Read each line of the file
             while (line != null) {
-                sb.append(line);
-                sb.append(System.getProperty("line.separator"));
+            	boolean inChord = false;
+            	int skipCounter = 0;
+            	String delimiter = "";
+            	
+            	// Check to see if this line is a delimiter
+            	if (line.startsWith("{")) {
+            		int i = line.indexOf(":");
+            		delimiter = line.substring(1, i);
+            		
+            		// For comments just add the line with no formatting
+            		if (delimiter.equals("comment")) {
+            			sb.append(line.substring(i + 1, line.length() - 1) + "<br/>");
+            		}
+            		
+            		// For intro add the line with chord formatting but all on the same line
+            		if (delimiter.equals("intro")) {
+            			for (char c : line.substring(i + 1, line.length() - 1).toCharArray()) {
+            				if (c == '[') {
+            					lyricLine += "<b><font color=\"#006B9F\">";
+            					continue;
+            				}
+            				if (c == ']') {
+            					lyricLine += "</font></b>";
+            					continue;
+            				}
+            				lyricLine += c;
+            			}
+            			
+            			if (!lyricLine.isEmpty()) {
+    		                sb.append(lyricLine);
+    		                sb.append("<br/>");
+    	            	}
+            		}
+            		
+            		// For title just add the line bolded
+            		if (delimiter.equals("title")) {
+            			sb.append("<b>" + line.substring(i + 1, line.length() - 1) + "</b><br/>");
+            		}
+            		
+            	} else {
+	            	// Step through each character in the line
+	            	for (char c : line.toCharArray()) {
+	            		// If the character is an open bracket set inChord true and continue
+	            		if (c == '[') {
+	            			chordLine += "<b><font color=\"#006B9F\">";
+	            			inChord = true;
+	            			continue;
+	            		}
+	            		
+	            		// If the character is a closed bracket set inChord false and continue
+	            		if (c == ']') {
+	            			chordLine += "</font></b>";
+	            			inChord = false;
+	            			continue;
+	            		}
+	            		
+	            		// If in a chord, add the chord to the chord line
+	            		if (inChord) {
+	            			chordLine += c;
+	            			skipCounter++;
+	            		} else {
+	            			if (skipCounter > 0)
+	            				skipCounter--;
+	            			else
+	            				chordLine += "&nbsp;";
+	            			lyricLine += c;
+	            		}
+	            	}
+	            	
+	            	// Add the chord and lyric lines to the overall string builder
+	            	if (!chordLine.isEmpty()) {
+		                sb.append(chordLine);
+		                sb.append("<br/>");
+	            	}
+	            	if (!lyricLine.isEmpty()) {
+		                sb.append(lyricLine);
+		                sb.append("<br/>");
+	            	}
+	            	if (chordLine.isEmpty() && lyricLine.isEmpty())
+	            		sb.append("<br/>");
+            	}
+                
+                // Clear the chord and lyric lines
+                chordLine = "";
+                lyricLine = "";
+                
+                // Read the next line
                 line = br.readLine();
             }
+            
             songText = sb.toString();
             br.close();
         } catch (Exception e) {
