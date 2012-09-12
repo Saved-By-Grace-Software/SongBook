@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class SetSongFragment extends Fragment {
-	private TextView song;
+	public TextView song;
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -39,6 +39,20 @@ public class SetSongFragment extends Fragment {
         }
 		
 		return view;
+	}
+	
+	/**
+	 * Increases the size of the text in the text view
+	 */
+	public void incTextSize() {
+		song.setTextSize(song.getTextSize() + 1);
+	}
+	
+	/**
+	 * Decreases the size of the text in the text view
+	 */
+	public void decTextSize() {
+		song.setTextSize(song.getTextSize() - 1);
 	}
 
 }

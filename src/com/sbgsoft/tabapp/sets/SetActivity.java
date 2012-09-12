@@ -26,6 +26,7 @@ public class SetActivity extends FragmentActivity {
 	TextView song;
 	FragmentTransaction transaction;
 	static ViewPager mViewPager;
+	static PagerAdapter mPagerAdapter;
 	private static int currentSong = 0;
 	
 	/**
@@ -42,7 +43,7 @@ public class SetActivity extends FragmentActivity {
         setContentView(R.layout.activity_set);
         
         // Create page adapter
-        PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
         
         // Get songs and add them to the page adapter
         Bundle extras = getIntent().getExtras();
@@ -74,7 +75,9 @@ public class SetActivity extends FragmentActivity {
 		mViewPager.setOnPageChangeListener(
 	            new ViewPager.SimpleOnPageChangeListener() {
 	                @Override
-	                public void onPageSelected(int position) {}
+	                public void onPageSelected(int position) {
+	                	currentSong = position;
+	                }
 	            });
         
         // Keep the screen on
@@ -124,8 +127,11 @@ public class SetActivity extends FragmentActivity {
      * @param v
      */
     public void incFontSize(View v) {
-    	TextView tv = (TextView)findViewById(R.id.set_song_text);
-    	tv.setTextSize(tv.getTextSize() + 1);
+    	// Get the current fragment
+    	Fragment f = mPagerAdapter.mFragments.get(currentSong);
+    	
+    	// Increase the font size for the fragment
+    	((SetSongFragment)f).incTextSize();
     }
     
     /**
@@ -133,8 +139,12 @@ public class SetActivity extends FragmentActivity {
      * @param v
      */
     public void decFontSize(View v) {
-    	TextView tv = (TextView)findViewById(R.id.set_song_text);
-    	tv.setTextSize(tv.getTextSize() - 1);
+    	// Get the current fragment
+    	//Fragment f = getSupportFragmentManager().findFragmentById(R.id.set_pager);
+    	Fragment f = mPagerAdapter.mFragments.get(currentSong);
+    	
+    	// Increase the font size for the fragment
+    	((SetSongFragment)f).decTextSize();
     }
     
     /*****************************************************************************
