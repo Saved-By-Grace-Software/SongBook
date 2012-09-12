@@ -955,88 +955,125 @@ public class MainActivity extends FragmentActivity {
             // Read each line of the file
             while (line != null) {
             	boolean inChord = false;
-            	int skipCounter = 0;
-            	String delimiter = "";
+            	boolean inDelimiter = false;
+            	int skipCounter = 0, charCounter = 0, commentLoc = 0;
+            	String delimiter = "";    
             	
-            	// Check to see if this line is a delimiter
-            	if (line.startsWith("{")) {
-            		int i = line.indexOf(":");
-            		delimiter = line.substring(1, i);
-            		
-            		// For comments just add the line with no formatting
-            		if (delimiter.equals("comment")) {
-            			sb.append(line.substring(i + 1, line.length() - 1) + "<br/>");
-            		}
-            		
-            		// For intro add the line with chord formatting but all on the same line
-            		if (delimiter.equals("intro")) {
-            			for (char c : line.substring(i + 1, line.length() - 1).toCharArray()) {
-            				if (c == '[') {
-            					lyricLine += "<b><font color=\"#006B9F\">";
-            					continue;
-            				}
-            				if (c == ']') {
-            					lyricLine += "</font></b>";
-            					continue;
-            				}
-            				lyricLine += c;
-            			}
-            			
-            			if (!lyricLine.isEmpty()) {
-    		                sb.append(lyricLine);
-    		                sb.append("<br/>");
-    	            	}
-            		}
-            		
-            		// For title just add the line bolded
-            		if (delimiter.equals("title")) {
-            			sb.append("<b>" + line.substring(i + 1, line.length() - 1) + "</b><br/>");
-            		}
-            		
-            	} else {
-	            	// Step through each character in the line
-	            	for (char c : line.toCharArray()) {
-	            		// If the character is an open bracket set inChord true and continue
-	            		if (c == '[') {
-	            			chordLine += "<b><font color=\"#006B9F\">";
-	            			inChord = true;
-	            			continue;
-	            		}
-	            		
-	            		// If the character is a closed bracket set inChord false and continue
-	            		if (c == ']') {
-	            			chordLine += "</font></b>";
-	            			inChord = false;
-	            			continue;
-	            		}
-	            		
-	            		// If in a chord, add the chord to the chord line
-	            		if (inChord) {
-	            			chordLine += c;
-	            			skipCounter++;
-	            		} else {
-	            			if (skipCounter > 0)
-	            				skipCounter--;
-	            			else
-	            				chordLine += "&nbsp;";
-	            			lyricLine += c;
-	            		}
-	            	}
-	            	
-	            	// Add the chord and lyric lines to the overall string builder
-	            	if (!chordLine.isEmpty()) {
-		                sb.append(chordLine);
-		                sb.append("<br/>");
-	            	}
-	            	if (!lyricLine.isEmpty()) {
+            	// For intro add the line with chord formatting but all on the same line
+        		if (line.startsWith("{intro:")) {
+        			for (char c : line.substring(7, line.length() - 1).toCharArray()) {
+        				if (c == '[') {
+        					lyricLine += "<b><font color=\"#006B9F\">";
+        					continue;
+        				}
+        				if (c == ']') {
+        					lyricLine += "</font></b>";
+        					continue;
+        				}
+        				lyricLine += c;
+        			}
+        			
+        			if (!lyricLine.isEmpty()) {
 		                sb.append(lyricLine);
 		                sb.append("<br/>");
 	            	}
-	            	if (chordLine.isEmpty() && lyricLine.isEmpty())
-	            		sb.append("<br/>");
-            	}
-                
-                // Clear the chord and lyric lines
+        		} else {
+        			// Step through each character in the line
+                	for (char c : line.toCharArray()) {
+                		// Increment the character counter
+                		charCounter++;
+                		
+                		// If the character is an open bracket set inChord true and continue
+                		if (c == '[') {
+                			chordLine += "<b><font color=\"#006B9F\">";
+                			inChord = true;
+                			continue;
+                		}
+                		
+                		// If the character is a closed bracket set inChord false and continue
+                		if (c == ']') {
+                			chordLine += "</font></b>";
+                			inChord = false;
+                			continue;
+                		}
+                		
+                		// If the character is an open { set inComment true and continue
+                		if (c == '{') {
+                			inDelimiter = true;
+                			
+                			// Set the comment type
+                			commentLoc = line.indexOf(":", charCounter);
+                			delimiter = line.substring(charCounter, commentLoc);
+                			
+                			// For title add bold
+                    		if (delimiter.equals("title")) {
+                    			lyricLine += "<b>";
+                    		}
+                			
+                			continue;
+                		}
+                		
+                		// If the character is a closed } set inComment false and continue
+                		if (c == '}') {
+                			inDelimiter = false;
+                			
+                			// For title end bold
+                    		if (delimiter.equals("title")) {
+                    			lyricLine += "</b>";
+                    		}
+                    		
+                			delimiter = "";
+                			commentLoc = 0;
+                			continue;
+                		}
+                		
+                		// If in a comment
+                		if (inDelimiter) {
+                			// A chord comment type
+                			if (delimiter.equals("cc")) {
+                				if (charCounter > commentLoc + 1) {
+                					chordLine += c;
+                					skipCounter++;
+                				}
+                			}
+                			
+                			// For comments just add the line with no formatting
+                    		if (delimiter.equals("comment") || delimiter.equals("title")) {
+                    			//sb.append(line.substring(i + 1, line.length() - 1) + "<br/>");
+                    			if (charCounter > commentLoc + 1)
+                    				lyricLine += c;
+                    		}
+                    	
+                    		continue;
+                		}
+                		
+                		// If in a chord, add the chord to the chord line
+                		if (inChord) {
+                			chordLine += c;
+                			skipCounter++;
+                		} else {
+                			if (skipCounter > 0)
+                				skipCounter--;
+                			else
+                				chordLine += "&nbsp;";
+                			lyricLine += c;
+                		}
+                	}
+    	            	
+                	// Add the chord and lyric lines to the overall string builder
+                	if (!chordLine.isEmpty()) {
+    	                sb.append(chordLine);
+    	                sb.append("<br/>");
+                	}
+                	if (!lyricLine.isEmpty()) {
+    	                sb.append(lyricLine);
+    	                sb.append("<br/>");
+                	}
+                	if (chordLine.isEmpty() && lyricLine.isEmpty())
+                		sb.append("<br/>");
+        		}
+        		
+        		// Clear the chord and lyric lines
                 chordLine = "";
                 lyricLine = "";
                 

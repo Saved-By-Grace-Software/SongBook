@@ -4,6 +4,7 @@ TabApp Bugs, Improvements & New Features
 Bugs:
   - Increasing font in set only increases one of the songs
   - When doing work on songs (editing, deleting, etc.) the group defaults back to 'All Songs'
+  - When editing song, text wraps at end of screen.  Text should continue beyond screen with horizontal scroll
   
 Improvements:
   - 2 line display for songs, title and subtitle
@@ -19,7 +20,8 @@ Improvements:
 
 New Features:
   - Chord library
-  - Change key of song
+  - Change key of song (transpose)
+    - Display song key in title
   - Auto-scroll
   - Metronome
   - Groups for sets
