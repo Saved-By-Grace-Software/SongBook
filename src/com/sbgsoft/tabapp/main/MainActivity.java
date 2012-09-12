@@ -984,14 +984,14 @@ public class MainActivity extends FragmentActivity {
                 		charCounter++;
                 		
                 		// If the character is an open bracket set inChord true and continue
-                		if (c == '[') {
+                		if (c == '[' && !delimiter.equals("lc")) {
                 			chordLine += "<b><font color=\"#006B9F\">";
                 			inChord = true;
                 			continue;
                 		}
                 		
                 		// If the character is a closed bracket set inChord false and continue
-                		if (c == ']') {
+                		if (c == ']' && !delimiter.equals("lc")) {
                 			chordLine += "</font></b>";
                 			inChord = false;
                 			continue;
@@ -1044,6 +1044,18 @@ public class MainActivity extends FragmentActivity {
                 				if (charCounter > commentLoc + 1) {
                 					chordLine += c;
                 					skipCounter++;
+                				}
+                			}
+                			
+                			// A lyric chord type
+                			if (delimiter.equals("lc")) {
+                				if (charCounter > commentLoc + 1) {
+                					if (c == '[') 
+                						lyricLine += "<b><font color=\"#006B9F\">";
+                					else if (c == ']')
+                						lyricLine += "</font></b>";
+                					else
+                						lyricLine += c;
                 				}
                 			}
                 			
