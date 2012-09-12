@@ -1104,7 +1104,7 @@ public class MainActivity extends FragmentActivity {
             	while(!currSetCursor.isAfterLast()) {
             		String songName = currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
                 	String songText = getSongText(currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_FILE)));
-                	setSongs[songCounter++] = songName + System.getProperty("line.separator") + songText;
+                	setSongs[songCounter++] = "<h2><i>" + songName + "</i></h2>" + songText;
                 	currSetCursor.moveToNext();
             	}
             	

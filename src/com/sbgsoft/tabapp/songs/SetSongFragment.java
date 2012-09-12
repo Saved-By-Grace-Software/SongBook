@@ -5,6 +5,7 @@ import com.sbgsoft.tabapp.main.MainActivity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,7 @@ public class SetSongFragment extends Fragment {
             String songText = extras.getString(MainActivity.SONG_TEXT_KEY);
             
             if (songText != "") {
-                song.setText(songText);
+                song.setText(Html.fromHtml(songText));
             }
         }
 		
