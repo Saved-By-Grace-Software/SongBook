@@ -1009,6 +1009,11 @@ public class MainActivity extends FragmentActivity {
                     		if (delimiter.equals("title")) {
                     			lyricLine += "<b>";
                     		}
+                    		
+                    		// For author add italics
+                    		if (delimiter.equals("author")) {
+                    			lyricLine += "<i>";
+                    		}
                 			
                 			continue;
                 		}
@@ -1020,6 +1025,11 @@ public class MainActivity extends FragmentActivity {
                 			// For title end bold
                     		if (delimiter.equals("title")) {
                     			lyricLine += "</b>";
+                    		}
+                    		
+                    		// For author end italics
+                    		if (delimiter.equals("author")) {
+                    			lyricLine += "</i>";
                     		}
                     		
                 			delimiter = "";
@@ -1038,7 +1048,7 @@ public class MainActivity extends FragmentActivity {
                 			}
                 			
                 			// For comments just add the line with no formatting
-                    		if (delimiter.equals("comment") || delimiter.equals("title")) {
+                    		if (delimiter.equals("comment") || delimiter.equals("title") || delimiter.equals("author")) {
                     			//sb.append(line.substring(i + 1, line.length() - 1) + "<br/>");
                     			if (charCounter > commentLoc + 1)
                     				lyricLine += c;
@@ -1141,7 +1151,7 @@ public class MainActivity extends FragmentActivity {
             	while(!currSetCursor.isAfterLast()) {
             		String songName = currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
                 	String songText = getSongText(currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_FILE)));
-                	setSongs[songCounter++] = "<h2><i>" + songName + "</i></h2>" + songText;
+                	setSongs[songCounter++] = "<h2>" + songName + "</h2>" + songText;
                 	currSetCursor.moveToNext();
             	}
             	
