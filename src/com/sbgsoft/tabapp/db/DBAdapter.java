@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DBAdapter {
+	
 	/*****************************************************************************
     *
     * Class Variables
@@ -435,8 +436,7 @@ public class DBAdapter {
 	 * @return A cursor to the query results
 	 */
 	public Cursor getGroupNames() {
-		String query = "SELECT 0 as _id, '" + SongsTab.ALL_SONGS_LABEL + "' as " + TBLGROUPS_NAME + " FROM " + GROUPS_TABLE + " UNION " +
-				" SELECT " + TBLGROUPS_ID + " as _id, " + TBLGROUPS_NAME + " FROM " + GROUPS_TABLE;
+		String query = "SELECT " + TBLGROUPS_ID + " as _id, " + TBLGROUPS_NAME + " FROM " + GROUPS_TABLE;
 		return mDb.rawQuery(query, null);
 	}
 	
@@ -462,7 +462,23 @@ public class DBAdapter {
 	 */
 	public boolean deleteGroup(String groupName) {
 		try {
-			mDb.execSQL("DELETE from " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " = '" + groupName + "'");
+			mDb.execSQL("DELETE FROM " + GPLOOKUP_TABLE + " WHERE " + TBLGPLOOKUP_GROUP + 
+					" = (SELECT " + TBLGROUPS_ID + " FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " = '" + groupName + "')");
+			mDb.execSQL("DELETE FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " = '" + groupName + "'");
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Deletes all groups
+	 * @return True if success, False if failure
+	 */
+	public boolean deleteAllGroups() {
+		try {
+			mDb.execSQL("DELETE FROM " + GPLOOKUP_TABLE);
+			mDb.execSQL("DELETE FROM " + GROUPS_TABLE + " WHERE " + TBLGROUPS_NAME + " != '" + SongsTab.ALL_SONGS_LABEL + "'");
 		} catch (SQLException e) {
 			return false;
 		}
@@ -522,6 +538,7 @@ public class DBAdapter {
     					TBLGPLOOKUP_GROUP + " int ); " );
     			
     			db.execSQL("insert into " + CURRSET_TABLE + "(" + TBLCURRSET_SET + ") values (0);" );
+    			db.execSQL("INSERT INTO " + GROUPS_TABLE + "(" + TBLGROUPS_NAME + ", " + TBLGROUPS_PARENT + ") VALUES ('" + SongsTab.ALL_SONGS_LABEL + "', -1)");
     			
     			db.setTransactionSuccessful(); 
     		}catch(SQLiteException e) {

@@ -192,7 +192,10 @@ public class MainActivity extends FragmentActivity {
 	        	createGroup();
 	        	return true;
 	        case R.id.menu_groups_delete:
-	        	deleteGroup("");
+	        	deleteGroup();
+	        	return true;
+	        case R.id.menu_groups_delete_all:
+	        	deleteAllGroups();
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -751,6 +754,7 @@ public class MainActivity extends FragmentActivity {
      * @param songName The song to add
      */
     private void addSongToGroup(final String songName) {
+    	// Get the list of group names
     	Cursor c = dbAdapter.getGroupNames();
     	startManagingCursor(c);
     	
@@ -764,6 +768,7 @@ public class MainActivity extends FragmentActivity {
     	
     	stopManagingCursor(c);
     	
+    	// Create the dialog to choose which group to add the song to
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Add Song to Group");
@@ -781,6 +786,11 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
     
+    /**
+     * Removes the song from the specified group
+     * @param songName The song to remove
+     * @param groupName The group to remove the song from
+     */
     private void removeSongFromGroup(final String songName, final String groupName) {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -1201,7 +1211,6 @@ public class MainActivity extends FragmentActivity {
         songs.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
     	Spinner groupSpinner = (Spinner) findViewById(R.id.song_group_spinner);
     	
-    	
     	// Set the on click listener for each item
     	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
@@ -1221,8 +1230,6 @@ public class MainActivity extends FragmentActivity {
             	// Nothing was clicked so ignore it
             }
         });
-
-    	
     	
     	groupSpinner.setAdapter(songs);
     }
@@ -1268,16 +1275,59 @@ public class MainActivity extends FragmentActivity {
      * Deletes the specified group
      * @param groupName The group to delete
      */
-    private void deleteGroup(final String groupName) {
+    private void deleteGroup() {
+    	// Get the list of group names
+    	Cursor c = dbAdapter.getGroupNames();
+    	startManagingCursor(c);
+    	
+    	final CharSequence[] groupNames = new CharSequence[c.getCount() - 1];
+    	int counter = 0;
+    	
+    	// Don't show the all songs group
+    	c.moveToFirst();
+    	
+    	// Add groups to list view
+    	while(c.moveToNext()) {
+    		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBAdapter.TBLGROUPS_NAME));
+    	}
+    	
+    	stopManagingCursor(c);
+    	
+    	// Create the dialog to choose which group to delete
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Choose Group to Delete");
+    	alert.setItems(groupNames, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				String groupName = groupNames[which].toString();
+				if (groupName.equals(SongsTab.ALL_SONGS_LABEL))
+					Toast.makeText(getBaseContext(), "Cannot Delete the '" + SongsTab.ALL_SONGS_LABEL + "' group!", Toast.LENGTH_LONG).show();
+				else {
+					dbAdapter.deleteGroup(groupName);
+					
+					// Refresh group and song lists
+	    			groupsCursor.requery();
+					((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
+				}
+			}
+		});
+
+    	alert.show();
+    }
+    
+    /**
+     * Deletes all groups
+     */
+    private void deleteAllGroups() {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-    	alert.setTitle("Delete Group?!");
-    	alert.setMessage("Are you sure you want to delete '" + groupName + "'???");
+    	alert.setTitle("Delete All Groups?!");
+    	alert.setMessage("Are you sure you want to delete ALL groups???");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 				// Delete song from database
-		    	dbAdapter.deleteGroup(groupName);
+		    	dbAdapter.deleteAllGroups();
 	    		
 	    		// Refresh song list
 	    		groupsCursor.requery();

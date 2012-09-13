@@ -42,6 +42,7 @@ public final class R {
         public static final int menu_groups=0x7f080035;
         public static final int menu_groups_create=0x7f080036;
         public static final int menu_groups_delete=0x7f080037;
+        public static final int menu_groups_delete_all=0x7f080038;
         public static final int menu_sets=0x7f08002c;
         public static final int menu_sets_clear=0x7f08002f;
         public static final int menu_sets_create=0x7f08002d;
@@ -111,8 +112,8 @@ public final class R {
         public static final int cmenu_sets_reorder=0x7f040026;
         public static final int cmenu_songs_delete=0x7f04001f;
         public static final int cmenu_songs_edit=0x7f040020;
-        public static final int cmenu_songs_group_add=0x7f040029;
-        public static final int cmenu_songs_group_delete=0x7f04002a;
+        public static final int cmenu_songs_group_add=0x7f04002a;
+        public static final int cmenu_songs_group_delete=0x7f04002b;
         public static final int create=0x7f040019;
         public static final int down_arrow=0x7f040012;
         public static final int empty_current=0x7f04001b;
@@ -124,7 +125,8 @@ public final class R {
         public static final int location=0x7f040013;
         public static final int menu_groups=0x7f04000d;
         public static final int menu_groups_create=0x7f040027;
-        public static final int menu_groups_delete=0x7f040028;
+        public static final int menu_groups_delete=0x7f040029;
+        public static final int menu_groups_delete_all=0x7f040028;
         public static final int menu_sets=0x7f040004;
         public static final int menu_sets_clear=0x7f04000b;
         public static final int menu_sets_create=0x7f040005;

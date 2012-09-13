@@ -21,7 +21,8 @@
     <item android:id="@+id/menu_groups" android:title="@string/menu_groups">
         <menu>
             <item android:id="@+id/menu_groups_create" android:title="@string/menu_groups_create" android:enabled="true"/>
-            <item android:id="@+id/menu_groups_delete" android:title="@string/menu_groups_delete" android:enabled="false"/>
+            <item android:id="@+id/menu_groups_delete" android:title="@string/menu_groups_delete" android:enabled="true"/>
+            <item android:id="@+id/menu_groups_delete_all" android:enabled="true" android:title="@string/menu_groups_delete_all"/>
         </menu>
     </item>
 </menu>
