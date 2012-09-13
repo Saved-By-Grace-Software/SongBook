@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
@@ -102,6 +103,9 @@ public class EditSongActivity extends Activity {
         }  
     	
     	EditText et = (EditText)findViewById(R.id.song_edit_text);
+    	et.setMovementMethod(new ScrollingMovementMethod());
+    	et.setHorizontallyScrolling(true);
+    	et.setHorizontalScrollBarEnabled(true);
     	et.setText(songText);
     }
 }
