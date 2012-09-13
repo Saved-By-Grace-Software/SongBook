@@ -314,6 +314,17 @@ public class DBAdapter {
 		}
 		return mDb.rawQuery(query, null);
 	}
+	
+	/**
+	 * Gets all existing song names
+	 * @return Cursor to the query
+	 */	
+	public Cursor getSongNamesAlph(String letter) {
+		String query = "SELECT " + TBLSONG_ID + " as _id, " + TBLSONG_NAME + ", " + TBLSONG_FILE + 
+				" FROM " + SONGS_TABLE + " WHERE " + TBLSONG_NAME + " LIKE '" + letter + "%' " +
+				" ORDER BY " + TBLSONG_NAME;
+		return mDb.rawQuery(query, null);
+	}
 
 	/**
 	 * Deletes all songs in the database
@@ -436,6 +447,9 @@ public class DBAdapter {
 	 * @return A cursor to the query results
 	 */
 	public Cursor getGroupNames() {
+//		String query = "SELECT " + TBLGROUPS_ID + " as _id, " + TBLGROUPS_NAME + " FROM " + GROUPS_TABLE + " UNION " +
+//				" SELECT 2 as _id, 'Alphabetical...' as " + TBLGROUPS_NAME + " FROM " + GROUPS_TABLE +
+//				" ORDER BY _id, " + TBLGROUPS_NAME;
 		String query = "SELECT " + TBLGROUPS_ID + " as _id, " + TBLGROUPS_NAME + " FROM " + GROUPS_TABLE;
 		return mDb.rawQuery(query, null);
 	}

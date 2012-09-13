@@ -947,6 +947,44 @@ public class MainActivity extends FragmentActivity {
     }
     
     /**
+     * Fills the songs list based on alphabet
+     * @param v The view for the list
+     * @param letter The letter to show
+     */
+    public void fillSongsListAlph(View v, String letter) {
+    	songsCursor = dbAdapter.getSongNamesAlph(letter);
+    	startManagingCursor(songsCursor);
+    	
+    	String[] from = new String[] { DBAdapter.TBLSONG_NAME };
+        int[] to = new int[] { R.id.songs_row_text };
+        
+        SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.songs_row, songsCursor, from, to);
+        ListView lv = ((ListView)findViewById(R.id.songs_list));
+        lv.setEmptyView(findViewById(R.id.empty_songs));
+        
+        // Set the on click listener for each item
+        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
+            	// Get the song to show
+            	songsCursor.moveToPosition(position);
+            	String songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_NAME));
+            	String songText = getSongText(songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBAdapter.TBLSONG_FILE)));
+            	
+            	// Show the song activity
+            	SongActivity song = new SongActivity();
+            	Intent showSong = new Intent(v.getContext(), song.getClass());
+            	showSong.putExtra(SONG_NAME_KEY, songName);
+            	showSong.putExtra(SONG_TEXT_KEY, songText);
+                startActivity(showSong);
+            }
+        });
+        
+        // Register the context menu and add the adapter
+        registerForContextMenu(lv);
+        lv.setAdapter(songs);
+    }
+    
+    /**
      * Gets the text from the specified file
      * @return The song text
      */
@@ -1140,6 +1178,32 @@ public class MainActivity extends FragmentActivity {
         startActivityForResult(intent, 1);
     }
     
+    /**
+     * Shows dialog to choose which letter to sort songs by
+     * @param v The view
+     */
+    public void onAlphabetClick(final View v) {
+    	final CharSequence[] alphabet = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", 
+				"L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+		
+		// Create the dialog to choose which letter to show
+		AlertDialog.Builder alert = new AlertDialog.Builder(v.getContext());
+
+    	alert.setTitle("Choose Letter");
+    	alert.setItems(alphabet, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				fillSongsListAlph(v, alphabet[which].toString());
+				
+				// Refresh the views
+            	songsCursor.requery();
+	    		groupsCursor.requery();
+	        	setsCursor.requery();
+	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
+			}
+		});
+
+    	alert.show();
+    }
     
     /*****************************************************************************
      * 
@@ -1217,6 +1281,7 @@ public class MainActivity extends FragmentActivity {
             	// Get the selected item and populate the songs list
             	groupsCursor.moveToPosition(position);
             	String groupName = groupsCursor.getString(groupsCursor.getColumnIndexOrThrow(DBAdapter.TBLGROUPS_NAME));
+
             	fillSongsList(view, groupName);
             	
             	// Refresh the views
