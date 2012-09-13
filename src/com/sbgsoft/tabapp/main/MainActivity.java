@@ -1299,15 +1299,30 @@ public class MainActivity extends FragmentActivity {
     	alert.setTitle("Choose Group to Delete");
     	alert.setItems(groupNames, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				String groupName = groupNames[which].toString();
+				final String groupName = groupNames[which].toString();
 				if (groupName.equals(SongsTab.ALL_SONGS_LABEL))
 					Toast.makeText(getBaseContext(), "Cannot Delete the '" + SongsTab.ALL_SONGS_LABEL + "' group!", Toast.LENGTH_LONG).show();
 				else {
-					dbAdapter.deleteGroup(groupName);
+					// Confirm they want to delete the group
+					AlertDialog.Builder confirm = new AlertDialog.Builder(MainActivity.this);
+					confirm.setTitle("Delete Group?!");
+					confirm.setMessage("Are you sure you want to delete '" + groupName + "'?");
 					
-					// Refresh group and song lists
-	    			groupsCursor.requery();
-					((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
+					confirm.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+				    	public void onClick(DialogInterface dialog, int whichButton) {
+				    		dbAdapter.deleteGroup(groupName);
+							
+							// Refresh group and song lists
+			    			groupsCursor.requery();
+							((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
+						}
+			    	});
+
+					confirm.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				    	public void onClick(DialogInterface dialog, int whichButton) { 	}
+			    	});
+
+					confirm.show();
 				}
 			}
 		});
