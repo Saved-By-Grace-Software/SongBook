@@ -5,9 +5,6 @@ Bugs:
   - When doing work on songs (editing, deleting, etc.) the group defaults back to 'All Songs'
   
 Improvements:
-  - 2 line display for songs, title and subtitle
-    - Sub-title can include author and key song is in
-	- Add key and author to database for songs
   - 2 line display for sets, title and subtitle
 	- Sub-title has date for set
 	- Allow sorting by date
@@ -17,10 +14,11 @@ Improvements:
     - New Icon
 	- Icons for songs in list?
 	- Icons for menu options
+	- Different colors
+	- Different background
   - Change app name (Virtual Song Book, GigApp, ...)
   - Improve menu look and feel
   
-
 New Features:
   - Chord library
   - Change key of song (transpose)
@@ -33,6 +31,8 @@ New Features:
   - Backup songs, database and files
     - Export songs
   - Edit songs in "html" view rather than chordpro format
-  - Add 'alphabetical...' viewing of songs
-	- Possibly a button or in the spinner
-	- Possibly a fast scroll like in contacts
+  - Add ability to edit Song and Set names, attributes
+  - Find songs by...
+	- Alphabetical, possibly a fast scroll like in contacts
+	- Key
+	- Author

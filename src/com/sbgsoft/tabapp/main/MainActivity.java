@@ -27,9 +27,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -516,7 +518,7 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		
 	    		// Create the set
-	    		if(!dbAdapter.createSet(setName, setSongs, "12/12/12"))
+	    		if(!dbAdapter.createSet(setName, setSongs, "12/12/12 "))
 	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
 	    		else
 	    			setsCursor.requery();
@@ -741,8 +743,8 @@ public class MainActivity extends FragmentActivity {
     	setsCursor = dbAdapter.getSetNames(groupName);
     	startManagingCursor(setsCursor);
     	
-    	String[] from = new String[] { DBStrings.TBLSETS_NAME };
-        int[] to = new int[] { R.id.sets_row_text };
+    	String[] from = new String[] { DBStrings.TBLSETS_NAME, DBStrings.TBLSETS_DATE };
+        int[] to = new int[] { R.id.sets_row_text, R.id.sets_row_date };
         
         SimpleCursorAdapter sets = new SimpleCursorAdapter(this, R.layout.sets_row, setsCursor, from, to);
         ListView lv = ((ListView)v.findViewById(R.id.sets_list));
@@ -780,19 +782,34 @@ public class MainActivity extends FragmentActivity {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Add Song");
-    	alert.setMessage("Please enter the name of the song (must be unique)");
+    	//alert.setMessage("Please enter the name of the song (must be unique)");
 
-    	// Set an EditText view to get user input 
-    	final EditText input = new EditText(this);
-    	alert.setView(input);
+    	// Set the dialog view to gather user input
+    	LayoutInflater inflater = getLayoutInflater();
+    	View dialoglayout = inflater.inflate(R.layout.add_song, (ViewGroup) findViewById(R.id.add_song_root));
+    	alert.setView(dialoglayout);
+    	final EditText songNameET = (EditText)dialoglayout.findViewById(R.id.add_song_name);
+    	final EditText authorET = (EditText)dialoglayout.findViewById(R.id.add_song_author);
+    	final EditText keyET = (EditText)dialoglayout.findViewById(R.id.add_song_key);
 
+    	// Set the OK button
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		String value = input.getText().toString();
-	    		if (value.length() > 0) {
-	    			//String songFile = getFilesDir() + "/" + value + ".txt";
-	    			String songFile = value + ".txt";
-		    		if(!dbAdapter.createSong(value, songFile, "SamIAm", "XX"))
+	    		// Get the user inputs
+	    		String songName = songNameET.getText().toString();
+	    		String author = authorET.getText().toString();
+	    		String key = keyET.getText().toString();
+	    		
+	    		// Check for empty author or key
+	    		if(author.equals(""))
+	    			author = MainStrings.UNKNOWN;
+	    		if(key.equals(""))
+	    			key = MainStrings.UNKNOWN;
+	    		
+	    		// Create the song
+	    		if (songName.length() > 0) {
+	    			String songFile = songName + ".txt";
+		    		if(!dbAdapter.createSong(songName, songFile, author + " ", key + " "))
 		    			Toast.makeText(getApplicationContext(), "Failed to create song!", Toast.LENGTH_LONG).show();
 		    		else
 		    		{
@@ -813,7 +830,7 @@ public class MainActivity extends FragmentActivity {
 			    				out.close(); 
 		    				} catch (Exception e) {
 		    					// Delete the song since the file could not be imported
-		    					dbAdapter.deleteSong(value);
+		    					dbAdapter.deleteSong(songName);
 		    					
 		    					// Alert that the song failed
 		    					Toast.makeText(getApplicationContext(), "Could not import file, Song deleted.", Toast.LENGTH_LONG).show();
@@ -828,7 +845,7 @@ public class MainActivity extends FragmentActivity {
 		    					out.close();
 		    				} catch (IOException e) {
 		    					// Delete the song since the file could not be imported
-		    					dbAdapter.deleteSong(value);
+		    					dbAdapter.deleteSong(songName);
 		    					
 		    					// Alert that the song failed
 		    					Toast.makeText(getApplicationContext(), "Could not create song file, Song deleted.", Toast.LENGTH_LONG).show();
@@ -840,7 +857,7 @@ public class MainActivity extends FragmentActivity {
 			        	currentTab = 3;
 			        	
 			        	// Add the song to a group
-			        	addSongToGroup(value);
+			        	addSongToGroup(songName);
 		    		}
 	    		}
 	    		else
@@ -1025,8 +1042,8 @@ public class MainActivity extends FragmentActivity {
     	songsCursor = dbAdapter.getSongNames(groupName);
     	startManagingCursor(songsCursor);
     	
-    	String[] from = new String[] { DBStrings.TBLSONG_NAME };
-        int[] to = new int[] { R.id.songs_row_text };
+    	String[] from = new String[] { DBStrings.TBLSONG_NAME, DBStrings.TBLSONG_AUTHOR, DBStrings.TBLSONG_KEY };
+        int[] to = new int[] { R.id.songs_row_text, R.id.songs_row_author, R.id.songs_row_key };
         
         SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.songs_row, songsCursor, from, to);
         ListView lv = ((ListView)v.findViewById(R.id.songs_list));

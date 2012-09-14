@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView android:id="@+id/sets_row_text"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:includeFontPadding="true"
-    android:textSize="40dp" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="top"> 
+
+	<TextView android:id="@+id/sets_row_text"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:includeFontPadding="true"
+	    android:textSize="40dp" />
+	
+	<LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:padding="7dp" >
+	    
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" 
+	        android:text="@string/sets_row_date_text"
+	        android:includeFontPadding="true"
+	        android:textSize="20dp"
+		    android:textStyle="bold|italic"
+		    android:paddingLeft="20dp"
+		    android:paddingRight="7dp" />
+
+		<TextView android:id="@+id/sets_row_date"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:includeFontPadding="true"
+		    android:textSize="20dp"
+		    android:textStyle="italic"
+		    android:paddingRight="7dp" />
+	
+	</LinearLayout>
+	
+</LinearLayout>
