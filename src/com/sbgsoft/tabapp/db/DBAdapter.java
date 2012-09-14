@@ -481,7 +481,10 @@ public class DBAdapter {
 	 * @return A cursor to the query results
 	 */
 	public Cursor getSongGroupNames() {
-		String query = "SELECT " + DBStrings.TBLSONGGROUPS_ID + " as _id, " + DBStrings.TBLSONGGROUPS_NAME + " FROM " + DBStrings.SONGGROUPS_TABLE;
+		String query = "SELECT " + DBStrings.TBLSONGGROUPS_ID + " as _id, " + DBStrings.TBLSONGGROUPS_NAME + 
+				"  (SELECT COUNT(*) FROM " + DBStrings.SONGGPLOOKUP_TABLE + " WHERE " + DBStrings.TBLSONGGPLOOKUP_GROUP + " = " + 
+				DBStrings.TBLSONGGROUPS_ID + ") as " + DBStrings.NUMSONGS_IN_GROUP +
+				" FROM " + DBStrings.SONGGROUPS_TABLE;
 		return mDb.rawQuery(query, null);
 	}
 	

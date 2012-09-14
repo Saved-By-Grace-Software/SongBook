@@ -27,6 +27,7 @@ public class DBStrings {
 	public static final String TBLSONGGROUPS_ID = "songGroupID";
 	public static final String TBLSONGGROUPS_NAME = "songGroupName";
 	public static final String TBLSONGGROUPS_PARENT = "parentID";
+	public static final String NUMSONGS_IN_GROUP = "numSongs";
 	
 	// Current Set Table
 	public static final String CURRSET_TABLE = "tblCurrSet";

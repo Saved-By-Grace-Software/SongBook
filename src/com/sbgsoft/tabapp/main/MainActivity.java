@@ -1334,10 +1334,10 @@ public class MainActivity extends FragmentActivity {
     	songGroupsCursor = dbAdapter.getSongGroupNames();
     	startManagingCursor(songGroupsCursor);
     	
-    	String[] from = new String[] { DBStrings.TBLSONGGROUPS_NAME };
-        int[] to = new int[] { android.R.id.text1 };
+    	String[] from = new String[] { DBStrings.TBLSONGGROUPS_NAME, DBStrings.NUMSONGS_IN_GROUP };
+        int[] to = new int[] { R.id.song_group_row_name, R.id.song_group_row_number };
       
-        SimpleCursorAdapter songs = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, songGroupsCursor, from, to);
+        SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.song_group_row, songGroupsCursor, from, to);
         songs.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
     	Spinner groupSpinner = (Spinner) findViewById(R.id.song_group_spinner);
     	
