@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -451,20 +452,26 @@ public class MainActivity extends FragmentActivity {
      * Prompts the user for a name and creates the set
      */
     private void createSet() {
+    	// Create the alert dialog
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
     	alert.setTitle("Create Set");
-    	alert.setMessage("Please enter the name of the set (must be unique)");
+    	
+    	// Set the dialog view to gather user input
+    	LayoutInflater inflater = getLayoutInflater();
+    	View dialoglayout = inflater.inflate(R.layout.add_set, (ViewGroup) findViewById(R.id.add_set_root));
+    	alert.setView(dialoglayout);
+    	final EditText setNameET = (EditText)dialoglayout.findViewById(R.id.add_set_name);
+    	final DatePicker setDateDP = (DatePicker)dialoglayout.findViewById(R.id.add_set_date);
 
-    	// Set an EditText view to get user input 
-    	final EditText input = new EditText(this);
-    	alert.setView(input);
-
+    	// Set the OK button
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		String value = input.getText().toString();
-	    		if (value.length() > 0) {
-		    			selectSetSongs(value);
+	    		// Get the date and set name
+	    		String setName = setNameET.getText().toString();
+	    		String setDate = (setDateDP.getMonth() + 1) + "/" + setDateDP.getDayOfMonth() + "/" + setDateDP.getYear();
+	    		
+	    		if (setName.length() > 0) {
+		    			selectSetSongs(setName, setDate);
 	    		}
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
@@ -483,7 +490,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * Selects the songs for the set
      */
-    private void selectSetSongs(final String setName) {
+    private void selectSetSongs(final String setName, final String setDate) {
     	songsCursor = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
     	startManagingCursor(songsCursor);
     	
@@ -518,7 +525,7 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		
 	    		// Create the set
-	    		if(!dbAdapter.createSet(setName, setSongs, "12/12/12 "))
+	    		if(!dbAdapter.createSet(setName, setSongs, setDate + " "))
 	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
 	    		else
 	    			setsCursor.requery();
@@ -780,9 +787,7 @@ public class MainActivity extends FragmentActivity {
      */
     private void createSong() {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
     	alert.setTitle("Add Song");
-    	//alert.setMessage("Please enter the name of the song (must be unique)");
 
     	// Set the dialog view to gather user input
     	LayoutInflater inflater = getLayoutInflater();
