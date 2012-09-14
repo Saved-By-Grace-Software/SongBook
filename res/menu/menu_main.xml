@@ -2,7 +2,7 @@
     <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings"
         android:orderInCategory="100"
-        android:showAsAction="never" android:enabled="false"/>
+        android:showAsAction="never" android:enabled="false" android:visible="false"/>
     <item android:id="@+id/menu_sets" android:menuCategory="container" android:title="@string/menu_sets">
         <menu>
             <item android:id="@+id/menu_sets_create" android:title="@string/menu_sets_create"/>
@@ -18,11 +18,18 @@
             <item android:id="@+id/menu_songs_clear" android:title="@string/menu_songs_clear" android:enabled="true"/>
         </menu>
     </item>
-    <item android:id="@+id/menu_groups" android:title="@string/menu_groups">
+    <item android:id="@+id/menu_song_groups" android:title="@string/menu_song_groups">
         <menu>
-            <item android:id="@+id/menu_groups_create" android:title="@string/menu_groups_create" android:enabled="true"/>
-            <item android:id="@+id/menu_groups_delete" android:title="@string/menu_groups_delete" android:enabled="true"/>
-            <item android:id="@+id/menu_groups_delete_all" android:enabled="true" android:title="@string/menu_groups_delete_all"/>
+            <item android:id="@+id/menu_song_groups_create" android:title="@string/menu_song_groups_create" android:enabled="true"/>
+            <item android:id="@+id/menu_song_groups_delete" android:title="@string/menu_song_groups_delete" android:enabled="true"/>
+            <item android:id="@+id/menu_song_groups_delete_all" android:enabled="true" android:title="@string/menu_song_groups_delete_all"/>
+        </menu>
+    </item>
+    <item android:id="@+id/menu_set_groups" android:title="@string/menu_set_groups">
+        <menu>
+            <item android:id="@+id/menu_set_groups_create" android:title="@string/menu_set_groups_create"/>
+            <item android:id="@+id/menu_set_groups_delete" android:title="@string/menu_set_groups_delete"/>
+            <item android:id="@+id/menu_set_groups_delete_all" android:title="@string/menu_set_groups_delete_all"/>
         </menu>
     </item>
 </menu>

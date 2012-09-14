@@ -10,14 +10,15 @@ import com.sbgsoft.tabapp.R;
 import com.sbgsoft.tabapp.main.MainActivity;
 
 public class SetsTab extends Fragment {
+	public static final String ALL_SETS_LABEL = "All Sets";
+	
 	private MainActivity mainActivity;
 	
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		mainActivity = (MainActivity)getActivity();
-		mainActivity.fillSetsList(getView());
+		refreshSongsList(ALL_SETS_LABEL);
     }
 
 	@Override
@@ -26,4 +27,12 @@ public class SetsTab extends Fragment {
 		return view;
 	}
 	
+	/**
+	 * Refreshes set list
+	 */
+	public void refreshSongsList(String groupName) {
+		mainActivity = (MainActivity)getActivity();
+		mainActivity.fillSetsList(getView(), groupName);
+		mainActivity.fillSetGroupsList(getView());
+	}
 }
