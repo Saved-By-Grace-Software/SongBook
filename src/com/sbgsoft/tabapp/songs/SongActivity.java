@@ -11,7 +11,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.sbgsoft.tabapp.R;
-import com.sbgsoft.tabapp.main.MainActivity;
+import com.sbgsoft.tabapp.main.MainStrings;
 
 public class SongActivity extends Activity {
 	TextView song;
@@ -33,8 +33,8 @@ public class SongActivity extends Activity {
         // Populate it with the song text
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String songName = extras.getString(MainActivity.SONG_NAME_KEY);
-            String songText = extras.getString(MainActivity.SONG_TEXT_KEY);
+            String songName = extras.getString(MainStrings.SONG_NAME_KEY);
+            String songText = extras.getString(MainStrings.SONG_TEXT_KEY);
             song.setText(Html.fromHtml("<h2>" + songName + "</h2>" + songText));
         }
         

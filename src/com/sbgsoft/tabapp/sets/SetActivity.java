@@ -19,7 +19,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.sbgsoft.tabapp.R;
-import com.sbgsoft.tabapp.main.MainActivity;
+import com.sbgsoft.tabapp.main.MainStrings;
 import com.sbgsoft.tabapp.songs.SetSongFragment;
 
 public class SetActivity extends FragmentActivity {
@@ -48,15 +48,15 @@ public class SetActivity extends FragmentActivity {
         // Get songs and add them to the page adapter
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            int currSong = extras.getInt(MainActivity.CURRENT_SONG_KEY);
-            String[] songs = extras.getStringArray(MainActivity.SET_SONGS_KEY);
+            int currSong = extras.getInt(MainStrings.CURRENT_SONG_KEY);
+            String[] songs = extras.getStringArray(MainStrings.SET_SONGS_KEY);
 
             // Loop through each song and create a new fragment for it
             for (String songText : songs) {
             	// Create song fragment
             	Fragment songFrag = new SetSongFragment();
             	Bundle bSong = new Bundle();
-            	bSong.putString(MainActivity.SONG_TEXT_KEY, songText);
+            	bSong.putString(MainStrings.SONG_TEXT_KEY, songText);
             	songFrag.setArguments(bSong);
             	
             	// Add the fragment to the page adapter

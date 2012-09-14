@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.sbgsoft.tabapp.R;
-import com.sbgsoft.tabapp.main.MainActivity;
+import com.sbgsoft.tabapp.main.MainStrings;
 
 public class EditSongActivity extends Activity {
 	private String songName = "";
@@ -31,7 +31,7 @@ public class EditSongActivity extends Activity {
         // Get the song name from the bundle
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            songName = extras.getString(MainActivity.SONG_NAME_KEY);
+            songName = extras.getString(MainStrings.SONG_NAME_KEY);
         }
         
         // Fill the edit text with the song file

@@ -1,7 +1,7 @@
 package com.sbgsoft.tabapp.songs;
 
 import com.sbgsoft.tabapp.R;
-import com.sbgsoft.tabapp.main.MainActivity;
+import com.sbgsoft.tabapp.main.MainStrings;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,7 +31,7 @@ public class SetSongFragment extends Fragment {
         // Populate it with the song text
         Bundle extras = getArguments();
         if (extras != null) {
-            String songText = extras.getString(MainActivity.SONG_TEXT_KEY);
+            String songText = extras.getString(MainStrings.SONG_TEXT_KEY);
             
             if (songText != "") {
                 song.setText(Html.fromHtml(songText));

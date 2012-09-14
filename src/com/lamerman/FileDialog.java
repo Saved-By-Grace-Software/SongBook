@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import com.sbgsoft.tabapp.R;
-import com.sbgsoft.tabapp.main.MainActivity;
+import com.sbgsoft.tabapp.main.MainStrings;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -120,7 +120,7 @@ public class FileDialog extends ListActivity {
 
 			public void onClick(View v) {
 				if (selectedFile != null) {
-					getIntent().putExtra(MainActivity.ACTIVITY_RESPONSE_TYPE, MainActivity.FILE_ACTIVITY);
+					getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, MainStrings.FILE_ACTIVITY);
 					getIntent().putExtra(RESULT_PATH, selectedFile.getPath());
 					setResult(RESULT_OK, getIntent());
 					finish();
@@ -166,7 +166,7 @@ public class FileDialog extends ListActivity {
 
 			public void onClick(View v) {
 				if (mFileName.getText().length() > 0) {
-					getIntent().putExtra(MainActivity.ACTIVITY_RESPONSE_TYPE, MainActivity.FILE_ACTIVITY);
+					getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, MainStrings.FILE_ACTIVITY);
 					getIntent().putExtra(RESULT_PATH, currentPath + "/" + mFileName.getText());
 					setResult(RESULT_OK, getIntent());
 					finish();
