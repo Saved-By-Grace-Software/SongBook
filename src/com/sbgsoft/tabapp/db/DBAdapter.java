@@ -67,10 +67,11 @@ public class DBAdapter {
 	 * @param setName The name of the set
 	 * @return True if success, False if failure
 	 */
-	public boolean createSet(String setName) {
+	public boolean createSet(String setName, String setDate) {
 		// Create a new set with the specified name
 		try {
-			mDb.execSQL( "INSERT INTO " + DBStrings.SETS_TABLE + "(" + DBStrings.TBLSETS_NAME + ") VALUES ('" + setName + "');" );
+			mDb.execSQL( "INSERT INTO " + DBStrings.SETS_TABLE + "(" + DBStrings.TBLSETS_NAME + ", " + DBStrings.TBLSETS_DATE +
+					") VALUES ('" + setName + "', '" + setDate + "');" );
 		} catch (SQLiteException e) {
 			return false;
 		}
@@ -84,18 +85,18 @@ public class DBAdapter {
 	 * @param songs The string of song names
 	 * @return True if success, False if failure
 	 */
-	public boolean createSet(String setName, ArrayList<String> setSongs) {
+	public boolean createSet(String setName, ArrayList<String> setSongs, String setDate) {
 		// Create a new set with the specified name
 		try {
 			// Add the set name
-			mDb.execSQL( "INSERT INTO " + DBStrings.SETS_TABLE + "(" + DBStrings.TBLSETS_NAME + ") VALUES ('" + setName + "');" );
-			
-			// Add the songs to the set
-			for(String song : setSongs) {
-				if (song != "") {
-					mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + DBStrings.TBLSLOOKUP_SONG + ") " + 
-							" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
-							" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "') );" );
+			if (createSet(setName, setDate)) {
+				// Add the songs to the set
+				for(String song : setSongs) {
+					if (song != "") {
+						mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + DBStrings.TBLSLOOKUP_SONG + ") " + 
+								" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
+								" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "') );" );
+					}
 				}
 			}
 		} catch (SQLiteException e) {
@@ -142,10 +143,11 @@ public class DBAdapter {
 		
 		// Check if the group is the all sets group
 		if (groupName.equals(SetsTab.ALL_SETS_LABEL)) {
-			query = "SELECT " + DBStrings.TBLSETS_ID + " as _id, " + DBStrings.TBLSETS_NAME + 
+			query = "SELECT " + DBStrings.TBLSETS_ID + " as _id, " + DBStrings.TBLSETS_NAME + ", " + DBStrings.TBLSETS_DATE +
 					" FROM " + DBStrings.SETS_TABLE + " ORDER BY " + DBStrings.TBLSETS_NAME;
 		} else {
 			query = "SELECT " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + " as _id, " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_NAME +
+					", " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_DATE +
 					" FROM " + DBStrings.SETS_TABLE + 
 					" INNER JOIN " + DBStrings.SETGPLOOKUP_TABLE + " ON " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + 
 					" = " + DBStrings.SETGPLOOKUP_TABLE + "." + DBStrings.TBLSETGPLOOKUP_SET +
@@ -307,8 +309,6 @@ public class DBAdapter {
 	}
 	
 	
-	
-	/*****************************************************************************
     /*****************************************************************************
     *
     * Song Functions
@@ -320,11 +320,12 @@ public class DBAdapter {
 	 * @param fileName The name of the file 
 	 * @return True if success, False if failure
 	 */
-	public boolean createSong(String songName, String fileName) {
+	public boolean createSong(String songName, String fileName, String author, String key) {
 		// Create a new set with the specified name
 		try {
-			mDb.execSQL( "insert into " + DBStrings.SONGS_TABLE + "(" + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ") values ('" + 
-					songName + "', '" + fileName + "' );" );
+			mDb.execSQL( "INSERT INTO " + DBStrings.SONGS_TABLE + "(" + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
+					DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + 
+					") VALUES ('" + songName + "', '" + fileName + "', '" + author + "', '" + key + "');" );
 		} catch (SQLiteException e) {
 			return false;
 		}
@@ -341,13 +342,18 @@ public class DBAdapter {
 		
 		// Check if the group is the all songs group
 		if (groupName.equals(SongsTab.ALL_SONGS_LABEL)) {
-			query = "SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + 
+			query = "SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
+					DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY +
 					" FROM " + DBStrings.SONGS_TABLE + " ORDER BY " + DBStrings.TBLSONG_NAME;
 		} else {
-			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_NAME + ", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_FILE + 
+			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.SONGS_TABLE + "." + 
+					DBStrings.TBLSONG_NAME + ", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_FILE + ", " +
+					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_KEY +
 					" FROM " + DBStrings.SONGS_TABLE + 
-					" INNER JOIN " + DBStrings.SONGGPLOOKUP_TABLE + " ON " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " = " + DBStrings.SONGGPLOOKUP_TABLE + "." + DBStrings.TBLSONGGPLOOKUP_SONG +
-					" INNER JOIN " + DBStrings.SONGGROUPS_TABLE + " ON " + DBStrings.SONGGROUPS_TABLE + "." + DBStrings.TBLSONGGROUPS_ID + " = " + DBStrings.SONGGPLOOKUP_TABLE + "." + DBStrings.TBLSONGGPLOOKUP_GROUP +
+					" INNER JOIN " + DBStrings.SONGGPLOOKUP_TABLE + " ON " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " = " + 
+					DBStrings.SONGGPLOOKUP_TABLE + "." + DBStrings.TBLSONGGPLOOKUP_SONG +
+					" INNER JOIN " + DBStrings.SONGGROUPS_TABLE + " ON " + DBStrings.SONGGROUPS_TABLE + "." + DBStrings.TBLSONGGROUPS_ID + " = " + 
+					DBStrings.SONGGPLOOKUP_TABLE + "." + DBStrings.TBLSONGGPLOOKUP_GROUP +
 					" WHERE " + DBStrings.SONGGROUPS_TABLE + "." + DBStrings.TBLSONGGROUPS_NAME + " = '" + groupName + "'" +
 					" ORDER BY " + DBStrings.TBLSONG_NAME;
 		}
@@ -605,12 +611,15 @@ public class DBAdapter {
     			// Sets table
     			db.execSQL("create table " + DBStrings.SETS_TABLE +
     					"(" + DBStrings.TBLSETS_ID + " integer PRIMARY KEY autoincrement, " + 
+    					DBStrings.TBLSETS_DATE + " date, " +
     					DBStrings.TBLSETS_NAME + " text UNIQUE); ");
     			
     			// Songs table
     			db.execSQL("create table " + DBStrings.SONGS_TABLE +
     					"(" + DBStrings.TBLSONG_ID + " integer PRIMARY KEY autoincrement, " + 
     					DBStrings.TBLSONG_NAME + " text UNIQUE, " + 
+    					DBStrings.TBLSONG_AUTHOR + " text, " +
+    					DBStrings.TBLSONG_KEY + " text, " +
     					DBStrings.TBLSONG_FILE + " text); " );
     			
     			// Song Group table

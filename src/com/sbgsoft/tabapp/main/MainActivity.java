@@ -516,7 +516,7 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		
 	    		// Create the set
-	    		if(!dbAdapter.createSet(setName, setSongs))
+	    		if(!dbAdapter.createSet(setName, setSongs, "12/12/12"))
 	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
 	    		else
 	    			setsCursor.requery();
@@ -792,7 +792,7 @@ public class MainActivity extends FragmentActivity {
 	    		if (value.length() > 0) {
 	    			//String songFile = getFilesDir() + "/" + value + ".txt";
 	    			String songFile = value + ".txt";
-		    		if(!dbAdapter.createSong(value, songFile))
+		    		if(!dbAdapter.createSong(value, songFile, "SamIAm", "XX"))
 		    			Toast.makeText(getApplicationContext(), "Failed to create song!", Toast.LENGTH_LONG).show();
 		    		else
 		    		{
