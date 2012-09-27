@@ -20,6 +20,7 @@ import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -898,6 +899,7 @@ public class MainActivity extends FragmentActivity {
         StringBuilder sb = new StringBuilder();
         String line = br.readLine();
         boolean startedSong = false;
+        
         // Read each line of the file
         while (line != null) {
         	// Check for song part tags
@@ -915,7 +917,9 @@ public class MainActivity extends FragmentActivity {
         		boolean inChord = false;
         		
         		// Escape the chords from the line
-        		for (char c : line.toCharArray()) {
+        		for (int i = 0; i < line.length(); i++) {
+        			char c = line.charAt(i);
+        			
         			if (c == ':') {
         				sb.append(c);
         				chordStart = true;
@@ -927,11 +931,14 @@ public class MainActivity extends FragmentActivity {
         				}
         				sb.append(c);
         			}
+        			// In a chord
         			else if (inChord) {
-        				if (c >= 65 && c <= 71) {
+        				// If the letter is a new chord and the previous character is not a '/'
+        				if (c >= 65 && c <= 71 && line.charAt(i - 1) != 47) {
         					sb.append("][");
         				}
-        				else if (!(c == 35 || c == 98 || c == 109 || c == 97 || c == 100 || c == 57 || c == 55 || c == 53 || c == 51 || c == 47)) {
+        				// Else if the letter is not part of a chord
+        				else if (!((c >= 49 && c <= 57) || (c >= 65 && c <= 71) || c == 35 || c == 98 || c == 109 || c == 97 || c == 100 || c == 47)) {
         					sb.append(']');
         					inChord = false;
         				}
@@ -942,6 +949,11 @@ public class MainActivity extends FragmentActivity {
         			}
         		}
         		
+        		// If still in a chord, close the chord out
+        		if (inChord)
+        			sb.append("]");
+        		
+        		// End the intro tag
             	sb.append("}");
         	}
         	else if (!startedSong && line.length() > 0) {
@@ -953,6 +965,7 @@ public class MainActivity extends FragmentActivity {
         		// Read the next two lines, chord and lyrics
         		String chords = line;
         		String lyrics = br.readLine();
+        		int chordOffset = 0;
         		
         		// Check to see if we are still in the song
         		if (chords.length() == 0 && lyrics.length() == 0) {
@@ -966,8 +979,9 @@ public class MainActivity extends FragmentActivity {
                 	sb.append("}");
         		}
         		else {
-        			// Set the length for the for loop
         			int len = 0;
+        			
+        			// Set the length for the for loop
         			if (lyrics.length() > chords.length())
         				len = lyrics.length();
         			else
@@ -975,11 +989,40 @@ public class MainActivity extends FragmentActivity {
         			
         			// Cycle through the characters in the lines
 	        		for (int i = 0; i < len; i++) {
-	        			if (i < chords.length()) {
+	        			
+	        			// Decrement the chordOffset
+	        			if (chordOffset > 0)
+	        				chordOffset--;
+	        			
+	        			// Add chords to the line
+	        			if (i < chords.length() && chordOffset <= 0) {
 	        				char c = chords.charAt(i);
-	        				if (c != 32)
+	        				if (c != 32) {
+	        					// Append an open bracket and the chord
+	        					sb.append("[");
 	        					sb.append(c);
+	        					chordOffset++;
+	        					
+	        					// Cycle forward through the chord characters
+	        					for (int j = i+1; j < chords.length(); j++) {
+	        						c = chords.charAt(j);
+	        						
+	        						// If the next character is a space end the chord
+	        						if (c == 32) {
+	        							break;
+	        						}
+	        						// If the next character is a new chord, start new chord
+	        						else if (c >= 65 && c <= 71 && chords.charAt(j - 1) != 47) {
+	        							sb.append("][");
+	        						}
+	        						sb.append(c);
+        							chordOffset++;
+	        					}
+	        					sb.append("]");
+	        				}
 	        			}
+	        			
+	        			// Add the lyrics to the line
 	        			if (i < lyrics.length())
 	        				sb.append(lyrics.charAt(i));
 	        		}
@@ -1384,7 +1427,7 @@ public class MainActivity extends FragmentActivity {
     private void importSong() {
     	// Create the file dialog intent
     	Intent intent = new Intent(getBaseContext(), FileDialog.class);
-        intent.putExtra(FileDialog.START_PATH, "/");
+        intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().getPath());
         
         // User cannot select directories
         intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
