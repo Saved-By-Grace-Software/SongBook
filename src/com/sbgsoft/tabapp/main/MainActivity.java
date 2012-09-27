@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import android.app.ActionBar;
@@ -823,16 +824,21 @@ public class MainActivity extends FragmentActivity {
 		    			{
 		    				// Copy the file into the tabapp songs directory
 		    				try {
-			    				InputStream in = new FileInputStream(importFilePath);
-			    				//OutputStream out = new FileOutputStream(songFile);
-			    				OutputStream out = openFileOutput(songFile, Context.MODE_PRIVATE);
-			    				byte[] buf = new byte[1024];
-			    				int len;
-			    				while ((len = in.read(buf)) > 0) {
-			    				   out.write(buf, 0, len);
-			    				}
-			    				in.close();
-			    				out.close(); 
+		    					if (importFilePath.substring(importFilePath.length() - 3).equals("txt")) {
+		    						importTextFile(importFilePath, songFile);
+		    					}
+		    					else {
+		    						InputStream in = new FileInputStream(importFilePath);
+				    				//OutputStream out = new FileOutputStream(songFile);
+				    				OutputStream out = openFileOutput(songFile, Context.MODE_PRIVATE);
+				    				byte[] buf = new byte[1024];
+				    				int len;
+				    				while ((len = in.read(buf)) > 0) {
+				    				   out.write(buf, 0, len);
+				    				}
+				    				in.close();
+				    				out.close(); 
+		    					}
 		    				} catch (Exception e) {
 		    					// Delete the song since the file could not be imported
 		    					dbAdapter.deleteSong(songName);
@@ -877,6 +883,113 @@ public class MainActivity extends FragmentActivity {
     	});
 
     	alert.show();
+    }
+    
+    /**
+     * Imports a straight text file into chord pro format
+     * @param inputFilePath The song text file
+     * @param outputFileName The chord pro output file
+     * @throws Exception IO exception
+     */
+    private void importTextFile(String inputFilePath, String outputFileName) throws IOException {
+    	InputStream fis = new FileInputStream(importFilePath);
+    	DataInputStream in = new DataInputStream(fis);
+    	BufferedReader br = new BufferedReader(new InputStreamReader(in));
+        StringBuilder sb = new StringBuilder();
+        String line = br.readLine();
+        boolean startedSong = false;
+        // Read each line of the file
+        while (line != null) {
+        	// Check for song part tags
+        	if(line.toLowerCase().contains("verse") || line.toLowerCase().contains("chorus") || line.toLowerCase().contains("bridge") || 
+        			line.toLowerCase().contains("tag") || line.toLowerCase().contains("coda")) {
+        		sb.append("{title:");
+        		sb.append(line);
+            	sb.append("}");
+            	startedSong = true;
+        	}
+        	// Process the intro line
+        	else if (line.toLowerCase().contains("intro")) {
+        		sb.append("{intro:");
+        		boolean chordStart = false;
+        		boolean inChord = false;
+        		
+        		// Escape the chords from the line
+        		for (char c : line.toCharArray()) {
+        			if (c == ':') {
+        				sb.append(c);
+        				chordStart = true;
+        			}
+        			else if (chordStart && !inChord) {
+        				if (c >= 65 && c <= 71) {
+        					sb.append("[");
+        					inChord = true;
+        				}
+        				sb.append(c);
+        			}
+        			else if (inChord) {
+        				if (c >= 65 && c <= 71) {
+        					sb.append("][");
+        				}
+        				else if (!(c == 35 || c == 98 || c == 109 || c == 97 || c == 100 || c == 57 || c == 55 || c == 53 || c == 51 || c == 47)) {
+        					sb.append(']');
+        					inChord = false;
+        				}
+        				sb.append(c);
+        			}
+        			else {
+        				sb.append(c);
+        			}
+        		}
+        		
+            	sb.append("}");
+        	}
+        	else if (!startedSong && line.length() > 0) {
+        		sb.append("{comment:");
+        		sb.append(line);
+            	sb.append("}");
+        	}
+        	else if (startedSong) {
+        		// Read the next two lines, chord and lyrics
+        		String chords = line;
+        		String lyrics = br.readLine();
+        		
+        		// Check to see if we are still in the song
+        		if (chords.length() == 0 && lyrics.length() == 0) {
+        			startedSong = false;
+        		}
+        		else if (chords.length() == 0 && (lyrics.toLowerCase().contains("verse") || lyrics.toLowerCase().contains("chorus") || lyrics.toLowerCase().contains("bridge") || 
+        			lyrics.toLowerCase().contains("tag") || lyrics.toLowerCase().contains("coda"))) {
+        			sb.append(System.getProperty("line.separator"));
+        			sb.append("{title:");
+            		sb.append(lyrics);
+                	sb.append("}");
+        		}
+        		else {
+	        		for (int i = 0; i < lyrics.length(); i++) {
+	        			sb.append(chords.charAt(i));
+	        			sb.append(lyrics.charAt(i));
+	        		}
+        		}
+        	}
+        	else {
+            	sb.append(line);
+        	}
+        	
+        	// Add system line break
+        	sb.append(System.getProperty("line.separator"));
+        	
+        	// Read the next line
+        	line = br.readLine();
+        }
+        
+        // Close the buffered reader
+        br.close();
+        
+        // Write the output file
+        OutputStream out = openFileOutput(outputFileName, Context.MODE_PRIVATE);
+        PrintStream ps = new PrintStream(out);
+        ps.print(sb);
     }
     
     /**
