@@ -966,9 +966,22 @@ public class MainActivity extends FragmentActivity {
                 	sb.append("}");
         		}
         		else {
-	        		for (int i = 0; i < lyrics.length(); i++) {
-	        			sb.append(chords.charAt(i));
-	        			sb.append(lyrics.charAt(i));
+        			// Set the length for the for loop
+        			int len = 0;
+        			if (lyrics.length() > chords.length())
+        				len = lyrics.length();
+        			else
+        				len = chords.length();
+        			
+        			// Cycle through the characters in the lines
+	        		for (int i = 0; i < len; i++) {
+	        			if (i < chords.length()) {
+	        				char c = chords.charAt(i);
+	        				if (c != 32)
+	        					sb.append(c);
+	        			}
+	        			if (i < lyrics.length())
+	        				sb.append(lyrics.charAt(i));
 	        		}
         		}
         	}
