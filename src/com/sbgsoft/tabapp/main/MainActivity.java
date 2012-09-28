@@ -962,70 +962,105 @@ public class MainActivity extends FragmentActivity {
             	sb.append("}");
         	}
         	else if (startedSong) {
-        		// Read the next two lines, chord and lyrics
-        		String chords = line;
-        		String lyrics = br.readLine();
-        		int chordOffset = 0;
-        		
-        		// Check to see if we are still in the song
-        		if (chords.length() == 0 && lyrics.length() == 0) {
-        			startedSong = false;
-        		}
-        		else if (chords.length() == 0 && (lyrics.toLowerCase().contains("verse") || lyrics.toLowerCase().contains("chorus") || lyrics.toLowerCase().contains("bridge") || 
-        			lyrics.toLowerCase().contains("tag") || lyrics.toLowerCase().contains("coda"))) {
-        			sb.append(System.getProperty("line.separator"));
-        			sb.append("{title:");
-            		sb.append(lyrics);
-                	sb.append("}");
-        		}
-        		else {
-        			int len = 0;
-        			
-        			// Set the length for the for loop
-        			if (lyrics.length() > chords.length())
-        				len = lyrics.length();
-        			else
-        				len = chords.length();
-        			
-        			// Cycle through the characters in the lines
-	        		for (int i = 0; i < len; i++) {
-	        			
-	        			// Decrement the chordOffset
-	        			if (chordOffset > 0)
-	        				chordOffset--;
-	        			
-	        			// Add chords to the line
-	        			if (i < chords.length() && chordOffset <= 0) {
-	        				char c = chords.charAt(i);
-	        				if (c != 32) {
-	        					// Append an open bracket and the chord
-	        					sb.append("[");
-	        					sb.append(c);
-	        					chordOffset++;
-	        					
-	        					// Cycle forward through the chord characters
-	        					for (int j = i+1; j < chords.length(); j++) {
-	        						c = chords.charAt(j);
-	        						
-	        						// If the next character is a space end the chord
-	        						if (c == 32) {
-	        							break;
-	        						}
-	        						// If the next character is a new chord, start new chord
-	        						else if (c >= 65 && c <= 71 && chords.charAt(j - 1) != 47) {
-	        							sb.append("][");
-	        						}
-	        						sb.append(c);
-        							chordOffset++;
-	        					}
-	        					sb.append("]");
-	        				}
-	        			}
-	        			
-	        			// Add the lyrics to the line
-	        			if (i < lyrics.length())
-	        				sb.append(lyrics.charAt(i));
+        		// Check to see if the line has chords
+        		if (line.length() > 0) {
+        			// If the line starts with a space or a chord character followed by a non chord item
+        			if (line.charAt(0) == 32 || (line.matches("[A-G][\\s#bmad1-9/suA-G]+.*"))) { 
+	        			// Read the next two lines, chord and lyrics
+	            		String chords = line;
+	            		String lyrics = br.readLine();
+	            		int chordOffset = 0;
+	            		
+	            		// Check to see if we are still in the song
+	            		if (chords.length() == 0 && lyrics.length() == 0) {
+	            			startedSong = false;
+	            		}
+	            		else if (chords.length() == 0 && (lyrics.toLowerCase().contains("verse") || lyrics.toLowerCase().contains("chorus") || lyrics.toLowerCase().contains("bridge") || 
+	            			lyrics.toLowerCase().contains("tag") || lyrics.toLowerCase().contains("coda"))) {
+	            			sb.append(System.getProperty("line.separator"));
+	            			sb.append("{title:");
+	                		sb.append(lyrics);
+	                    	sb.append("}");
+	            		}
+	            		else {
+	            			int len = 0;
+	            			
+	            			// Set the length for the for loop
+	            			if (lyrics.length() > chords.length())
+	            				len = lyrics.length();
+	            			else
+	            				len = chords.length();
+	            			
+	            			// Cycle through the characters in the lines
+	    	        		for (int i = 0; i < len; i++) {
+	    	        			
+	    	        			// Decrement the chordOffset
+	    	        			if (chordOffset > 0)
+	    	        				chordOffset--;
+	    	        			
+	    	        			// Add chords to the line
+	    	        			if (i < chords.length() && chordOffset <= 0) {
+	    	        				char c = chords.charAt(i);
+	    	        				
+	    	        				// If this is a new chord
+	    	        				if (c >= 65 && c <= 71) {
+	    	        					// Append an open bracket and the chord
+	    	        					sb.append("[");
+	    	        					sb.append(c);
+	    	        					chordOffset++;
+	    	        					
+	    	        					// Cycle forward through the chord characters
+	    	        					for (int j = i+1; j < chords.length(); j++) {
+	    	        						c = chords.charAt(j);
+	    	        						
+	    	        						// If the next character is a space end the chord
+	    	        						if (c == 32) {
+	    	        							break;
+	    	        						}
+	    	        						// If the next character is a new chord, start new chord
+	    	        						else if (c >= 65 && c <= 71 && chords.charAt(j - 1) != 47) {
+	    	        							sb.append("][");
+	    	        						}
+	    	        						sb.append(c);
+	            							chordOffset++;
+	    	        					}
+	    	        					sb.append("]");
+	    	        				}
+	    	        				// If it is not a space or chord character
+	    	        				else if (c != 32) {
+	    	        					// Append an open bracket and the chord
+	    	        					sb.append("{cc:");
+	    	        					sb.append(c);
+	    	        					chordOffset++;
+	    	        					
+	    	        					// Cycle forward through the chord characters
+	    	        					for (int j = i+1; j < chords.length(); j++) {
+	    	        						c = chords.charAt(j);
+	    	        						
+	    	        						// If the next character is a new chord, break
+	    	        						if (c >= 65 && c <= 71) {
+	    	        							break;
+	    	        						}
+	    	        						sb.append(c);
+	            							chordOffset++;
+	    	        					}
+	    	        					
+	    	        					// End the cc
+	    	        					sb.append("}");
+	    	        				}
+	    	        			}
+	    	        			
+	    	        			// Add the lyrics to the line
+	    	        			if (i < lyrics.length())
+	    	        				sb.append(lyrics.charAt(i));
+	    	        		}
+	            		}
 	        		}
+        			else {
+        				sb.append("{comment:");
+	            		sb.append(line);
+	                	sb.append("}");
+        			}
         		}
         	}
         	else {
