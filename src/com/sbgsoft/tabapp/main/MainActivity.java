@@ -72,6 +72,8 @@ public class MainActivity extends FragmentActivity {
 	private static final int SET_GROUPS_DEL = 9;
 	
 	private static int currentTab = 1;
+	private static String songAuthor = MainStrings.UNKNOWN;
+	private static String songKey = MainStrings.UNKNOWN;
 	public static DBAdapter dbAdapter;
 	static ViewPager mViewPager;
 	
@@ -804,19 +806,13 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		// Get the user inputs
 	    		String songName = songNameET.getText().toString();
-	    		String author = authorET.getText().toString();
-	    		String key = keyET.getText().toString();
-	    		
-	    		// Check for empty author or key
-	    		if(author.equals(""))
-	    			author = MainStrings.UNKNOWN;
-	    		if(key.equals(""))
-	    			key = MainStrings.UNKNOWN;
+	    		songAuthor = authorET.getText().toString();
+	    		songKey = keyET.getText().toString();
 	    		
 	    		// Create the song
 	    		if (songName.length() > 0) {
 	    			String songFile = songName + ".txt";
-		    		if(!dbAdapter.createSong(songName, songFile, author + " ", key + " "))
+		    		if(!dbAdapter.createSong(songName, songFile, songAuthor + " ", songKey + " "))
 		    			Toast.makeText(getApplicationContext(), "Failed to create song!", Toast.LENGTH_LONG).show();
 		    		else
 		    		{
@@ -899,6 +895,10 @@ public class MainActivity extends FragmentActivity {
         StringBuilder sb = new StringBuilder();
         String line = br.readLine();
         boolean startedSong = false;
+        
+        // Add author and key to song
+        sb.append("{author:" + songAuthor + "}");
+        sb.append(System.getProperty("line.separator"));
         
         // Read each line of the file
         while (line != null) {
