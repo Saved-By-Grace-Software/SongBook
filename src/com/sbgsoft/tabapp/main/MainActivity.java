@@ -806,8 +806,10 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		// Get the user inputs
 	    		String songName = songNameET.getText().toString();
-	    		songAuthor = authorET.getText().toString();
-	    		songKey = keyET.getText().toString();
+	    		if (authorET.getText().length() > 0)
+	    			songAuthor = authorET.getText().toString();
+	    		if (keyET.getText().length() > 0)
+	    			songKey = keyET.getText().toString();
 	    		
 	    		// Create the song
 	    		if (songName.length() > 0) {
@@ -896,7 +898,7 @@ public class MainActivity extends FragmentActivity {
         String line = br.readLine();
         boolean startedSong = false;
         
-        // Add author and key to song
+        // Add author to song
         sb.append("{author:" + songAuthor + "}");
         sb.append(System.getProperty("line.separator"));
         
@@ -965,7 +967,7 @@ public class MainActivity extends FragmentActivity {
         		// Check to see if the line has chords
         		if (line.length() > 0) {
         			// If the line starts with a space or a chord character followed by a non chord item
-        			if (line.charAt(0) == 32 || (line.matches("[A-G][\\s#bmad1-9/suA-G]+.*"))) { 
+        			if (line.charAt(0) == 32 || (line.matches("^[A-G][\\s#bmad1-9/suA-G]*[^h-ln-rtv-zH-Z]") || (line.matches("^[A-G]")))) { 
 	        			// Read the next two lines, chord and lyrics
 	            		String chords = line;
 	            		String lyrics = br.readLine();
