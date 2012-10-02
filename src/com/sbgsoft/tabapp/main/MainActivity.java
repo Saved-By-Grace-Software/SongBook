@@ -63,13 +63,16 @@ public class MainActivity extends FragmentActivity {
      *****************************************************************************/
 	private static final int DELETE_SONG = 1;
 	private static final int EDIT_SONG = 2;
-	private static final int DELETE_SET = 3;
-	private static final int EDIT_SET = 4;
-	private static final int REORDER_SET = 5;
-	private static final int SONG_GROUPS_ADD = 6;
-	private static final int SONG_GROUPS_DEL = 7;
-	private static final int SET_GROUPS_ADD = 8;
-	private static final int SET_GROUPS_DEL = 9;
+	private static final int EDIT_SONG_ATT = 3;
+	private static final int SONG_GROUPS_ADD = 4;
+	private static final int SONG_GROUPS_DEL = 5;
+	
+	private static final int DELETE_SET = 10;
+	private static final int EDIT_SET = 11;
+	private static final int EDIT_SET_ATT = 12;
+	private static final int REORDER_SET = 13;
+	private static final int SET_GROUPS_ADD = 14;
+	private static final int SET_GROUPS_DEL = 15;
 	
 	private static int currentTab = 1;
 	private static String songAuthor = MainStrings.UNKNOWN;
@@ -224,6 +227,7 @@ public class MainActivity extends FragmentActivity {
     		menu.setHeaderTitle("Song Menu");
     		menu.add(Menu.NONE, DELETE_SONG, DELETE_SONG, R.string.cmenu_songs_delete);
     		menu.add(Menu.NONE, EDIT_SONG, EDIT_SONG, R.string.cmenu_songs_edit);
+    		menu.add(Menu.NONE, EDIT_SONG_ATT, EDIT_SONG_ATT, R.string.cmenu_songs_edit_att);
     		menu.add(Menu.NONE, SONG_GROUPS_ADD, SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
     		menu.add(Menu.NONE, SONG_GROUPS_DEL, SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
     	}
@@ -232,6 +236,7 @@ public class MainActivity extends FragmentActivity {
     		menu.setHeaderTitle("Sets Menu");
     		menu.add(Menu.NONE, DELETE_SET, DELETE_SET, R.string.cmenu_sets_delete);
     		menu.add(Menu.NONE, EDIT_SET, EDIT_SET, R.string.cmenu_sets_edit);
+    		menu.add(Menu.NONE, EDIT_SET_ATT, EDIT_SET_ATT, R.string.cmenu_sets_edit_att);
     		menu.add(Menu.NONE, REORDER_SET, REORDER_SET, R.string.cmenu_sets_reorder);
     		menu.add(Menu.NONE, SET_GROUPS_ADD, SET_GROUPS_ADD, R.string.cmenu_set_group_add);
     		menu.add(Menu.NONE, SET_GROUPS_DEL, SET_GROUPS_DEL, R.string.cmenu_set_group_delete);
@@ -265,6 +270,15 @@ public class MainActivity extends FragmentActivity {
                 // Start the activity
                 startActivity(intent);
             	
+                return true;
+    		case EDIT_SONG_ATT:
+    			// Get the song name
+    			songsCursor.moveToPosition(info.position);
+    			songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+                    
+				// Show the edit dialog
+    			editSongAtt(songName);
+    			
                 return true;
     		case SONG_GROUPS_ADD:
     			// Get the song name
@@ -335,6 +349,12 @@ public class MainActivity extends FragmentActivity {
             	
             	// Show the dialog to edit songs
             	updateSetSongs(setName);
+            	return true;
+    		case EDIT_SET_ATT:
+    			// Get the set selected
+    			setsCursor.moveToPosition(info.position);
+            	setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
+            	
             	return true;
     		case SET_GROUPS_ADD:
     			// Get the song name
@@ -1476,6 +1496,44 @@ public class MainActivity extends FragmentActivity {
         startActivityForResult(intent, 1);
     }
     
+    /**
+     * Edits the song name, author and key
+     * @param songName The song to edit
+     */
+    private void editSongAtt(final String songName) {
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    	alert.setTitle("Add Song");
+
+    	// Set the dialog view to gather user input
+    	LayoutInflater inflater = getLayoutInflater();
+    	View dialoglayout = inflater.inflate(R.layout.add_song, (ViewGroup) findViewById(R.id.add_song_root));
+    	alert.setView(dialoglayout);
+    	final EditText songNameET = (EditText)dialoglayout.findViewById(R.id.add_song_name);
+    	final EditText authorET = (EditText)dialoglayout.findViewById(R.id.add_song_author);
+    	final EditText keyET = (EditText)dialoglayout.findViewById(R.id.add_song_key);
+    	
+    	// Populate the text boxes
+    	songNameET.setText(songName);
+    	authorET.setText(dbAdapter.getSongAuthor(songName));
+    	keyET.setText(dbAdapter.getSongKey(songName));
+    	
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), keyET.getText().toString());
+	    		
+	    		// Refresh song list
+				((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
+	    	}
+    	});
+    	
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    	    // Canceled.
+	    	}
+    	});
+    	
+    	alert.show();
+    }
     
     /*****************************************************************************
      * 

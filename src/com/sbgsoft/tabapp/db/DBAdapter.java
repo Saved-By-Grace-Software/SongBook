@@ -404,7 +404,6 @@ public class DBAdapter {
 		} catch (SQLiteException s) {
 			return "";
 		}
-		
 	}
 	
 	/**
@@ -449,6 +448,64 @@ public class DBAdapter {
 		return true;
 	}
 	
+	/**
+	 * Gets the song author
+	 * @param songName The song to get the author for
+	 * @return The song author
+	 */
+	public String getSongAuthor(String songName) {
+		try {
+			Cursor c = mDb.rawQuery("SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_AUTHOR + " FROM " + DBStrings.SONGS_TABLE +
+					" WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'", null);
+			c.moveToFirst();
+			return c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_AUTHOR));
+		} catch (IndexOutOfBoundsException e) {
+			return "";
+		} catch (SQLiteException s) {
+			return "";
+		}
+	}
+	
+	/**
+	 * Gets the song key
+	 * @param songName The song to get the key for
+	 * @return The song key
+	 */
+	public String getSongKey(String songName) {
+		try {
+			Cursor c = mDb.rawQuery("SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE +
+					" WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'", null);
+			c.moveToFirst();
+			return c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY));
+		} catch (IndexOutOfBoundsException e) {
+			return "";
+		} catch (SQLiteException s) {
+			return "";
+		}
+	}
+	
+	/**
+	 * Updates the song attributes
+	 * @param origSongName The current name of the song
+	 * @param newSongName The updated name of the song
+	 * @param author The song author
+	 * @param key The song key
+	 * @return
+	 */
+	public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key) {
+		try {
+			String query = "UPDATE " + DBStrings.SONGS_TABLE + 
+					" SET " + DBStrings.TBLSONG_NAME + " = '" + newSongName + "', " +
+					DBStrings.TBLSONG_AUTHOR + " = '" + author + "', " + 
+					DBStrings.TBLSONG_KEY + " = '" + key + "' " + 
+					" WHERE " + DBStrings.TBLSONG_NAME + " = '" + origSongName + "'";
+			mDb.execSQL(query);
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+
 	
 	/*****************************************************************************
     *
@@ -460,7 +517,7 @@ public class DBAdapter {
 	 * @param setName The set name to set as current
 	 * @return True if success, False if failure
 	 */
-	public boolean setCurrentSet(String setName) {
+ 	public boolean setCurrentSet(String setName) {
 		try {
 			mDb.execSQL("UPDATE " + DBStrings.CURRSET_TABLE + " SET " + DBStrings.TBLCURRSET_SET + 
 					" = (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "')");
