@@ -355,6 +355,9 @@ public class MainActivity extends FragmentActivity {
     			setsCursor.moveToPosition(info.position);
             	setName = setsCursor.getString(setsCursor.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
             	
+            	// Update the set attributes
+            	editSetAtt(setName);
+            	
             	return true;
     		case SET_GROUPS_ADD:
     			// Get the song name
@@ -800,6 +803,53 @@ public class MainActivity extends FragmentActivity {
         lv.setAdapter(sets);
     }
     
+    /**
+     * Edits the set name and date
+     * @param setName The set to edit
+     */
+    private void editSetAtt(final String setName) {
+    	// Create the alert dialog
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    	alert.setTitle("Create Set");
+    	
+    	// Set the dialog view to gather user input
+    	LayoutInflater inflater = getLayoutInflater();
+    	View dialoglayout = inflater.inflate(R.layout.add_set, (ViewGroup) findViewById(R.id.add_set_root));
+    	alert.setView(dialoglayout);
+    	final EditText setNameET = (EditText)dialoglayout.findViewById(R.id.add_set_name);
+    	final DatePicker setDateDP = (DatePicker)dialoglayout.findViewById(R.id.add_set_date);
+    	
+    	// Populate the set fields
+    	setNameET.setText(setName);
+    	String temp[] = dbAdapter.getSetDate(setName).split("/");
+    	setDateDP.updateDate(Integer.parseInt(temp[2].trim()), Integer.parseInt(temp[0].trim()) - 1, Integer.parseInt(temp[1].trim()));
+
+    	// Set the OK button
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Get the date and set name
+	    		String newSetName = setNameET.getText().toString();
+	    		String setDate = (setDateDP.getMonth() + 1) + "/" + setDateDP.getDayOfMonth() + "/" + setDateDP.getYear();
+	    		
+	    		if (newSetName.length() > 0) {
+	    			dbAdapter.updateSetAttributes(setName, newSetName, setDate);
+	    			
+	    			// Refresh views
+					setsCursor.requery();
+	    		}
+	    		else
+	    			Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
+			}
+    	});
+
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    	    // Canceled.
+	    	}
+    	});
+
+    	alert.show();
+    }
     
     /*****************************************************************************
      * 
@@ -1534,6 +1584,7 @@ public class MainActivity extends FragmentActivity {
     	
     	alert.show();
     }
+
     
     /*****************************************************************************
      * 

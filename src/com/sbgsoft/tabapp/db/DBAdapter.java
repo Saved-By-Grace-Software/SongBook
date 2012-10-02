@@ -308,6 +308,44 @@ public class DBAdapter {
 		return true;
 	}
 	
+	/**
+	 * Gets the date for the specified set
+	 * @param setName The set
+	 * @return The date
+	 */
+	public String getSetDate(String setName) {
+		try {
+			Cursor c = mDb.rawQuery("SELECT " + DBStrings.TBLSETS_ID + " as _id, " + DBStrings.TBLSETS_NAME + ", " + DBStrings.TBLSETS_DATE + " FROM " + DBStrings.SETS_TABLE +
+					" WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'", null);
+			c.moveToFirst();
+			return c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_DATE));
+		} catch (IndexOutOfBoundsException e) {
+			return "";
+		} catch (SQLiteException s) {
+			return "";
+		}
+	}
+	
+	/**
+	 * Updates the set attributes
+	 * @param oldSetName The original set name
+	 * @param newSetName The new set name
+	 * @param date The new set date
+	 * @return True if success, False if failure
+	 */
+	public boolean updateSetAttributes(String oldSetName, String newSetName, String date) {
+		try {
+			String query = "UPDATE " + DBStrings.SETS_TABLE + 
+					" SET " + DBStrings.TBLSETS_NAME + " = '" + newSetName + "', " +
+					DBStrings.TBLSETS_DATE + " = '" + date + "' " + 
+					" WHERE " + DBStrings.TBLSETS_NAME + " = '" + oldSetName + "'";
+			mDb.execSQL(query);
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
+	
 	
     /*****************************************************************************
     *
