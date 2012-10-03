@@ -1662,10 +1662,10 @@ public class MainActivity extends FragmentActivity {
     	startManagingCursor(songGroupsCursor);
     	
     	String[] from = new String[] { DBStrings.TBLSONGGROUPS_NAME };
-        int[] to = new int[] { android.R.id.text1 };
+        int[] to = new int[] { R.id.group_spinner_item_text };
       
-        SimpleCursorAdapter songs = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, songGroupsCursor, from, to);
-        songs.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+        SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.group_spinner_item, songGroupsCursor, from, to);
+        songs.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
     	Spinner groupSpinner = (Spinner) findViewById(R.id.song_group_spinner);
     	
     	// Set the on click listener for each item
@@ -1835,10 +1835,10 @@ public class MainActivity extends FragmentActivity {
     	startManagingCursor(setGroupsCursor);
     	
     	String[] from = new String[] { DBStrings.TBLSETGROUPS_NAME };
-        int[] to = new int[] { android.R.id.text1 };
+        int[] to = new int[] { R.id.group_spinner_item_text };
       
-        SimpleCursorAdapter songs = new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, setGroupsCursor, from, to);
-        songs.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item );
+        SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.group_spinner_item, setGroupsCursor, from, to);
+        songs.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
     	Spinner groupSpinner = (Spinner) findViewById(R.id.set_group_spinner);
     	
     	// Set the on click listener for each item

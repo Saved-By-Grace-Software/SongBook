@@ -8,18 +8,19 @@
     
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="58dp"
         android:orientation="horizontal" >
         
-        <TextView
+        <TextView android:id="@+id/sets_tab_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="40dp"
-            android:padding="10dip"
             android:layout_alignParentLeft="true"
             android:textColor="@color/TransparentWhite"
             android:textStyle="bold"
             android:text="@string/title_sets"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
             android:shadowColor="@color/TransparentGrey" 
 			android:shadowDx="3"
 			android:shadowDy="3" 
@@ -32,7 +33,9 @@
             android:textSize="40dp"
             android:padding="10dip"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"  />
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/defaultTextColor"
+            android:popupBackground="@android:color/transparent"  />
 
     </RelativeLayout>
     
