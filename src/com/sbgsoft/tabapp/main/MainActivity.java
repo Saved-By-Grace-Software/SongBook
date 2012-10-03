@@ -77,6 +77,9 @@ public class MainActivity extends FragmentActivity {
 	private static final int SET_GROUPS_ADD = 14;
 	private static final int SET_GROUPS_DEL = 15;
 	
+	private static final int EDIT_SONG_CS = 20;
+	private static final int EDIT_SONG_ATT_CS = 21;
+	
 	private static int currentTab = 1;
 	private static String songAuthor = MainStrings.UNKNOWN;
 	private static String songKey = MainStrings.UNKNOWN;
@@ -244,6 +247,12 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, SET_GROUPS_ADD, SET_GROUPS_ADD, R.string.cmenu_set_group_add);
     		menu.add(Menu.NONE, SET_GROUPS_DEL, SET_GROUPS_DEL, R.string.cmenu_set_group_delete);
     	}
+    	// Current Set context menu
+    	else if (v.getId() == R.id.current_list) {
+    		menu.setHeaderTitle("Current Set Menu");
+    		menu.add(Menu.NONE, EDIT_SONG_CS, EDIT_SONG_CS, R.string.cmenu_songs_edit);
+    		menu.add(Menu.NONE, EDIT_SONG_ATT_CS, EDIT_SONG_ATT_CS, R.string.cmenu_songs_edit_att);
+    	}
     }
     
     /**
@@ -274,10 +283,32 @@ public class MainActivity extends FragmentActivity {
                 startActivity(intent);
             	
                 return true;
+    		case EDIT_SONG_CS:
+    			// Get the song name
+    			currSetCursor.moveToPosition(info.position);
+    			songName = currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+                    
+				// Create the edit activity intent
+            	Intent intent1 = new Intent(getBaseContext(), EditSongActivity.class);
+                intent1.putExtra(MainStrings.SONG_NAME_KEY, songName);
+                
+                // Start the activity
+                startActivity(intent1);
+            	
+                return true;
     		case EDIT_SONG_ATT:
     			// Get the song name
     			songsCursor.moveToPosition(info.position);
     			songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+                    
+				// Show the edit dialog
+    			editSongAtt(songName);
+    			
+                return true;
+    		case EDIT_SONG_ATT_CS:
+    			// Get the song name
+    			currSetCursor.moveToPosition(info.position);
+    			songName = currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
                     
 				// Show the edit dialog
     			editSongAtt(songName);
@@ -1644,6 +1675,8 @@ public class MainActivity extends FragmentActivity {
             }
     	});
       
+        // Register the context menu and add the adapter
+        registerForContextMenu(lv);
         lv.setAdapter(current);
         
         // Append the current set name to the title
