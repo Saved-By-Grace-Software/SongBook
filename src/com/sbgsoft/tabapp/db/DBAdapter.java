@@ -565,6 +565,25 @@ public class DBAdapter {
 		}
 	}
 	
+	/**
+	 * Gets the current set's name
+	 * @return The set name
+	 */
+	public String getCurrentSetName() {
+		try {
+			Cursor c = mDb.rawQuery("SELECT " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_NAME + 
+					" FROM " + DBStrings.SETS_TABLE + 
+					" INNER JOIN " + DBStrings.CURRSET_TABLE + " ON " + DBStrings.CURRSET_TABLE + "." + DBStrings.TBLCURRSET_SET + 
+					" = " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID, null);
+			c.moveToFirst();
+			return c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
+		} catch (IndexOutOfBoundsException e) {
+			return "";
+		} catch (SQLiteException s) {
+			return "";
+		}
+	}
+	
 	
 	/*****************************************************************************
     *

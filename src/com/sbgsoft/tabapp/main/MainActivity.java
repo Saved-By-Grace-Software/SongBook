@@ -42,6 +42,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ericharlow.DragNDrop.DragNDropListActivity;
@@ -1644,6 +1645,10 @@ public class MainActivity extends FragmentActivity {
     	});
       
         lv.setAdapter(current);
+        
+        // Append the current set name to the title
+        TextView title = ((TextView)v.findViewById(R.id.current_set_tab_title));
+        title.setText(getResources().getString(R.string.title_current_set) + " - " + dbAdapter.getCurrentSetName());
     }
     
     
@@ -1666,7 +1671,7 @@ public class MainActivity extends FragmentActivity {
       
         SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.group_spinner_item, songGroupsCursor, from, to);
         songs.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
-    	Spinner groupSpinner = (Spinner) findViewById(R.id.song_group_spinner);
+    	final Spinner groupSpinner = (Spinner) findViewById(R.id.song_group_spinner);
     	
     	// Set the on click listener for each item
     	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
