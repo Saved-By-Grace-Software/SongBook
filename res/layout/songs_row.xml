@@ -3,15 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="top"> 
+    android:gravity="top" > 
     
 	<TextView android:id="@+id/songs_row_text"
-	    xmlns:android="http://schemas.android.com/apk/res/android"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:includeFontPadding="true"
 	    android:textSize="40dp"
-	    android:textColor="@color/defaultTextColor" />
+	    android:textColor="@color/defaultTextColor"
+	    android:shadowColor="@color/TransparentGrey" 
+		android:shadowDx="3"
+		android:shadowDy="3" 
+		android:shadowRadius="1.5" />
 	
 	<LinearLayout
 	    android:layout_width="match_parent"

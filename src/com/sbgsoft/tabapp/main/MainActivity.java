@@ -1611,8 +1611,8 @@ public class MainActivity extends FragmentActivity {
     	currSetCursor = dbAdapter.getCurrentSetSongs();
     	startManagingCursor(currSetCursor);
     	
-    	String[] from = new String[] { DBStrings.TBLSONG_NAME };
-        int[] to = new int[] { R.id.curr_sets_row_text };
+    	String[] from = new String[] { DBStrings.TBLSONG_NAME, DBStrings.TBLSONG_AUTHOR, DBStrings.TBLSONG_KEY };
+        int[] to = new int[] { R.id.curr_sets_row_text, R.id.curr_sets_row_author, R.id.curr_sets_row_key };
         
         SimpleCursorAdapter current = new SimpleCursorAdapter(this, R.layout.current_set_row, currSetCursor, from, to);
         ListView lv = ((ListView)v.findViewById(R.id.current_list));

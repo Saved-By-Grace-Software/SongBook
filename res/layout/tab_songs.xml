@@ -6,20 +6,41 @@
     android:orientation="vertical"
     android:gravity="top">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="right" >
+        android:orientation="horizontal" >
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="40dp"
+            android:padding="10dip"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/TransparentWhite"
+            android:textStyle="bold"
+            android:text="@string/title_songs"
+            android:shadowColor="@color/TransparentGrey" 
+			android:shadowDx="3"
+			android:shadowDy="3" 
+			android:shadowRadius="1.5" />
 
         <Spinner
             android:id="@+id/song_group_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="40dp"
-            android:padding="10dip" />
-
-    </LinearLayout>
+            android:padding="10dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/defaultTextColor" />
+        
+    </RelativeLayout>
+    
+    <TextView 
+        android:layout_width="fill_parent"
+		android:layout_height="3dip"
+		android:background="@color/darkGrey"/>
     
     <ListView android:id="@+id/songs_list"
         android:layout_width="match_parent"
