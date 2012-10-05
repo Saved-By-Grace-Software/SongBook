@@ -1,6 +1,9 @@
 package com.sbgsoft.tabapp.songs;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
@@ -9,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sbgsoft.tabapp.R;
 import com.sbgsoft.tabapp.main.MainStrings;
@@ -102,5 +106,23 @@ public class SongActivity extends Activity {
      */
     public void populateSongText(String songText) {
     	song.setText(songText);
+    }
+    
+    /**
+     * Shows the transpose menu
+     * @param v
+     */
+    public void onTransposeButtonClick(View v) {
+    	
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Transpose to Which Key?");
+    	alert.setItems(MainStrings.songKeys, new OnClickListener() {
+    		public void onClick (DialogInterface dialog, int whichItem) {
+    			Toast.makeText(getBaseContext(), "You chose to transpose to " + MainStrings.songKeys[whichItem], Toast.LENGTH_LONG).show();
+    		}
+    	});
+    	
+    	alert.show();
     }
 }
