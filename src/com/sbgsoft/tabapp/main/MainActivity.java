@@ -470,6 +470,7 @@ public class MainActivity extends FragmentActivity {
     	super.onResume();
     	
     	mViewPager.setCurrentItem(currentTab);
+    	refreshLists();
     }
     
     /**
@@ -513,6 +514,18 @@ public class MainActivity extends FragmentActivity {
         window.setFormat(PixelFormat.RGBA_8888);
     }
 
+    /**
+     * Refreshes the lists
+     */
+    private void refreshLists() {
+    	if (currSetCursor != null)
+    		currSetCursor.requery();
+    	if (setsCursor != null)
+    		setsCursor.requery();
+    	if (songsCursor != null)
+    		songsCursor.requery();
+    }
+    
     
     /*****************************************************************************
      * 
@@ -599,7 +612,7 @@ public class MainActivity extends FragmentActivity {
 	    		if(!dbAdapter.createSet(setName, setSongs, setDate + " "))
 	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
 	    		else
-	    			setsCursor.requery();
+	    			refreshLists();
 	    		
 	    		// Set the current tab
 	        	currentTab = 2;
@@ -648,7 +661,7 @@ public class MainActivity extends FragmentActivity {
 				dbAdapter.addSetToGroup(setName, groupNames[which].toString());
 				
 				// Refresh views
-				setsCursor.requery();
+				refreshLists();
 			}
 		});
 
@@ -672,8 +685,7 @@ public class MainActivity extends FragmentActivity {
 	    		dbAdapter.removeSetFromGroup(setName, groupName);
 	    		
 	    		// Refresh the views
-	    		setGroupsCursor.requery();
-	        	setsCursor.requery();
+	    		refreshLists();
 	        	
 	        	// Set the current tab
 	        	currentTab = 2;
@@ -732,7 +744,7 @@ public class MainActivity extends FragmentActivity {
 	    		if(!dbAdapter.updateSet(setName, setSongs.toArray(new String[setSongs.size()])))
 	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
 	    		else
-	    			setsCursor.requery();
+	    			refreshLists();
 	    		
 	    		// Set the current tab
 	        	currentTab = 2;
@@ -763,8 +775,7 @@ public class MainActivity extends FragmentActivity {
 	    		dbAdapter.deleteAllSets();
 	    		
 	    		// Refresh the views
-	        	setsCursor.requery();
-	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
+	        	refreshLists();
 	        	
 	        	// Set the current tab
 	        	currentTab = 2;
@@ -796,7 +807,7 @@ public class MainActivity extends FragmentActivity {
 	    		dbAdapter.deleteSet(setName);
 	    		
 	    		// Refresh song list
-	        	setsCursor.requery();
+	        	refreshLists();
 	        	
 	        	// Set the current tab
 	        	currentTab = 2;
@@ -879,7 +890,7 @@ public class MainActivity extends FragmentActivity {
 	    			dbAdapter.updateSetAttributes(setName, newSetName, setDate);
 	    			
 	    			// Refresh views
-					setsCursor.requery();
+	    			refreshLists();
 	    		}
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
@@ -1228,8 +1239,8 @@ public class MainActivity extends FragmentActivity {
 				dbAdapter.addSongToGroup(songName, groupNames[which].toString());
 				
 				// Refresh song list
-    			//groupsCursor.requery();
-				((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
+    			refreshLists();
+				//((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
 			}
 		});
 
@@ -1253,10 +1264,9 @@ public class MainActivity extends FragmentActivity {
 	    		dbAdapter.removeSongFromGroup(songName, groupName);
 	    		
 	    		// Refresh the views
-	    		((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
-	    		songGroupsCursor.requery();
-	        	setsCursor.requery();
-	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
+	    		//((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
+	    		refreshLists();
+	        	//((CurrentSetTab)currSetFragment).refreshCurrentSet();
 	        	
 	        	// Set the current tab
 	        	currentTab = 3;
@@ -1296,10 +1306,9 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		
 	    		// Refresh the views
-	    		((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
-	    		songGroupsCursor.requery();
-	        	setsCursor.requery();
-	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
+	    		//((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
+	    		refreshLists();
+	        	//((CurrentSetTab)currSetFragment).refreshCurrentSet();
 	        	
 	        	// Set the current tab
 	        	currentTab = 3;
@@ -1338,10 +1347,9 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		
 	    		// Refresh the views
-	    		((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
-	    		songGroupsCursor.requery();
-	        	setsCursor.requery();
-	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
+	    		//((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
+	    		refreshLists();
+	        	//((CurrentSetTab)currSetFragment).refreshCurrentSet();
 	        	
 	        	// Set the current tab
 	        	currentTab = 3;
@@ -1715,9 +1723,7 @@ public class MainActivity extends FragmentActivity {
             	fillSongsList(view, groupName);
             	
             	// Refresh the views
-            	songsCursor.requery();
-	    		songGroupsCursor.requery();
-	        	setsCursor.requery();
+            	refreshLists();
 	        	((CurrentSetTab)currSetFragment).refreshCurrentSet();
             }
             
@@ -1753,7 +1759,7 @@ public class MainActivity extends FragmentActivity {
 	    			Toast.makeText(getApplicationContext(), "Cannot create a song group with no name!", Toast.LENGTH_LONG).show();
 	    		
 	    		// Refresh the view
-	    		songGroupsCursor.requery();
+	    		refreshLists();
 			}
     	});
 
@@ -1808,8 +1814,8 @@ public class MainActivity extends FragmentActivity {
 				    		dbAdapter.deleteSongGroup(groupName);
 							
 							// Refresh group and song lists
-			    			songGroupsCursor.requery();
-							((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
+			    			refreshLists();
+							//((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
 						}
 			    	});
 
@@ -1840,7 +1846,7 @@ public class MainActivity extends FragmentActivity {
 		    	dbAdapter.deleteAllSongGroups();
 	    		
 	    		// Refresh song list
-	    		songGroupsCursor.requery();
+	    		refreshLists();
 	        	
 	        	// Set the current tab
 	        	currentTab = 3;
@@ -1888,8 +1894,7 @@ public class MainActivity extends FragmentActivity {
             	fillSetsList(view, groupName);
             	
             	// Refresh the views
-            	setGroupsCursor.requery();
-	        	setsCursor.requery();
+            	refreshLists();
             }
             
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -1924,7 +1929,7 @@ public class MainActivity extends FragmentActivity {
 	    			Toast.makeText(getApplicationContext(), "Cannot create a set group with no name!", Toast.LENGTH_LONG).show();
 	    		
 	    		// Refresh the view
-	    		setGroupsCursor.requery();
+	    		refreshLists();
 			}
     	});
 
@@ -1979,8 +1984,7 @@ public class MainActivity extends FragmentActivity {
 				    		dbAdapter.deleteSetGroup(groupName);
 							
 							// Refresh group and song lists
-			    			setGroupsCursor.requery();
-			    			setsCursor.requery();
+			    			refreshLists();
 						}
 			    	});
 
@@ -2011,8 +2015,7 @@ public class MainActivity extends FragmentActivity {
 		    	dbAdapter.deleteAllSetGroups();
 	    		
 	    		// Refresh song list
-	    		setGroupsCursor.requery();
-	    		setsCursor.requery();
+	    		refreshLists();
 	        	
 	        	// Set the current tab
 	        	currentTab = 2;
