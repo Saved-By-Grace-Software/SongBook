@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.sbgsoft.tabapp.main.MainStrings;
 
 public class SongActivity extends Activity {
 	TextView song;
+	private String songName = "";
+	private String songKey = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,8 @@ public class SongActivity extends Activity {
         // Populate it with the song text
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String songName = extras.getString(MainStrings.SONG_NAME_KEY);
+            songName = extras.getString(MainStrings.SONG_NAME_KEY);
+            songKey = extras.getString(MainStrings.SONG_KEY_KEY);
             String songText = extras.getString(MainStrings.SONG_TEXT_KEY);
             song.setText(Html.fromHtml("<h2>" + songName + "</h2>" + songText));
         }
@@ -120,9 +124,22 @@ public class SongActivity extends Activity {
     	alert.setItems(MainStrings.songKeys, new OnClickListener() {
     		public void onClick (DialogInterface dialog, int whichItem) {
     			Toast.makeText(getBaseContext(), "You chose to transpose to " + MainStrings.songKeys[whichItem], Toast.LENGTH_LONG).show();
+    			transposeSong(MainStrings.songKeys[whichItem]);
     		}
     	});
     	
     	alert.show();
+    }
+    
+    /**
+     * Transposes the current song into the selected key
+     * @param transposeKey The key to transpose the song into
+     */
+    private void transposeSong(String transposeKey) {
+    	String currText = Html.toHtml((Spanned)song.getText());
+    	String updatedText = "";
+    	
+    	updatedText = currText.replaceAll("(<font color=\"#006B9F\"><b>)([A-G].*)*?(</b></font>)", "$1" + transposeKey + "$3");
+    	song.setText(Html.fromHtml(updatedText));
     }
 }

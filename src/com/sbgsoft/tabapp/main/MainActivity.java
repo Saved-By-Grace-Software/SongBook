@@ -906,6 +906,7 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
     
+    
     /*****************************************************************************
      * 
      * Song Functions
@@ -1388,12 +1389,14 @@ public class MainActivity extends FragmentActivity {
             	// Get the song to show
             	songsCursor.moveToPosition(position);
             	String songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+            	String songKey = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY));
             	String songText = getSongText(songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_FILE)));
             	
             	// Show the song activity
             	SongActivity song = new SongActivity();
             	Intent showSong = new Intent(v.getContext(), song.getClass());
             	showSong.putExtra(MainStrings.SONG_NAME_KEY, songName);
+            	showSong.putExtra(MainStrings.SONG_KEY_KEY, songKey);
             	showSong.putExtra(MainStrings.SONG_TEXT_KEY, songText);
                 startActivity(showSong);
             }
