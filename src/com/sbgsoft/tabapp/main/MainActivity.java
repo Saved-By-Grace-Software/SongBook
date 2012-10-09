@@ -933,9 +933,9 @@ public class MainActivity extends FragmentActivity {
 	    		// Get the user inputs
 	    		String songName = songNameET.getText().toString();
 	    		if (authorET.getText().length() > 0)
-	    			songAuthor = authorET.getText().toString();
+	    			songAuthor = authorET.getText().toString().trim();
 	    		if (keyET.getText().length() > 0)
-	    			songKey = keyET.getText().toString();
+	    			songKey = keyET.getText().toString().trim();
 	    		
 	    		// Create the song
 	    		if (songName.length() > 0) {

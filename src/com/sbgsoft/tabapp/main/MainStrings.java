@@ -1,5 +1,8 @@
 package com.sbgsoft.tabapp.main;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class MainStrings {
 
 	// Keys
@@ -17,6 +20,6 @@ public class MainStrings {
 
 	// General
 	public static final String UNKNOWN = "Unknown";
-	public static final String[] songKeys = {"G", "Ab", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#"};
+	public static final ArrayList<String> songKeys = new ArrayList<String>(Arrays.asList("Ab", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G"));
 	
 }
