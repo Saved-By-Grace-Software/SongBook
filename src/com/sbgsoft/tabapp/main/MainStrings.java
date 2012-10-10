@@ -1,10 +1,15 @@
 package com.sbgsoft.tabapp.main;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
 public class MainStrings {
 
 	// Keys
 	public static final String SONG_NAME_KEY = "songName";
 	public static final String SONG_TEXT_KEY = "songText";
+	public static final String SONG_KEY_KEY = "songKey";
 	public static final String CURRENT_SONG_KEY = "setCurrentSong";
 	public static final String SET_SONGS_KEY = "setSongs";
 	public static final String SET_NAME_KEY = "setName";
@@ -16,5 +21,16 @@ public class MainStrings {
 
 	// General
 	public static final String UNKNOWN = "Unknown";
+	public static final ArrayList<String> songKeys = new ArrayList<String>(Arrays.asList("Ab", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G"));
+	public static final HashMap<String, String> keyMap = new HashMap<String, String>() {
+		private static final long serialVersionUID = 94512194672735973L;
+		{
+			put("G#", "Ab");
+			put("A#", "Bb");
+			put("Db", "C#");
+			put("D#", "Eb");
+			put("Gb", "F#");
+		}
+	};
 	
 }

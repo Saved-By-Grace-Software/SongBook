@@ -46,4 +46,14 @@
         android:onClick="decFontSize"
         android:src="@android:drawable/arrow_down_float" />
 
+    <Button
+        android:id="@+id/imageButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@android:drawable/btn_default_small"
+        android:text="@string/transpose_button"
+        android:onClick="onTransposeButtonClick" />
+
 </RelativeLayout>
