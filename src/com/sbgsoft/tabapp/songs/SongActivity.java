@@ -22,6 +22,7 @@ import com.sbgsoft.tabapp.R;
 import com.sbgsoft.tabapp.main.MainStrings;
 
 public class SongActivity extends Activity {
+	
 	/*****************************************************************************
      * 
      * Class Variables
@@ -140,6 +141,12 @@ public class SongActivity extends Activity {
      * @param v
      */
     public void onTransposeButtonClick(View v) {
+    	
+    	// Check for a special key
+    	if (MainStrings.keyMap.containsKey(songKey)) {
+    		// Set the song key to the associated key
+    		songKey = MainStrings.keyMap.get(songKey);
+    	}
     	
     	// Check to make sure the song has a proper key
     	if (!MainStrings.songKeys.contains(songKey)) {

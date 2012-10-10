@@ -934,13 +934,15 @@ public class MainActivity extends FragmentActivity {
 	    		String songName = songNameET.getText().toString();
 	    		if (authorET.getText().length() > 0)
 	    			songAuthor = authorET.getText().toString().trim();
-	    		if (keyET.getText().length() > 0)
-	    			songKey = keyET.getText().toString().trim();
+	    		if (keyET.getText().length() > 1)
+	    			songKey = keyET.getText().toString().substring(0, 1).toUpperCase() + keyET.getText().toString().substring(1).trim();
+	    		else if (keyET.getText().length() > 0)
+	    			songKey = keyET.getText().toString().toUpperCase().trim();
 	    		
 	    		// Create the song
 	    		if (songName.length() > 0) {
 	    			String songFile = songName + ".txt";
-		    		if(!dbAdapter.createSong(songName, songFile, songAuthor + " ", songKey + " "))
+		    		if(!dbAdapter.createSong(songName, songFile, songAuthor, songKey))
 		    			Toast.makeText(getApplicationContext(), "Failed to create song!", Toast.LENGTH_LONG).show();
 		    		else
 		    		{
@@ -1032,7 +1034,7 @@ public class MainActivity extends FragmentActivity {
         while (line != null) {
         	// Check for song part tags
         	if(line.toLowerCase().contains("verse") || line.toLowerCase().contains("chorus") || line.toLowerCase().contains("bridge") || 
-        			line.toLowerCase().contains("tag") || line.toLowerCase().contains("coda")) {
+        			line.toLowerCase().contains("tag") || line.toLowerCase().contains("coda") || line.toLowerCase().contains("outro")) {
         		sb.append("{title:");
         		sb.append(line);
             	sb.append("}");
@@ -1624,7 +1626,13 @@ public class MainActivity extends FragmentActivity {
     	
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), keyET.getText().toString());
+	    		String key = keyET.getText().toString();
+	    		if (key.length() > 1)
+	    			key = key.substring(0, 1).toUpperCase() + key.substring(1).trim();
+	    		else if (key.length() > 0)
+	    			key = key.toUpperCase().trim();
+	    		
+	    		dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key);
 	    		
 	    		// Refresh song list
 				((SongsTab)songsFragment).refreshSongsList(SongsTab.ALL_SONGS_LABEL);
