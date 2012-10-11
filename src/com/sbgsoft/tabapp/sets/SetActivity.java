@@ -1,6 +1,8 @@
 package com.sbgsoft.tabapp.sets;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -23,15 +25,23 @@ import com.sbgsoft.tabapp.main.MainStrings;
 import com.sbgsoft.tabapp.songs.SetSongFragment;
 
 public class SetActivity extends FragmentActivity {
+	/*****************************************************************************
+     * 
+     * Class Variables
+     * 
+     *****************************************************************************/
 	TextView song;
 	FragmentTransaction transaction;
 	static ViewPager mViewPager;
 	static PagerAdapter mPagerAdapter;
 	private static int currentSong = 0;
 	
-	/**
-	 * Called when the activity is first created
-	 */
+	
+	/*****************************************************************************
+     * 
+     * Class Functions
+     * 
+     *****************************************************************************/
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -48,15 +58,18 @@ public class SetActivity extends FragmentActivity {
         // Get songs and add them to the page adapter
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+        	// Get the extras
             int currSong = extras.getInt(MainStrings.CURRENT_SONG_KEY);
-            String[] songs = extras.getStringArray(MainStrings.SET_SONGS_KEY);
-
-            // Loop through each song and create a new fragment for it
-            for (String songText : songs) {
+            @SuppressWarnings("unchecked")
+			HashMap<String, String> setSongs = (HashMap<String, String>)extras.getSerializable(MainStrings.SET_SONGS_KEY);
+            
+            // Create each song fragment
+            for (Entry<String, String> entry : setSongs.entrySet()) {
             	// Create song fragment
             	Fragment songFrag = new SetSongFragment();
             	Bundle bSong = new Bundle();
-            	bSong.putString(MainStrings.SONG_TEXT_KEY, songText);
+            	bSong.putString(MainStrings.SONG_NAME_KEY, entry.getKey());
+            	bSong.putString(MainStrings.SONG_TEXT_KEY, entry.getValue());
             	songFrag.setArguments(bSong);
             	
             	// Add the fragment to the page adapter
@@ -122,6 +135,12 @@ public class SetActivity extends FragmentActivity {
         return true;
     }
     
+    
+    /*****************************************************************************
+     * 
+     * Song Functions
+     * 
+     *****************************************************************************/
     /**
      * Increases the font size on the text view by 1
      * @param v
@@ -146,6 +165,19 @@ public class SetActivity extends FragmentActivity {
     	// Increase the font size for the fragment
     	((SetSongFragment)f).decTextSize();
     }
+    
+    /**
+     * Transposes the currently viewed song
+     * @param v
+     */
+    public void onTransposeButtonClick(View v) {
+    	// Get the current fragment
+    	Fragment f = mPagerAdapter.mFragments.get(currentSong);
+    	
+    	// Increase the font size for the fragment
+    	((SetSongFragment)f).transposeSong();
+    }
+    
     
     /*****************************************************************************
      * 
