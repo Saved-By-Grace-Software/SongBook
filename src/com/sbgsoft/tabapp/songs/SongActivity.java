@@ -31,6 +31,7 @@ public class SongActivity extends Activity {
 	TextView song;
 	private String songName = "";
 	private String songKey = "";
+	private int capo = 0;
 
 	
 	/*****************************************************************************
@@ -159,8 +160,13 @@ public class SongActivity extends Activity {
         	alert.setTitle("Transpose to Which Key?");
         	alert.setItems(MainStrings.songKeys.toArray(new CharSequence[MainStrings.songKeys.size()]), new OnClickListener() {
         		public void onClick (DialogInterface dialog, int whichItem) {
-        			Toast.makeText(getBaseContext(), "You chose to transpose to " + MainStrings.songKeys.get(whichItem), Toast.LENGTH_LONG).show();
+        			// Transpose the song
         			transposeSong(MainStrings.songKeys.get(whichItem));
+        			
+        			// Print out the capo
+        			if (capo != 0)
+        				Toast.makeText(getBaseContext(), "Play in Capo " + capo, Toast.LENGTH_LONG).show();
+        			capo = 0;
         		}
         	});
         	
@@ -177,13 +183,16 @@ public class SongActivity extends Activity {
     	String updatedText = "";
     	int offset = 0;
     	
+    	// Set the updated text to the current text
+		updatedText = currText;
+		
+		// Set the capo
+		setCapo(transposeKey);
+    	
     	// Compile the regex 
     	Pattern regex = Pattern.compile("(<b>|<font color =\"#006b9f\">)([A-G][#bmad0-9su]*/*[A-G]*[#bmad0-9su]*)(</font>|</b>)");
     	Matcher matcher = regex.matcher(currText);
-    	try {
-    		// Set the updated text to the current text to start
-    		updatedText = currText;
-    		
+    	try {    		
     		// Cycle through each match
     		while (matcher.find()) {
     			// Transpose the current chord
@@ -289,5 +298,22 @@ public class SongActivity extends Activity {
         		newChord = newRoot + originalChord.substring(1);
     	}
     	return newChord;
+    }
+
+    /**
+     * Gets the capo to play in
+     * @param transposeKey The key the song is being transposed into
+     * @return The capo number
+     */
+    private void setCapo(String transposeKey) {
+    	// Get the song key and transpose key locations
+    	int songKeyLoc = MainStrings.songKeys.indexOf(songKey);
+    	int tranKeyLoc = MainStrings.songKeys.indexOf(transposeKey);
+    	
+    	// Determine the capo number
+    	if (songKeyLoc > tranKeyLoc)
+    		capo = songKeyLoc - tranKeyLoc;
+    	else
+    		capo = songKeyLoc + (MainStrings.songKeys.size() - tranKeyLoc);
     }
 }
