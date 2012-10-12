@@ -181,17 +181,38 @@ public class SongActivity extends Activity {
     private void transposeSong(String transposeKey) {
     	String currText = Html.toHtml((Spanned)song.getText());
     	String updatedText = "";
+    	Pattern regex;
+    	Matcher matcher;
     	int offset = 0;
     	
     	// Set the updated text to the current text
 		updatedText = currText;
 		
-		// Set the capo
-		setCapo(transposeKey);
+		// Set the capo and add the line to the song		
+		if (capo > 0 && capo < 12) {
+			// Check for an existing capo line
+			regex = Pattern.compile("([Cc][Aa][Pp][Oo]).*(\\d+)");
+			matcher = regex.matcher(updatedText);
+	    	if (matcher.find()) {
+	    		capo = Integer.parseInt(matcher.group(2));
+	    		setCapo(transposeKey);
+	    		updatedText = updatedText.substring(0, matcher.start()) + "Capo " + capo + "<br>" + updatedText.substring(matcher.end());
+	    	}
+			// No existing capo, add one
+	    	else {
+	    		// Search for the author line
+	    		regex = Pattern.compile("(<i>.*</i><br>)");
+	    		matcher = regex.matcher(updatedText);
+		    	if (matcher.find()) {
+		    		setCapo(transposeKey);
+		    		updatedText = updatedText.substring(0, matcher.end()) + "Capo " + capo + "<br>" + updatedText.substring(matcher.end());
+		    	}	
+	    	}
+		}
     	
     	// Compile the regex 
-    	Pattern regex = Pattern.compile("(<b>|<font color =\"#006b9f\">)([A-G][#bmad0-9su]*/*[A-G]*[#bmad0-9su]*)(</font>|</b>)");
-    	Matcher matcher = regex.matcher(currText);
+    	regex = Pattern.compile("(<b>|<font color =\"#006b9f\">)([A-G][#bmad0-9su]*/*[A-G]*[#bmad0-9su]*)(</font>|</b>)");
+    	matcher = regex.matcher(updatedText);
     	try {    		
     		// Cycle through each match
     		while (matcher.find()) {
@@ -306,6 +327,8 @@ public class SongActivity extends Activity {
      * @return The capo number
      */
     private void setCapo(String transposeKey) {
+    	//TODO: If the capo is not 0 then adjust from there
+    	
     	// Get the song key and transpose key locations
     	int songKeyLoc = MainStrings.songKeys.indexOf(songKey);
     	int tranKeyLoc = MainStrings.songKeys.indexOf(transposeKey);
