@@ -25,6 +25,7 @@ import com.sbgsoft.tabapp.main.MainStrings;
 import com.sbgsoft.tabapp.songs.SetSongFragment;
 
 public class SetActivity extends FragmentActivity {
+	
 	/*****************************************************************************
      * 
      * Class Variables
