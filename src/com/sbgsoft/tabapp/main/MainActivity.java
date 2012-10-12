@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -1674,14 +1673,14 @@ public class MainActivity extends FragmentActivity {
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
             	// Create the string array of the song text
-            	HashMap <String, String> setSongsMap = new HashMap<String, String>();
+            	ArrayList<String[]> setSongs = new ArrayList<String[]>();
             	currSetCursor.moveToFirst();
             	
             	// Loop through each song in the current set and add it to the array
             	while(!currSetCursor.isAfterLast()) {
             		String songName = currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
                 	String songText = getSongText(currSetCursor.getString(currSetCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_FILE)));
-                	setSongsMap.put(songName, "<h2>" + songName + "</h2>" + songText);
+                	setSongs.add(new String[] {songName, "<h2>" + songName + "</h2>" + songText});
                 	currSetCursor.moveToNext();
             	}
             	
@@ -1689,7 +1688,7 @@ public class MainActivity extends FragmentActivity {
             	SetActivity song = new SetActivity();
             	Intent showSong = new Intent(v.getContext(), song.getClass());
             	showSong.putExtra(MainStrings.CURRENT_SONG_KEY, position);
-            	showSong.putExtra(MainStrings.SET_SONGS_KEY, setSongsMap);
+            	showSong.putExtra(MainStrings.SET_SONGS_KEY, setSongs);
                 startActivity(showSong);
             }
     	});

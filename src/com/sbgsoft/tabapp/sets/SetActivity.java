@@ -1,8 +1,6 @@
 package com.sbgsoft.tabapp.sets;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -61,16 +59,16 @@ public class SetActivity extends FragmentActivity {
         if (extras != null) {
         	// Get the extras
             int currSong = extras.getInt(MainStrings.CURRENT_SONG_KEY);
-            @SuppressWarnings("unchecked")
-			HashMap<String, String> setSongs = (HashMap<String, String>)extras.getSerializable(MainStrings.SET_SONGS_KEY);
+			ArrayList<?> setSongs = (ArrayList<?>)extras.getSerializable(MainStrings.SET_SONGS_KEY);
             
             // Create each song fragment
-            for (Entry<String, String> entry : setSongs.entrySet()) {
+            for (Object entry : setSongs) {
+            	String[] songData = (String[])entry;
             	// Create song fragment
             	Fragment songFrag = new SetSongFragment();
             	Bundle bSong = new Bundle();
-            	bSong.putString(MainStrings.SONG_NAME_KEY, entry.getKey());
-            	bSong.putString(MainStrings.SONG_TEXT_KEY, entry.getValue());
+            	bSong.putString(MainStrings.SONG_NAME_KEY, songData[0]);
+            	bSong.putString(MainStrings.SONG_TEXT_KEY, songData[1]);
             	songFrag.setArguments(bSong);
             	
             	// Add the fragment to the page adapter

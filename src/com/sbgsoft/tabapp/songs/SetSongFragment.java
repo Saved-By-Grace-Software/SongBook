@@ -96,9 +96,7 @@ public class SetSongFragment extends Fragment {
         			transposeSong(MainStrings.songKeys.get(whichItem));
         			
         			// Print out the capo
-        			if (capo != 0)
-        				Toast.makeText(getActivity(), "Play in Capo " + capo, Toast.LENGTH_LONG).show();
-        			capo = 0;
+        			Toast.makeText(getActivity(), "Play in Capo " + capo, Toast.LENGTH_LONG).show();
         		}
         	});
         	
@@ -113,17 +111,41 @@ public class SetSongFragment extends Fragment {
     private void transposeSong(String transposeKey) {
     	String currText = Html.toHtml((Spanned)song.getText());
     	String updatedText = "";
+    	Pattern regex;
+    	Matcher matcher;
     	int offset = 0;
     	
     	// Set the updated text to the current text
 		updatedText = currText;
 		
-		// Set the capo
-		setCapo(transposeKey);
+		// Set the capo and add the line to the song
+		// Check for an existing capo line
+		regex = Pattern.compile("([Cc][Aa][Pp][Oo])\\D*(\\d+)");
+		matcher = regex.matcher(updatedText);
+    	if (matcher.find()) {
+    		capo = Integer.parseInt(matcher.group(2));
+    		setCapo(transposeKey);
+    		// If capo 0 remove the capo line
+    		if (capo == 0)
+    			updatedText = updatedText.substring(0, matcher.start()) + updatedText.substring(matcher.end());
+    		else
+    			updatedText = updatedText.substring(0, matcher.start()) + "Capo " + capo + "<br>" + updatedText.substring(matcher.end());
+    	}
+		// No existing capo, add one
+    	else {
+    		// Search for the author line
+    		regex = Pattern.compile("(<i>.*</i>)");
+    		matcher = regex.matcher(updatedText);
+	    	if (matcher.find()) {
+	    		setCapo(transposeKey);
+	    		if (capo != 0)
+	    			updatedText = updatedText.substring(0, matcher.end()) + "<br>Capo " + capo + "<br>" + updatedText.substring(matcher.end());
+	    	}	
+    	}
     	
     	// Compile the regex 
-    	Pattern regex = Pattern.compile("(<b>|<font color =\"#006b9f\">)([A-G][#bmad0-9su]*/*[A-G]*[#bmad0-9su]*)(</font>|</b>)");
-    	Matcher matcher = regex.matcher(currText);
+    	regex = Pattern.compile("(<b>|<font color =\"#006b9f\">)([A-G][#bmad0-9su]*/*[A-G]*[#bmad0-9su]*)(</font>|</b>)");
+    	matcher = regex.matcher(updatedText);
     	try {    		
     		// Cycle through each match
     		while (matcher.find()) {
@@ -177,9 +199,9 @@ public class SetSongFragment extends Fragment {
     	diff = MainStrings.songKeys.indexOf(songKey) - MainStrings.songKeys.indexOf(transposeKey);
     	
     	// Set the new root note
-    	if (diff < 0 && rootIndex - diff > MainStrings.songKeys.size())
+    	if (diff < 0 && rootIndex - diff > MainStrings.songKeys.size() - 1) //wrap around right
     		newRoot = MainStrings.songKeys.get((rootIndex - diff) - MainStrings.songKeys.size());
-    	else if (rootIndex - diff < 0)
+    	else if (rootIndex - diff < 0) //wrap around left
 			newRoot = MainStrings.songKeys.get(MainStrings.songKeys.size() - (diff - rootIndex));
 		else 
 			newRoot = MainStrings.songKeys.get(rootIndex - diff);
@@ -200,9 +222,9 @@ public class SetSongFragment extends Fragment {
     		bassIndex = MainStrings.songKeys.indexOf(bass);
     		
     		// Set the new bass note
-        	if (diff < 0 && bassIndex - diff > MainStrings.songKeys.size())
+        	if (diff < 0 && bassIndex - diff > MainStrings.songKeys.size() - 1) //wrap around right
         		newBass = MainStrings.songKeys.get((bassIndex - diff) - MainStrings.songKeys.size());
-        	else if (bassIndex - diff < 0)
+        	else if (bassIndex - diff < 0) //wrap around left
         		newBass = MainStrings.songKeys.get(MainStrings.songKeys.size() - (diff - bassIndex));
     		else 
     			newBass = MainStrings.songKeys.get(bassIndex - diff);
@@ -242,10 +264,26 @@ public class SetSongFragment extends Fragment {
     	int songKeyLoc = MainStrings.songKeys.indexOf(songKey);
     	int tranKeyLoc = MainStrings.songKeys.indexOf(transposeKey);
     	
+    	//If the current capo is not 0 then change the song key location
+    	if (capo != 0) {
+    		// Set the new song key location
+    		if (songKeyLoc + capo > MainStrings.songKeys.size())
+    			songKeyLoc = (songKeyLoc + capo) - MainStrings.songKeys.size();
+    		else
+    			songKeyLoc = songKeyLoc + capo;
+    		
+    		// Set the new song key
+    		//songKey = MainStrings.songKeys.get(songKeyLoc);
+    	}
+    	
     	// Determine the capo number
     	if (songKeyLoc > tranKeyLoc)
     		capo = songKeyLoc - tranKeyLoc;
     	else
     		capo = songKeyLoc + (MainStrings.songKeys.size() - tranKeyLoc);
+    	
+    	// Check for capo 12
+    	if (capo == 12)
+    		capo = 0;
     }
 }

@@ -267,9 +267,9 @@ public class SongActivity extends Activity {
     	diff = MainStrings.songKeys.indexOf(songKey) - MainStrings.songKeys.indexOf(transposeKey);
     	
     	// Set the new root note
-    	if (diff < 0 && rootIndex - diff > MainStrings.songKeys.size())
+    	if (diff < 0 && rootIndex - diff > MainStrings.songKeys.size() - 1) //wrap around right
     		newRoot = MainStrings.songKeys.get((rootIndex - diff) - MainStrings.songKeys.size());
-    	else if (rootIndex - diff < 0)
+    	else if (rootIndex - diff < 0) //wrap around left
 			newRoot = MainStrings.songKeys.get(MainStrings.songKeys.size() - (diff - rootIndex));
 		else 
 			newRoot = MainStrings.songKeys.get(rootIndex - diff);
@@ -290,9 +290,9 @@ public class SongActivity extends Activity {
     		bassIndex = MainStrings.songKeys.indexOf(bass);
     		
     		// Set the new bass note
-        	if (diff < 0 && bassIndex - diff > MainStrings.songKeys.size())
+        	if (diff < 0 && bassIndex - diff > MainStrings.songKeys.size() - 1) //wrap around right
         		newBass = MainStrings.songKeys.get((bassIndex - diff) - MainStrings.songKeys.size());
-        	else if (bassIndex - diff < 0)
+        	else if (bassIndex - diff < 0) //wrap around left
         		newBass = MainStrings.songKeys.get(MainStrings.songKeys.size() - (diff - bassIndex));
     		else 
     			newBass = MainStrings.songKeys.get(bassIndex - diff);
