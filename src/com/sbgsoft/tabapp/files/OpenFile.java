@@ -101,7 +101,6 @@ public class OpenFile extends ListActivity {
 	/**
 	 * Click listener
 	 */
-	
 	@Override
 	protected void onListItemClick(ListView l, final View v, int position, long id) {
 		final File file = new File(path.get(position));
@@ -143,4 +142,13 @@ public class OpenFile extends ListActivity {
     	}
     }
 	
+	/**
+	 * Cancel button was clicked
+	 * @param v
+	 */
+	public void onCancelClick(View v) {
+		getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, MainStrings.FILE_ACTIVITY);
+		setResult(RESULT_CANCELED, getIntent());
+		finish();
+	}
 }	
