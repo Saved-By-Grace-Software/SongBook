@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -46,10 +45,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ericharlow.DragNDrop.DragNDropListActivity;
-import com.lamerman.FileDialog;
 import com.sbgsoft.tabapp.R;
 import com.sbgsoft.tabapp.db.DBAdapter;
 import com.sbgsoft.tabapp.db.DBStrings;
+import com.sbgsoft.tabapp.files.OpenFile;
 import com.sbgsoft.tabapp.sets.CurrentSetTab;
 import com.sbgsoft.tabapp.sets.SetActivity;
 import com.sbgsoft.tabapp.sets.SetsTab;
@@ -484,7 +483,7 @@ public class MainActivity extends FragmentActivity {
         	
         	// If returning from the file activity
         	if (activityType.equals(MainStrings.FILE_ACTIVITY)) {
-	            importFilePath = data.getStringExtra(FileDialog.RESULT_PATH);
+	            importFilePath = data.getStringExtra(OpenFile.RESULT_PATH);
 	            createSong();
         	}
         	
@@ -524,6 +523,14 @@ public class MainActivity extends FragmentActivity {
     		setsCursor.requery();
     	if (songsCursor != null)
     		songsCursor.requery();
+    }
+    
+    /**
+     * Sets the import file path
+     * @param path The path to set it to
+     */
+    public void setImportFilePath(String path) {
+    	importFilePath = path;
     }
     
     
@@ -915,7 +922,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * Prompts the user for a name and creates the set
      */
-    private void createSong() {
+    public void createSong() {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
     	alert.setTitle("Add Song");
 
@@ -1590,14 +1597,20 @@ public class MainActivity extends FragmentActivity {
      */
     private void importSong() {
     	// Create the file dialog intent
-    	Intent intent = new Intent(getBaseContext(), FileDialog.class);
-        intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().getPath());
+//    	Intent intent = new Intent(getBaseContext(), FileDialog.class);
+//        intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().getPath());
+//        
+//        // User cannot select directories
+//        intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
+//        
+//        // Set the file filter to text files
+//        intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "txt", "pro", "chordpro", "chopro" });
+//        
+//        // Start the activity
+//        startActivityForResult(intent, 1);
         
-        // User cannot select directories
-        intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
-        
-        // Set the file filter to text files
-        intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "txt", "pro", "chordpro", "chopro" });
+        // Create the open file intent
+        Intent intent = new Intent(getBaseContext(), OpenFile.class);
         
         // Start the activity
         startActivityForResult(intent, 1);
