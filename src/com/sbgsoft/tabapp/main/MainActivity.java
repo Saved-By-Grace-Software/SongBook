@@ -54,6 +54,7 @@ import com.sbgsoft.tabapp.sets.SetActivity;
 import com.sbgsoft.tabapp.sets.SetsTab;
 import com.sbgsoft.tabapp.songs.EditSongActivity;
 import com.sbgsoft.tabapp.songs.SongActivity;
+import com.sbgsoft.tabapp.songs.SongsCursorAdapter;
 import com.sbgsoft.tabapp.songs.SongsTab;
 
 public class MainActivity extends FragmentActivity {
@@ -1376,6 +1377,24 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
     
+    
+//    public void onSongClick(View view) {
+//    	// Get the song to show
+//    	int position = (Integer) view.getTag();
+//    	songsCursor.moveToPosition(position);
+//    	String songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+//    	String songKey = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY));
+//    	String songText = getSongText(songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_FILE)));
+//    	
+//    	// Show the song activity
+//    	SongActivity song = new SongActivity();
+//    	Intent showSong = new Intent(view.getContext(), song.getClass());
+//    	showSong.putExtra(MainStrings.SONG_NAME_KEY, songName);
+//    	showSong.putExtra(MainStrings.SONG_KEY_KEY, songKey);
+//    	showSong.putExtra(MainStrings.SONG_TEXT_KEY, songText);
+//        startActivity(showSong);
+//    }
+    
     /**
      * Fills the songs list
      * @param v The view for the list
@@ -1385,11 +1404,12 @@ public class MainActivity extends FragmentActivity {
     	songsCursor = dbAdapter.getSongNames(groupName);
     	startManagingCursor(songsCursor);
     	
-    	String[] from = new String[] { DBStrings.TBLSONG_NAME, DBStrings.TBLSONG_AUTHOR, DBStrings.TBLSONG_KEY };
-        int[] to = new int[] { R.id.songs_row_text, R.id.songs_row_author, R.id.songs_row_key };
+    	//String[] from = new String[] { DBStrings.TBLSONG_NAME, DBStrings.TBLSONG_AUTHOR, DBStrings.TBLSONG_KEY };
+        //int[] to = new int[] { R.id.songs_row_text, R.id.songs_row_author, R.id.songs_row_key };
         
-        SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.songs_row, songsCursor, from, to);
-        ListView lv = ((ListView)v.findViewById(R.id.songs_list));
+        //SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.songs_row, songsCursor, from, to);
+    	ListView lv = ((ListView)v.findViewById(R.id.songs_list));
+    	SongsCursorAdapter songs = new SongsCursorAdapter(this, songsCursor, lv);
         lv.setEmptyView(findViewById(R.id.empty_songs));
         
         // Set the on click listener for each item
