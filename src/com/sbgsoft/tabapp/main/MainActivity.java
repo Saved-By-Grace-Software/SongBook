@@ -1595,20 +1595,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * Imports a song text file into the db
      */
-    private void importSong() {
-    	// Create the file dialog intent
-//    	Intent intent = new Intent(getBaseContext(), FileDialog.class);
-//        intent.putExtra(FileDialog.START_PATH, Environment.getExternalStorageDirectory().getPath());
-//        
-//        // User cannot select directories
-//        intent.putExtra(FileDialog.CAN_SELECT_DIR, false);
-//        
-//        // Set the file filter to text files
-//        intent.putExtra(FileDialog.FORMAT_FILTER, new String[] { "txt", "pro", "chordpro", "chopro" });
-//        
-//        // Start the activity
-//        startActivityForResult(intent, 1);
-        
+    private void importSong() {        
         // Create the open file intent
         Intent intent = new Intent(getBaseContext(), OpenFile.class);
         

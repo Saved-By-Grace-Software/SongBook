@@ -34,7 +34,7 @@ public class FileArrayAdapter extends ArrayAdapter<String> {
 		String s = values.get(position);
  
 		if (s.endsWith("/"))
-			textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.folder, 0, 0, 0 );
+			textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.folder_base, 0, 0, 0 );
 		else
 			textView.setCompoundDrawablesWithIntrinsicBounds( R.drawable.file, 0, 0, 0 );
 		textView.setCompoundDrawablePadding(10);

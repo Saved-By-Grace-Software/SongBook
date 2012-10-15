@@ -24,7 +24,7 @@ public final class R {
     public static final class drawable {
         public static final int background_main=0x7f020000;
         public static final int file=0x7f020001;
-        public static final int folder=0x7f020002;
+        public static final int folder_base=0x7f020002;
         public static final int ic_action_search=0x7f020003;
         public static final int ic_launcher=0x7f020004;
         public static final int icmpmove=0x7f020005;
@@ -68,8 +68,8 @@ public final class R {
         public static final int menu_songs_create=0x7f08003b;
         public static final int menu_songs_find=0x7f08003d;
         public static final int menu_songs_import=0x7f08003c;
-        public static final int open_file_cancel=0x7f080005;
-        public static final int open_file_path=0x7f080004;
+        public static final int open_file_cancel=0x7f080004;
+        public static final int open_file_path=0x7f080005;
         public static final int open_file_row_text=0x7f08001b;
         public static final int pager=0x7f080003;
         public static final int set_edit_cancel=0x7f080019;
