@@ -49,7 +49,8 @@ public class SongsCursorAdapter extends CursorAdapter {
     			// This is the first item with that letter, show the separator
     			separatorTV.setVisibility(View.VISIBLE);
     			separatorTV.setText(songName.substring(0, 1));
-    			separatorTV.setClickable(false);
+    			separatorTV.setClickable(true);
+    			separatorTV.setOnClickListener(null);
     		}
     		else {
     			// Hide the separator text view
@@ -60,7 +61,8 @@ public class SongsCursorAdapter extends CursorAdapter {
     		// This is the first item with that letter, show the separator
 			separatorTV.setVisibility(View.VISIBLE);
 			separatorTV.setText(songName.substring(0, 1));
-			separatorTV.setClickable(false);
+			separatorTV.setClickable(true);
+			separatorTV.setOnClickListener(null);
     	}
 
     	// Set the text view text
