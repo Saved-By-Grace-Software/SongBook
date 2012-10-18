@@ -1386,17 +1386,14 @@ public class MainActivity extends FragmentActivity {
     	songsCursor = dbAdapter.getSongNames(groupName);
     	startManagingCursor(songsCursor);
     	
-    	//String[] from = new String[] { DBStrings.TBLSONG_NAME, DBStrings.TBLSONG_AUTHOR, DBStrings.TBLSONG_KEY };
-        //int[] to = new int[] { R.id.songs_row_text, R.id.songs_row_author, R.id.songs_row_key };
-        
-        //SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.songs_row, songsCursor, from, to);
+    	// Set up the list view and adapter
     	ListView lv = ((ListView)v.findViewById(R.id.songs_list));
     	SongsCursorAdapter songs = new SongsCursorAdapter(this, songsCursor, lv);
         lv.setEmptyView(findViewById(R.id.empty_songs));
         
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
+            public void onItemClick(AdapterView<?> a, View v, int position, long row) {            	
             	// Get the song to show
             	songsCursor.moveToPosition(position);
             	String songName = songsCursor.getString(songsCursor.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));

@@ -35,7 +35,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:textColor="@color/defaultTextColor"
-            android:popupBackground="@android:color/transparent" />"
+            android:popupBackground="@android:color/transparent" />
         
     </RelativeLayout>
     
@@ -47,7 +47,8 @@
     <ListView android:id="@+id/songs_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dip" />
+        android:padding="10dip"
+        android:overScrollMode="ifContentScrolls" />
     
   	<TextView android:id="@+id/empty_songs"
         android:layout_width="match_parent"
