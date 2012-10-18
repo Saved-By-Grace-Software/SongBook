@@ -33,4 +33,23 @@ public class MainStrings {
 		}
 	};
 	
+	// Song Context Menu Keys
+	public static final int DELETE_SONG = 1;
+	public static final int EDIT_SONG = 2;
+	public static final int EDIT_SONG_ATT = 3;
+	public static final int SONG_GROUPS_ADD = 4;
+	public static final int SONG_GROUPS_DEL = 5;
+	
+	// Set Context Menu Keys
+	public static final int DELETE_SET = 10;
+	public static final int EDIT_SET = 11;
+	public static final int EDIT_SET_ATT = 12;
+	public static final int REORDER_SET = 13;
+	public static final int SET_GROUPS_ADD = 14;
+	public static final int SET_GROUPS_DEL = 15;
+	
+	// Current Set Context Menu Keys
+	public static final int EDIT_SONG_CS = 20;
+	public static final int EDIT_SONG_ATT_CS = 21;
+	
 }

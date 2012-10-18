@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/songs_row_section"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:includeFontPadding="true"
+	android:paddingLeft="5dp"
+	android:textSize="30dp"
+	android:textColor="@color/defaultTextColor"
+	android:shadowColor="@color/slateGrey" 
+	android:shadowDx="3"
+	android:shadowDy="3" 
+	android:shadowRadius="1.5"
+	android:background="@color/TransparentGrey" />

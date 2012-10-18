@@ -11,28 +11,20 @@ import com.sbgsoft.tabapp.main.MainActivity;
 
 public class SongsTab extends Fragment {
 	public static final String ALL_SONGS_LABEL = "All Songs";
-	
-	private MainActivity mainActivity;
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		refreshSongsList(ALL_SONGS_LABEL);
+		MainActivity mainActivity = (MainActivity)getActivity();
+		mainActivity.setSongsList(ALL_SONGS_LABEL);
+		mainActivity.fillSongsList();
+		mainActivity.fillSongGroupsSpinner();
     }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.tab_songs, container, false);
 		return view;
-	}
-	
-	/**
-	 * Refreshes song list
-	 */
-	public void refreshSongsList(String groupName) {
-		mainActivity = (MainActivity)getActivity();
-		mainActivity.fillSongsList(getView(), groupName);
-		mainActivity.fillSongGroupsList(getView());
 	}
 }

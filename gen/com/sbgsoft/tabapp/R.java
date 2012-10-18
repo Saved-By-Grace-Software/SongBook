@@ -95,10 +95,10 @@ public final class R {
         public static final int song_transpose_button=0x7f08000b;
         public static final int song_up_button=0x7f080008;
         public static final int songs_list=0x7f080034;
-        public static final int songs_row_author=0x7f080025;
-        public static final int songs_row_key=0x7f080026;
-        public static final int songs_row_text=0x7f080024;
-        public static final int songs_row_text_separator=0x7f080023;
+        public static final int songs_row_author=0x7f080024;
+        public static final int songs_row_key=0x7f080025;
+        public static final int songs_row_section=0x7f080026;
+        public static final int songs_row_text=0x7f080023;
         public static final int songs_tab_title=0x7f080031;
         public static final int tabSets=0x7f08002b;
         public static final int tabSongs=0x7f080030;
@@ -121,9 +121,10 @@ public final class R {
         public static final int set_song=0x7f03000d;
         public static final int sets_row=0x7f03000e;
         public static final int songs_row=0x7f03000f;
-        public static final int tab_current_set=0x7f030010;
-        public static final int tab_sets=0x7f030011;
-        public static final int tab_songs=0x7f030012;
+        public static final int songs_row_section=0x7f030010;
+        public static final int tab_current_set=0x7f030011;
+        public static final int tab_sets=0x7f030012;
+        public static final int tab_songs=0x7f030013;
     }
     public static final class menu {
         public static final int activity_edit_song=0x7f070000;
