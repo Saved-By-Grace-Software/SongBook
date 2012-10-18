@@ -10,13 +10,13 @@ import com.sbgsoft.tabapp.R;
 import com.sbgsoft.tabapp.main.MainActivity;
 
 public class CurrentSetTab extends Fragment {
-	private MainActivity mainActivity;
 	
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		refreshCurrentSet();
+		MainActivity mainActivity = (MainActivity)getActivity();
+		mainActivity.fillCurrentSetListView();
     }
 
 	@Override
@@ -24,13 +24,4 @@ public class CurrentSetTab extends Fragment {
 		View view = inflater.inflate(R.layout.tab_current_set, container, false);
 		return view;
 	}
-	
-	/**
-	 * Refreshes the current set list
-	 */
-	public void refreshCurrentSet() {
-		mainActivity = (MainActivity)getActivity();
-		mainActivity.fillCurrentSetList(getView());
-	}
-	
 }

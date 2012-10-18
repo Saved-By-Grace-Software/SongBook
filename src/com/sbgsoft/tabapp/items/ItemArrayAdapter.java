@@ -1,4 +1,4 @@
-package com.sbgsoft.tabapp.songs;
+package com.sbgsoft.tabapp.items;
 
 import java.util.ArrayList;
 
@@ -10,15 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.sbgsoft.tabapp.R;
-import com.sbgsoft.tabapp.songs.items.Item;
-import com.sbgsoft.tabapp.songs.items.SectionItem;
-import com.sbgsoft.tabapp.songs.items.SongItem;
 
-public class SongsArrayAdapter extends ArrayAdapter<Item> {
+public class ItemArrayAdapter extends ArrayAdapter<Item> {
 	private ArrayList<Item> items;
 	private LayoutInflater vi;
 
-	public SongsArrayAdapter (Context context, ArrayList<Item> items) {
+	public ItemArrayAdapter (Context context, ArrayList<Item> items) {
 		super(context,0, items);
 		this.items = items;
 		vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -31,7 +28,7 @@ public class SongsArrayAdapter extends ArrayAdapter<Item> {
 
 		final Item i = items.get(position);
 		if (i != null) {
-			if(i.getClass().equals(SectionItem.class)){
+			if(i.getClass().equals(SectionItem.class)) {
 				SectionItem si = (SectionItem)i;
 				v = vi.inflate(R.layout.songs_row_section, null);
 
@@ -41,7 +38,24 @@ public class SongsArrayAdapter extends ArrayAdapter<Item> {
 				
 				final TextView sectionView = (TextView) v.findViewById(R.id.songs_row_section);
 				sectionView.setText(si.getName());
-			}else{
+			}
+			else if (i.getClass().equals(SetItem.class)) {
+				SetItem si = (SetItem)i;
+				
+				// Get the strings from the cursor
+		    	String setName = si.getName();
+		    	String setDate = si.getDate();
+		    	
+		    	// Get the text views
+		    	v = vi.inflate(R.layout.sets_row, null);
+		    	TextView setNameTV = (TextView)v.findViewById(R.id.sets_row_text);
+		    	TextView setDateTV = (TextView)v.findViewById(R.id.sets_row_date);		
+				
+		    	// Set the text view text
+		    	setNameTV.setText(setName);
+		    	setDateTV.setText(setDate + " ");
+			}
+			else if (i.getClass().equals(SongItem.class)) {
 				SongItem si = (SongItem)i;
 				
 				// Get the strings from the cursor

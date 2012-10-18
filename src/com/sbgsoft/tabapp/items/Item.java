@@ -1,4 +1,4 @@
-package com.sbgsoft.tabapp.songs.items;
+package com.sbgsoft.tabapp.items;
 
 public interface Item {
 	

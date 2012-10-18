@@ -17,8 +17,7 @@ public class SongsTab extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		
 		MainActivity mainActivity = (MainActivity)getActivity();
-		mainActivity.setSongsList(ALL_SONGS_LABEL);
-		mainActivity.fillSongsList();
+		mainActivity.fillSongsListView();
 		mainActivity.fillSongGroupsSpinner();
     }
 
