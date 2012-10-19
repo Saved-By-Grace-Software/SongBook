@@ -8,7 +8,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -610,7 +615,6 @@ public class MainActivity extends FragmentActivity {
     private void addSetToGroup(final String setName) {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSetGroupNames();
-    	//startManagingCursor(c);
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount()];
     	int counter = 0;
@@ -620,8 +624,6 @@ public class MainActivity extends FragmentActivity {
     		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
     	}
     	
-    	//stopManagingCursor(c);
-    	
     	// Create the dialog to choose which group to add the song to
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -630,6 +632,9 @@ public class MainActivity extends FragmentActivity {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				dbAdapter.addSetToGroup(setName, groupNames[which].toString());
+				
+				// Update set list
+				fillSetsListView();
 			}
 		});
 
@@ -818,6 +823,9 @@ public class MainActivity extends FragmentActivity {
         	// Move to the next song
         	c.moveToNext();
     	}
+    	
+    	// Sort the array list
+    	Collections.sort(setsList, new ItemComparableName());
     }
     
     /**
@@ -831,7 +839,7 @@ public class MainActivity extends FragmentActivity {
     	// Set up the list view and adapter
         ListView lv = ((ListView)findViewById(R.id.sets_list));
         lv.setEmptyView(findViewById(R.id.empty_sets));
-        setsAdapter = new ItemArrayAdapter(this, setsList);
+        setsAdapter = new ItemArrayAdapter(setsFragment.getActivity(), setsList);
         
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
@@ -1233,7 +1241,7 @@ public class MainActivity extends FragmentActivity {
 				dbAdapter.addSongToGroup(songName, groupNames[which].toString());
 				
 				// Refresh song list
-    			songsAdapter.notifyDataSetChanged();
+    			fillSongsListView();
 			}
 		});
 
@@ -1395,6 +1403,9 @@ public class MainActivity extends FragmentActivity {
         	// Move to the next song
         	c.moveToNext();
     	}
+    	
+    	// Sort the array list
+    	Collections.sort(songsList, new ItemComparableName());
     }
     
     /**
@@ -1409,7 +1420,7 @@ public class MainActivity extends FragmentActivity {
     	// Set up the list view and adapter
     	ListView lv = ((ListView)findViewById(R.id.songs_list));
         lv.setEmptyView(findViewById(R.id.empty_songs));
-        songsAdapter = new ItemArrayAdapter(this, songsList);
+        songsAdapter = new ItemArrayAdapter(songsFragment.getActivity(), songsList);
         
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
@@ -1790,6 +1801,9 @@ public class MainActivity extends FragmentActivity {
             	String groupName = songGroupsList.get(position);
             	currentSongGroup = groupName;
             	fillSongsListView();
+            	
+            	// Set the sort by spinner back to default
+            	((Spinner)findViewById(R.id.song_sort_spinner)).setSelection(0);
             }
             
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -1925,20 +1939,7 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
-    
-    /**
-     * Fills the song sort spinner
-     */
-    public void fillSongSortSpinner() {
-    	// Create the spinner adapter
-    	songSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, MainStrings.songSortBy);
-    	songSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
-    	final Spinner sortSpinner = (Spinner) findViewById(R.id.song_sort_spinner);
-    	
-    	// Set the adapter
-    	sortSpinner.setAdapter(songSortAdapter);
-    }
-    
+        
     
     /*****************************************************************************
      * 
@@ -1984,6 +1985,9 @@ public class MainActivity extends FragmentActivity {
             	// Get the selected item and populate the sets list
             	currentSetGroup = setGroupsList.get(position);
             	fillSetsListView();
+            	
+            	// Set the sort by spinner back to default
+            	((Spinner)findViewById(R.id.set_sort_spinner)).setSelection(0);
             }
             
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -2120,7 +2124,13 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
+        
     
+    /*****************************************************************************
+     * 
+     * Sorting Functions
+     * 
+     *****************************************************************************/
     /**
      * Fills the song sort spinner
      */
@@ -2130,8 +2140,124 @@ public class MainActivity extends FragmentActivity {
     	setSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
     	final Spinner sortSpinner = (Spinner) findViewById(R.id.set_sort_spinner);
     	
+    	// Set the on click listener for each item
+    	sortSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+            	sortSets(position);
+            }
+            
+            public void onNothingSelected(AdapterView<?> arg0) {
+            	// Nothing was clicked so ignore it
+            }
+        });
+    	
+    	
     	// Set the adapter
     	sortSpinner.setAdapter(setSortAdapter);
+    }
+    
+    /**
+     * Fills the song sort spinner
+     */
+    public void fillSongSortSpinner() {
+    	// Create the spinner adapter
+    	songSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, MainStrings.songSortBy);
+    	songSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
+    	final Spinner sortSpinner = (Spinner) findViewById(R.id.song_sort_spinner);
+    	
+    	// Set the on click listener for each item
+    	sortSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+            	sortSongs(position);
+            }
+            
+            public void onNothingSelected(AdapterView<?> arg0) {
+            	// Nothing was clicked so ignore it
+            }
+        });
+    	
+    	// Set the adapter
+    	sortSpinner.setAdapter(songSortAdapter);
+    }
+    
+    /**
+     * Sorts the song list by the selected item
+     * @param sortByPosition The position in the song sort array list
+     */
+    private void sortSongs(int sortByPosition) {
+    	ArrayList<SongItem> temp = new ArrayList<SongItem>();
+    	
+    	// Remove section items
+    	for (Item i : songsList) {
+    		if (!i.getClass().equals(SectionItem.class))
+    			temp.add((SongItem)i);
+    	}
+    	
+    	// Sort the array list
+    	switch(sortByPosition) {
+	    	case 0: //Title
+	    		fillSongsListView();
+	    		break;
+	    	case 1: //Author
+	    		// Sort the temp list
+	    		Collections.sort(temp, new SongItemComparableAuthor());
+	    		
+	    		// Reset the songs list
+	    		songsList.clear();
+	        	for (Item i : temp) {
+	        		songsList.add(i);
+	        	}
+	        	
+	        	// Update the UI
+	        	songsAdapter.notifyDataSetChanged();
+	    		break;
+	    	case 2: //Key
+	    		Collections.sort(temp, new SongItemComparableKey());
+	    		
+	    		// Reset the songs list
+	    		songsList.clear();
+	        	for (Item i : temp) {
+	        		songsList.add(i);
+	        	}
+	        	
+	        	// Update the UI
+	        	songsAdapter.notifyDataSetChanged();
+	    		break;
+    	}
+    }
+    
+    /**
+     * Sorts the set list by the selected item
+     * @param sortByPosition The position in the song sort array list
+     */
+    private void sortSets(int sortByPosition) {
+    	ArrayList<SetItem> temp = new ArrayList<SetItem>();
+    	
+    	// Remove section items
+    	for (Item i : setsList) {
+    		if (!i.getClass().equals(SectionItem.class))
+    			temp.add((SetItem)i);
+    	}
+    	
+    	// Sort the array list
+    	switch(sortByPosition) {
+	    	case 0: //Title
+	    		fillSetsListView();
+	    		break;
+	    	case 1: //Date
+	    		// Sort the temp list
+	    		Collections.sort(temp, new SetItemComparableDate());
+	    		
+	    		// Reset the songs list
+	    		setsList.clear();
+	        	for (Item i : temp) {
+	        		setsList.add(i);
+	        	}
+	        	
+	        	// Update the UI
+	        	setsAdapter.notifyDataSetChanged();
+	    		break;
+    	}
     }
     
     
@@ -2232,5 +2358,58 @@ public class MainActivity extends FragmentActivity {
         }
     }
     
+    /**
+     * Comparator for Song Items by author
+     * @author SamIAm
+     *
+     */
+    public static class SongItemComparableAuthor implements Comparator<SongItem>{
+    	 
+        public int compare(SongItem o1, SongItem o2) {
+            return o1.getAuthor().compareToIgnoreCase(o2.getAuthor());
+        }
+    }
+    
+    /**
+     * Comparator for Song Items by author
+     * @author SamIAm
+     *
+     */
+    public static class ItemComparableName implements Comparator<Item>{
+    	 
+        public int compare(Item o1, Item o2) {
+            return o1.getName().compareToIgnoreCase(o2.getName());
+        }
+    }
+    
+    /**
+     * Comparator for Song Items by key
+     * @author SamIAm
+     *
+     */
+    public static class SongItemComparableKey implements Comparator<SongItem>{
+    	 
+        public int compare(SongItem o1, SongItem o2) {
+            return o1.getKey().compareToIgnoreCase(o2.getKey());
+        }
+    }
+    
+    /**
+     * Comparator for Set Items by date
+     * @author SamIAm
+     *
+     */
+    public static class SetItemComparableDate implements Comparator<SetItem>{
+    	 
+        public int compare(SetItem o1, SetItem o2) {
+        	try {
+	        	Date date1 = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(o1.getDate());
+	        	Date date2 = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(o2.getDate());
+	        	return date1.compareTo(date2);
+        	} catch (Exception e) {}
+        	
+            return o1.getDate().compareToIgnoreCase(o2.getDate());
+        }
+    }
 }
 
