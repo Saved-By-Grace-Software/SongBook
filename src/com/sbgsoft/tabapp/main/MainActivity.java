@@ -8,7 +8,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -29,6 +34,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -72,11 +78,8 @@ public class MainActivity extends FragmentActivity {
 	private static String currentSongGroup = SongsTab.ALL_SONGS_LABEL;
 	private static String currentSetGroup = SetsTab.ALL_SETS_LABEL;
 	
-	private static String mSongAuthor = MainStrings.UNKNOWN;
-	private static String mSongKey = MainStrings.UNKNOWN;
 	public static DBAdapter dbAdapter;
 	static ViewPager mViewPager;
-	
 	public Fragment currSetFragment;
 	public Fragment setsFragment;
 	public Fragment songsFragment;
@@ -94,6 +97,8 @@ public class MainActivity extends FragmentActivity {
 	private ArrayAdapter<Item> setsAdapter;
 	private ArrayList<String> setGroupsList = new ArrayList<String>();
 	private ArrayAdapter<String> setGroupsAdapter;
+	private ArrayAdapter<String> songSortAdapter;
+	private ArrayAdapter<String> setSortAdapter;
 	
 	
 	/*****************************************************************************
@@ -608,7 +613,6 @@ public class MainActivity extends FragmentActivity {
     private void addSetToGroup(final String setName) {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSetGroupNames();
-    	//startManagingCursor(c);
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount()];
     	int counter = 0;
@@ -618,8 +622,6 @@ public class MainActivity extends FragmentActivity {
     		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
     	}
     	
-    	//stopManagingCursor(c);
-    	
     	// Create the dialog to choose which group to add the song to
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -628,6 +630,9 @@ public class MainActivity extends FragmentActivity {
 			
 			public void onClick(DialogInterface dialog, int which) {
 				dbAdapter.addSetToGroup(setName, groupNames[which].toString());
+				
+				// Update set list
+				fillSetsListView();
 			}
 		});
 
@@ -816,6 +821,9 @@ public class MainActivity extends FragmentActivity {
         	// Move to the next song
         	c.moveToNext();
     	}
+    	
+    	// Sort the array list
+    	Collections.sort(setsList, new ItemComparableName());
     }
     
     /**
@@ -829,7 +837,7 @@ public class MainActivity extends FragmentActivity {
     	// Set up the list view and adapter
         ListView lv = ((ListView)findViewById(R.id.sets_list));
         lv.setEmptyView(findViewById(R.id.empty_sets));
-        setsAdapter = new ItemArrayAdapter(this, setsList);
+        setsAdapter = new ItemArrayAdapter(setsFragment.getActivity(), setsList);
         
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
@@ -881,8 +889,8 @@ public class MainActivity extends FragmentActivity {
 	    			dbAdapter.updateSetAttributes(setName, newSetName, setDate);
 	    			
 	    			// Refresh set and current set list
-	    			setsAdapter.notifyDataSetChanged();
-		        	currSetAdapter.notifyDataSetChanged();
+	    			fillSetsListView();
+		        	fillCurrentSetListView();
 	    		}
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
@@ -908,7 +916,7 @@ public class MainActivity extends FragmentActivity {
      * Prompts the user for a name and creates the set
      */
     public void createSong() {
-    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    	CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
     	alert.setTitle("Add Song");
 
     	// Set the dialog view to gather user input
@@ -924,17 +932,30 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		// Get the user inputs
 	    		String songName = songNameET.getText().toString();
+	    		String songAuthor = MainStrings.UNKNOWN;
+	    		String songKey = "";
 	    		if (authorET.getText().length() > 0)
-	    			mSongAuthor = authorET.getText().toString().trim();
+	    			songAuthor = authorET.getText().toString().trim();
 	    		if (keyET.getText().length() > 1)
-	    			mSongKey = keyET.getText().toString().substring(0, 1).toUpperCase() + keyET.getText().toString().substring(1).trim();
+	    			songKey = keyET.getText().toString().substring(0, 1).toUpperCase() + keyET.getText().toString().substring(1).trim();
 	    		else if (keyET.getText().length() > 0)
-	    			mSongKey = keyET.getText().toString().toUpperCase().trim();
+	    			songKey = keyET.getText().toString().toUpperCase().trim();
+	    		
+	    		// Check for a correct key
+	    		if (songKey.length() > 0) {
+		        	if (!MainStrings.keyMap.containsKey(songKey) && !MainStrings.songKeys.contains(songKey)) {
+		        		Toast.makeText(getBaseContext(), "That is not a valid key!" + 
+		        				System.getProperty("line.separator") + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
+		        		return;
+		        	}
+	    		}
+	    		else
+	    			songKey = MainStrings.UNKNOWN;
 	    		
 	    		// Create the song
 	    		if (songName.length() > 0) {
 	    			String songFile = songName + ".txt";
-		    		if(!dbAdapter.createSong(songName, songFile, mSongAuthor, mSongKey))
+		    		if(!dbAdapter.createSong(songName, songFile, songAuthor, songKey))
 		    			Toast.makeText(getApplicationContext(), "Failed to create song!", Toast.LENGTH_LONG).show();
 		    		else
 		    		{
@@ -944,7 +965,7 @@ public class MainActivity extends FragmentActivity {
 		    				// Copy the file into the tabapp songs directory
 		    				try {
 		    					if (importFilePath.substring(importFilePath.length() - 3).equals("txt")) {
-		    						importTextFile(importFilePath, songFile);
+		    						importTextFile(importFilePath, songFile, songAuthor);
 		    					}
 		    					else {
 		    						InputStream in = new FileInputStream(importFilePath);
@@ -992,14 +1013,14 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a song with no name!", Toast.LENGTH_LONG).show();
+	    		
+	    		// Close the dialog
+	    		dialog.dismiss();
 			}
     	});
 
-    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    	    // Canceled.
-	    	}
-    	});
+    	alert.setNegativeButton("Cancel", null);
+    	alert.setCanceledOnTouchOutside(true);
 
     	alert.show();
     }
@@ -1010,7 +1031,7 @@ public class MainActivity extends FragmentActivity {
      * @param outputFileName The chord pro output file
      * @throws Exception IO exception
      */
-    private void importTextFile(String inputFilePath, String outputFileName) throws IOException {
+    private void importTextFile(String inputFilePath, String outputFileName, String songAuthor) throws IOException {
     	InputStream fis = new FileInputStream(importFilePath);
     	DataInputStream in = new DataInputStream(fis);
     	BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -1019,7 +1040,7 @@ public class MainActivity extends FragmentActivity {
         boolean startedSong = false;
         
         // Add author to song
-        sb.append("{author:" + mSongAuthor + "}");
+        sb.append("{author:" + songAuthor + "}");
         sb.append(System.getProperty("line.separator"));
         
         // Read each line of the file
@@ -1231,7 +1252,7 @@ public class MainActivity extends FragmentActivity {
 				dbAdapter.addSongToGroup(songName, groupNames[which].toString());
 				
 				// Refresh song list
-    			songsAdapter.notifyDataSetChanged();
+    			fillSongsListView();
 			}
 		});
 
@@ -1359,11 +1380,9 @@ public class MainActivity extends FragmentActivity {
      * @param groupName The song group
      */
     public void setSongsList() {
+    	ArrayList<Item> temp = new ArrayList<Item>();
     	Cursor c = dbAdapter.getSongNames(currentSongGroup);
     	c.moveToFirst();
-    	
-    	// Clear the ArrayList
-    	songsList.clear();
     	
     	// Populate the ArrayList
     	while (!c.isAfterLast()) {
@@ -1373,25 +1392,34 @@ public class MainActivity extends FragmentActivity {
         	String songKey = c.getString(c.getColumnIndex(DBStrings.TBLSONG_KEY));
         	String songFile = c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE));
     		
-    		// Check previous item to determine if this is the first song name with that letter
-        	if (!c.isFirst()) {
-        		c.moveToPrevious();
-        		if (c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME)).charAt(0) != songName.charAt(0)) {
-        			// This is the first item with that letter, add the separator
-        			songsList.add(new SectionItem(songName.substring(0, 1)));
-        		}
-        		c.moveToNext();
-        	}
-        	else {
-        		// This is the first item, add the separator
-        		songsList.add(new SectionItem(songName.substring(0, 1)));
-        	}
-        	
         	// Add the song item
-        	songsList.add(new SongItem(songName, songAuthor, songKey, songFile));
+        	temp.add(new SongItem(songName, songAuthor, songKey, songFile));
         	
         	// Move to the next song
         	c.moveToNext();
+    	}
+    	
+    	// Sort the array list
+    	Collections.sort(temp, new ItemComparableName());
+    	
+    	// Clear the current ArrayList
+    	songsList.clear();
+    	
+    	// Add section headers
+    	for (int i = 0; i < temp.size(); i++) {
+    		if (i != 0) {
+    			if (Character.toLowerCase(temp.get(i).getName().charAt(0)) != 
+    					Character.toLowerCase(temp.get(i-1).getName().charAt(0))) {
+    				// This is the first item with that letter, add the separator
+    				songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase()));
+    			}
+    		}
+    		else {
+    			// First item, add section
+    			songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase()));
+    		}
+    		
+    		songsList.add(temp.get(i));
     	}
     }
     
@@ -1407,7 +1435,7 @@ public class MainActivity extends FragmentActivity {
     	// Set up the list view and adapter
     	ListView lv = ((ListView)findViewById(R.id.songs_list));
         lv.setEmptyView(findViewById(R.id.empty_songs));
-        songsAdapter = new ItemArrayAdapter(this, songsList);
+        songsAdapter = new ItemArrayAdapter(songsFragment.getActivity(), songsList);
         
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
@@ -1625,7 +1653,7 @@ public class MainActivity extends FragmentActivity {
      * @param songName The song to edit
      */
     private void editSongAtt(final String songName) {
-    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    	CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
     	alert.setTitle("Add Song");
 
     	// Set the dialog view to gather user input
@@ -1644,23 +1672,38 @@ public class MainActivity extends FragmentActivity {
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		String key = keyET.getText().toString();
+	    		
+	    		// Upper case the key
 	    		if (key.length() > 1)
 	    			key = key.substring(0, 1).toUpperCase() + key.substring(1).trim();
 	    		else if (key.length() > 0)
 	    			key = key.toUpperCase().trim();
 	    		
+	    		// Check for a correct key
+	    		if (key.length() > 0) {
+		        	if (!MainStrings.keyMap.containsKey(key) && !MainStrings.songKeys.contains(key)) {
+		        		Toast toast = Toast.makeText(getBaseContext(), "That is not a valid key!" + 
+		        				System.getProperty("line.separator") + "Please enter a valid key and try again.", Toast.LENGTH_LONG);
+		        		toast.setGravity(Gravity.CENTER, 0, 0);
+		        		toast.show();
+		        		return;
+		        	}
+	    		}
+	    		else
+	    			key = MainStrings.UNKNOWN;
+	    		
 	    		dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key);
 	    		
 	    		// Refresh the song list
-				songsAdapter.notifyDataSetChanged();
+				fillSongsListView();
+				
+				// Close the dialog
+				dialog.dismiss();
 	    	}
     	});
     	
-    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    	    // Canceled.
-	    	}
-    	});
+    	alert.setNegativeButton("Cancel", null);
+    	alert.setCanceledOnTouchOutside(true);
     	
     	alert.show();
     }
@@ -1788,6 +1831,9 @@ public class MainActivity extends FragmentActivity {
             	String groupName = songGroupsList.get(position);
             	currentSongGroup = groupName;
             	fillSongsListView();
+            	
+            	// Set the sort by spinner back to default
+            	((Spinner)findViewById(R.id.song_sort_spinner)).setSelection(0);
             }
             
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -1923,7 +1969,7 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
-    
+        
     
     /*****************************************************************************
      * 
@@ -1969,6 +2015,9 @@ public class MainActivity extends FragmentActivity {
             	// Get the selected item and populate the sets list
             	currentSetGroup = setGroupsList.get(position);
             	fillSetsListView();
+            	
+            	// Set the sort by spinner back to default
+            	((Spinner)findViewById(R.id.set_sort_spinner)).setSelection(0);
             }
             
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -2105,6 +2154,164 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
+        
+    
+    /*****************************************************************************
+     * 
+     * Sorting Functions
+     * 
+     *****************************************************************************/
+    /**
+     * Fills the song sort spinner
+     */
+    public void fillSetSortSpinner() {
+    	// Create the spinner adapter
+    	setSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, MainStrings.setSortBy);
+    	setSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
+    	final Spinner sortSpinner = (Spinner) findViewById(R.id.set_sort_spinner);
+    	
+    	// Set the on click listener for each item
+    	sortSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+            	sortSets(position);
+            }
+            
+            public void onNothingSelected(AdapterView<?> arg0) {
+            	// Nothing was clicked so ignore it
+            }
+        });
+    	
+    	
+    	// Set the adapter
+    	sortSpinner.setAdapter(setSortAdapter);
+    }
+    
+    /**
+     * Fills the song sort spinner
+     */
+    public void fillSongSortSpinner() {
+    	// Create the spinner adapter
+    	songSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, MainStrings.songSortBy);
+    	songSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
+    	final Spinner sortSpinner = (Spinner) findViewById(R.id.song_sort_spinner);
+    	
+    	// Set the on click listener for each item
+    	sortSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+            	sortSongs(position);
+            }
+            
+            public void onNothingSelected(AdapterView<?> arg0) {
+            	// Nothing was clicked so ignore it
+            }
+        });
+    	
+    	// Set the adapter
+    	sortSpinner.setAdapter(songSortAdapter);
+    }
+    
+    /**
+     * Sorts the song list by the selected item
+     * @param sortByPosition The position in the song sort array list
+     */
+    private void sortSongs(int sortByPosition) {
+    	ArrayList<Item> temp = new ArrayList<Item>();
+    	
+    	// Remove section items
+    	for (Item i : songsList) {
+    		if (!i.getClass().equals(SectionItem.class))
+    			temp.add((SongItem)i);
+    	}
+    	
+    	// Sort the array list
+    	switch(sortByPosition) {
+	    	case 0: //Title
+	    		fillSongsListView();
+	    		break;
+	    	case 1: //Author
+	    		// Sort the temp list
+	    		Collections.sort(temp, new SongItemComparableAuthor());
+	    		
+	    		// Reset the songs list and add sections
+	    		songsList.clear();
+	        	for (int i = 0; i < temp.size(); i++) {
+	        		if (i != 0) {
+	        			if (Character.toLowerCase(((SongItem)temp.get(i)).getAuthor().charAt(0)) != 
+	        					Character.toLowerCase(((SongItem)temp.get(i-1)).getAuthor().charAt(0))) {
+	        				// This is the first item with that letter, add the separator
+	        				songsList.add(new SectionItem(((SongItem)temp.get(i)).getAuthor().substring(0, 1).toUpperCase()));
+	        			}
+	        		}
+	        		else {
+	        			// First item, add section
+	        			songsList.add(new SectionItem(((SongItem)temp.get(i)).getAuthor().substring(0, 1).toUpperCase()));
+	        		}
+	        		
+	        		songsList.add(temp.get(i));
+	        	}
+	        	
+	        	// Update the UI
+	        	songsAdapter.notifyDataSetChanged();
+	    		break;
+	    	case 2: //Key
+	    		Collections.sort(temp, new SongItemComparableKey());
+	    		
+	    		// Reset the songs list and add sections
+	    		songsList.clear();
+	        	for (int i = 0; i < temp.size(); i++) {
+	        		if (i != 0) {
+	        			if (!((SongItem)temp.get(i)).getKey().equals(((SongItem)temp.get(i-1)).getKey())) {
+	        				// This is the first item with that key, add the separator
+	        				songsList.add(new SectionItem(((SongItem)temp.get(i)).getKey()));
+	        			}
+	        		}
+	        		else {
+	        			// First item, add section
+	        			songsList.add(new SectionItem(((SongItem)temp.get(i)).getKey()));
+	        		}
+	        		
+	        		songsList.add(temp.get(i));
+	        	}
+	        	
+	        	// Update the UI
+	        	songsAdapter.notifyDataSetChanged();
+	    		break;
+    	}
+    }
+    
+    /**
+     * Sorts the set list by the selected item
+     * @param sortByPosition The position in the song sort array list
+     */
+    private void sortSets(int sortByPosition) {
+    	ArrayList<SetItem> temp = new ArrayList<SetItem>();
+    	
+    	// Remove section items
+    	for (Item i : setsList) {
+    		if (!i.getClass().equals(SectionItem.class))
+    			temp.add((SetItem)i);
+    	}
+    	
+    	// Sort the array list
+    	switch(sortByPosition) {
+	    	case 0: //Title
+	    		fillSetsListView();
+	    		break;
+	    	case 1: //Date
+	    		// Sort the temp list
+	    		Collections.sort(temp, new SetItemComparableDate());
+	    		
+	    		// Reset the songs list
+	    		setsList.clear();
+	        	for (Item i : temp) {
+	        		setsList.add(i);
+	        	}
+	        	
+	        	// Update the UI
+	        	setsAdapter.notifyDataSetChanged();
+	    		break;
+    	}
+    }
     
     
     /*****************************************************************************
@@ -2204,5 +2411,82 @@ public class MainActivity extends FragmentActivity {
         }
     }
     
+    /**
+     * Comparator for Song Items by author
+     * @author SamIAm
+     *
+     */
+    public static class SongItemComparableAuthor implements Comparator<Item>{
+    	 
+        public int compare(Item o1, Item o2) {
+            return ((SongItem)o1).getAuthor().compareToIgnoreCase(((SongItem)o2).getAuthor());
+        }
+    }
+    
+    /**
+     * Comparator for Song Items by author
+     * @author SamIAm
+     *
+     */
+    public static class ItemComparableName implements Comparator<Item>{
+    	 
+        public int compare(Item o1, Item o2) {
+            return o1.getName().compareToIgnoreCase(o2.getName());
+        }
+    }
+    
+    /**
+     * Comparator for Song Items by key
+     * @author SamIAm
+     *
+     */
+    public static class SongItemComparableKey implements Comparator<Item>{
+    	 
+        public int compare(Item o1, Item o2) {
+        	// Get the song keys
+        	String key1 = ((SongItem)o1).getKey();
+        	String key2 = ((SongItem)o2).getKey();
+        	
+        	// Translate any special keys
+        	if (MainStrings.keyMap.containsKey(key1))
+        		key1 = MainStrings.keyMap.get(key1);
+        	if (MainStrings.keyMap.containsKey(key2))
+        		key2 = MainStrings.keyMap.get(key2);
+        	
+        	// Do a special compare for 'unknown'
+        	if (key1.equals(MainStrings.UNKNOWN) && key2.equals(MainStrings.UNKNOWN))
+        		return 0;
+        	else if (key1.equals(MainStrings.UNKNOWN) && !key2.equals(MainStrings.UNKNOWN))
+        		return 1;
+        	else if (!key1.equals(MainStrings.UNKNOWN) && key2.equals(MainStrings.UNKNOWN))
+        		return -1;
+        	
+        	// Compare the keys
+        	if (MainStrings.songKeys.indexOf(key1) > MainStrings.songKeys.indexOf(key2))
+        		return 1;
+        	else if (MainStrings.songKeys.indexOf(key1) == MainStrings.songKeys.indexOf(key2))
+        		return 0;
+        	else
+        		return -1;
+        }
+    }
+    
+    /**
+     * Comparator for Set Items by date
+     * @author SamIAm
+     *
+     */
+    public static class SetItemComparableDate implements Comparator<Item>{
+    	 
+        public int compare(Item o1, Item o2) {
+        	try {
+	        	Date date1 = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(((SetItem)o1).getDate());
+	        	Date date2 = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH).parse(((SetItem)o2).getDate());
+	        	return date1.compareTo(date2);
+        	} catch (Exception e) {}
+        	
+            return ((SetItem)o1).getDate().compareToIgnoreCase(((SetItem)o2).getDate());
+        }
+    }
 }
 

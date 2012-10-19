@@ -16,9 +16,11 @@ public class SongsTab extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
+		// Populate the song tab lists
 		MainActivity mainActivity = (MainActivity)getActivity();
 		mainActivity.fillSongsListView();
 		mainActivity.fillSongGroupsSpinner();
+		mainActivity.fillSongSortSpinner();
     }
 
 	@Override

@@ -339,9 +339,6 @@ public class SongActivity extends Activity {
     			songKeyLoc = (songKeyLoc + capo) - MainStrings.songKeys.size();
     		else
     			songKeyLoc = songKeyLoc + capo;
-    		
-    		// Set the new song key
-    		//songKey = MainStrings.songKeys.get(songKeyLoc);
     	}
     	
     	// Determine the capo number

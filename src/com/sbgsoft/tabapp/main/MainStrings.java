@@ -52,4 +52,7 @@ public class MainStrings {
 	public static final int EDIT_SONG_CS = 20;
 	public static final int EDIT_SONG_ATT_CS = 21;
 	
+	// Sort Arrays
+	public static final ArrayList<String> songSortBy = new ArrayList<String>(Arrays.asList("Song Title", "Song Author", "Song Key"));
+	public static final ArrayList<String> setSortBy = new ArrayList<String>(Arrays.asList("Set Title", "Set Date"));
 }

@@ -25,17 +25,56 @@
 			android:shadowDx="3"
 			android:shadowDy="3" 
 			android:shadowRadius="1.5" />
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_toLeftOf="@+id/song_sort_spinner"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:shadowColor="@color/TransparentGrey" 
+			android:shadowDx="2"
+			android:shadowDy="2" 
+			android:shadowRadius="1"
+            android:text="@string/sort_by"
+            android:paddingBottom="10dip" />
+        
+        <Spinner
+            android:id="@+id/song_sort_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dip"
+            android:layout_toLeftOf="@+id/song_group_label"
+            android:layout_alignParentBottom="true"
+            android:popupBackground="@color/TranslucentWhite" />
+        
+        <TextView
+            android:id="@+id/song_group_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:layout_toLeftOf="@+id/song_group_spinner"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:shadowColor="@color/TransparentGrey" 
+			android:shadowDx="2"
+			android:shadowDy="2" 
+			android:shadowRadius="1"
+            android:text="@string/song_group"
+            android:paddingBottom="10dip"
+            android:paddingLeft="30dp" />
 
         <Spinner
             android:id="@+id/song_group_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="40dp"
             android:padding="10dip"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:textColor="@color/defaultTextColor"
-            android:popupBackground="@android:color/transparent" />
+            android:popupBackground="@color/TranslucentWhite" />
         
     </RelativeLayout>
     
