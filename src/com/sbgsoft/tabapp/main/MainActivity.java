@@ -2443,7 +2443,31 @@ public class MainActivity extends FragmentActivity {
     public static class SongItemComparableKey implements Comparator<Item>{
     	 
         public int compare(Item o1, Item o2) {
-            return ((SongItem)o1).getKey().compareToIgnoreCase(((SongItem)o2).getKey());
+        	// Get the song keys
+        	String key1 = ((SongItem)o1).getKey();
+        	String key2 = ((SongItem)o2).getKey();
+        	
+        	// Translate any special keys
+        	if (MainStrings.keyMap.containsKey(key1))
+        		key1 = MainStrings.keyMap.get(key1);
+        	if (MainStrings.keyMap.containsKey(key2))
+        		key2 = MainStrings.keyMap.get(key2);
+        	
+        	// Do a special compare for 'unknown'
+        	if (key1.equals(MainStrings.UNKNOWN) && key2.equals(MainStrings.UNKNOWN))
+        		return 0;
+        	else if (key1.equals(MainStrings.UNKNOWN) && !key2.equals(MainStrings.UNKNOWN))
+        		return 1;
+        	else if (!key1.equals(MainStrings.UNKNOWN) && key2.equals(MainStrings.UNKNOWN))
+        		return -1;
+        	
+        	// Compare the keys
+        	if (MainStrings.songKeys.indexOf(key1) > MainStrings.songKeys.indexOf(key2))
+        		return 1;
+        	else if (MainStrings.songKeys.indexOf(key1) == MainStrings.songKeys.indexOf(key2))
+        		return 0;
+        	else
+        		return -1;
         }
     }
     
