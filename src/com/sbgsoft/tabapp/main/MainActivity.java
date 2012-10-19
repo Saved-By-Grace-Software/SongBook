@@ -40,7 +40,6 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -83,8 +82,6 @@ public class MainActivity extends FragmentActivity {
 	public Fragment songsFragment;
 	
 	FragmentTransaction transaction;
-	//private Cursor setsCursor;
-	private Cursor setGroupsCursor;
 	private String importFilePath = "";
 	
 	private ArrayList<Item> songsList = new ArrayList<Item>();
@@ -95,6 +92,8 @@ public class MainActivity extends FragmentActivity {
 	private ArrayAdapter<Item> currSetAdapter;
 	private ArrayList<Item> setsList = new ArrayList<Item>();
 	private ArrayAdapter<Item> setsAdapter;
+	private ArrayList<String> setGroupsList = new ArrayList<String>();
+	private ArrayAdapter<String> setGroupsAdapter;
 	
 	
 	/*****************************************************************************
@@ -394,8 +393,7 @@ public class MainActivity extends FragmentActivity {
     			// Get the current group
     			Spinner s1 = (Spinner)findViewById(R.id.set_group_spinner);
     			int position1 = s1.getSelectedItemPosition();
-    			setGroupsCursor.moveToPosition(position1);
-    			groupName = setGroupsCursor.getString(setGroupsCursor.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
+    			groupName = setGroupsList.get(position1);
     			
     			// Remove the song from the group
     			if (!groupName.equals(SetsTab.ALL_SETS_LABEL))
@@ -824,7 +822,7 @@ public class MainActivity extends FragmentActivity {
      * Fills the sets list
      * @param v The view for the list
      */
-    public void fillSetsList() {
+    public void fillSetsListView() {
     	// Fill the sets array list
     	setSetsList();
     	
@@ -1756,7 +1754,6 @@ public class MainActivity extends FragmentActivity {
     public void setSongGroupsList() {
     	// Query the database
     	Cursor c = dbAdapter.getSongGroupNames();
-    	//startManagingCursor(c);
     	
     	// Clear the existing groups list
     	songGroupsList.clear();
@@ -1767,8 +1764,6 @@ public class MainActivity extends FragmentActivity {
     		songGroupsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME)));
     		c.moveToNext();
     	}
-    	
-    	//stopManagingCursor(c);
     }
     
     /**
@@ -1784,13 +1779,14 @@ public class MainActivity extends FragmentActivity {
     	songGroupsAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
     	final Spinner groupSpinner = (Spinner) findViewById(R.id.song_group_spinner);
     	
+    	// TODO: Set current group as selected
+    	
     	// Set the on click listener for each item
     	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
             	// Get the selected item and populate the songs list
             	String groupName = songGroupsList.get(position);
             	currentSongGroup = groupName;
-            	setSongsList();
             	fillSongsListView();
             }
             
@@ -1826,7 +1822,8 @@ public class MainActivity extends FragmentActivity {
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a song group with no name!", Toast.LENGTH_LONG).show();
 	    		
-	    		// Refresh the song list
+	    		// Refresh the song list and song group spinner
+	    		fillSongGroupsSpinner();
 	    		songsAdapter.notifyDataSetChanged();
 			}
     	});
@@ -1847,7 +1844,6 @@ public class MainActivity extends FragmentActivity {
     private void deleteSongGroup() {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSongGroupNames();
-    	//startManagingCursor(c);
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount() - 1];
     	int counter = 0;
@@ -1859,8 +1855,6 @@ public class MainActivity extends FragmentActivity {
     	while(c.moveToNext()) {
     		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
     	}
-    	
-    	//stopManagingCursor(c);
     	
     	// Create the dialog to choose which group to delete
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -1881,8 +1875,9 @@ public class MainActivity extends FragmentActivity {
 				    	public void onClick(DialogInterface dialog, int whichButton) {
 				    		dbAdapter.deleteSongGroup(groupName);
 							
-							// Refresh the song list
-			    			songsAdapter.notifyDataSetChanged();
+				    		// Refresh the song list and song group spinner
+				    		fillSongGroupsSpinner();
+				    		songsAdapter.notifyDataSetChanged();
 						}
 			    	});
 
@@ -1913,7 +1908,8 @@ public class MainActivity extends FragmentActivity {
 		    	dbAdapter.deleteAllSongGroups();
 		    	currentSongGroup = SongsTab.ALL_SONGS_LABEL;
 	    		
-	    		// Refresh the song list
+		    	// Refresh the song list and song group spinner
+	    		fillSongGroupsSpinner();
 	    		songsAdapter.notifyDataSetChanged();
 			}
     	});
@@ -1935,31 +1931,44 @@ public class MainActivity extends FragmentActivity {
      * 
      *****************************************************************************/
     /**
-     * Fills the group list
+     * Sets the set group array list
+     */
+    public void setSetGroupsList() {
+    	// Query the database
+    	Cursor c = dbAdapter.getSetGroupNames();
+    	
+    	// Clear the existing groups list
+    	setGroupsList.clear();
+    	
+    	// Populate the groups
+    	c.moveToFirst();
+    	while (!c.isAfterLast()) {
+    		setGroupsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME)));
+    		c.moveToNext();
+    	}
+    }
+    
+    /**
+     * Fills the group list spinner
      * @param v
      */
-    public void fillSetGroupsList(final View view) {
-    	//groupsCursor = dbAdapter.getGroupsList(groupName);
-    	setGroupsCursor = dbAdapter.getSetGroupNames();
-    	startManagingCursor(setGroupsCursor);
+    public void fillSetGroupsSpinner() {
+    	// Set the groups list
+    	setSetGroupsList();
+        
+    	// Create the spinner adapter
+    	setGroupsAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, setGroupsList);
+    	setGroupsAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
+    	final Spinner groupSpinner = (Spinner) findViewById(R.id.set_group_spinner);
     	
-    	String[] from = new String[] { DBStrings.TBLSETGROUPS_NAME };
-        int[] to = new int[] { R.id.group_spinner_item_text };
-      
-        SimpleCursorAdapter songs = new SimpleCursorAdapter(this, R.layout.group_spinner_item, setGroupsCursor, from, to);
-        songs.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
-    	Spinner groupSpinner = (Spinner) findViewById(R.id.set_group_spinner);
+    	// TODO:Set the current group as the selected group
     	
     	// Set the on click listener for each item
     	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
-            	// Get the selected item and populate the songs list
-            	setGroupsCursor.moveToPosition(position);
-            	String groupName = setGroupsCursor.getString(setGroupsCursor.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
-            	fillSetsList();
-            	
-            	// Refresh the views
-            	//refreshLists();
+            	// Get the selected item and populate the sets list
+            	currentSetGroup = setGroupsList.get(position);
+            	fillSetsListView();
             }
             
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -1967,7 +1976,7 @@ public class MainActivity extends FragmentActivity {
             }
         });
     	
-    	groupSpinner.setAdapter(songs);
+    	groupSpinner.setAdapter(setGroupsAdapter);
     }
     
     /**
@@ -1993,8 +2002,9 @@ public class MainActivity extends FragmentActivity {
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a set group with no name!", Toast.LENGTH_LONG).show();
 	    		
-	    		// Refresh the view
-	    		//refreshLists();
+	    		// Refresh the set group spinner and set list
+	    		fillSetGroupsSpinner();
+	    		setsAdapter.notifyDataSetChanged();
 			}
     	});
 
@@ -2014,7 +2024,6 @@ public class MainActivity extends FragmentActivity {
     private void deleteSetGroup() {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSetGroupNames();
-    	//startManagingCursor(c);
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount() - 1];
     	int counter = 0;
@@ -2026,8 +2035,6 @@ public class MainActivity extends FragmentActivity {
     	while(c.moveToNext()) {
     		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
     	}
-    	
-    	//stopManagingCursor(c);
     	
     	// Create the dialog to choose which group to delete
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -2048,8 +2055,9 @@ public class MainActivity extends FragmentActivity {
 				    	public void onClick(DialogInterface dialog, int whichButton) {
 				    		dbAdapter.deleteSetGroup(groupName);
 							
-							// Refresh group and song lists
-			    			//refreshLists();
+				    		// Refresh the set group spinner and set list
+				    		fillSetGroupsSpinner();
+				    		setsAdapter.notifyDataSetChanged();
 						}
 			    	});
 
@@ -2079,8 +2087,9 @@ public class MainActivity extends FragmentActivity {
 				// Delete song from database
 		    	dbAdapter.deleteAllSetGroups();
 	    		
-	    		// Refresh song list
-	    		//refreshLists();
+		    	// Refresh the set group spinner and set list
+	    		fillSetGroupsSpinner();
+	    		setsAdapter.notifyDataSetChanged();
 	        	
 	        	// Set the current tab
 	        	currentTab = 2;

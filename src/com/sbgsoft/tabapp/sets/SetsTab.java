@@ -17,8 +17,8 @@ public class SetsTab extends Fragment {
 		super.onActivityCreated(savedInstanceState);
 		
 		MainActivity mainActivity = (MainActivity)getActivity();
-		mainActivity.fillSetsList();
-		//mainActivity.fillSongGroupsSpinner();
+		mainActivity.fillSetsListView();
+		mainActivity.fillSetGroupsSpinner();
     }
 
 	@Override
