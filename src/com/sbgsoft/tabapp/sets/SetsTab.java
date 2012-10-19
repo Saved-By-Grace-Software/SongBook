@@ -16,9 +16,11 @@ public class SetsTab extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
+		// Populate the set tab lists
 		MainActivity mainActivity = (MainActivity)getActivity();
 		mainActivity.fillSetsListView();
 		mainActivity.fillSetGroupsSpinner();
+		mainActivity.fillSetSortSpinner();
     }
 
 	@Override

@@ -94,6 +94,8 @@ public class MainActivity extends FragmentActivity {
 	private ArrayAdapter<Item> setsAdapter;
 	private ArrayList<String> setGroupsList = new ArrayList<String>();
 	private ArrayAdapter<String> setGroupsAdapter;
+	private ArrayAdapter<String> songSortAdapter;
+	private ArrayAdapter<String> setSortAdapter;
 	
 	
 	/*****************************************************************************
@@ -1924,6 +1926,19 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
     
+    /**
+     * Fills the song sort spinner
+     */
+    public void fillSongSortSpinner() {
+    	// Create the spinner adapter
+    	songSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, MainStrings.songSortBy);
+    	songSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
+    	final Spinner sortSpinner = (Spinner) findViewById(R.id.song_sort_spinner);
+    	
+    	// Set the adapter
+    	sortSpinner.setAdapter(songSortAdapter);
+    }
+    
     
     /*****************************************************************************
      * 
@@ -2104,6 +2119,19 @@ public class MainActivity extends FragmentActivity {
     	});
 
     	alert.show();
+    }
+    
+    /**
+     * Fills the song sort spinner
+     */
+    public void fillSetSortSpinner() {
+    	// Create the spinner adapter
+    	setSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, MainStrings.setSortBy);
+    	setSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
+    	final Spinner sortSpinner = (Spinner) findViewById(R.id.set_sort_spinner);
+    	
+    	// Set the adapter
+    	sortSpinner.setAdapter(setSortAdapter);
     }
     
     
