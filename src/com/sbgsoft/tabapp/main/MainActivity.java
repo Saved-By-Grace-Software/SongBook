@@ -78,8 +78,6 @@ public class MainActivity extends FragmentActivity {
 	private static String currentSongGroup = SongsTab.ALL_SONGS_LABEL;
 	private static String currentSetGroup = SetsTab.ALL_SETS_LABEL;
 	
-	//private static String mSongAuthor = MainStrings.UNKNOWN;
-	//private static String mSongKey = MainStrings.UNKNOWN;
 	public static DBAdapter dbAdapter;
 	static ViewPager mViewPager;
 	public Fragment currSetFragment;
@@ -2258,10 +2256,21 @@ public class MainActivity extends FragmentActivity {
 	    	case 2: //Key
 	    		Collections.sort(temp, new SongItemComparableKey());
 	    		
-	    		// Reset the songs list
+	    		// Reset the songs list and add sections
 	    		songsList.clear();
-	        	for (Item i : temp) {
-	        		songsList.add(i);
+	        	for (int i = 0; i < temp.size(); i++) {
+	        		if (i != 0) {
+	        			if (!((SongItem)temp.get(i)).getKey().equals(((SongItem)temp.get(i-1)).getKey())) {
+	        				// This is the first item with that key, add the separator
+	        				songsList.add(new SectionItem(((SongItem)temp.get(i)).getKey()));
+	        			}
+	        		}
+	        		else {
+	        			// First item, add section
+	        			songsList.add(new SectionItem(((SongItem)temp.get(i)).getKey()));
+	        		}
+	        		
+	        		songsList.add(temp.get(i));
 	        	}
 	        	
 	        	// Update the UI
