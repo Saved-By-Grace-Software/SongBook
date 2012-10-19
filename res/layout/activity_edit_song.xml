@@ -1,30 +1,45 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-
-    <EditText
-        android:id="@+id/song_edit_text"
+    
+    <ScrollView
+        android:id="@+id/vscroll_view"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:textColor="#000000"
-        android:typeface="monospace"
-        android:background="#FFFFFF"
-        android:textSize="20dp"
-        android:text="@string/empty_song"
-        android:scrollHorizontally="true"
-        android:scrollbars="horizontal" >
-
-        <requestFocus />
-    </EditText>
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/button_bottom"
+        android:fadeScrollbars="true"
+        android:fillViewport="true" >
+        
+        <HorizontalScrollView
+	        android:id="@+id/hscroll_view"
+	        android:layout_width="fill_parent"
+	        android:layout_height="0dp"
+	        android:fadeScrollbars="true"
+	        android:fillViewport="true" >
+	        
+			<EditText
+		        android:id="@+id/song_edit_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:inputType="textMultiLine"
+		        android:textColor="#000000"
+		        android:typeface="monospace"
+		        android:background="@android:color/white"
+		        android:textSize="20dp"
+		        android:text="@string/empty_song" />
+			
+		</HorizontalScrollView>
+		
+	</ScrollView>
 
     <LinearLayout
+        android:id="@+id/button_bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" >
 
         <Button
             android:id="@+id/song_edit_save"
@@ -44,4 +59,4 @@
 
     </LinearLayout>    
 
-</LinearLayout>
+</RelativeLayout>

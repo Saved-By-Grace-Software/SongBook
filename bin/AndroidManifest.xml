@@ -40,10 +40,8 @@
             android:screenOrientation="sensorPortait" />
         <activity
             android:name=".songs.EditSongActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_edit_song"
-            android:screenOrientation="sensorPortait"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
+            android:screenOrientation="sensorPortait" />
         <activity
             android:name="com.ericharlow.DragNDrop.DragNDropListActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
