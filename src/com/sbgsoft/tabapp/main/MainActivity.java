@@ -34,6 +34,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -917,7 +918,7 @@ public class MainActivity extends FragmentActivity {
      * Prompts the user for a name and creates the set
      */
     public void createSong() {
-    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    	CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
     	alert.setTitle("Add Song");
 
     	// Set the dialog view to gather user input
@@ -934,7 +935,7 @@ public class MainActivity extends FragmentActivity {
 	    		// Get the user inputs
 	    		String songName = songNameET.getText().toString();
 	    		String songAuthor = MainStrings.UNKNOWN;
-	    		String songKey = MainStrings.UNKNOWN;
+	    		String songKey = "";
 	    		if (authorET.getText().length() > 0)
 	    			songAuthor = authorET.getText().toString().trim();
 	    		if (keyET.getText().length() > 1)
@@ -943,10 +944,15 @@ public class MainActivity extends FragmentActivity {
 	    			songKey = keyET.getText().toString().toUpperCase().trim();
 	    		
 	    		// Check for a correct key
-	        	if (!MainStrings.keyMap.containsKey(songKey) || !MainStrings.songKeys.contains(songKey)) {
-	        		Toast.makeText(getBaseContext(), "That is not a correct key!", Toast.LENGTH_LONG).show();
-	        		return;
-	        	}
+	    		if (songKey.length() > 0) {
+		        	if (!MainStrings.keyMap.containsKey(songKey) && !MainStrings.songKeys.contains(songKey)) {
+		        		Toast.makeText(getBaseContext(), "That is not a valid key!" + 
+		        				System.getProperty("line.separator") + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
+		        		return;
+		        	}
+	    		}
+	    		else
+	    			songKey = MainStrings.UNKNOWN;
 	    		
 	    		// Create the song
 	    		if (songName.length() > 0) {
@@ -1009,14 +1015,14 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a song with no name!", Toast.LENGTH_LONG).show();
+	    		
+	    		// Close the dialog
+	    		dialog.dismiss();
 			}
     	});
 
-    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    	    // Canceled.
-	    	}
-    	});
+    	alert.setNegativeButton("Cancel", null);
+    	alert.setCanceledOnTouchOutside(true);
 
     	alert.show();
     }
@@ -1649,7 +1655,7 @@ public class MainActivity extends FragmentActivity {
      * @param songName The song to edit
      */
     private void editSongAtt(final String songName) {
-    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    	CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
     	alert.setTitle("Add Song");
 
     	// Set the dialog view to gather user input
@@ -1676,23 +1682,30 @@ public class MainActivity extends FragmentActivity {
 	    			key = key.toUpperCase().trim();
 	    		
 	    		// Check for a correct key
-	        	if (!MainStrings.keyMap.containsKey(key) || !MainStrings.songKeys.contains(key)) {
-	        		Toast.makeText(getBaseContext(), "That is not a correct key!", Toast.LENGTH_LONG).show();
-	        		return;
-	        	}
+	    		if (key.length() > 0) {
+		        	if (!MainStrings.keyMap.containsKey(key) && !MainStrings.songKeys.contains(key)) {
+		        		Toast toast = Toast.makeText(getBaseContext(), "That is not a valid key!" + 
+		        				System.getProperty("line.separator") + "Please enter a valid key and try again.", Toast.LENGTH_LONG);
+		        		toast.setGravity(Gravity.CENTER, 0, 0);
+		        		toast.show();
+		        		return;
+		        	}
+	    		}
+	    		else
+	    			key = MainStrings.UNKNOWN;
 	    		
 	    		dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key);
 	    		
 	    		// Refresh the song list
 				fillSongsListView();
+				
+				// Close the dialog
+				dialog.dismiss();
 	    	}
     	});
     	
-    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    	    // Canceled.
-	    	}
-    	});
+    	alert.setNegativeButton("Cancel", null);
+    	alert.setCanceledOnTouchOutside(true);
     	
     	alert.show();
     }
