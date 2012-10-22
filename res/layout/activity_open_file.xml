@@ -7,10 +7,10 @@
     
     <LinearLayout
         android:layout_width="match_parent"
-    	android:layout_height="match_parent" 
+    	android:layout_height="wrap_content" 
     	android:orientation="vertical"
     	android:layout_alignParentTop="true"
-    	android:layout_above="@+id/open_file_cancel" >
+    	android:layout_above="@+id/open_file_bottom_bar" >
     	
 	    <TextView
 	        android:id="@+id/open_file_path"
@@ -30,18 +30,46 @@
 	        android:id="@android:id/empty"
 	        android:layout_width="fill_parent" 
 	        android:layout_height="wrap_content" 
-	        android:text="@string/open_file_empty"
-	        />
+	        android:text="@string/open_file_empty" />
 	    
     </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/open_file_bottom_bar"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content" 
+    	android:orientation="horizontal"
+    	android:layout_alignParentBottom="true"	>
+	    
+        <TextView
+	        android:layout_width="0dp" 
+	        android:layout_height="wrap_content"
+	        android:includeFontPadding="true"
+		    android:textSize="20dp"
+		    android:textStyle="bold"
+		    android:textColor="@color/defaultTextColor"
+		    android:layout_weight="1"
+		    android:text="@string/file_type" />
+        
+        <Spinner
+            android:id="@+id/file_type_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="10dip"
+            android:layout_weight="1"
+            android:popupBackground="@color/TranslucentWhite" />
+          
+        <Button
+	        android:id="@+id/open_file_cancel"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/defaultTextColor"
+	        android:text="@string/cancel"
+	        android:onClick="onCancelClick"
+	        android:layout_weight="2" />
+        
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/open_file_cancel"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/defaultTextColor"
-        android:text="@string/cancel"
-        android:layout_alignParentBottom="true"
-        android:onClick="onCancelClick" />
+    
 
 </RelativeLayout>
