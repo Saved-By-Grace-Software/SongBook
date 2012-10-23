@@ -29,6 +29,7 @@ public class OpenFile extends ListActivity {
 	private List<String> path = null;
 	private String root;
 	private TextView myPath;
+	private String currentDir;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class OpenFile extends ListActivity {
         
         // Set the SD card as the root directory
         root = Environment.getExternalStorageDirectory().getPath();
+        currentDir = root;
         
         // Fill the file type spinner
         fillFileTypeSpinner();
@@ -49,14 +51,21 @@ public class OpenFile extends ListActivity {
 	private void fillFileTypeSpinner() {
 		// Create the spinner adapter
 		ArrayList<String> fileTypes = new ArrayList<String>(Arrays.asList("SongBook Files", "All Files"));
-    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, fileTypes);
-    	adapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
+    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.file_spinner_item, fileTypes);
+    	adapter.setDropDownViewResource( R.layout.file_spinner_dropdown_item );
     	final Spinner fileSpinner = (Spinner) findViewById(R.id.file_type_spinner);
     	
     	// Set the on click listener for each item
     	fileSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
-            	
+            	if (((String)a.getItemAtPosition(position)).equals("All Files")) {
+	            	allFiles = true;
+	            	getDir(currentDir);
+            	}
+            	else {
+            		allFiles = false;
+            		getDir(currentDir);
+            	}
             }
             
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -144,7 +153,8 @@ public class OpenFile extends ListActivity {
 		if (file.isDirectory())
 		{
 			if(file.canRead()){
-				getDir(path.get(position));
+				currentDir = path.get(position);
+				getDir(currentDir);
 			}else{
 				new AlertDialog.Builder(this)
 				.setIcon(R.drawable.ic_launcher)

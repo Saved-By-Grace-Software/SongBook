@@ -19,6 +19,7 @@ public final class R {
         public static final int defaultTextColor=0x7f050001;
         public static final int gray=0x7f050000;
         public static final int lightBlack=0x7f050005;
+        public static final int slateBlue=0x7f05000a;
         public static final int slateGrey=0x7f050007;
         public static final int white=0x7f050008;
     }
@@ -125,16 +126,18 @@ public final class R {
         public static final int current_set_row=0x7f030007;
         public static final int dragitem=0x7f030008;
         public static final int dragndroplistview=0x7f030009;
-        public static final int group_spinner_dropdown_item=0x7f03000a;
-        public static final int group_spinner_item=0x7f03000b;
-        public static final int open_file_row=0x7f03000c;
-        public static final int set_song=0x7f03000d;
-        public static final int sets_row=0x7f03000e;
-        public static final int songs_row=0x7f03000f;
-        public static final int songs_row_section=0x7f030010;
-        public static final int tab_current_set=0x7f030011;
-        public static final int tab_sets=0x7f030012;
-        public static final int tab_songs=0x7f030013;
+        public static final int file_spinner_dropdown_item=0x7f03000a;
+        public static final int file_spinner_item=0x7f03000b;
+        public static final int group_spinner_dropdown_item=0x7f03000c;
+        public static final int group_spinner_item=0x7f03000d;
+        public static final int open_file_row=0x7f03000e;
+        public static final int set_song=0x7f03000f;
+        public static final int sets_row=0x7f030010;
+        public static final int songs_row=0x7f030011;
+        public static final int songs_row_section=0x7f030012;
+        public static final int tab_current_set=0x7f030013;
+        public static final int tab_sets=0x7f030014;
+        public static final int tab_songs=0x7f030015;
     }
     public static final class menu {
         public static final int activity_edit_song=0x7f070000;
