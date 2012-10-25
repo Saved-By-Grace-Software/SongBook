@@ -62,9 +62,11 @@ import com.sbgsoft.tabapp.items.SetItem;
 import com.sbgsoft.tabapp.items.SongItem;
 import com.sbgsoft.tabapp.sets.CurrentSetTab;
 import com.sbgsoft.tabapp.sets.SetActivity;
+import com.sbgsoft.tabapp.sets.SetGroupArrayAdapter;
 import com.sbgsoft.tabapp.sets.SetsTab;
 import com.sbgsoft.tabapp.songs.EditSongActivity;
 import com.sbgsoft.tabapp.songs.SongActivity;
+import com.sbgsoft.tabapp.songs.SongGroupArrayAdapter;
 import com.sbgsoft.tabapp.songs.SongsTab;
 
 public class MainActivity extends FragmentActivity {
@@ -1818,11 +1820,8 @@ public class MainActivity extends FragmentActivity {
     	setSongGroupsList();
         
     	// Create the spinner adapter
-    	songGroupsAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, songGroupsList);
-    	songGroupsAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
+    	songGroupsAdapter = new SongGroupArrayAdapter(this, songGroupsList);
     	final Spinner groupSpinner = (Spinner) findViewById(R.id.song_group_spinner);
-    	
-    	// TODO: Set current group as selected
     	
     	// Set the on click listener for each item
     	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
@@ -2003,11 +2002,8 @@ public class MainActivity extends FragmentActivity {
     	setSetGroupsList();
         
     	// Create the spinner adapter
-    	setGroupsAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, setGroupsList);
-    	setGroupsAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
+    	setGroupsAdapter = new SetGroupArrayAdapter(this, setGroupsList);
     	final Spinner groupSpinner = (Spinner) findViewById(R.id.set_group_spinner);
-    	
-    	// TODO:Set the current group as the selected group
     	
     	// Set the on click listener for each item
     	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {

@@ -25,6 +25,7 @@ public class DBAdapter {
 	private static final String TAG = "TabAppDBAdapter";
     private final Context mCtx;
     
+    
     /*****************************************************************************
     *
     * Class Functions
@@ -644,6 +645,48 @@ public class DBAdapter {
 		return true;
 	}
 
+	/**
+	 * Gets the number of songs per group
+	 * @param groupName The group 
+	 * @return The number of songs
+	 */
+	public int getNumSongsPerGroup(String groupName) {
+		try {
+			String query = "SELECT COUNT(" + DBStrings.SONGGPLOOKUP_TABLE + "." + DBStrings.TBLSONGGPLOOKUP_SONG + ") as numSongs " +
+					"FROM " + DBStrings.SONGGPLOOKUP_TABLE + " " +
+					"INNER JOIN " + DBStrings.SONGS_TABLE + " ON " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " = " + 
+					DBStrings.SONGGPLOOKUP_TABLE + "." + DBStrings.TBLSONGGPLOOKUP_SONG + " " +
+					"INNER JOIN " + DBStrings.SONGGROUPS_TABLE + " ON " + DBStrings.SONGGROUPS_TABLE + "." + DBStrings.TBLSONGGROUPS_ID + " = " + 
+					DBStrings.SONGGPLOOKUP_TABLE + "." + DBStrings.TBLSONGGPLOOKUP_GROUP + " " +
+					"WHERE " + DBStrings.SONGGROUPS_TABLE + "." + DBStrings.TBLSONGGROUPS_NAME + " = '" + groupName + "'";
+			Cursor c = mDb.rawQuery(query, null);
+			c.moveToFirst();
+			return Integer.parseInt(c.getString(c.getColumnIndexOrThrow("numSongs")));
+		} catch (IndexOutOfBoundsException e) {
+			return 0;
+		} catch (SQLiteException s) {
+			return 0;
+		}
+	}
+	
+	/**
+	 * Gets the number of songs 
+	 * @return The number of songs
+	 */
+	public int getNumSongs() {
+		try {
+			String query = "SELECT COUNT(" + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + ") as numSongs " +
+					"FROM " + DBStrings.SONGS_TABLE;
+			Cursor c = mDb.rawQuery(query, null);
+			c.moveToFirst();
+			return Integer.parseInt(c.getString(c.getColumnIndexOrThrow("numSongs")));
+		} catch (IndexOutOfBoundsException e) {
+			return 0;
+		} catch (SQLiteException s) {
+			return 0;
+		}
+	}
+	
 	
 	/*****************************************************************************
     *
@@ -704,6 +747,48 @@ public class DBAdapter {
 		return true;
 	}
 
+	/**
+	 * Gets the number of sets per group
+	 * @param groupName The group 
+	 * @return The number of sets
+	 */
+	public int getNumSetsPerGroup(String groupName) {
+		try {
+			String query = "SELECT COUNT(" + DBStrings.SETGPLOOKUP_TABLE + "." + DBStrings.TBLSETGPLOOKUP_SET + ") as numSets " +
+					"FROM " + DBStrings.SETGPLOOKUP_TABLE + " " +
+					"INNER JOIN " + DBStrings.SETS_TABLE + " ON " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + " = " + 
+					DBStrings.SETGPLOOKUP_TABLE + "." + DBStrings.TBLSETGPLOOKUP_SET + " " +
+					"INNER JOIN " + DBStrings.SETGROUPS_TABLE + " ON " + DBStrings.SETGROUPS_TABLE + "." + DBStrings.TBLSETGROUPS_ID + " = " + 
+					DBStrings.SETGPLOOKUP_TABLE + "." + DBStrings.TBLSETGPLOOKUP_GROUP + " " +
+					"WHERE " + DBStrings.SETGROUPS_TABLE + "." + DBStrings.TBLSETGROUPS_NAME + " = '" + groupName + "'";
+			Cursor c = mDb.rawQuery(query, null);
+			c.moveToFirst();
+			return Integer.parseInt(c.getString(c.getColumnIndexOrThrow("numSets")));
+		} catch (IndexOutOfBoundsException e) {
+			return 0;
+		} catch (SQLiteException s) {
+			return 0;
+		}
+	}
+	
+	/**
+	 * Gets the number of sets 
+	 * @return The number of sets
+	 */
+	public int getNumSets() {
+		try {
+			String query = "SELECT COUNT(" + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + ") as numSets " +
+					"FROM " + DBStrings.SETS_TABLE;
+			Cursor c = mDb.rawQuery(query, null);
+			c.moveToFirst();
+			return Integer.parseInt(c.getString(c.getColumnIndexOrThrow("numSets")));
+		} catch (IndexOutOfBoundsException e) {
+			return 0;
+		} catch (SQLiteException s) {
+			return 0;
+		}
+	}
+	
 	
 	/*****************************************************************************
     *
