@@ -1439,7 +1439,7 @@ public class MainActivity extends FragmentActivity {
         
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> a, View v, int position, long row) {            	
+            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
             	// Get the song to show
             	SongItem song = (SongItem)songsList.get(position);
             	String songName = song.getName();
