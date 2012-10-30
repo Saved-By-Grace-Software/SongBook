@@ -24,7 +24,8 @@
 	        android:id="@android:id/list"
 	        android:layout_width="fill_parent" 
 	        android:layout_height="wrap_content"
-	        android:padding="10dip" />
+	        android:padding="10dip"
+	        android:fastScrollEnabled="true" />
 	    
 	    <TextView
 	        android:id="@android:id/empty"
