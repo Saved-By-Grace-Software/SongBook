@@ -596,7 +596,9 @@ public class DBAdapter {
 	 * @return A cursor to the query results
 	 */
 	public Cursor getSongGroupNames() {
-		String query = "SELECT " + DBStrings.TBLSONGGROUPS_ID + " as _id, " + DBStrings.TBLSONGGROUPS_NAME + " FROM " + DBStrings.SONGGROUPS_TABLE;
+		String query = "SELECT " + DBStrings.TBLSONGGROUPS_ID + " as _id, " + DBStrings.TBLSONGGROUPS_NAME + 
+				" FROM " + DBStrings.SONGGROUPS_TABLE +
+				" ORDER BY " + DBStrings.TBLSONGGROUPS_NAME;
 		return mDb.rawQuery(query, null);
 	}
 	
@@ -698,7 +700,9 @@ public class DBAdapter {
 	 * @return A cursor to the query results
 	 */
 	public Cursor getSetGroupNames() {
-		String query = "SELECT " + DBStrings.TBLSETGROUPS_ID + " as _id, " + DBStrings.TBLSETGROUPS_NAME + " FROM " + DBStrings.SETGROUPS_TABLE;
+		String query = "SELECT " + DBStrings.TBLSETGROUPS_ID + " as _id, " + DBStrings.TBLSETGROUPS_NAME + 
+				" FROM " + DBStrings.SETGROUPS_TABLE +
+				" ORDER BY " + DBStrings.TBLSETGROUPS_NAME;
 		return mDb.rawQuery(query, null);
 	}
 	

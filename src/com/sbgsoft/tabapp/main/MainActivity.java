@@ -1048,8 +1048,7 @@ public class MainActivity extends FragmentActivity {
         // Read each line of the file
         while (line != null) {
         	// Check for song part tags
-        	if(line.toLowerCase().contains("verse") || line.toLowerCase().contains("chorus") || line.toLowerCase().contains("bridge") || 
-        			line.toLowerCase().contains("tag") || line.toLowerCase().contains("coda") || line.toLowerCase().contains("outro")) {
+        	if(MainStrings.songParts.contains(line.split("\\W+")[0].toLowerCase())) {
         		sb.append("{title:");
         		sb.append(line);
             	sb.append("}");
@@ -1120,8 +1119,7 @@ public class MainActivity extends FragmentActivity {
 	            		if (chords.length() == 0 && lyrics.length() == 0) {
 	            			startedSong = false;
 	            		}
-	            		else if (chords.length() == 0 && (lyrics.toLowerCase().contains("verse") || lyrics.toLowerCase().contains("chorus") || lyrics.toLowerCase().contains("bridge") || 
-	            			lyrics.toLowerCase().contains("tag") || lyrics.toLowerCase().contains("coda"))) {
+	            		else if (chords.length() == 0 && (MainStrings.songParts.contains(lyrics.split("\\W+")[0].toLowerCase()))) {
 	            			sb.append(System.getProperty("line.separator"));
 	            			sb.append("{title:");
 	                		sb.append(lyrics);
@@ -1318,9 +1316,11 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		
 	    		// Refresh song, set and current set lists
-	    		songsAdapter.notifyDataSetChanged();
-	    		setsAdapter.notifyDataSetChanged();
-	    		currSetAdapter.notifyDataSetChanged();
+	    		fillSongsListView();
+	    		fillSongGroupsSpinner();
+	    		fillCurrentSetListView();
+	    		fillSetGroupsSpinner();
+	    		fillSetsListView();
 	        	
 	        	// Set the current tab
 	        	currentTab = 3;
@@ -1359,8 +1359,9 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		
 	    		// Refresh the song and current set view
-	    		songsAdapter.notifyDataSetChanged();
-	    		currSetAdapter.notifyDataSetChanged();
+	    		fillSongsListView();
+	    		fillSongGroupsSpinner();
+	    		fillCurrentSetListView();
 	        	
 	        	// Set the current tab
 	        	currentTab = 3;
@@ -1809,6 +1810,9 @@ public class MainActivity extends FragmentActivity {
     		songGroupsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME)));
     		c.moveToNext();
     	}
+    	
+    	// Sort the list alphabetically
+    	Collections.sort(songGroupsList, new SortIgnoreCase());
     }
     
     /**
@@ -1991,6 +1995,9 @@ public class MainActivity extends FragmentActivity {
     		setGroupsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME)));
     		c.moveToNext();
     	}
+    	
+    	// Sort the list alphabetically
+    	Collections.sort(setGroupsList, new SortIgnoreCase());
     }
     
     /**
@@ -2404,6 +2411,19 @@ public class MainActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
             return mFragments.get(position);
+        }
+    }
+    
+    /**
+     * Comparator for case insensitive sorting
+     * @author SamIAm
+     *
+     */
+    public class SortIgnoreCase implements Comparator<Object> {
+        public int compare(Object o1, Object o2) {
+            String s1 = (String) o1;
+            String s2 = (String) o2;
+            return s1.toLowerCase().compareTo(s2.toLowerCase());
         }
     }
     

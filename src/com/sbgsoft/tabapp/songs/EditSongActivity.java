@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.sbgsoft.tabapp.R;
+import com.sbgsoft.tabapp.main.MainActivity;
 import com.sbgsoft.tabapp.main.MainStrings;
 
 public class EditSongActivity extends Activity {
@@ -82,9 +83,10 @@ public class EditSongActivity extends Activity {
      */
     private void loadSong() {
     	String songText = "";
+    	String fileName = MainActivity.dbAdapter.getSongFile(songName);
     	// Copy the file into the tabapp songs directory
     	try {
-        	FileInputStream fis = openFileInput(songName + ".txt");
+        	FileInputStream fis = openFileInput(fileName);
         	DataInputStream in = new DataInputStream(fis);
         	BufferedReader br = new BufferedReader(new InputStreamReader(in));
             StringBuilder sb = new StringBuilder();

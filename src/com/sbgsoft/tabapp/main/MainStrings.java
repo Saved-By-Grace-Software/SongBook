@@ -21,6 +21,7 @@ public class MainStrings {
 
 	// General
 	public static final String UNKNOWN = "Unknown";
+	public static final ArrayList<String> songParts = new ArrayList<String>(Arrays.asList("verse", "chorus", "coda", "outro", "bridge", "tag", "refrain"));
 	public static final ArrayList<String> songKeys = new ArrayList<String>(Arrays.asList("Ab", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G"));
 	public static final HashMap<String, String> keyMap = new HashMap<String, String>() {
 		private static final long serialVersionUID = 94512194672735973L;
