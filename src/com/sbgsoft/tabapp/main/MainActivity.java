@@ -617,24 +617,43 @@ public class MainActivity extends FragmentActivity {
     	Cursor c = dbAdapter.getSetGroupNames();
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount()];
+    	final boolean[] checkedGroupNames = new boolean[c.getCount()];
     	int counter = 0;
     	
     	// Add groups to list view
     	while(c.moveToNext()) {
-    		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
+    		String groupName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
+    		if (groupName.equals(SetsTab.ALL_SETS_LABEL))
+    			groupName = "No Group";
+    		checkedGroupNames[counter] = false;
+    		groupNames[counter++] = groupName;
     	}
     	
     	// Create the dialog to choose which group to add the song to
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Add Set to Group");
-    	alert.setItems(groupNames, new DialogInterface.OnClickListener() {
+    	
+    	alert.setMultiChoiceItems(groupNames, checkedGroupNames, new DialogInterface.OnMultiChoiceClickListener() {
 			
+			public void onClick(DialogInterface dialog, int which, boolean checked) {
+				checkedGroupNames[which] = checked;
+			}
+		});
+    	
+    	alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				dbAdapter.addSetToGroup(setName, groupNames[which].toString());
+				// Add the song to the selected groups
+				for (int i = 0; i < groupNames.length; i++) {
+					if(!groupNames[i].equals("No Group") && checkedGroupNames[i])
+						dbAdapter.addSetToGroup(setName, groupNames[i].toString());
+				}
 				
-				// Update set list
+				// Refresh song list
 				fillSetsListView();
+    			fillSetGroupsSpinner();
 			}
 		});
 
@@ -783,8 +802,9 @@ public class MainActivity extends FragmentActivity {
 	    		dbAdapter.deleteSet(setName);
 	    		
 	    		// Refresh set and current set list
-	    		setsAdapter.notifyDataSetChanged();
-	        	currSetAdapter.notifyDataSetChanged();
+	    		fillSetGroupsSpinner();
+	    		fillSetsListView();
+	    		fillCurrentSetListView();
 	        	
 	        	// Set the current tab
 	        	currentTab = 2;
@@ -919,11 +939,11 @@ public class MainActivity extends FragmentActivity {
      */
     public void createSong() {
     	CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
+    	String[] pathSplit = importFilePath.split("/");
     	
     	// Add the dialog title
     	if (importFilePath != "") {
-    		String[] temp = importFilePath.split("/");
-    		alert.setTitle("Add Song - " + temp[temp.length - 1]);
+    		alert.setTitle("Add Song - " + pathSplit[pathSplit.length - 1]);
     	}
     	else
     		alert.setTitle("Add Song");
@@ -935,6 +955,9 @@ public class MainActivity extends FragmentActivity {
     	final EditText songNameET = (EditText)dialoglayout.findViewById(R.id.add_song_name);
     	final EditText authorET = (EditText)dialoglayout.findViewById(R.id.add_song_author);
     	final EditText keyET = (EditText)dialoglayout.findViewById(R.id.add_song_key);
+    	
+    	// Populate the song name with the file name
+    	songNameET.setText(pathSplit[pathSplit.length - 1].substring(0, pathSplit[pathSplit.length - 1].lastIndexOf(".")));
 
     	// Set the OK button
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -1242,21 +1265,38 @@ public class MainActivity extends FragmentActivity {
     	Cursor c = dbAdapter.getSongGroupNames();
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount()];
+    	final boolean[] checkedGroupNames = new boolean[c.getCount()];
     	int counter = 0;
     	
     	// Add groups to list view
     	while(c.moveToNext()) {
-    		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
+    		String groupName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
+    		if (groupName.equals(SongsTab.ALL_SONGS_LABEL))
+    			groupName = "No Group";
+    		checkedGroupNames[counter] = false;
+    		groupNames[counter++] = groupName;
     	}
     	
     	// Create the dialog to choose which group to add the song to
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Add Song to Group");
-    	alert.setItems(groupNames, new DialogInterface.OnClickListener() {
+    	alert.setMultiChoiceItems(groupNames, checkedGroupNames, new DialogInterface.OnMultiChoiceClickListener() {
 			
+			public void onClick(DialogInterface dialog, int which, boolean checked) {
+				checkedGroupNames[which] = checked;
+			}
+		});
+    	
+    	alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				dbAdapter.addSongToGroup(songName, groupNames[which].toString());
+				// Add the song to the selected groups
+				for (int i = 0; i < groupNames.length; i++) {
+					if(!groupNames[i].equals("No Group") && checkedGroupNames[i])
+						dbAdapter.addSongToGroup(songName, groupNames[i].toString());
+				}
 				
 				// Refresh song list
     			fillSongsListView();
