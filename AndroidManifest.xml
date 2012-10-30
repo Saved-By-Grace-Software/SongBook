@@ -53,6 +53,12 @@
             android:label="@string/title_activity_open_file"
             android:screenOrientation="sensorPortait" >
         </activity>
+        <activity
+            android:name=".sets.CreateSetActivity"
+            android:label="@string/title_activity_create_set"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensorPortait" >
+        </activity>
     </application>
 
 </manifest>

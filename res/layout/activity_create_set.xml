@@ -1,0 +1,95 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:orientation="vertical"
+    android:background="@drawable/background_main" >
+    	
+	    <TextView
+	        android:id="@+id/create_set_name_label"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/add_set_name"
+	        android:textSize="20dp"
+	        android:paddingTop="5dp"
+	        android:textColor="@color/defaultTextColor" />
+
+	    <EditText
+	        android:id="@+id/create_set_name"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:inputType="text"
+	        android:maxLines="1"
+	        android:textSize="20dp"
+	        android:textColor="@color/defaultTextColor"
+	        android:layout_below="@+id/create_set_name_label" >
+	
+	        <requestFocus />
+	    </EditText>
+
+	    <TextView
+	        android:id="@+id/create_set_date_label"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/add_set_date"
+	        android:textSize="20dp"
+	        android:paddingTop="25dp"
+	        android:textColor="@color/defaultTextColor"
+	        android:layout_below="@+id/create_set_name" />
+
+	    <DatePicker
+	        android:id="@+id/create_set_date"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:calendarViewShown="true"
+	        android:textColor="@color/defaultTextColor"
+	        android:layout_below="@+id/create_set_date_label" />
+	    
+	    <TextView
+	        android:id="@+id/create_set_song_list_label"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/add_set_songs"
+	        android:textSize="20dp"
+	        android:paddingTop="25dp"
+	        android:textColor="@color/defaultTextColor"
+	        android:layout_below="@+id/create_set_date" />
+	    
+	    <ListView
+	        android:id="@+id/create_set_song_list"
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content"
+	        android:padding="10dip"
+	        android:fastScrollEnabled="true"
+	        android:layout_below="@+id/create_set_song_list_label"
+	        android:layout_above="@+id/create_set_bottom_bar"
+	        android:layout_centerHorizontal="true" />
+    
+	    <LinearLayout
+	        android:id="@+id/create_set_bottom_bar"
+	        android:layout_width="match_parent"
+	    	android:layout_height="wrap_content" 
+	    	android:orientation="horizontal"
+	    	android:layout_alignParentBottom="true" >
+		    
+	        <Button
+		        android:id="@+id/create_set_ok"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:textColor="@color/defaultTextColor"
+		        android:text="@string/ok"
+		        android:onClick="onOKClick"
+		        android:layout_weight="1" />
+	          
+	        <Button
+		        android:id="@+id/create_set_cancel"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:textColor="@color/defaultTextColor"
+		        android:text="@string/cancel"
+		        android:onClick="onCancelClick"
+		        android:layout_weight="1" />
+	        
+	    </LinearLayout>
+
+</RelativeLayout>

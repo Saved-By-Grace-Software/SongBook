@@ -60,6 +60,7 @@ import com.sbgsoft.tabapp.items.ItemArrayAdapter;
 import com.sbgsoft.tabapp.items.SectionItem;
 import com.sbgsoft.tabapp.items.SetItem;
 import com.sbgsoft.tabapp.items.SongItem;
+import com.sbgsoft.tabapp.sets.CreateSetActivity;
 import com.sbgsoft.tabapp.sets.CurrentSetTab;
 import com.sbgsoft.tabapp.sets.SetActivity;
 import com.sbgsoft.tabapp.sets.SetGroupArrayAdapter;
@@ -188,8 +189,13 @@ public class MainActivity extends FragmentActivity {
     	switch (item.getItemId())
         {
 	        case R.id.menu_sets_create:
+	        	// Create the edit activity intent
+            	Intent intent = new Intent(getBaseContext(), CreateSetActivity.class);
+                
+                // Start the activity
+                startActivity(intent);
 	        	// Create a new set and refresh the list view
-	        	createSet();
+	        	//createSet();
 	            return true; 
 	        case R.id.menu_sets_clear:
 	        	// Delete all sets and refresh the list view
