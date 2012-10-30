@@ -919,7 +919,14 @@ public class MainActivity extends FragmentActivity {
      */
     public void createSong() {
     	CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
-    	alert.setTitle("Add Song");
+    	
+    	// Add the dialog title
+    	if (importFilePath != "") {
+    		String[] temp = importFilePath.split("/");
+    		alert.setTitle("Add Song - " + temp[temp.length - 1]);
+    	}
+    	else
+    		alert.setTitle("Add Song");
 
     	// Set the dialog view to gather user input
     	LayoutInflater inflater = getLayoutInflater();
@@ -1253,6 +1260,7 @@ public class MainActivity extends FragmentActivity {
 				
 				// Refresh song list
     			fillSongsListView();
+    			fillSongGroupsSpinner();
 			}
 		});
 
@@ -1643,7 +1651,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * Imports a song text file into the db
      */
-    private void importSong() {        
+    private void importSong() {
         // Create the open file intent
         Intent intent = new Intent(getBaseContext(), OpenFile.class);
         
