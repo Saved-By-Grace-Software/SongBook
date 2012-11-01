@@ -106,8 +106,8 @@ public class MainActivity extends FragmentActivity {
 	private ArrayAdapter<String> songSortAdapter;
 	private ArrayAdapter<String> setSortAdapter;
 	
-	private Map<String, Boolean> addSetSongsMap = new HashMap<String, Boolean>();
-	private ArrayList<String> addSetSongsList = new ArrayList<String>();
+	private Map<String, Boolean> addSongsDialogMap = new HashMap<String, Boolean>();
+	private ArrayList<String> addSongsDialogList = new ArrayList<String>();
 	
 	/*****************************************************************************
      * 
@@ -194,11 +194,6 @@ public class MainActivity extends FragmentActivity {
     	switch (item.getItemId())
         {
 	        case R.id.menu_sets_create:
-//	        	// Create the edit activity intent
-//            	Intent intent = new Intent(getBaseContext(), CreateSetActivity.class);
-//                
-//                // Start the activity
-//                startActivity(intent);
 	        	// Create a new set and refresh the list view
 	        	createSet();
 	            return true; 
@@ -565,15 +560,15 @@ public class MainActivity extends FragmentActivity {
     	Cursor c = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
     	
     	// Clear the previous song lists
-    	addSetSongsList.clear();
-    	addSetSongsMap.clear();
+    	addSongsDialogList.clear();
+    	addSongsDialogMap.clear();
     	
     	// Populate the songs lists
     	while(c.moveToNext()) {
-    		addSetSongsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)));
-    		addSetSongsMap.put(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)), false);
+    		addSongsDialogList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)));
+    		addSongsDialogMap.put(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)), false);
     	}
-    	Collections.sort(addSetSongsList, new SortIgnoreCase());
+    	Collections.sort(addSongsDialogList, new SortIgnoreCase());
     	
     	// Create the alert dialog and set the title
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -594,11 +589,11 @@ public class MainActivity extends FragmentActivity {
     	songsLV.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     	songsLV.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-            	String song = addSetSongsList.get(position);
-            	addSetSongsMap.put(song, !addSetSongsMap.get(song));
+            	String song = addSongsDialogList.get(position);
+            	addSongsDialogMap.put(song, !addSongsDialogMap.get(song));
             }
         });
-    	songsAD = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, addSetSongsList);
+    	songsAD = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, addSongsDialogList);
     	songsLV.setAdapter(songsAD);
     	
     	// Fill the group spinner
@@ -610,22 +605,22 @@ public class MainActivity extends FragmentActivity {
             	
             	// Fill the new songs list
             	Cursor c = dbAdapter.getSongNames(groupName);
-            	addSetSongsList.clear();
+            	addSongsDialogList.clear();
             	
             	// Populate the ArrayList
             	while (c.moveToNext()) {
             		// Get the strings from the cursor
                 	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
-                	addSetSongsList.add(songName);
+                	addSongsDialogList.add(songName);
             	}
-            	Collections.sort(addSetSongsList, new SortIgnoreCase());
+            	Collections.sort(addSongsDialogList, new SortIgnoreCase());
             	
             	// Update list view
             	songsAD.notifyDataSetChanged();
             	
             	// Set the list view checked properties
             	for(int i = 0; i < songsLV.getCount(); i++) {
-            		songsLV.setItemChecked(i, addSetSongsMap.get(songsLV.getItemAtPosition(i)));
+            		songsLV.setItemChecked(i, addSongsDialogMap.get(songsLV.getItemAtPosition(i)));
             	}
             }
             
@@ -640,8 +635,8 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 				// Set all selected items to the songs for the set	    		
 	    		ArrayList<String> setSongs = new ArrayList<String>();
-	    		for(String s : addSetSongsMap.keySet()) {
-	    			if(addSetSongsMap.get(s))
+	    		for(String s : addSongsDialogMap.keySet()) {
+	    			if(addSongsDialogMap.get(s))
 	    				setSongs.add(s);
 	    		}
 	    		
@@ -1979,17 +1974,18 @@ public class MainActivity extends FragmentActivity {
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		String value = input.getText().toString();
-	    		if (value.length() > 0) {
-	    			if(!dbAdapter.createSongGroup(value))
+	    		String groupName = input.getText().toString();
+	    		if (groupName.length() > 0) {
+	    			if(!dbAdapter.createSongGroup(groupName))
 		    			Toast.makeText(getApplicationContext(), "Failed to create song group!", Toast.LENGTH_LONG).show();
+	    			else
+	    				addSongsToGroup(groupName);
 	    		}
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a song group with no name!", Toast.LENGTH_LONG).show();
 	    		
 	    		// Refresh the song list and song group spinner
 	    		fillSongGroupsSpinner();
-	    		songsAdapter.notifyDataSetChanged();
 			}
     	});
 
@@ -2000,6 +1996,104 @@ public class MainActivity extends FragmentActivity {
     	});
 
     	alert.show();
+    }
+    
+    /**
+     * Shows a dialog to select songs to add to the group
+     */
+    private void addSongsToGroup(final String groupName) {
+    	Cursor c = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
+    	
+    	// Clear the previous song lists
+    	addSongsDialogList.clear();
+    	addSongsDialogMap.clear();
+    	
+    	// Populate the songs lists
+    	while(c.moveToNext()) {
+    		addSongsDialogList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)));
+    		addSongsDialogMap.put(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)), false);
+    	}
+    	Collections.sort(addSongsDialogList, new SortIgnoreCase());
+    	
+    	// Create the alert dialog and set the title
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    	alert.setTitle("Select Songs");
+    	
+    	// Set the dialog view to gather user input
+    	LayoutInflater inflater = getLayoutInflater();
+    	View dialoglayout = inflater.inflate(R.layout.add_set_songs, (ViewGroup) findViewById(R.id.add_set_songs_root));
+    	alert.setView(dialoglayout);
+    	
+    	// Get the views
+    	final Spinner songGroupSP = (Spinner)dialoglayout.findViewById(R.id.add_set_songs_spinner);
+    	final ListView songsLV = (ListView)dialoglayout.findViewById(R.id.add_set_songs_list);
+    	final ArrayAdapter<String> songsAD;
+    	
+    	// Fill the list view
+    	songsLV.setEmptyView(findViewById(R.id.empty_songs));
+    	songsLV.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+    	songsLV.setOnItemClickListener(new ListView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
+            	String song = addSongsDialogList.get(position);
+            	addSongsDialogMap.put(song, !addSongsDialogMap.get(song));
+            }
+        });
+    	songsAD = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, addSongsDialogList);
+    	songsLV.setAdapter(songsAD);
+    	
+    	// Fill the group spinner
+    	setSongGroupsList();
+    	songGroupSP.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+            	// Get the selected group
+            	String groupName = (String)songGroupSP.getSelectedItem();
+            	
+            	// Fill the new songs list
+            	Cursor c = dbAdapter.getSongNames(groupName);
+            	addSongsDialogList.clear();
+            	
+            	// Populate the ArrayList
+            	while (c.moveToNext()) {
+            		// Get the strings from the cursor
+                	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
+                	addSongsDialogList.add(songName);
+            	}
+            	Collections.sort(addSongsDialogList, new SortIgnoreCase());
+            	
+            	// Update list view
+            	songsAD.notifyDataSetChanged();
+            	
+            	// Set the list view checked properties
+            	for(int i = 0; i < songsLV.getCount(); i++) {
+            		songsLV.setItemChecked(i, addSongsDialogMap.get(songsLV.getItemAtPosition(i)));
+            	}
+            }
+            
+            public void onNothingSelected(AdapterView<?> arg0) {
+            	// Nothing was clicked so ignore it
+            }
+        });
+    	songGroupSP.setAdapter(songGroupsAdapter);
+    	
+    	// Set positive button of the dialog
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+				// Add all the selected songs to the group   
+	    		for(String s : addSongsDialogMap.keySet()) {
+	    			if(addSongsDialogMap.get(s)) {
+	    				dbAdapter.addSongToGroup(s, groupName);
+	    			}	
+	    		}
+			}
+    	});
+
+    	// Show the dialog
+    	AlertDialog a = alert.create();
+    	a.show();
+    	Display display = getWindowManager().getDefaultDisplay(); 
+    	int height = display.getHeight();
+    	height = (int) (height / 1.5);
+    	a.getWindow().setLayout(LayoutParams.WRAP_CONTENT, height);
     }
     
     /**
