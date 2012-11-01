@@ -29,11 +29,6 @@
             android:label="@string/title_activity_song"
             android:screenOrientation="sensorPortait" />
         <activity
-            android:name="com.lamerman.FileDialog"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/app_name"
-            android:screenOrientation="sensorPortait" />
-        <activity
             android:name=".sets.SetActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_set"
@@ -51,12 +46,6 @@
             android:name=".files.OpenFile"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_open_file"
-            android:screenOrientation="sensorPortait" >
-        </activity>
-        <activity
-            android:name=".sets.CreateSetActivity"
-            android:label="@string/title_activity_create_set"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="sensorPortait" >
         </activity>
     </application>
