@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -34,12 +36,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -102,6 +106,8 @@ public class MainActivity extends FragmentActivity {
 	private ArrayAdapter<String> songSortAdapter;
 	private ArrayAdapter<String> setSortAdapter;
 	
+	private Map<String, Boolean> addSetSongsMap = new HashMap<String, Boolean>();
+	private ArrayList<String> addSetSongsList = new ArrayList<String>();
 	
 	/*****************************************************************************
      * 
@@ -188,6 +194,11 @@ public class MainActivity extends FragmentActivity {
     	switch (item.getItemId())
         {
 	        case R.id.menu_sets_create:
+//	        	// Create the edit activity intent
+//            	Intent intent = new Intent(getBaseContext(), CreateSetActivity.class);
+//                
+//                // Start the activity
+//                startActivity(intent);
 	        	// Create a new set and refresh the list view
 	        	createSet();
 	            return true; 
@@ -553,35 +564,85 @@ public class MainActivity extends FragmentActivity {
     private void selectSetSongs(final String setName, final String setDate) {
     	Cursor c = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
     	
-    	final CharSequence[] songNames = new CharSequence[c.getCount()];
-    	final boolean[] songsChecked = new boolean[c.getCount()];
-    	int counter = 0;
+    	// Clear the previous song lists
+    	addSetSongsList.clear();
+    	addSetSongsMap.clear();
     	
-    	// Add songs to list view
+    	// Populate the songs lists
     	while(c.moveToNext()) {
-    		songsChecked[counter] = false;
-    		songNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+    		addSetSongsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)));
+    		addSetSongsMap.put(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)), false);
     	}
+    	Collections.sort(addSetSongsList, new SortIgnoreCase());
     	
-    	// Create the alert dialog
+    	// Create the alert dialog and set the title
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
     	alert.setTitle("Select Songs");
-    	alert.setMultiChoiceItems( songNames, songsChecked, new OnMultiChoiceClickListener() {
-    		public void onClick (DialogInterface dialog, int whichItem, boolean isChecked) {
-    			// Set item checked/unchecked
-    			songsChecked[whichItem] = isChecked;
-    		}
-    	});
-
+    	
+    	// Set the dialog view to gather user input
+    	LayoutInflater inflater = getLayoutInflater();
+    	View dialoglayout = inflater.inflate(R.layout.add_set_songs, (ViewGroup) findViewById(R.id.add_set_songs_root));
+    	alert.setView(dialoglayout);
+    	
+    	// Get the views
+    	final Spinner songGroupSP = (Spinner)dialoglayout.findViewById(R.id.add_set_songs_spinner);
+    	final ListView songsLV = (ListView)dialoglayout.findViewById(R.id.add_set_songs_list);
+    	final ArrayAdapter<String> songsAD;
+    	
+    	// Fill the list view
+    	songsLV.setEmptyView(findViewById(R.id.empty_songs));
+    	songsLV.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+    	songsLV.setOnItemClickListener(new ListView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
+            	String song = addSetSongsList.get(position);
+            	addSetSongsMap.put(song, !addSetSongsMap.get(song));
+            }
+        });
+    	songsAD = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, addSetSongsList);
+    	songsLV.setAdapter(songsAD);
+    	
+    	// Fill the group spinner
+    	setSongGroupsList();
+    	songGroupSP.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+            	// Get the selected group
+            	String groupName = (String)songGroupSP.getSelectedItem();
+            	
+            	// Fill the new songs list
+            	Cursor c = dbAdapter.getSongNames(groupName);
+            	addSetSongsList.clear();
+            	
+            	// Populate the ArrayList
+            	while (c.moveToNext()) {
+            		// Get the strings from the cursor
+                	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
+                	addSetSongsList.add(songName);
+            	}
+            	Collections.sort(addSetSongsList, new SortIgnoreCase());
+            	
+            	// Update list view
+            	songsAD.notifyDataSetChanged();
+            	
+            	// Set the list view checked properties
+            	for(int i = 0; i < songsLV.getCount(); i++) {
+            		songsLV.setItemChecked(i, addSetSongsMap.get(songsLV.getItemAtPosition(i)));
+            	}
+            }
+            
+            public void onNothingSelected(AdapterView<?> arg0) {
+            	// Nothing was clicked so ignore it
+            }
+        });
+    	songGroupSP.setAdapter(songGroupsAdapter);
+    	
+    	// Set positive button of the dialog
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 				// Set all selected items to the songs for the set	    		
 	    		ArrayList<String> setSongs = new ArrayList<String>();
-	    		for (int i = 0; i < songsChecked.length; i++) {
-	    			if(songsChecked[i]) {
-	    				setSongs.add(songNames[i].toString());
-	    			}
+	    		for(String s : addSetSongsMap.keySet()) {
+	    			if(addSetSongsMap.get(s))
+	    				setSongs.add(s);
 	    		}
 	    		
 	    		// Create the set and refresh the list
@@ -598,6 +659,7 @@ public class MainActivity extends FragmentActivity {
 			}
     	});
 
+    	// Set negative button of the dialog
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		// Set the current tab
@@ -605,7 +667,13 @@ public class MainActivity extends FragmentActivity {
 	    	}
     	});
 
-    	alert.show();
+    	// Show the dialog
+    	AlertDialog a = alert.create();
+    	a.show();
+    	Display display = getWindowManager().getDefaultDisplay(); 
+    	int height = display.getHeight();
+    	height = (int) (height / 1.5);
+    	a.getWindow().setLayout(LayoutParams.WRAP_CONTENT, height);
     }
     
     /**

@@ -29,11 +29,6 @@
             android:label="@string/title_activity_song"
             android:screenOrientation="sensorPortait" />
         <activity
-            android:name="com.lamerman.FileDialog"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/app_name"
-            android:screenOrientation="sensorPortait" />
-        <activity
             android:name=".sets.SetActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_set"
