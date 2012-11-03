@@ -55,6 +55,7 @@ public class DBAdapter {
 
     public void close() {
         mDbHelper.close();
+        mDb.close();
     }
     
     
@@ -256,10 +257,14 @@ public class DBAdapter {
 			Cursor c = mDb.rawQuery(query, null);
 			
 			// Check record for song
-			if(c.getCount() == 0)
+			if(c.getCount() == 0) {
+				c.close();
 				return false;
-			else
+			}
+			else {
+				c.close();
 				return true;
+			}
 		} catch (SQLException e) {
 			return false;
 		}
@@ -297,7 +302,9 @@ public class DBAdapter {
 			Cursor c = mDb.rawQuery("SELECT " + DBStrings.TBLSETS_ID + " as _id, " + DBStrings.TBLSETS_NAME + ", " + DBStrings.TBLSETS_DATE + " FROM " + DBStrings.SETS_TABLE +
 					" WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'", null);
 			c.moveToFirst();
-			return c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_DATE));
+			String ret = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_DATE));
+			c.close();
+			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			return "";
 		} catch (SQLiteException s) {
@@ -415,7 +422,9 @@ public class DBAdapter {
 			Cursor c = mDb.rawQuery("SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + " FROM " + DBStrings.SONGS_TABLE +
 					" WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'", null);
 			c.moveToFirst();
-			return c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_FILE));
+			String ret = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_FILE));
+			c.close();
+			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			return "";
 		} catch (SQLiteException s) {
@@ -475,7 +484,9 @@ public class DBAdapter {
 			Cursor c = mDb.rawQuery("SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_AUTHOR + " FROM " + DBStrings.SONGS_TABLE +
 					" WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'", null);
 			c.moveToFirst();
-			return c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_AUTHOR));
+			String ret = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_AUTHOR));
+			c.close();
+			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			return "";
 		} catch (SQLiteException s) {
@@ -493,7 +504,9 @@ public class DBAdapter {
 			Cursor c = mDb.rawQuery("SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE +
 					" WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'", null);
 			c.moveToFirst();
-			return c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY));
+			String ret = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY));
+			c.close();
+			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			return "";
 		} catch (SQLiteException s) {
@@ -577,7 +590,9 @@ public class DBAdapter {
 					" INNER JOIN " + DBStrings.CURRSET_TABLE + " ON " + DBStrings.CURRSET_TABLE + "." + DBStrings.TBLCURRSET_SET + 
 					" = " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID, null);
 			c.moveToFirst();
-			return c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
+			String ret = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
+			c.close();
+			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			return "";
 		} catch (SQLiteException s) {
@@ -663,7 +678,9 @@ public class DBAdapter {
 					"WHERE " + DBStrings.SONGGROUPS_TABLE + "." + DBStrings.TBLSONGGROUPS_NAME + " = '" + groupName + "'";
 			Cursor c = mDb.rawQuery(query, null);
 			c.moveToFirst();
-			return Integer.parseInt(c.getString(c.getColumnIndexOrThrow("numSongs")));
+			int ret = Integer.parseInt(c.getString(c.getColumnIndexOrThrow("numSongs")));
+			c.close();
+			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			return 0;
 		} catch (SQLiteException s) {
@@ -681,7 +698,9 @@ public class DBAdapter {
 					"FROM " + DBStrings.SONGS_TABLE;
 			Cursor c = mDb.rawQuery(query, null);
 			c.moveToFirst();
-			return Integer.parseInt(c.getString(c.getColumnIndexOrThrow("numSongs")));
+			int ret = Integer.parseInt(c.getString(c.getColumnIndexOrThrow("numSongs")));
+			c.close();
+			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			return 0;
 		} catch (SQLiteException s) {
@@ -767,7 +786,9 @@ public class DBAdapter {
 					"WHERE " + DBStrings.SETGROUPS_TABLE + "." + DBStrings.TBLSETGROUPS_NAME + " = '" + groupName + "'";
 			Cursor c = mDb.rawQuery(query, null);
 			c.moveToFirst();
-			return Integer.parseInt(c.getString(c.getColumnIndexOrThrow("numSets")));
+			int ret = Integer.parseInt(c.getString(c.getColumnIndexOrThrow("numSets")));
+			c.close();
+			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			return 0;
 		} catch (SQLiteException s) {
@@ -785,7 +806,9 @@ public class DBAdapter {
 					"FROM " + DBStrings.SETS_TABLE;
 			Cursor c = mDb.rawQuery(query, null);
 			c.moveToFirst();
-			return Integer.parseInt(c.getString(c.getColumnIndexOrThrow("numSets")));
+			int ret = Integer.parseInt(c.getString(c.getColumnIndexOrThrow("numSets")));
+			c.close();
+			return ret;
 		} catch (IndexOutOfBoundsException e) {
 			return 0;
 		} catch (SQLiteException s) {

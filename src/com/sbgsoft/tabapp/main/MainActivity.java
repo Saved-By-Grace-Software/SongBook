@@ -109,6 +109,7 @@ public class MainActivity extends FragmentActivity {
 	private Map<String, Boolean> addSongsDialogMap = new HashMap<String, Boolean>();
 	private ArrayList<String> addSongsDialogList = new ArrayList<String>();
 	
+	
 	/*****************************************************************************
      * 
      * Class Functions
@@ -356,7 +357,7 @@ public class MainActivity extends FragmentActivity {
             	
             	// Get the set songs
             	Cursor c = dbAdapter.getSetSongs(setName);
-            	//startManagingCursor(c);
+            	startManagingCursor(c);
             	String[] setSongs = new String[c.getCount()];
             	c.moveToFirst();
             	int songCounter = 0;
@@ -367,8 +368,7 @@ public class MainActivity extends FragmentActivity {
                 	setSongs[songCounter++] = song;
                 	c.moveToNext();
             	}
-            	
-            	//stopManagingCursor(c);
+            	c.close();
             	
             	// Edit the set
             	Intent i = new Intent(getBaseContext(), DragNDropListActivity.class);
@@ -425,8 +425,17 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStop(){
        super.onStop();
-
+       dbAdapter.close();
        currentTab = mViewPager.getCurrentItem();
+    }
+    
+    /**
+     * Called when the activity is destroyed
+     */
+    @Override
+    protected void onDestroy() {
+    	super.onDestroy();
+        dbAdapter.close();
     }
     
     /**
@@ -435,7 +444,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onPause() {
     	super.onPause();
-    	
+    	dbAdapter.close();
     	currentTab = mViewPager.getCurrentItem();
     }
     
@@ -445,7 +454,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStart() {
     	super.onStart();
-    	
+    	//dbAdapter.open();
     	mViewPager.setCurrentItem(currentTab);
     }
     
@@ -455,7 +464,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onResume() {
     	super.onResume();
-    	
+    	dbAdapter.open();
     	mViewPager.setCurrentItem(currentTab);
     }
     
@@ -558,6 +567,7 @@ public class MainActivity extends FragmentActivity {
      */
     private void selectSetSongs(final String setName, final String setDate) {
     	Cursor c = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
+    	startManagingCursor(c);
     	
     	// Clear the previous song lists
     	addSongsDialogList.clear();
@@ -567,6 +577,8 @@ public class MainActivity extends FragmentActivity {
     	while(c.moveToNext()) {
     		addSongsDialogList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)));
     		addSongsDialogMap.put(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)), false);
+    		
+    		c.close();
     	}
     	Collections.sort(addSongsDialogList, new SortIgnoreCase());
     	
@@ -605,6 +617,7 @@ public class MainActivity extends FragmentActivity {
             	
             	// Fill the new songs list
             	Cursor c = dbAdapter.getSongNames(groupName);
+            	startManagingCursor(c);
             	addSongsDialogList.clear();
             	
             	// Populate the ArrayList
@@ -614,6 +627,8 @@ public class MainActivity extends FragmentActivity {
                 	addSongsDialogList.add(songName);
             	}
             	Collections.sort(addSongsDialogList, new SortIgnoreCase());
+            	
+            	c.close();
             	
             	// Update list view
             	songsAD.notifyDataSetChanged();
@@ -678,6 +693,7 @@ public class MainActivity extends FragmentActivity {
     private void addSetToGroup(final String setName) {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSetGroupNames();
+    	startManagingCursor(c);
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount()];
     	final boolean[] checkedGroupNames = new boolean[c.getCount()];
@@ -691,6 +707,8 @@ public class MainActivity extends FragmentActivity {
     		checkedGroupNames[counter] = false;
     		groupNames[counter++] = groupName;
     	}
+    	
+    	c.close();
     	
     	// Create the dialog to choose which group to add the song to
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -759,7 +777,7 @@ public class MainActivity extends FragmentActivity {
      */
     private void updateSetSongs(final String setName) {
     	Cursor c = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
-    	//startManagingCursor(c);
+    	startManagingCursor(c);
     	
     	final CharSequence[] songNames = new CharSequence[c.getCount()];
     	final boolean[] songsChecked = new boolean[c.getCount()];
@@ -772,7 +790,7 @@ public class MainActivity extends FragmentActivity {
     		songNames[counter++] = songName;
     	}
     	
-    	//stopManagingCursor(c);
+    	c.close();
     	
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -889,6 +907,7 @@ public class MainActivity extends FragmentActivity {
      */
     public void setSetsList() {
     	Cursor c = dbAdapter.getSetNames(currentSetGroup);
+    	startManagingCursor(c);
     	c.moveToFirst();
     	
     	// Clear the ArrayList
@@ -906,6 +925,8 @@ public class MainActivity extends FragmentActivity {
         	// Move to the next song
         	c.moveToNext();
     	}
+    	
+    	c.close();
     	
     	// Sort the array list
     	Collections.sort(setsList, new ItemComparableName());
@@ -1004,13 +1025,6 @@ public class MainActivity extends FragmentActivity {
     	CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
     	String[] pathSplit = importFilePath.split("/");
     	
-    	// Add the dialog title
-    	if (importFilePath != "") {
-    		alert.setTitle("Add Song - " + pathSplit[pathSplit.length - 1]);
-    	}
-    	else
-    		alert.setTitle("Add Song");
-
     	// Set the dialog view to gather user input
     	LayoutInflater inflater = getLayoutInflater();
     	View dialoglayout = inflater.inflate(R.layout.add_song, (ViewGroup) findViewById(R.id.add_song_root));
@@ -1019,8 +1033,15 @@ public class MainActivity extends FragmentActivity {
     	final EditText authorET = (EditText)dialoglayout.findViewById(R.id.add_song_author);
     	final EditText keyET = (EditText)dialoglayout.findViewById(R.id.add_song_key);
     	
-    	// Populate the song name with the file name
-    	songNameET.setText(pathSplit[pathSplit.length - 1].substring(0, pathSplit[pathSplit.length - 1].lastIndexOf(".")));
+    	// Add the dialog title
+    	if (importFilePath != "") {
+    		alert.setTitle("Add Song - " + pathSplit[pathSplit.length - 1]);
+    		
+    		// Populate the song name with the file name
+        	songNameET.setText(pathSplit[pathSplit.length - 1].substring(0, pathSplit[pathSplit.length - 1].lastIndexOf(".")));
+    	}
+    	else
+    		alert.setTitle("Add Song");
 
     	// Set the OK button
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -1326,6 +1347,7 @@ public class MainActivity extends FragmentActivity {
     private void addSongToGroup(final String songName) {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSongGroupNames();
+    	startManagingCursor(c);
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount()];
     	final boolean[] checkedGroupNames = new boolean[c.getCount()];
@@ -1339,6 +1361,8 @@ public class MainActivity extends FragmentActivity {
     		checkedGroupNames[counter] = false;
     		groupNames[counter++] = groupName;
     	}
+    	
+    	c.close();
     	
     	// Create the dialog to choose which group to add the song to
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -1362,7 +1386,6 @@ public class MainActivity extends FragmentActivity {
 				}
 				
 				// Refresh song list
-    			fillSongsListView();
     			fillSongGroupsSpinner();
 			}
 		});
@@ -1470,7 +1493,6 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		
 	    		// Refresh the song and current set view
-	    		fillSongsListView();
 	    		fillSongGroupsSpinner();
 	    		fillCurrentSetListView();
 	        	
@@ -1496,6 +1518,7 @@ public class MainActivity extends FragmentActivity {
     public void setSongsList() {
     	ArrayList<Item> temp = new ArrayList<Item>();
     	Cursor c = dbAdapter.getSongNames(currentSongGroup);
+    	startManagingCursor(c);
     	c.moveToFirst();
     	
     	// Populate the ArrayList
@@ -1512,6 +1535,8 @@ public class MainActivity extends FragmentActivity {
         	// Move to the next song
         	c.moveToNext();
     	}
+    	
+    	c.close();
     	
     	// Sort the array list
     	Collections.sort(temp, new ItemComparableName());
@@ -1833,6 +1858,7 @@ public class MainActivity extends FragmentActivity {
      */
     public void setCurrentSetList() {
     	Cursor c = dbAdapter.getCurrentSetSongs();
+    	startManagingCursor(c);
     	c.moveToFirst();
     	
     	// Clear the ArrayList
@@ -1852,6 +1878,8 @@ public class MainActivity extends FragmentActivity {
         	// Move to the next song
         	c.moveToNext();
     	}
+    	
+    	c.close();
     }
     
     /**
@@ -1911,6 +1939,7 @@ public class MainActivity extends FragmentActivity {
     public void setSongGroupsList() {
     	// Query the database
     	Cursor c = dbAdapter.getSongGroupNames();
+    	startManagingCursor(c);
     	
     	// Clear the existing groups list
     	songGroupsList.clear();
@@ -1921,6 +1950,8 @@ public class MainActivity extends FragmentActivity {
     		songGroupsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME)));
     		c.moveToNext();
     	}
+    	
+    	c.close();
     	
     	// Sort the list alphabetically
     	Collections.sort(songGroupsList, new SortIgnoreCase());
@@ -1957,6 +1988,9 @@ public class MainActivity extends FragmentActivity {
     	
     	// Set the adapter
     	groupSpinner.setAdapter(songGroupsAdapter);
+    	
+    	// Set the selected item to the current group
+    	groupSpinner.setSelection(songGroupsList.indexOf(currentSongGroup));
     }
     
     /**
@@ -2003,6 +2037,7 @@ public class MainActivity extends FragmentActivity {
      */
     private void addSongsToGroup(final String groupName) {
     	Cursor c = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
+    	startManagingCursor(c);
     	
     	// Clear the previous song lists
     	addSongsDialogList.clear();
@@ -2013,6 +2048,7 @@ public class MainActivity extends FragmentActivity {
     		addSongsDialogList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)));
     		addSongsDialogMap.put(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)), false);
     	}
+    	c.close();
     	Collections.sort(addSongsDialogList, new SortIgnoreCase());
     	
     	// Create the alert dialog and set the title
@@ -2050,6 +2086,7 @@ public class MainActivity extends FragmentActivity {
             	
             	// Fill the new songs list
             	Cursor c = dbAdapter.getSongNames(groupName);
+            	startManagingCursor(c);
             	addSongsDialogList.clear();
             	
             	// Populate the ArrayList
@@ -2058,6 +2095,7 @@ public class MainActivity extends FragmentActivity {
                 	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
                 	addSongsDialogList.add(songName);
             	}
+            	c.close();
             	Collections.sort(addSongsDialogList, new SortIgnoreCase());
             	
             	// Update list view
@@ -2103,6 +2141,7 @@ public class MainActivity extends FragmentActivity {
     private void deleteSongGroup() {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSongGroupNames();
+    	startManagingCursor(c);
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount() - 1];
     	int counter = 0;
@@ -2114,6 +2153,8 @@ public class MainActivity extends FragmentActivity {
     	while(c.moveToNext()) {
     		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
     	}
+    	
+    	c.close();
     	
     	// Create the dialog to choose which group to delete
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -2195,6 +2236,7 @@ public class MainActivity extends FragmentActivity {
     public void setSetGroupsList() {
     	// Query the database
     	Cursor c = dbAdapter.getSetGroupNames();
+    	startManagingCursor(c);
     	
     	// Clear the existing groups list
     	setGroupsList.clear();
@@ -2205,6 +2247,8 @@ public class MainActivity extends FragmentActivity {
     		setGroupsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME)));
     		c.moveToNext();
     	}
+    	
+    	c.close();
     	
     	// Sort the list alphabetically
     	Collections.sort(setGroupsList, new SortIgnoreCase());
@@ -2286,6 +2330,7 @@ public class MainActivity extends FragmentActivity {
     private void deleteSetGroup() {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSetGroupNames();
+    	startManagingCursor(c);
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount() - 1];
     	int counter = 0;
@@ -2297,6 +2342,8 @@ public class MainActivity extends FragmentActivity {
     	while(c.moveToNext()) {
     		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
     	}
+    	
+    	c.close();
     	
     	// Create the dialog to choose which group to delete
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
