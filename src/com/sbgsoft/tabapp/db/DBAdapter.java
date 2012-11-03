@@ -2,9 +2,6 @@ package com.sbgsoft.tabapp.db;
 
 import java.util.ArrayList;
 
-import com.sbgsoft.tabapp.sets.SetsTab;
-import com.sbgsoft.tabapp.songs.SongsTab;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -12,6 +9,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.sbgsoft.tabapp.sets.SetsTab;
+import com.sbgsoft.tabapp.songs.SongsTab;
 
 public class DBAdapter {
 	
@@ -814,6 +814,37 @@ public class DBAdapter {
 		} catch (SQLiteException s) {
 			return 0;
 		}
+	}
+	
+	
+	/*****************************************************************************
+    *
+    * Import / Export Functions
+    * 
+    *****************************************************************************/
+	public String exportDBData() {
+		StringBuilder output = new StringBuilder();
+		try {
+			// Add songs to the export file
+			String query = "SELECT * FROM " + DBStrings.SONGS_TABLE;
+			Cursor c = mDb.rawQuery(query, null);
+			
+			while(c.moveToNext()) {
+				String songName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+				String songFileName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_FILE));
+				String author = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_AUTHOR));
+				String key = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY));
+				
+				output.append("INSERT INTO " + DBStrings.SONGS_TABLE + "(" + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
+						DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + 
+						") VALUES ('" + songName + "', '" + songFileName + "', '" + author + "', '" + key + "'); ");
+			}
+		}
+		catch (Exception e) {
+			// Error
+		}
+		
+		return output.toString();
 	}
 	
 	

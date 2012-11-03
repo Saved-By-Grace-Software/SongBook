@@ -40,6 +40,7 @@ public class MainStrings {
 	public static final int EDIT_SONG_ATT = 3;
 	public static final int SONG_GROUPS_ADD = 4;
 	public static final int SONG_GROUPS_DEL = 5;
+	public static final int EMAIL_SONG = 6;
 	
 	// Set Context Menu Keys
 	public static final int DELETE_SET = 10;

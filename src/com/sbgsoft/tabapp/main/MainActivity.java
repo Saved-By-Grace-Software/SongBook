@@ -3,6 +3,7 @@ package com.sbgsoft.tabapp.main;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,6 +29,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -72,6 +74,8 @@ import com.sbgsoft.tabapp.songs.EditSongActivity;
 import com.sbgsoft.tabapp.songs.SongActivity;
 import com.sbgsoft.tabapp.songs.SongGroupArrayAdapter;
 import com.sbgsoft.tabapp.songs.SongsTab;
+import com.sbgsoft.tabapp.zip.Compress;
+import com.sbgsoft.tabapp.zip.Decompress;
 
 public class MainActivity extends FragmentActivity {
 	
@@ -229,6 +233,12 @@ public class MainActivity extends FragmentActivity {
 	        case R.id.menu_set_groups_delete_all:
 	        	deleteAllSetGroups();
 	        	return true;
+	        case R.id.menu_backup_export:
+	        	exportAll();
+	        	return true;
+	        case R.id.menu_backup_import:
+	        	importAll("sbgvsb.bak");
+	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
         }
@@ -247,6 +257,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_ATT, MainStrings.EDIT_SONG_ATT, R.string.cmenu_songs_edit_att);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_ADD, MainStrings.SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_DEL, MainStrings.SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
+    		menu.add(Menu.NONE, MainStrings.EMAIL_SONG, MainStrings.EMAIL_SONG, R.string.cmenu_songs_email);
     	}
     	// Sets context menu
     	else if (v.getId() == R.id.sets_list) {
@@ -320,6 +331,20 @@ public class MainActivity extends FragmentActivity {
     			editSongAtt(songName);
     			
                 return true;
+    		case MainStrings.EMAIL_SONG:
+    			// Get the song name
+    			songName = currSetList.get(info.position).getName();
+    			
+    			// Create the email intent
+    			Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+    			emailIntent.setType("text/plain");
+    			
+    			// Add the subject and body
+    			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
+    			emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "This is where the song could go possibly.");
+    			
+    			startActivity(Intent.createChooser(emailIntent, "Send song email via:"));  
+    			return true;
     		case MainStrings.SONG_GROUPS_ADD:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
@@ -2571,6 +2596,64 @@ public class MainActivity extends FragmentActivity {
 	        	setsAdapter.notifyDataSetChanged();
 	    		break;
     	}
+    }
+    
+    
+    /*****************************************************************************
+     * 
+     * Import / Export Functions
+     * 
+     *****************************************************************************/
+    /**
+     * Exports all songbook files and db
+     */
+    private void exportAll() {
+    	// Create the db backup sql script
+    	String exportSQLData = dbAdapter.exportDBData();
+    	
+    	// Store the backup script in the app files folder
+    	try {
+	    	FileOutputStream out = openFileOutput("dbbak.sql", Context.MODE_PRIVATE);
+	    	out.write(exportSQLData.getBytes());
+			out.close(); 
+    	} catch (Exception e) {
+    		Toast.makeText(getBaseContext(), "Could not write db file!", Toast.LENGTH_LONG).show();
+    	}
+    	
+    	// Get a list of all the files in the app files folder
+    	String[] files = fileList();
+    	for(int i = 0; i < files.length; i++) {
+    		files[i] = getFilesDir() + "/" + files[i];
+    	}
+    	
+    	// Zip the files and save to the external storage
+    	Compress newZip = new Compress(files, Environment.getExternalStorageDirectory() + "/sbgvsb.bak");
+    	if (newZip.zip())
+    		Toast.makeText(getBaseContext(), "Your data has been successfully saved to: " + Environment.getExternalStorageDirectory() +
+        			"/sbgvsb.bak", Toast.LENGTH_LONG).show();
+    	else
+    		Toast.makeText(getBaseContext(), "There was an error backing up your data. Please try again.", Toast.LENGTH_LONG).show();
+    }
+    
+    /**
+     * Imports songbook files and data from the specified file
+     * @param fileName The compressed file to import
+     */
+    private void importAll(String fileName) {
+    	// Decompress the backup file
+    	String zipFile = Environment.getExternalStorageDirectory() + "/" + fileName;
+    	String unzipLocation = Environment.getExternalStorageDirectory() + "/unzipped/"; 
+    	 
+    	Decompress d = new Decompress(zipFile, unzipLocation); 
+    	if (d.unzip())
+    		Toast.makeText(getBaseContext(), "Your data has been sucessfully imported!", Toast.LENGTH_LONG).show();
+    	else
+    		Toast.makeText(getBaseContext(), "There was an error decompressing your backup file. Please try again.", Toast.LENGTH_LONG).show();
+    	
+    	// Add the song files to the files directory
+    	
+    	// Run the sql script to import songs
+    	
     }
     
     
