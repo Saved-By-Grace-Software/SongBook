@@ -368,7 +368,6 @@ public class MainActivity extends FragmentActivity {
                 	setSongs[songCounter++] = song;
                 	c.moveToNext();
             	}
-            	c.close();
             	
             	// Edit the set
             	Intent i = new Intent(getBaseContext(), DragNDropListActivity.class);
@@ -425,7 +424,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStop(){
        super.onStop();
-       dbAdapter.close();
        currentTab = mViewPager.getCurrentItem();
     }
     
@@ -444,7 +442,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onPause() {
     	super.onPause();
-    	dbAdapter.close();
     	currentTab = mViewPager.getCurrentItem();
     }
     
@@ -454,7 +451,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStart() {
     	super.onStart();
-    	//dbAdapter.open();
     	mViewPager.setCurrentItem(currentTab);
     }
     
@@ -464,7 +460,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onResume() {
     	super.onResume();
-    	dbAdapter.open();
     	mViewPager.setCurrentItem(currentTab);
     }
     
@@ -577,8 +572,6 @@ public class MainActivity extends FragmentActivity {
     	while(c.moveToNext()) {
     		addSongsDialogList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)));
     		addSongsDialogMap.put(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)), false);
-    		
-    		c.close();
     	}
     	Collections.sort(addSongsDialogList, new SortIgnoreCase());
     	
@@ -627,8 +620,6 @@ public class MainActivity extends FragmentActivity {
                 	addSongsDialogList.add(songName);
             	}
             	Collections.sort(addSongsDialogList, new SortIgnoreCase());
-            	
-            	c.close();
             	
             	// Update list view
             	songsAD.notifyDataSetChanged();
@@ -707,8 +698,6 @@ public class MainActivity extends FragmentActivity {
     		checkedGroupNames[counter] = false;
     		groupNames[counter++] = groupName;
     	}
-    	
-    	c.close();
     	
     	// Create the dialog to choose which group to add the song to
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -789,8 +778,6 @@ public class MainActivity extends FragmentActivity {
     		songsChecked[counter] = dbAdapter.isSongInSet(songName, setName);
     		songNames[counter++] = songName;
     	}
-    	
-    	c.close();
     	
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -925,8 +912,6 @@ public class MainActivity extends FragmentActivity {
         	// Move to the next song
         	c.moveToNext();
     	}
-    	
-    	c.close();
     	
     	// Sort the array list
     	Collections.sort(setsList, new ItemComparableName());
@@ -1362,8 +1347,6 @@ public class MainActivity extends FragmentActivity {
     		groupNames[counter++] = groupName;
     	}
     	
-    	c.close();
-    	
     	// Create the dialog to choose which group to add the song to
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -1535,8 +1518,6 @@ public class MainActivity extends FragmentActivity {
         	// Move to the next song
         	c.moveToNext();
     	}
-    	
-    	c.close();
     	
     	// Sort the array list
     	Collections.sort(temp, new ItemComparableName());
@@ -1878,8 +1859,6 @@ public class MainActivity extends FragmentActivity {
         	// Move to the next song
         	c.moveToNext();
     	}
-    	
-    	c.close();
     }
     
     /**
@@ -1950,8 +1929,6 @@ public class MainActivity extends FragmentActivity {
     		songGroupsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME)));
     		c.moveToNext();
     	}
-    	
-    	c.close();
     	
     	// Sort the list alphabetically
     	Collections.sort(songGroupsList, new SortIgnoreCase());
@@ -2048,7 +2025,6 @@ public class MainActivity extends FragmentActivity {
     		addSongsDialogList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)));
     		addSongsDialogMap.put(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)), false);
     	}
-    	c.close();
     	Collections.sort(addSongsDialogList, new SortIgnoreCase());
     	
     	// Create the alert dialog and set the title
@@ -2095,7 +2071,6 @@ public class MainActivity extends FragmentActivity {
                 	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
                 	addSongsDialogList.add(songName);
             	}
-            	c.close();
             	Collections.sort(addSongsDialogList, new SortIgnoreCase());
             	
             	// Update list view
@@ -2153,8 +2128,6 @@ public class MainActivity extends FragmentActivity {
     	while(c.moveToNext()) {
     		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
     	}
-    	
-    	c.close();
     	
     	// Create the dialog to choose which group to delete
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -2248,8 +2221,6 @@ public class MainActivity extends FragmentActivity {
     		c.moveToNext();
     	}
     	
-    	c.close();
-    	
     	// Sort the list alphabetically
     	Collections.sort(setGroupsList, new SortIgnoreCase());
     }
@@ -2342,8 +2313,6 @@ public class MainActivity extends FragmentActivity {
     	while(c.moveToNext()) {
     		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
     	}
-    	
-    	c.close();
     	
     	// Create the dialog to choose which group to delete
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
