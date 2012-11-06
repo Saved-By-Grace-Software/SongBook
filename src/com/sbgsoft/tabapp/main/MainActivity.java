@@ -257,6 +257,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_ATT, MainStrings.EDIT_SONG_ATT, R.string.cmenu_songs_edit_att);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_ADD, MainStrings.SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_DEL, MainStrings.SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
+    		menu.add(Menu.NONE, MainStrings.EMAIL_SONG, MainStrings.EMAIL_SONG, R.string.cmenu_songs_email);
     	}
     	// Sets context menu
     	else if (v.getId() == R.id.sets_list) {
@@ -330,6 +331,20 @@ public class MainActivity extends FragmentActivity {
     			editSongAtt(songName);
     			
                 return true;
+    		case MainStrings.EMAIL_SONG:
+    			// Get the song name
+    			songName = currSetList.get(info.position).getName();
+    			
+    			// Create the email intent
+    			Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+    			emailIntent.setType("text/plain");
+    			
+    			// Add the subject and body
+    			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
+    			emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "This is where the song could go possibly.");
+    			
+    			startActivity(Intent.createChooser(emailIntent, "Send song email via:"));  
+    			return true;
     		case MainStrings.SONG_GROUPS_ADD:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
