@@ -851,6 +851,119 @@ public class DBAdapter {
 						") VALUES ('" + songName + "', '" + songFileName + "', '" + author + "', '" + key + "'); ");
 				output.append(System.getProperty("line.separator"));
 			}
+			
+			// Add sets to the export file
+			query = "SELECT * FROM " + DBStrings.SETS_TABLE;
+			c = mDb.rawQuery(query, null);
+			
+			while(c.moveToNext()) {
+				// Get the song properties
+				String setName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
+				String setDate = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_DATE));
+				
+				// Append the insert statement with a line ending
+				output.append("INSERT INTO " + DBStrings.SETS_TABLE + "(" + DBStrings.TBLSETS_NAME + ", " + DBStrings.TBLSETS_DATE +
+						") VALUES ('" + setName + "', '" + setDate + "'); ");
+				output.append(System.getProperty("line.separator"));
+			}
+			
+			// Add set lookup to the export file
+			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_NAME + ", " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_NAME +
+					" FROM " + DBStrings.SETLOOKUP_TABLE +
+					" INNER JOIN " + DBStrings.SONGS_TABLE + " ON " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + 
+					" = " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG +
+					" INNER JOIN " + DBStrings.SETS_TABLE + " ON " +DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + 
+					" = " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SET;
+			c = mDb.rawQuery(query, null);
+			
+			while(c.moveToNext()) {
+				// Get the song properties
+				String songName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+				String setName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
+				
+				// Append the insert statement with a line ending
+				output.append("INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + DBStrings.TBLSLOOKUP_SONG + ") " + 
+						" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
+						" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "') ); ");
+				output.append(System.getProperty("line.separator"));
+			}
+			
+			// Add song groups to the export file
+			query = "SELECT * FROM " + DBStrings.SONGGROUPS_TABLE;
+			c = mDb.rawQuery(query, null);
+			
+			while(c.moveToNext()) {
+				// Get the song properties
+				String groupName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
+				String parentID = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_PARENT));
+				
+				// Append the insert statement with a line ending
+				output.append("INSERT INTO " + DBStrings.SONGGROUPS_TABLE + "(" + DBStrings.TBLSONGGROUPS_NAME + ", " + 
+						DBStrings.TBLSONGGROUPS_PARENT + ") values ('" + groupName + "', " + parentID + " ); ");
+				output.append(System.getProperty("line.separator"));
+			}
+			
+			
+			// Add song group lookup to the export file
+			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_NAME + ", " + DBStrings.SONGGROUPS_TABLE + "." + DBStrings.TBLSONGGROUPS_NAME +
+					" FROM " + DBStrings.SONGGPLOOKUP_TABLE +
+					" INNER JOIN " + DBStrings.SONGS_TABLE + " ON " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + 
+					" = " + DBStrings.SONGGPLOOKUP_TABLE + "." + DBStrings.TBLSONGGPLOOKUP_SONG +
+					" INNER JOIN " + DBStrings.SONGGROUPS_TABLE + " ON " + DBStrings.SONGGROUPS_TABLE + "." + DBStrings.TBLSONGGROUPS_ID + 
+					" = " + DBStrings.SONGGPLOOKUP_TABLE + "." + DBStrings.TBLSONGGPLOOKUP_GROUP;
+			c = mDb.rawQuery(query, null);
+			
+			while(c.moveToNext()) {
+				// Get the song properties
+				String songName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+				String groupName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
+				
+				// Append the insert statement with a line ending
+				output.append("INSERT INTO " + DBStrings.SONGGPLOOKUP_TABLE + "(" + DBStrings.TBLSONGGPLOOKUP_GROUP + ", " + DBStrings.TBLSONGGPLOOKUP_SONG + ") " + 
+						" VALUES ((SELECT " + DBStrings.TBLSONGGROUPS_ID + " FROM " + DBStrings.SONGGROUPS_TABLE + " WHERE " + DBStrings.TBLSONGGROUPS_NAME + " = '" + groupName + "'), " + 
+						" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "') ); ");
+				output.append(System.getProperty("line.separator"));
+			}
+			
+			// Add set groups to the export file
+			query = "SELECT * FROM " + DBStrings.SETGROUPS_TABLE;
+			c = mDb.rawQuery(query, null);
+			
+			while(c.moveToNext()) {
+				// Get the song properties
+				String groupName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
+				String parentID = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_PARENT));
+				
+				// Append the insert statement with a line ending
+				output.append("INSERT INTO " + DBStrings.SETGROUPS_TABLE + "(" + DBStrings.TBLSETGROUPS_NAME + ", " + 
+						DBStrings.TBLSETGROUPS_PARENT + ") values ('" + groupName + "', " + parentID + " ); ");
+				output.append(System.getProperty("line.separator"));
+			}
+			
+			
+			// Add set group lookup to the export file
+			query = "SELECT " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_NAME + ", " + DBStrings.SETGROUPS_TABLE + "." + DBStrings.TBLSETGROUPS_NAME +
+					" FROM " + DBStrings.SETGPLOOKUP_TABLE +
+					" INNER JOIN " + DBStrings.SETS_TABLE + " ON " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + 
+					" = " + DBStrings.SETGPLOOKUP_TABLE + "." + DBStrings.TBLSETGPLOOKUP_SET +
+					" INNER JOIN " + DBStrings.SETGROUPS_TABLE + " ON " + DBStrings.SETGROUPS_TABLE + "." + DBStrings.TBLSETGROUPS_ID + 
+					" = " + DBStrings.SETGPLOOKUP_TABLE + "." + DBStrings.TBLSETGPLOOKUP_GROUP;
+			c = mDb.rawQuery(query, null);
+			
+			while(c.moveToNext()) {
+				// Get the song properties
+				String setName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
+				String groupName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
+				
+				// Append the insert statement with a line ending
+				output.append("INSERT INTO " + DBStrings.SETGPLOOKUP_TABLE + "(" + DBStrings.TBLSETGPLOOKUP_GROUP + ", " + DBStrings.TBLSETGPLOOKUP_SET + ") " + 
+						" VALUES ((SELECT " + DBStrings.TBLSETGROUPS_ID + " FROM " + DBStrings.SETGROUPS_TABLE + " WHERE " + DBStrings.TBLSETGROUPS_NAME + " = '" + groupName + "'), " + 
+						" (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "') ); ");
+				output.append(System.getProperty("line.separator"));
+			}
+			
+			// Close the cursor
+			c.close();
 		}
 		catch (Exception e) {
 			// Error
@@ -867,13 +980,41 @@ public class DBAdapter {
 	public boolean importDBData(String sqlQuery) {
 		try {
 			mDb.beginTransaction();
-			mDb.execSQL(sqlQuery);
+			String queries[] = sqlQuery.split(System.getProperty("line.separator"));
+			for (String query : queries) {
+				mDb.execSQL(query);
+			}
 			mDb.setTransactionSuccessful();
 		} catch (SQLException e) {
 			return false;
 		} finally {
 			mDb.endTransaction();
 		}
+		return true;
+	}
+	
+	/**
+	 * Clears the database of all data and then inserts the default values
+	 * @return True if successful, False if failure
+	 */
+	public boolean clearDB() {
+		try {
+			// Clear tables
+			mDb.execSQL("DELETE FROM " + DBStrings.SETGPLOOKUP_TABLE);
+			mDb.execSQL("DELETE FROM " + DBStrings.SONGGPLOOKUP_TABLE);
+			mDb.execSQL("DELETE FROM " + DBStrings.SETGROUPS_TABLE);
+			mDb.execSQL("DELETE FROM " + DBStrings.SONGGROUPS_TABLE);
+			mDb.execSQL("DELETE FROM " + DBStrings.SETS_TABLE);
+			mDb.execSQL("DELETE FROM " + DBStrings.SONGS_TABLE);
+			mDb.execSQL("DELETE FROM " + DBStrings.CURRSET_TABLE);
+			mDb.execSQL("DELETE FROM " + DBStrings.SETLOOKUP_TABLE);
+			
+			// Add default values
+			mDb.execSQL("insert into " + DBStrings.CURRSET_TABLE + "(" + DBStrings.TBLCURRSET_SET + ") values (0);" );
+			
+		} catch (SQLException e) {
+			return false;
+		} 
 		return true;
 	}
 	
