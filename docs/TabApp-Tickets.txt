@@ -2,9 +2,7 @@ TabApp Bugs, Improvements & New Features
 *****************************************
 
 Bugs:
-  - Resuming the app from the home screen causes a force close (vtab)
-    - Something to do with closing the database?
-	- Possibly only after app killed by taskkiller
+
   
 Improvements:
   - Transpose improvements
@@ -15,8 +13,10 @@ New Features:
   - Auto-scroll
   - Metronome
   - About box
-  - Backup songs, database and files
-    - Export songs
+  - Import / Export Improvements
+    - Allow chosing what to export
+	- Allow chosing where to import from / export to
+	- Run import and export on background thread
   - Edit songs in "html" view rather than chordpro format
   - Add network functionality
     - Sharing of songs and sets over the network
