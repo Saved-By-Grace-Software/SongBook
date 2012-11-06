@@ -2,6 +2,7 @@ package com.sbgsoft.tabapp.main;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -237,7 +238,7 @@ public class MainActivity extends FragmentActivity {
 	        	exportAll();
 	        	return true;
 	        case R.id.menu_backup_import:
-	        	importAll("sbgvsb.bak");
+	        	importAll(MainStrings.EXPORT_ZIP_FILE);
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -2582,7 +2583,7 @@ public class MainActivity extends FragmentActivity {
     	
     	// Store the backup script in the app files folder
     	try {
-	    	FileOutputStream out = openFileOutput("dbbak.sql", Context.MODE_PRIVATE);
+	    	FileOutputStream out = openFileOutput(MainStrings.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
 	    	out.write(exportSQLData.getBytes());
 			out.close(); 
     	} catch (Exception e) {
@@ -2596,10 +2597,10 @@ public class MainActivity extends FragmentActivity {
     	}
     	
     	// Zip the files and save to the external storage
-    	Compress newZip = new Compress(files, Environment.getExternalStorageDirectory() + "/sbgvsb.bak");
+    	Compress newZip = new Compress(files, Environment.getExternalStorageDirectory() + "/" + MainStrings.EXPORT_ZIP_FILE);
     	if (newZip.zip())
     		Toast.makeText(getBaseContext(), "Your data has been successfully saved to: " + Environment.getExternalStorageDirectory() +
-        			"/sbgvsb.bak", Toast.LENGTH_LONG).show();
+    				"/" + MainStrings.EXPORT_ZIP_FILE, Toast.LENGTH_LONG).show();
     	else
     		Toast.makeText(getBaseContext(), "There was an error backing up your data. Please try again.", Toast.LENGTH_LONG).show();
     }
@@ -2619,10 +2620,62 @@ public class MainActivity extends FragmentActivity {
     	else
     		Toast.makeText(getBaseContext(), "There was an error decompressing your backup file. Please try again.", Toast.LENGTH_LONG).show();
     	
-    	// Add the song files to the files directory
-    	
     	// Run the sql script to import songs
+    	try {
+	    	InputStream fis = new FileInputStream(unzipLocation + "/" + MainStrings.EXPORT_SQL_FILE);
+	    	DataInputStream din = new DataInputStream(fis);
+	    	BufferedReader br = new BufferedReader(new InputStreamReader(din));
+	    	StringBuilder sb = new StringBuilder();
+	        String line = br.readLine();
+	        
+	        // Cycle through each line in the sql file and add it to the string builder
+	        while(line != null) {
+	        	sb.append(line);
+	        	line = br.readLine();
+	        }
+	        
+	        br.close();
+	        
+	        // Import the sql
+	        dbAdapter.importDBData(sb.toString());
+    	}
+    	catch (Exception e) {
+    		Toast.makeText(getBaseContext(), "Could not import database file. Import aborted.", Toast.LENGTH_LONG).show();
+    		return;
+    	}
     	
+    	// Add the song files to the files directory
+    	File dir = new File(unzipLocation);
+    	for (File child : dir.listFiles()) {
+    		// Try to add the song file
+    		try {
+	    		InputStream in = new FileInputStream(child);
+	    		OutputStream out = openFileOutput(child.getName(), Context.MODE_PRIVATE);
+	    		byte[] buf = new byte[1024];
+	    		int len;
+	    		while ((len = in.read(buf)) > 0) {
+	    		   out.write(buf, 0, len);
+	    		}
+	    		in.close();
+	    		out.close(); 
+    		}
+    		catch (Exception e) {
+    			// If the song file failed, remove the song from the DB
+    			String songName = child.getName();
+    			songName = songName.substring(0, songName.lastIndexOf("."));
+    			dbAdapter.deleteSong(songName);
+    			
+    			// Alert the user
+    			Toast.makeText(getBaseContext(), "Could not import song file: " + child.getName(), Toast.LENGTH_LONG).show();
+    		}
+    	}
+    	
+    	// Refresh all the lists
+    	fillSongGroupsSpinner();
+    	fillSongsListView();
+    	fillSetGroupsSpinner();
+    	fillSetsListView();
+    	fillCurrentSetListView();
     }
     
     

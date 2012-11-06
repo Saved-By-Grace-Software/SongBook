@@ -211,6 +211,7 @@ public class DBAdapter {
 	 */
 	public boolean deleteAllSets() {
 		try {
+			mDb.execSQL("DELETE FROM " + DBStrings.SETGPLOOKUP_TABLE);
 			mDb.execSQL("DELETE FROM " + DBStrings.SETLOOKUP_TABLE);
 			mDb.execSQL("DELETE FROM " + DBStrings.SETS_TABLE);
 			mDb.execSQL("UPDATE " + DBStrings.CURRSET_TABLE + " SET " + DBStrings.TBLCURRSET_SET + " = 0");
@@ -392,6 +393,7 @@ public class DBAdapter {
 		try {
 			deleteAllSets();
 			mDb.execSQL("DELETE from " + DBStrings.SONGS_TABLE);
+			mDb.execSQL("DELETE FROM " + DBStrings.SONGGPLOOKUP_TABLE);
 		} catch (SQLException e) {
 			return false;
 		}
@@ -405,6 +407,9 @@ public class DBAdapter {
 	 */
 	public boolean deleteSong(String songName) {
 		try {
+			mDb.execSQL("DELETE from " + DBStrings.SONGGPLOOKUP_TABLE + " WHERE " + DBStrings.TBLSONGGPLOOKUP_SONG + 
+					" = ( SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " +
+					DBStrings.TBLSONG_NAME + " = '" + songName + "')");
 			mDb.execSQL("DELETE from " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'");
 		} catch (SQLException e) {
 			return false;
@@ -822,6 +827,10 @@ public class DBAdapter {
     * Import / Export Functions
     * 
     *****************************************************************************/
+	/**
+	 * Exports all the database data into an sql file
+	 * @return True if success, False if failure
+	 */
 	public String exportDBData() {
 		StringBuilder output = new StringBuilder();
 		try {
@@ -830,14 +839,17 @@ public class DBAdapter {
 			Cursor c = mDb.rawQuery(query, null);
 			
 			while(c.moveToNext()) {
+				// Get the song properties
 				String songName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
 				String songFileName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_FILE));
 				String author = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_AUTHOR));
 				String key = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY));
 				
+				// Append the insert statement with a line ending
 				output.append("INSERT INTO " + DBStrings.SONGS_TABLE + "(" + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
 						DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + 
 						") VALUES ('" + songName + "', '" + songFileName + "', '" + author + "', '" + key + "'); ");
+				output.append(System.getProperty("line.separator"));
 			}
 		}
 		catch (Exception e) {
@@ -845,6 +857,24 @@ public class DBAdapter {
 		}
 		
 		return output.toString();
+	}
+	
+	/**
+	 * Runs the specified sql statement to import data
+	 * @param sqlQuery The sql query to run
+	 * @return True if success, False if failure
+	 */
+	public boolean importDBData(String sqlQuery) {
+		try {
+			mDb.beginTransaction();
+			mDb.execSQL(sqlQuery);
+			mDb.setTransactionSuccessful();
+		} catch (SQLException e) {
+			return false;
+		} finally {
+			mDb.endTransaction();
+		}
+		return true;
 	}
 	
 	
