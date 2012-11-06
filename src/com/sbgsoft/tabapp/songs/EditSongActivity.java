@@ -40,7 +40,7 @@ public class EditSongActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_edit_song, menu);
+        //getMenuInflater().inflate(R.menu.activity_edit_song, menu);
         return true;
     }
     

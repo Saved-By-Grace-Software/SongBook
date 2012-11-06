@@ -28,11 +28,10 @@ public class MainStrings {
 	public static final HashMap<String, String> keyMap = new HashMap<String, String>() {
 		private static final long serialVersionUID = 94512194672735973L;
 		{
-			put("G#", "Ab");
-			put("A#", "Bb");
-			put("Db", "C#");
-			put("D#", "Eb");
-			put("Gb", "F#");
+			put("Abm", "Ab"); put("G#", "Ab"); put("G#m", "Ab"); put("Am", "A"); put("Bbm", "Bb"); put("A#", "Bb");
+			put("A#m", "Bb"); put("Bm", "B"); put("Cm", "C"); put("C#m", "C#"); put("Db", "C#"); put("Dbm", "C#");
+			put("Dm", "Db"); put("Ebm", "Eb"); put("D#", "Eb"); put("D#m", "Eb"); put("Em", "E"); put("Fm", "F");
+			put("F#m", "F#"); put("Gb", "F#"); put("Gbm", "F#"); put("Gm", "G");
 		}
 	};
 	

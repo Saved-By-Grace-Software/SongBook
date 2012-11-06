@@ -103,7 +103,7 @@ public class SongActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.view_song_menu, menu);
+        //getMenuInflater().inflate(R.menu.view_song_menu, menu);
         return true;
     }
     
