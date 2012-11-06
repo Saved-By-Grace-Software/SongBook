@@ -130,7 +130,7 @@ public class SetActivity extends FragmentActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_set, menu);
+        //getMenuInflater().inflate(R.menu.activity_set, menu);
         return true;
     }
     

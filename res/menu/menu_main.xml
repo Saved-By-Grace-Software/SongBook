@@ -3,14 +3,14 @@
         android:title="@string/menu_settings"
         android:orderInCategory="100"
         android:showAsAction="never" android:enabled="false" android:visible="false"/>
-    <item android:id="@+id/menu_sets" android:menuCategory="container" android:title="@string/menu_sets">
+    <item android:id="@+id/menu_sets" android:menuCategory="container" android:title="@string/menu_sets" android:orderInCategory="2">
         <menu>
             <item android:id="@+id/menu_sets_create" android:title="@string/menu_sets_create"/>
             <item android:id="@+id/menu_sets_find" android:enabled="false" android:title="@string/menu_sets_find"/>
             <item android:id="@+id/menu_sets_clear" android:title="@string/menu_sets_clear"/>
         </menu>
     </item>
-    <item android:id="@+id/menu_songs" android:menuCategory="container" android:title="@string/menu_songs">
+    <item android:id="@+id/menu_songs" android:menuCategory="container" android:title="@string/menu_songs" android:orderInCategory="1">
         <menu>
             <item android:id="@+id/menu_songs_create" android:title="@string/menu_songs_create" android:enabled="true"/>
             <item android:id="@+id/menu_songs_import" android:title="@string/menu_songs_import" android:enabled="true"/>
@@ -18,14 +18,14 @@
             <item android:id="@+id/menu_songs_clear" android:title="@string/menu_songs_clear" android:enabled="true"/>
         </menu>
     </item>
-    <item android:id="@+id/menu_song_groups" android:title="@string/menu_song_groups">
+    <item android:id="@+id/menu_song_groups" android:title="@string/menu_song_groups" android:orderInCategory="3" android:menuCategory="container">
         <menu>
             <item android:id="@+id/menu_song_groups_create" android:title="@string/menu_song_groups_create" android:enabled="true"/>
             <item android:id="@+id/menu_song_groups_delete" android:title="@string/menu_song_groups_delete" android:enabled="true"/>
             <item android:id="@+id/menu_song_groups_delete_all" android:enabled="true" android:title="@string/menu_song_groups_delete_all"/>
         </menu>
     </item>
-    <item android:id="@+id/menu_set_groups" android:title="@string/menu_set_groups">
+    <item android:id="@+id/menu_set_groups" android:title="@string/menu_set_groups" android:orderInCategory="4" android:menuCategory="container">
         <menu>
             <item android:id="@+id/menu_set_groups_create" android:title="@string/menu_set_groups_create"/>
             <item android:id="@+id/menu_set_groups_delete" android:title="@string/menu_set_groups_delete"/>
