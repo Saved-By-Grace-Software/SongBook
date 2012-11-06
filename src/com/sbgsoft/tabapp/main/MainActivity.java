@@ -36,6 +36,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
@@ -333,15 +334,16 @@ public class MainActivity extends FragmentActivity {
                 return true;
     		case MainStrings.EMAIL_SONG:
     			// Get the song name
-    			songName = currSetList.get(info.position).getName();
+    			SongItem songI = (SongItem)songsList.get(info.position);
+    			songName = songI.getName();
     			
     			// Create the email intent
     			Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-    			emailIntent.setType("text/plain");
+    			emailIntent.setType("text/html");
     			
     			// Add the subject and body
     			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
-    			emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "This is where the song could go possibly.");
+    			emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
     			
     			startActivity(Intent.createChooser(emailIntent, "Send song email via:"));  
     			return true;
