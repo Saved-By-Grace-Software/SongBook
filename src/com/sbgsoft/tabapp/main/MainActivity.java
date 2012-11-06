@@ -2,7 +2,9 @@ package com.sbgsoft.tabapp.main;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -27,6 +29,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -71,6 +74,8 @@ import com.sbgsoft.tabapp.songs.EditSongActivity;
 import com.sbgsoft.tabapp.songs.SongActivity;
 import com.sbgsoft.tabapp.songs.SongGroupArrayAdapter;
 import com.sbgsoft.tabapp.songs.SongsTab;
+import com.sbgsoft.tabapp.zip.Compress;
+import com.sbgsoft.tabapp.zip.Decompress;
 
 public class MainActivity extends FragmentActivity {
 	
@@ -227,6 +232,12 @@ public class MainActivity extends FragmentActivity {
 	        	return true;
 	        case R.id.menu_set_groups_delete_all:
 	        	deleteAllSetGroups();
+	        	return true;
+	        case R.id.menu_backup_export:
+	        	exportAll();
+	        	return true;
+	        case R.id.menu_backup_import:
+	        	importAll(MainStrings.EXPORT_ZIP_FILE);
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -2598,6 +2609,146 @@ public class MainActivity extends FragmentActivity {
 	        	setsAdapter.notifyDataSetChanged();
 	    		break;
     	}
+    }
+    
+    
+    /*****************************************************************************
+     * 
+     * Import / Export Functions
+     * 
+     *****************************************************************************/
+    /**
+     * Exports all songbook files and db
+     */
+    private void exportAll() {
+    	// Create the db backup sql script
+    	String exportSQLData = dbAdapter.exportDBData();
+    	
+    	// Store the backup script in the app files folder
+    	try {
+	    	FileOutputStream out = openFileOutput(MainStrings.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
+	    	out.write(exportSQLData.getBytes());
+			out.close(); 
+    	} catch (Exception e) {
+    		Toast.makeText(getBaseContext(), "Could not write db file!", Toast.LENGTH_LONG).show();
+    	}
+    	
+    	// Get a list of all the files in the app files folder
+    	String[] files = fileList();
+    	for(int i = 0; i < files.length; i++) {
+    		files[i] = getFilesDir() + "/" + files[i];
+    	}
+    	
+    	// Zip the files and save to the external storage
+    	Compress newZip = new Compress(files, Environment.getExternalStorageDirectory() + "/" + MainStrings.EXPORT_ZIP_FILE);
+    	if (newZip.zip())
+    		Toast.makeText(getBaseContext(), "Your data has been successfully saved to: " + Environment.getExternalStorageDirectory() +
+    				"/" + MainStrings.EXPORT_ZIP_FILE, Toast.LENGTH_LONG).show();
+    	else
+    		Toast.makeText(getBaseContext(), "There was an error backing up your data. Please try again.", Toast.LENGTH_LONG).show();
+    }
+    
+    /**
+     * Imports songbook files and data from the specified file
+     * @param fileName The compressed file to import
+     */
+    private void importAll(final String fileName) {
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Import");
+    	alert.setMessage("This will erase all data currently in your database.  Do you want to continue?");
+
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Clear the database and files
+	    		dbAdapter.clearDB();
+	        	String[] files = fileList();
+	        	for(int i = 0; i < files.length; i++) {
+	        		deleteFile(files[i]);
+	        	}
+	    		
+	    		// Decompress the backup file
+	        	String zipFile = Environment.getExternalStorageDirectory() + "/" + fileName;
+	        	String unzipLocation = Environment.getExternalStorageDirectory() + "/unzipped/"; 
+	        	 
+	        	Decompress d = new Decompress(zipFile, unzipLocation); 
+	        	if (!d.unzip()) {
+	        		Toast.makeText(getBaseContext(), "There was an error decompressing your backup file. Please try again.", Toast.LENGTH_LONG).show();
+	        		return;
+	        	}
+	        	
+	        	// Run the sql script to import songs
+	        	try {
+	    	    	InputStream fis = new FileInputStream(unzipLocation + "/" + MainStrings.EXPORT_SQL_FILE);
+	    	    	DataInputStream din = new DataInputStream(fis);
+	    	    	BufferedReader br = new BufferedReader(new InputStreamReader(din));
+	    	    	StringBuilder sb = new StringBuilder();
+	    	        String line = br.readLine();
+	    	        
+	    	        // Cycle through each line in the sql file and add it to the string builder
+	    	        while(line != null) {
+	    	        	sb.append(line + System.getProperty("line.separator"));
+	    	        	line = br.readLine();
+	    	        }
+	    	        
+	    	        br.close();
+	    	        
+	    	        // Import the sql
+	    	        dbAdapter.importDBData(sb.toString());
+	        	}
+	        	catch (Exception e) {
+	        		Toast.makeText(getBaseContext(), "Could not import database file. Import aborted.", Toast.LENGTH_LONG).show();
+	        		return;
+	        	}
+	        	
+	        	// Add the song files to the files directory
+	        	File dir = new File(unzipLocation);
+	        	for (File child : dir.listFiles()) {
+	        		// Try to add the song file
+	        		try {
+	    	    		InputStream in = new FileInputStream(child);
+	    	    		OutputStream out = openFileOutput(child.getName(), Context.MODE_PRIVATE);
+	    	    		byte[] buf = new byte[1024];
+	    	    		int len;
+	    	    		while ((len = in.read(buf)) > 0) {
+	    	    		   out.write(buf, 0, len);
+	    	    		}
+	    	    		in.close();
+	    	    		out.close(); 
+	        		}
+	        		catch (Exception e) {
+	        			// If the song file failed, remove the song from the DB
+	        			String songName = child.getName();
+	        			songName = songName.substring(0, songName.lastIndexOf("."));
+	        			dbAdapter.deleteSong(songName);
+	        			
+	        			// Alert the user
+	        			Toast.makeText(getBaseContext(), "Could not import song file: " + child.getName(), Toast.LENGTH_LONG).show();
+	        		}
+	        	}
+	        	
+	        	// Show success message
+	        	Toast.makeText(getBaseContext(), "Your data has been sucessfully imported!", Toast.LENGTH_LONG).show();
+	        	
+	        	// Delete the sql file
+	        	deleteFile(MainStrings.EXPORT_SQL_FILE);
+	        	
+	        	// Refresh all the lists
+	        	fillSongGroupsSpinner();
+	        	fillSongsListView();
+	        	fillSetGroupsSpinner();
+	        	fillSetsListView();
+	        	fillCurrentSetListView();
+			}
+    	});
+
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Canceled, do not import
+	    	}
+    	});
+
+    	alert.show();
     }
     
     
