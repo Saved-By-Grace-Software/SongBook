@@ -275,6 +275,7 @@ public class MainActivity extends FragmentActivity {
     		menu.setHeaderTitle("Current Set Menu");
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_CS, MainStrings.EDIT_SONG_CS, R.string.cmenu_songs_edit);
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_ATT_CS, MainStrings.EDIT_SONG_ATT_CS, R.string.cmenu_songs_edit_att);
+    		menu.add(Menu.NONE, MainStrings.EMAIL_SONG_CS, MainStrings.EMAIL_SONG_CS, R.string.cmenu_songs_email);
     	}
     }
     
@@ -346,6 +347,21 @@ public class MainActivity extends FragmentActivity {
     			emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
     			
     			startActivity(Intent.createChooser(emailIntent, "Send song email via:"));  
+    			return true;
+    		case MainStrings.EMAIL_SONG_CS:
+    			// Get the song name
+    			SongItem songI2 = (SongItem)currSetList.get(info.position);
+    			songName = songI2.getName();
+    			
+    			// Create the email intent
+    			Intent emailIntent2 = new Intent(android.content.Intent.ACTION_SEND);
+    			emailIntent2.setType("text/html");
+    			
+    			// Add the subject and body
+    			emailIntent2.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
+    			emailIntent2.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI2.getSongFile())));
+    			
+    			startActivity(Intent.createChooser(emailIntent2, "Send song email via:"));  
     			return true;
     		case MainStrings.SONG_GROUPS_ADD:
     			// Get the song name
