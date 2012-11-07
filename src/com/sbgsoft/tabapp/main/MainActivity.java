@@ -269,6 +269,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.REORDER_SET, MainStrings.REORDER_SET, R.string.cmenu_sets_reorder);
     		menu.add(Menu.NONE, MainStrings.SET_GROUPS_ADD, MainStrings.SET_GROUPS_ADD, R.string.cmenu_set_group_add);
     		menu.add(Menu.NONE, MainStrings.SET_GROUPS_DEL, MainStrings.SET_GROUPS_DEL, R.string.cmenu_set_group_delete);
+    		menu.add(Menu.NONE, MainStrings.EMAIL_SET, MainStrings.EMAIL_SET, R.string.cmenu_sets_email);
     	}
     	// Current Set context menu
     	else if (v.getId() == R.id.current_list) {
@@ -433,6 +434,36 @@ public class MainActivity extends FragmentActivity {
             	editSetAtt(setName);
             	
             	return true;
+    		case MainStrings.EMAIL_SET:
+    			// Get the set name
+    			SetItem setI = (SetItem)setsList.get(info.position);
+    			setName = setI.getName();
+    			String setDate = setI.getDate();
+    			
+    			// Start the output string
+    			StringBuilder sb = new StringBuilder();
+    			sb.append("<h2>" + setName + "</h2>");
+    			sb.append("<i>" + setDate + "</i><br/><br/>");
+    			
+    			// Get the set songs
+    			Cursor c2 = dbAdapter.getSetSongs(setName);
+    			startManagingCursor(c2);
+    			while (c2.moveToNext()) {
+    				sb.append(c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)) +
+    						" - " + c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY)) +
+    						"<br/>");
+    			}
+    			
+    			// Create the email intent
+    			Intent emailIntent3 = new Intent(android.content.Intent.ACTION_SEND);
+    			emailIntent3.setType("text/html");
+    			
+    			// Add the subject and body
+    			emailIntent3.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + setName);
+    			emailIntent3.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(sb.toString()));
+    			
+    			startActivity(Intent.createChooser(emailIntent3, "Send song email via:"));  
+    			return true;
     		case MainStrings.SET_GROUPS_ADD:
     			// Get the song name
     			setName = setsList.get(info.position).getName();

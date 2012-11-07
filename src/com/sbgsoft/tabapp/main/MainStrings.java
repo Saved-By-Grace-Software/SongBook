@@ -50,6 +50,7 @@ public class MainStrings {
 	public static final int REORDER_SET = 13;
 	public static final int SET_GROUPS_ADD = 14;
 	public static final int SET_GROUPS_DEL = 15;
+	public static final int EMAIL_SET = 16;
 	
 	// Current Set Context Menu Keys
 	public static final int EDIT_SONG_CS = 20;

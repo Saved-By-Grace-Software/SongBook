@@ -190,7 +190,8 @@ public class DBAdapter {
 		try {
 			// Get the list of songs from the sets lookup table
 			String query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_NAME + 
-					", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_FILE +
+					", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_FILE + ", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + 
+					", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_KEY +
 					" FROM " + DBStrings.SETLOOKUP_TABLE + ", " + DBStrings.CURRSET_TABLE +
 					" INNER JOIN " + DBStrings.SONGS_TABLE + " ON " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG + 
 					" = " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID +
