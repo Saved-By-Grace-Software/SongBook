@@ -137,6 +137,25 @@ public class DBAdapter {
 	}
 	
 	/**
+	 * Adds the song to the set
+	 * @param setName The set to add to
+	 * @param songName The song to add
+	 * @return True if success, False if failure
+	 */
+	public boolean addSongToSet(String setName, String songName) {
+		try {
+			// Add the song to the set
+			mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + DBStrings.TBLSLOOKUP_SONG + ") " + 
+					" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
+					" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "') );" );
+		} catch (SQLiteException e) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
 	 * Gets all existing set names
 	 * @return Cursor to the query
 	 */	

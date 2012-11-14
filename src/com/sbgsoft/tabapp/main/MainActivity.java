@@ -256,6 +256,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.DELETE_SONG, MainStrings.DELETE_SONG, R.string.cmenu_songs_delete);
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG, MainStrings.EDIT_SONG, R.string.cmenu_songs_edit);
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_ATT, MainStrings.EDIT_SONG_ATT, R.string.cmenu_songs_edit_att);
+    		menu.add(Menu.NONE, MainStrings.ADD_SONG_SET, MainStrings.ADD_SONG_SET, R.string.cmenu_song_add_set);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_ADD, MainStrings.SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_DEL, MainStrings.SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
     		menu.add(Menu.NONE, MainStrings.EMAIL_SONG, MainStrings.EMAIL_SONG, R.string.cmenu_songs_email);
@@ -363,6 +364,14 @@ public class MainActivity extends FragmentActivity {
     			emailIntent2.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI2.getSongFile())));
     			
     			startActivity(Intent.createChooser(emailIntent2, "Send song email via:"));  
+    			return true;
+    		case MainStrings.ADD_SONG_SET:
+    			// Get the song name
+    			songName = songsList.get(info.position).getName();
+    			
+    			// Edit the songs groups
+    			addSongToSet(songName);
+    			
     			return true;
     		case MainStrings.SONG_GROUPS_ADD:
     			// Get the song name
@@ -1503,6 +1512,59 @@ public class MainActivity extends FragmentActivity {
 				
 				// Refresh song list
     			fillSongGroupsSpinner();
+			}
+		});
+
+    	alert.show();
+    }
+    
+    /**
+     * Adds the song to a set
+     * @param songName The song to add
+     */
+    private void addSongToSet(final String songName) {
+    	// Get the list of group names
+    	Cursor c = dbAdapter.getSetNames(SetsTab.ALL_SETS_LABEL);
+    	startManagingCursor(c);
+    	
+    	final CharSequence[] setNames = new CharSequence[c.getCount()];
+    	int counter = 0;
+    	
+    	// Add groups to list view
+    	while(c.moveToNext()) {
+    		String setName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
+    		setNames[counter++] = setName;
+    	}
+    	
+    	// Create the dialog to choose which group to add the song to
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Add Song to Which Set?");
+    	alert.setItems(setNames, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// Confirm they want to delete the group
+				final String setName = (String) setNames[which];
+				AlertDialog.Builder confirm = new AlertDialog.Builder(MainActivity.this);
+				confirm.setTitle("Add Song to Set?");
+				confirm.setMessage("Do you want to add '" + songName + "' to '" + setName + "'?");
+				
+				confirm.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			    	public void onClick(DialogInterface dialog, int whichButton) {
+			    		dbAdapter.addSongToSet(setName, songName);
+						
+			    		// Refresh the current set list
+			    		fillCurrentSetListView();
+					}
+		    	});
+
+				confirm.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			    	public void onClick(DialogInterface dialog, int whichButton) { 	}
+		    	});
+
+				confirm.show();
+				
 			}
 		});
 
