@@ -1180,9 +1180,9 @@ public class MainActivity extends FragmentActivity {
 	    		if (authorET.getText().length() > 0)
 	    			songAuthor = authorET.getText().toString().trim();
 	    		if (keyET.getText().length() > 1)
-	    			songKey = keyET.getText().toString().substring(0, 1).toUpperCase() + keyET.getText().toString().substring(1).trim();
+	    			songKey = keyET.getText().toString().substring(0, 1).toUpperCase(Locale.US) + keyET.getText().toString().substring(1).trim();
 	    		else if (keyET.getText().length() > 0)
-	    			songKey = keyET.getText().toString().toUpperCase().trim();
+	    			songKey = keyET.getText().toString().toUpperCase(Locale.US).trim();
 	    		
 	    		// Check for a correct key
 	    		if (songKey.length() > 0) {
@@ -1289,14 +1289,14 @@ public class MainActivity extends FragmentActivity {
         // Read each line of the file
         while (line != null) {
         	// Check for song part tags
-        	if(MainStrings.songParts.contains(line.split("\\W+")[0].toLowerCase())) {
+        	if(MainStrings.songParts.contains(line.split("\\W+")[0].toLowerCase(Locale.US))) {
         		sb.append("{title:");
         		sb.append(line);
             	sb.append("}");
             	startedSong = true;
         	}
         	// Process the intro line
-        	else if (line.toLowerCase().contains("intro")) {
+        	else if (line.toLowerCase(Locale.US).contains("intro")) {
         		sb.append("{intro:");
         		boolean chordStart = false;
         		boolean inChord = false;
@@ -1360,7 +1360,7 @@ public class MainActivity extends FragmentActivity {
 	            		if (chords.length() == 0 && lyrics.length() == 0) {
 	            			startedSong = false;
 	            		}
-	            		else if (chords.length() == 0 && (MainStrings.songParts.contains(lyrics.split("\\W+")[0].toLowerCase()))) {
+	            		else if (chords.length() == 0 && (MainStrings.songParts.contains(lyrics.split("\\W+")[0].toLowerCase(Locale.US)))) {
 	            			sb.append(System.getProperty("line.separator"));
 	            			sb.append("{title:");
 	                		sb.append(lyrics);
@@ -1726,12 +1726,12 @@ public class MainActivity extends FragmentActivity {
     			if (Character.toLowerCase(temp.get(i).getName().charAt(0)) != 
     					Character.toLowerCase(temp.get(i-1).getName().charAt(0))) {
     				// This is the first item with that letter, add the separator
-    				songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase()));
+    				songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase(Locale.US)));
     			}
     		}
     		else {
     			// First item, add section
-    			songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase()));
+    			songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase(Locale.US)));
     		}
     		
     		songsList.add(temp.get(i));
@@ -1990,9 +1990,9 @@ public class MainActivity extends FragmentActivity {
 	    		
 	    		// Upper case the key
 	    		if (key.length() > 1)
-	    			key = key.substring(0, 1).toUpperCase() + key.substring(1).trim();
+	    			key = key.substring(0, 1).toUpperCase(Locale.US) + key.substring(1).trim();
 	    		else if (key.length() > 0)
-	    			key = key.toUpperCase().trim();
+	    			key = key.toUpperCase(Locale.US).trim();
 	    		
 	    		// Check for a correct key
 	    		if (key.length() > 0) {
@@ -2663,12 +2663,12 @@ public class MainActivity extends FragmentActivity {
 	        			if (Character.toLowerCase(((SongItem)temp.get(i)).getAuthor().charAt(0)) != 
 	        					Character.toLowerCase(((SongItem)temp.get(i-1)).getAuthor().charAt(0))) {
 	        				// This is the first item with that letter, add the separator
-	        				songsList.add(new SectionItem(((SongItem)temp.get(i)).getAuthor().substring(0, 1).toUpperCase()));
+	        				songsList.add(new SectionItem(((SongItem)temp.get(i)).getAuthor().substring(0, 1).toUpperCase(Locale.US)));
 	        			}
 	        		}
 	        		else {
 	        			// First item, add section
-	        			songsList.add(new SectionItem(((SongItem)temp.get(i)).getAuthor().substring(0, 1).toUpperCase()));
+	        			songsList.add(new SectionItem(((SongItem)temp.get(i)).getAuthor().substring(0, 1).toUpperCase(Locale.US)));
 	        		}
 	        		
 	        		songsList.add(temp.get(i));
@@ -2984,7 +2984,7 @@ public class MainActivity extends FragmentActivity {
         public int compare(Object o1, Object o2) {
             String s1 = (String) o1;
             String s2 = (String) o2;
-            return s1.toLowerCase().compareTo(s2.toLowerCase());
+            return s1.toLowerCase(Locale.US).compareTo(s2.toLowerCase());
         }
     }
     
