@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,14 +62,14 @@ public class SetSongFragment extends Fragment {
 	 * Increases the size of the text in the text view
 	 */
 	public void incTextSize() {
-		song.setTextSize(song.getTextSize() + 1);
+		song.setTextSize(TypedValue.COMPLEX_UNIT_DIP, song.getTextSize() + 1);
 	}
 	
 	/**
 	 * Decreases the size of the text in the text view
 	 */
 	public void decTextSize() {
-		song.setTextSize(song.getTextSize() - 1);
+		song.setTextSize(TypedValue.COMPLEX_UNIT_DIP, song.getTextSize() - 1);
 	}
 
 	/**

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -118,7 +119,7 @@ public class SongActivity extends Activity {
      * @param v
      */
     public void incFontSize(View v) {
-    	song.setTextSize(song.getTextSize() + 1);
+    	song.setTextSize(TypedValue.COMPLEX_UNIT_DIP, song.getTextSize() + 1);
     }
     
     /**
@@ -126,7 +127,7 @@ public class SongActivity extends Activity {
      * @param v
      */
     public void decFontSize(View v) {
-    	song.setTextSize(song.getTextSize() - 1);
+    	song.setTextSize(TypedValue.COMPLEX_UNIT_DIP, song.getTextSize() - 1);
     }
     
     /**
