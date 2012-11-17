@@ -246,7 +246,7 @@ public class SongActivity extends Activity {
      * @param transposeKey The key to transpose it into
      * @return The transposed chord
      */
-    private String transposeChord(String originalChord, String transposeKey) {
+    private String transposeChord(final String originalChord, String transposeKey) {
     	String newChord = "", root = "", newRoot = "", bass = "", newBass = "";
     	int slashIndex = 0;
     	int diff = 0, rootIndex = 0, bassIndex = 0;
@@ -320,6 +320,20 @@ public class SongActivity extends Activity {
         	else
         		newChord = newRoot + originalChord.substring(1);
     	}
+    	
+    	// Add spaces to newChord
+    	int dif = originalChord.length() - newChord.length();
+    	if (dif < 0) {
+    		for(int i = 0; i < dif; i++) {
+    			newChord = "&nbsp;" + newChord;
+        	}
+    	}
+    	else {
+    		for(int i = 0; i < Math.abs(dif); i++) {
+    			newChord = newChord + "&nbsp;";
+        	}
+    	}
+    	
     	return newChord;
     }
 
