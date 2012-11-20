@@ -1289,7 +1289,7 @@ public class MainActivity extends FragmentActivity {
         // Read each line of the file
         while (line != null) {
         	// Check for song part tags
-        	if(MainStrings.songParts.contains(line.split("\\W+")[0].toLowerCase(Locale.US))) {
+        	if(MainStrings.songParts.contains(line.split("[^A-Za-z\\-]")[0].toLowerCase(Locale.US))) {
         		sb.append("{title:");
         		sb.append(line);
             	sb.append("}");
