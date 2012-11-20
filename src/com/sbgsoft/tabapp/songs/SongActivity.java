@@ -213,7 +213,7 @@ public class SongActivity extends Activity {
     	}
     	
     	// Compile the regex 
-    	regex = Pattern.compile("(<b>|<font color =\"#006b9f\">)([A-G][#bmad0-9su]*/*[A-G]*[#bmad0-9su]*)(</font>|</b>)");
+    	regex = Pattern.compile("(<b>|<font color =\"#006b9f\">)(?:&#160;)*([A-G][#bmad0-9su]*/*[A-G]*[#bmad0-9su]*)(?:&#160;)*(</font>|</b>)");
     	matcher = regex.matcher(updatedText);
     	try {    		
     		// Cycle through each match
@@ -249,7 +249,7 @@ public class SongActivity extends Activity {
     private String transposeChord(final String originalChord, String transposeKey) {
     	String newChord = "", root = "", newRoot = "", bass = "", newBass = "";
     	int slashIndex = 0;
-    	int diff = 0, rootIndex = 0, bassIndex = 0;
+    	int diff = 0, rootIndex = 0, bassIndex = 0;    	
     	
     	// Get the root note of the chord
     	if (originalChord.length() > 1) {
