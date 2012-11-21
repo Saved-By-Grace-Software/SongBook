@@ -1288,6 +1288,16 @@ public class MainActivity extends FragmentActivity {
         
         // Read each line of the file
         while (line != null) {
+        	// Check for only white spaces
+        	if(line.trim().length() <= 0) {
+        		// Add system line break
+            	sb.append(System.getProperty("line.separator"));
+            	
+            	// Read the next line and continue
+            	line = br.readLine();
+            	continue;
+        	}
+        	
         	// Check for song part tags
         	if(MainStrings.songParts.contains(line.split("[^A-Za-z\\-]")[0].toLowerCase(Locale.US))) {
         		sb.append("{title:");
