@@ -25,8 +25,8 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.sbgsoft.tabapp.R;
-import com.sbgsoft.tabapp.main.MainStrings;
+import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.main.MainStrings;
 
 public class DragNDropListActivity extends ListActivity {
 	//private static String[] mListContent={"Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7"};
