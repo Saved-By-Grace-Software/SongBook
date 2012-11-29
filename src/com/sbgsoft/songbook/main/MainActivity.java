@@ -278,6 +278,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_CS, MainStrings.EDIT_SONG_CS, R.string.cmenu_songs_edit);
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_ATT_CS, MainStrings.EDIT_SONG_ATT_CS, R.string.cmenu_songs_edit_att);
     		menu.add(Menu.NONE, MainStrings.EMAIL_SONG_CS, MainStrings.EMAIL_SONG_CS, R.string.cmenu_songs_email);
+    		menu.add(Menu.NONE, MainStrings.REMOVE_SONG_FROM_SET, MainStrings.REMOVE_SONG_FROM_SET, R.string.cmenu_sets_remove_song);
     	}
     }
     
@@ -287,6 +288,9 @@ public class MainActivity extends FragmentActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
     	String setName = "", songName = "", groupName = "";
+    	Intent i;
+    	SongItem songI;
+    	SetItem setI;
     	AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
     	switch (item.getItemId()) {
     		case MainStrings.DELETE_SONG:
@@ -300,11 +304,11 @@ public class MainActivity extends FragmentActivity {
     			songName = songsList.get(info.position).getName();
                     
 				// Create the edit activity intent
-            	Intent intent = new Intent(getBaseContext(), EditSongActivity.class);
-                intent.putExtra(MainStrings.SONG_NAME_KEY, songName);
+            	i = new Intent(getBaseContext(), EditSongActivity.class);
+                i.putExtra(MainStrings.SONG_NAME_KEY, songName);
                 
                 // Start the activity
-                startActivity(intent);
+                startActivity(i);
             	
                 return true;
     		case MainStrings.EDIT_SONG_CS:
@@ -312,11 +316,11 @@ public class MainActivity extends FragmentActivity {
     			songName = currSetList.get(info.position).getName();
                     
 				// Create the edit activity intent
-            	Intent intent1 = new Intent(getBaseContext(), EditSongActivity.class);
-                intent1.putExtra(MainStrings.SONG_NAME_KEY, songName);
+            	i = new Intent(getBaseContext(), EditSongActivity.class);
+                i.putExtra(MainStrings.SONG_NAME_KEY, songName);
                 
                 // Start the activity
-                startActivity(intent1);
+                startActivity(i);
             	
                 return true;
     		case MainStrings.EDIT_SONG_ATT:
@@ -337,33 +341,64 @@ public class MainActivity extends FragmentActivity {
                 return true;
     		case MainStrings.EMAIL_SONG:
     			// Get the song name
-    			SongItem songI = (SongItem)songsList.get(info.position);
+    			songI = (SongItem)songsList.get(info.position);
     			songName = songI.getName();
     			
     			// Create the email intent
-    			Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
-    			emailIntent.setType("text/html");
+    			i = new Intent(android.content.Intent.ACTION_SEND);
+    			i.setType("text/html");
     			
     			// Add the subject and body
-    			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
-    			emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
+    			i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
+    			i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
     			
-    			startActivity(Intent.createChooser(emailIntent, "Send song email via:"));  
+    			startActivity(Intent.createChooser(i, "Send song email via:"));  
     			return true;
     		case MainStrings.EMAIL_SONG_CS:
     			// Get the song name
-    			SongItem songI2 = (SongItem)currSetList.get(info.position);
-    			songName = songI2.getName();
+    			songI = (SongItem)currSetList.get(info.position);
+    			songName = songI.getName();
     			
     			// Create the email intent
-    			Intent emailIntent2 = new Intent(android.content.Intent.ACTION_SEND);
-    			emailIntent2.setType("text/html");
+    			i = new Intent(android.content.Intent.ACTION_SEND);
+    			i.setType("text/html");
     			
     			// Add the subject and body
-    			emailIntent2.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
-    			emailIntent2.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI2.getSongFile())));
+    			i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
+    			i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
     			
-    			startActivity(Intent.createChooser(emailIntent2, "Send song email via:"));  
+    			startActivity(Intent.createChooser(i, "Send song email via:"));  
+    			return true;
+    		case MainStrings.REMOVE_SONG_FROM_SET:
+    			// Get the set name and song name
+    			songName = currSetList.get(info.position).getName();
+    			setName = dbAdapter.getCurrentSetName();
+    			final String fsongName = songName;
+    			final String fsetName = setName;
+    			
+    			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	    	alert.setTitle("Remove Song?!");
+    	    	alert.setMessage("Are you sure you want to remove '" + songName + "' from the set '" + setName + "'?");
+
+    	    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+    		    	public void onClick(DialogInterface dialog, int whichButton) {
+    		    		// Remove the song from the set
+    	    			dbAdapter.removeSongFromSet(fsetName, fsongName);
+    	    			
+    	    			// Refresh the current set list
+    	    			fillCurrentSetListView();
+    				}
+    	    	});
+
+    	    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+    		    	public void onClick(DialogInterface dialog, int whichButton) {
+    		    		//Do nothing
+    		    	}
+    	    	});
+
+    	    	alert.show();
+    	    	
     			return true;
     		case MainStrings.ADD_SONG_SET:
     			// Get the song name
@@ -423,7 +458,7 @@ public class MainActivity extends FragmentActivity {
             	}
             	
             	// Edit the set
-            	Intent i = new Intent(getBaseContext(), DragNDropListActivity.class);
+            	i = new Intent(getBaseContext(), DragNDropListActivity.class);
             	i.putExtra(MainStrings.SET_SONGS_KEY, setSongs);
             	i.putExtra(MainStrings.SET_NAME_KEY, setName);
             	startActivityForResult(i, 1);
@@ -445,7 +480,7 @@ public class MainActivity extends FragmentActivity {
             	return true;
     		case MainStrings.EMAIL_SET:
     			// Get the set name
-    			SetItem setI = (SetItem)setsList.get(info.position);
+    			setI = (SetItem)setsList.get(info.position);
     			setName = setI.getName();
     			String setDate = setI.getDate();
     			
@@ -464,14 +499,14 @@ public class MainActivity extends FragmentActivity {
     			}
     			
     			// Create the email intent
-    			Intent emailIntent3 = new Intent(android.content.Intent.ACTION_SEND);
-    			emailIntent3.setType("text/html");
+    			i = new Intent(android.content.Intent.ACTION_SEND);
+    			i.setType("text/html");
     			
     			// Add the subject and body
-    			emailIntent3.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + setName);
-    			emailIntent3.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(sb.toString()));
+    			i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + setName);
+    			i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(sb.toString()));
     			
-    			startActivity(Intent.createChooser(emailIntent3, "Send song email via:"));  
+    			startActivity(Intent.createChooser(i, "Send song email via:"));  
     			return true;
     		case MainStrings.SET_GROUPS_ADD:
     			// Get the song name
@@ -2809,6 +2844,11 @@ public class MainActivity extends FragmentActivity {
 	        	 
 	        	Decompress d = new Decompress(zipFile, unzipLocation); 
 	        	if (!d.unzip()) {
+	        		// Add the default values back into the db
+	        		dbAdapter.addDBDefaults();
+	        		fillSetGroupsSpinner();
+	        		fillSongGroupsSpinner();
+	        		
 	        		Toast.makeText(getBaseContext(), "There was an error decompressing your backup file. Please try again.", Toast.LENGTH_LONG).show();
 	        		return;
 	        	}
@@ -2833,6 +2873,11 @@ public class MainActivity extends FragmentActivity {
 	    	        dbAdapter.importDBData(sb.toString());
 	        	}
 	        	catch (Exception e) {
+	        		// Add the default values back into the db
+	        		dbAdapter.addDBDefaults();
+	        		fillSetGroupsSpinner();
+	        		fillSongGroupsSpinner();
+	        		
 	        		Toast.makeText(getBaseContext(), "Could not import database file. Import aborted.", Toast.LENGTH_LONG).show();
 	        		return;
 	        	}

@@ -156,6 +156,26 @@ public class DBAdapter {
 	}
 	
 	/**
+	 * Removes the song from the set
+	 * @param setName The set to remove the song from
+	 * @param songName The song to remove
+	 * @return True if success, False if failure
+	 */
+	public boolean removeSongFromSet(String setName, String songName) {
+		try {
+			// Add the song to the set3
+			mDb.execSQL( "DELETE FROM " + DBStrings.SETLOOKUP_TABLE + " WHERE " + DBStrings.TBLSLOOKUP_SET + " = " +
+					" (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "') " + 
+					" AND " + DBStrings.TBLSLOOKUP_SONG + " = " +
+					" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "');" );
+		} catch (SQLiteException e) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
 	 * Gets all existing set names
 	 * @return Cursor to the query
 	 */	
@@ -1006,6 +1026,7 @@ public class DBAdapter {
 			}
 			mDb.setTransactionSuccessful();
 		} catch (SQLException e) {
+			// Add default values
 			return false;
 		} finally {
 			mDb.endTransaction();
@@ -1032,6 +1053,22 @@ public class DBAdapter {
 			// Add default values
 			mDb.execSQL("insert into " + DBStrings.CURRSET_TABLE + "(" + DBStrings.TBLCURRSET_SET + ") values (0);" );
 			
+		} catch (SQLException e) {
+			return false;
+		} 
+		return true;
+	}
+	
+	/**
+	 * Adds the default values into the database
+	 * @return True if success, False if failure
+	 */
+	public boolean addDBDefaults() {
+		try {
+			mDb.execSQL("DELETE FROM " + DBStrings.CURRSET_TABLE);
+			mDb.execSQL("insert into " + DBStrings.CURRSET_TABLE + "(" + DBStrings.TBLCURRSET_SET + ") values (0);" );
+			mDb.execSQL("INSERT INTO " + DBStrings.SONGGROUPS_TABLE + "(" + DBStrings.TBLSONGGROUPS_NAME + ", " + DBStrings.TBLSONGGROUPS_PARENT + ") VALUES ('" + SongsTab.ALL_SONGS_LABEL + "', -1)");
+			mDb.execSQL("INSERT INTO " + DBStrings.SETGROUPS_TABLE + "(" + DBStrings.TBLSETGROUPS_NAME + ", " + DBStrings.TBLSETGROUPS_PARENT + ") VALUES ('" + SetsTab.ALL_SETS_LABEL + "', -1)");
 		} catch (SQLException e) {
 			return false;
 		} 

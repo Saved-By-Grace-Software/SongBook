@@ -172,6 +172,7 @@ public final class R {
         public static final int cmenu_sets_edit=0x7f040040;
         public static final int cmenu_sets_edit_att=0x7f040041;
         public static final int cmenu_sets_email=0x7f040042;
+        public static final int cmenu_sets_remove_song=0x7f040049;
         public static final int cmenu_sets_reorder=0x7f040043;
         public static final int cmenu_song_add_set=0x7f040044;
         public static final int cmenu_song_group_add=0x7f040045;
