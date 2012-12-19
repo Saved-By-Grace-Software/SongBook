@@ -69,20 +69,7 @@ public class Transpose {
     	// Update song text
     	song.setText(Html.fromHtml(updatedText));*/
     }
-    
-    /**
-     * Transposes the song text into the selected key
-     * @param songKey The song's original key
-     * @param transposeKey The key to transpose it into
-     * @param songText The song text
-     * @return
-     */
-    public String transposeSongText(String songKey, String transposeKey, String songText) {
-    	String updatedText = "";
-    	
-    	return updatedText;
-    }
-    
+
     /**
      * Transposes the chord into the specified key
      * @param originalChord The chord to transpose

@@ -2123,7 +2123,6 @@ public class MainActivity extends FragmentActivity {
         
         			startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
         			
-        			/********** DEBUG - UNCOMMENT DELETE FOR RELEASE **************/
         			// Delete the file
         			deleteFile(attFileName);
         		}
