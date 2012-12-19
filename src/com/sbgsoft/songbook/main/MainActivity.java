@@ -2091,7 +2091,7 @@ public class MainActivity extends FragmentActivity {
 		startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
 		
 		// Delete the file
-		//deleteFile(attFileName);
+		deleteFile(attFileName);
     }
     
     /**
