@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +19,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -1796,15 +1799,21 @@ public class MainActivity extends FragmentActivity {
             	SongItem song = (SongItem)songsList.get(position);
             	String songName = song.getName();
             	String songKey = song.getKey();
-            	String songText = getSongText(song.getSongFile());
-            	
-            	// Show the song activity
-            	SongActivity songA = new SongActivity();
-            	Intent showSong = new Intent(v.getContext(), songA.getClass());
-            	showSong.putExtra(MainStrings.SONG_NAME_KEY, songName);
-            	showSong.putExtra(MainStrings.SONG_KEY_KEY, songKey);
-            	showSong.putExtra(MainStrings.SONG_TEXT_KEY, songText);
-                startActivity(showSong);
+				try {
+					FileInputStream fis = openFileInput(dbAdapter.getSongFile(songName));
+					String songText = getSongHtmlText(song.getName(), song.getKey(), fis);
+					
+					// Show the song activity
+	            	SongActivity songA = new SongActivity();
+	            	Intent showSong = new Intent(v.getContext(), songA.getClass());
+	            	showSong.putExtra(MainStrings.SONG_NAME_KEY, songName);
+	            	showSong.putExtra(MainStrings.SONG_KEY_KEY, songKey);
+	            	showSong.putExtra(MainStrings.SONG_TEXT_KEY, songText);
+	                startActivity(showSong);
+	                
+				} catch (FileNotFoundException e) {
+					Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+				}
             }
         });
         
@@ -1812,42 +1821,93 @@ public class MainActivity extends FragmentActivity {
         registerForContextMenu(lv);
         lv.setAdapter(songsAdapter);
     }
-    
+        
     /**
      * Gets the text from the specified file
      * @return The song text
      */
-    private String getSongText(String fileName) {
-    	String songText = "";
-    	String chordLine = "";
-    	String lyricLine = "";
+    public static String getSongHtmlText(String songName, String transposeKey, FileInputStream songFile) {
+    	StringBuilder sb = new StringBuilder();
+    	String songText = "", chordLine = "", lyricLine = "", currentChord = "", newChord = "", line = "";
+    	String songKey = dbAdapter.getSongKey(songName);
+    	boolean transposeSong = false, addCapo = true;
+    	Pattern regex;
+    	Matcher matcher;
+    	int currentCapo = 0, newCapo = 0;
     	
         try {
-        	FileInputStream fis = openFileInput(fileName);
-        	DataInputStream in = new DataInputStream(fis);
+        	// Check to see if the song needs to be transposed
+        	if(!songKey.equals(transposeKey)) {
+        		// Transpose the song
+        		transposeSong = true;
+        	}
+        	
+        	// Compile the regex to look for a capo
+            regex = Pattern.compile("([Cc][Aa][Pp][Oo])\\D*(\\d+)");
+            
+        	// Begin reading the file
+        	DataInputStream in = new DataInputStream(songFile);
         	BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();
+        	line = br.readLine();
 
             // Read each line of the file
             while (line != null) {
             	boolean inChord = false;
             	boolean inDelimiter = false;
             	int skipCounter = 0, charCounter = 0, commentLoc = 0;
-            	String delimiter = "";    
+            	String delimiter = "";  
+            	
+            	// Check for capo and adjust if necessary
+            	if (transposeSong && addCapo) {
+	        		matcher = regex.matcher(line);
+	            	if (matcher.find()) {
+	            		currentCapo = Integer.parseInt(matcher.group(2));
+	            		newCapo = Transpose.getCapo(songKey, transposeKey, currentCapo);
+	            		// If capo 0 remove the capo line
+	            		if (newCapo == 0) {
+	            			// Clear the chord and lyric lines
+	                        chordLine = "";
+	                        lyricLine = "";
+	                        
+	                        // Read the next line
+	                        line = br.readLine();
+	            		}
+	            		else
+	            			line = line.substring(0, matcher.start()) + "Capo " + newCapo + line.substring(matcher.end());
+	            		
+	            		addCapo = false;
+            			continue;
+	            	}
+            	}
             	
             	// For intro add the line with chord formatting but all on the same line
         		if (line.startsWith("{intro:")) {
         			for (char c : line.substring(7, line.length() - 1).toCharArray()) {
         				if (c == '[') {
+        					inChord = true;
         					lyricLine += "<b><font color=\"#006B9F\">";
         					continue;
         				}
         				if (c == ']') {
-        					lyricLine += "</font></b>";
+        					inChord = false;
+        					
+        					// Transpose the chord
+        					if (transposeSong)
+        						newChord = Transpose.transposeChord(currentChord, transposeKey, songKey);
+        					else 
+        						newChord = currentChord;
+                			
+                			// Add the chord to the line
+        					lyricLine += newChord + "</font></b>";
+        					currentChord = "";
         					continue;
         				}
-        				lyricLine += c;
+        				
+        				// If in a chord fill the currentChord, else add to lyric line
+        				if (inChord)
+        					currentChord += c;
+        				else
+        					lyricLine += c;
         			}
         			
         			if (!lyricLine.isEmpty()) {
@@ -1869,8 +1929,23 @@ public class MainActivity extends FragmentActivity {
                 		
                 		// If the character is a closed bracket set inChord false and continue
                 		if (c == ']' && !delimiter.equals("lc")) {
-                			chordLine += "</font></b>";
                 			inChord = false;
+                			
+                			// Transpose the chord
+                			if (transposeSong)
+        						newChord = Transpose.transposeChord(currentChord, transposeKey, songKey);
+                			else
+                				newChord = currentChord;
+                			
+                			// Check for different sized chords
+                			if (newChord.length() > currentChord.length())
+                				skipCounter++;
+                			else if (newChord.length() < currentChord.length())
+                				skipCounter--;
+                			
+                			// Add the chord to the line
+        					chordLine += newChord + "</font></b>";
+        					currentChord = "";
                 			continue;
                 		}
                 		
@@ -1927,12 +2002,29 @@ public class MainActivity extends FragmentActivity {
                 			// A lyric chord type
                 			if (delimiter.equals("lc")) {
                 				if (charCounter > commentLoc + 1) {
-                					if (c == '[') 
+                					if (c == '[') {
+                						inChord = true;
                 						lyricLine += "<b><font color=\"#006B9F\">";
-                					else if (c == ']')
-                						lyricLine += "</font></b>";
-                					else
-                						lyricLine += c;
+                					}
+                					else if (c == ']') {
+                						inChord = false;
+                						
+                						// Transpose the chord
+                    					if (transposeSong)
+                    						newChord = Transpose.transposeChord(currentChord, transposeKey, songKey);
+                    					else 
+                    						newChord = currentChord;
+                            			
+                            			// Add the chord to the line
+                    					lyricLine += newChord + "</font></b>";
+                    					currentChord = "";
+                					}
+                					else {
+                						if (inChord)
+                        					currentChord += c;
+                        				else
+                        					lyricLine += c;
+                					}
                 				}
                 			}
                 			
@@ -1948,7 +2040,7 @@ public class MainActivity extends FragmentActivity {
                 		
                 		// If in a chord, add the chord to the chord line
                 		if (inChord) {
-                			chordLine += c;
+                			currentChord += c;
                 			skipCounter++;
                 		} else {
                 			if (skipCounter > 0)
@@ -1980,10 +2072,26 @@ public class MainActivity extends FragmentActivity {
                 line = br.readLine();
             }
             
+            // Set the song text
             songText = sb.toString();
-            br.close();
+            
+            // If a capo was not added and a capo is needed, add one
+            if (addCapo && transposeSong) {
+            	// Search for the author line
+        		regex = Pattern.compile("(<i>.*</i>)");
+        		matcher = regex.matcher(songText);
+    	    	if (matcher.find()) {
+    	    		newCapo = Transpose.getCapo(songKey, transposeKey, 0);
+    	    		if (newCapo != 0)
+    	    			songText = songText.substring(0, matcher.end()) + "<br>Capo " + newCapo + "<br>" + songText.substring(matcher.end());
+    	    	}	
+            }
+            
+            // Close the input stream and reader
+        	in.close();
+        	br.close();
         } catch (Exception e) {
-    		Toast.makeText(getApplicationContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+    		//
         }     	
     	
     	return songText;
@@ -2095,7 +2203,7 @@ public class MainActivity extends FragmentActivity {
         			i.setType("text/html");
         			
         			// Create the text file attachment
-        			String temp = createSongFileText(songName, emailSongKey);
+        			String temp = createSongPlainText(songName, emailSongKey);
         			
         			try {
         				// Write the file
@@ -2124,7 +2232,7 @@ public class MainActivity extends FragmentActivity {
         			startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
         			
         			// Delete the file
-        			deleteFile(attFileName);
+        			//deleteFile(attFileName);
         		}
         	});
         	
@@ -2138,11 +2246,14 @@ public class MainActivity extends FragmentActivity {
      * @param transposeKey The key to transpose the song into
      * @return The monospace text string
      */
-    public String createSongFileText(String songName, String transposeKey) {
+    public String createSongPlainText(String songName, String transposeKey) {
     	StringBuilder sb = new StringBuilder();
-    	String songText = "", chordLine = "", lyricLine = "", currentChord = "", newChord = "";
+    	String songText = "", chordLine = "", lyricLine = "", currentChord = "", newChord = "", authorLine = "";
     	String songKey = dbAdapter.getSongKey(songName);
-    	boolean transposeSong = false;
+    	boolean transposeSong = false, addCapo = true;
+    	Pattern regex;
+    	Matcher matcher;
+    	int currentCapo = 0, newCapo = 0;
     	
     	// Add the song title
     	sb.append(songName + MainStrings.EOL);
@@ -2154,6 +2265,9 @@ public class MainActivity extends FragmentActivity {
         		transposeSong = true;
         	}
         	
+        	// Compile the regex to look for a capo
+            regex = Pattern.compile("([Cc][Aa][Pp][Oo])\\D*(\\d+)");
+        	
         	FileInputStream fis = openFileInput(dbAdapter.getSongFile(songName));
         	DataInputStream in = new DataInputStream(fis);
         	BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -2164,7 +2278,30 @@ public class MainActivity extends FragmentActivity {
             	boolean inChord = false;
             	boolean inDelimiter = false;
             	int skipCounter = 0, charCounter = 0, commentLoc = 0;
-            	String delimiter = "";    
+            	String delimiter = "";  
+            	
+            	// Check for capo and adjust if necessary
+            	if (transposeSong && addCapo) {
+	        		matcher = regex.matcher(line);
+	            	if (matcher.find()) {
+	            		currentCapo = Integer.parseInt(matcher.group(2));
+	            		newCapo = Transpose.getCapo(songKey, transposeKey, currentCapo);
+	            		// If capo 0 remove the capo line
+	            		if (newCapo == 0) {
+	            			// Clear the chord and lyric lines
+	                        chordLine = "";
+	                        lyricLine = "";
+	                        
+	                        // Read the next line
+	                        line = br.readLine();
+	            		}
+	            		else
+	            			line = line.substring(0, matcher.start()) + "Capo " + newCapo + line.substring(matcher.end());
+	            		
+	            		addCapo = false;
+            			continue;
+	            	}
+            	}
             	
             	// For intro add the line with chord formatting but all on the same line
         		if (line.startsWith("{intro:")) {
@@ -2179,6 +2316,8 @@ public class MainActivity extends FragmentActivity {
         					// Transpose the chord
         					if (transposeSong)
         						newChord = Transpose.transposeChord(currentChord, transposeKey, songKey);
+        					else
+        						newChord = currentChord;
                 			
                 			// Add the chord to the line
         					lyricLine += newChord;
@@ -2216,6 +2355,8 @@ public class MainActivity extends FragmentActivity {
                 			// Transpose the chord
                 			if (transposeSong)
         						newChord = Transpose.transposeChord(currentChord, transposeKey, songKey);
+                			else
+                				newChord = currentChord;
                 			
                 			// Check for different sized chords
                 			if (newChord.length() > currentChord.length())
@@ -2262,16 +2403,39 @@ public class MainActivity extends FragmentActivity {
                 			// A lyric chord type
                 			if (delimiter.equals("lc")) {
                 				if (charCounter > commentLoc + 1) {
-                					if (!(c == '[' || c == ']')) 
-                						lyricLine += c;
+                					if (c == '[') {
+                						inChord = true;
+                					}
+                					else if (c == ']') {
+                						inChord = false;
+                						
+                						// Transpose the chord
+                    					if (transposeSong)
+                    						newChord = Transpose.transposeChord(currentChord, transposeKey, songKey);
+                    					else 
+                    						newChord = currentChord;
+                            			
+                            			// Add the chord to the line
+                    					lyricLine += newChord;
+                    					currentChord = "";
+                					}
+                					else {
+                						if (inChord)
+                        					currentChord += c;
+                        				else
+                        					lyricLine += c;
+                					}
                 				}
                 			}
                 			
                 			// For comments just add the line with no formatting
                     		if (delimiter.equals("comment") || delimiter.equals("title") || delimiter.equals("author")) {
                     			//sb.append(line.substring(i + 1, line.length() - 1) + "<br/>");
-                    			if (charCounter > commentLoc + 1)
+                    			if (charCounter > commentLoc + 1) {
                     				lyricLine += c;
+                    				if (delimiter.equals("author")) 
+                    					authorLine += c;
+                    			}
                     		}
                     	
                     		continue;
@@ -2311,10 +2475,24 @@ public class MainActivity extends FragmentActivity {
                 line = br.readLine();
             }
             
+            // Set the song text
             songText = sb.toString();
+            
+            // If a capo was not added and a capo is needed, add one
+            if (addCapo && transposeSong) {
+            	// Search for the author line
+        		regex = Pattern.compile(authorLine);
+        		matcher = regex.matcher(songText);
+    	    	if (matcher.find()) {
+    	    		newCapo = Transpose.getCapo(songKey, transposeKey, 0);
+    	    		if (newCapo != 0)
+    	    			songText = songText.substring(0, matcher.end()) + MainStrings.EOL + "Capo " + newCapo + MainStrings.EOL + songText.substring(matcher.end());
+    	    	}	
+            }
+            
             br.close();
         } catch (Exception e) {
-    		Toast.makeText(getApplicationContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+    		Toast.makeText(getApplicationContext(), "Failed to create file attachment!", Toast.LENGTH_LONG).show();
         }     	
     	
     	
@@ -2376,8 +2554,14 @@ public class MainActivity extends FragmentActivity {
             	// Loop through each song in the current set and add it to the array
             	for (Item i : currSetList) {
             		String songName = i.getName();
-                	String songText = getSongText(((SongItem)i).getSongFile());
-                	setSongs.add(new String[] {songName, "<h2>" + songName + "</h2>" + songText});
+            		try {
+    					FileInputStream fis = openFileInput(dbAdapter.getSongFile(songName));
+    					String songText = getSongHtmlText(((SongItem)i).getName(), ((SongItem)i).getKey(), fis);
+    					setSongs.add(new String[] {songName, "<h2>" + songName + "</h2>" + songText});                
+    				} catch (FileNotFoundException e) {
+    					Toast.makeText(getBaseContext(), "Could not open one of the song files!", Toast.LENGTH_LONG).show();
+    					return;
+    				}                	
             	}
             	
             	// Show the set activity

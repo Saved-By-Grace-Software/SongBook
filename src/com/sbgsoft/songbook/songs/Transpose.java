@@ -3,73 +3,6 @@ package com.sbgsoft.songbook.songs;
 import com.sbgsoft.songbook.main.MainStrings;
 
 public class Transpose {
-	/**
-     * Transposes the current song into the selected key
-     * @param transposeKey The key to transpose the song into
-     */
-    public void transposeSongHtml(String transposeKey) {
-    	/*String currText = Html.toHtml((Spanned)song.getText());
-    	String updatedText = "";
-    	Pattern regex;
-    	Matcher matcher;
-    	int offset = 0;
-    	
-    	// Set the updated text to the current text
-		updatedText = currText;
-		
-		// Set the capo and add the line to the song
-		// Check for an existing capo line
-		regex = Pattern.compile("([Cc][Aa][Pp][Oo])\\D*(\\d+)");
-		matcher = regex.matcher(updatedText);
-    	if (matcher.find()) {
-    		capo = Integer.parseInt(matcher.group(2));
-    		setCapo(transposeKey);
-    		// If capo 0 remove the capo line
-    		if (capo == 0)
-    			updatedText = updatedText.substring(0, matcher.start()) + updatedText.substring(matcher.end());
-    		else
-    			updatedText = updatedText.substring(0, matcher.start()) + "Capo " + capo + "<br>" + updatedText.substring(matcher.end());
-    	}
-		// No existing capo, add one
-    	else {
-    		// Search for the author line
-    		regex = Pattern.compile("(<i>.*</i>)");
-    		matcher = regex.matcher(updatedText);
-	    	if (matcher.find()) {
-	    		setCapo(transposeKey);
-	    		if (capo != 0)
-	    			updatedText = updatedText.substring(0, matcher.end()) + "<br>Capo " + capo + "<br>" + updatedText.substring(matcher.end());
-	    	}	
-    	}
-    	*/
-    	// Compile the regex 
-    	//regex = Pattern.compile("(<b>|<font color =\"#006b9f\">)(?:&#160;)*([A-G][#bmad0-9su]*/*[A-G]*[#bmad0-9su]*)(?:&#160;)*(</font>|</b>)");
-    	/*matcher = regex.matcher(updatedText);
-    	try {    		
-    		// Cycle through each match
-    		while (matcher.find()) {
-    			// Transpose the current chord
-    			String newChord = transposeChord(matcher.group(2), transposeKey);
-    			
-    			// Update the chord in the updated text
-    			int start = matcher.start(2) + offset;
-    			int end = matcher.end(2) + offset;
-    			updatedText = updatedText.substring(0, start) + newChord + updatedText.substring(end);
-    			
-    			// Reset the offset
-    			offset += newChord.length() - matcher.group(2).length();
-    		}
-    		
-    		// Reset the song key
-    		songKey = transposeKey;
-    	} catch (Exception e) {
-    	    Toast.makeText(getBaseContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-    	}
-    	
-    	// Update song text
-    	song.setText(Html.fromHtml(updatedText));*/
-    }
-
     /**
      * Transposes the chord into the specified key
      * @param originalChord The chord to transpose
@@ -159,7 +92,7 @@ public class Transpose {
      * @param transposeKey The key the song is being transposed into
      * @return The capo number
      */
-    public int getCapo(String songKey, String transposeKey, int currentCapo) {
+    public static int getCapo(String songKey, String transposeKey, int currentCapo) {
     	int newCapo = 0;
     	
     	// Get the song key and transpose key locations
