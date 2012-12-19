@@ -2212,12 +2212,14 @@ public class MainActivity extends FragmentActivity {
         				out.close(); 
         				
         				// Add the file as an attachment
-        				File att = new File(attFileName);
+        				File att = new File(getFilesDir() + "/" + attFileName);
         				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.parse("file://" + att));			
         				
         			} catch (Exception e) {
         				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
         			}
+        			
+        			File att = new File(getFilesDir() + "/" + attFileName);
         			
         			// Add the subject and body
         			i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
@@ -2225,9 +2227,11 @@ public class MainActivity extends FragmentActivity {
         			i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
         					"<h2>SBGSoft Virtual SongBook</h2>" +
         					"<b>Song Name:</b>&nbsp;&nbsp;" + songName + "<br/>" +
-        					"<b>Song Key:&nbsp;&nbsp;" + emailSongKey + "<br/>" +
+        					"<b>Song Key:</b>&nbsp;&nbsp;" + emailSongKey + "<br/>" +
         					"<br/>" +
-        					"The music for this song has been attached to this email as a text file."));
+        					"The music for this song has been attached to this email as a text file." +
+        					"<br/>" +
+        					att.toString()));
         
         			startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
         			
