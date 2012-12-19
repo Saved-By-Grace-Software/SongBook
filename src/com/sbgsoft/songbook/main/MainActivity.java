@@ -25,6 +25,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.PixelFormat;
@@ -76,6 +77,7 @@ import com.sbgsoft.songbook.songs.EditSongActivity;
 import com.sbgsoft.songbook.songs.SongActivity;
 import com.sbgsoft.songbook.songs.SongGroupArrayAdapter;
 import com.sbgsoft.songbook.songs.SongsTab;
+import com.sbgsoft.songbook.songs.Transpose;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
 
@@ -98,6 +100,7 @@ public class MainActivity extends FragmentActivity {
 	
 	FragmentTransaction transaction;
 	private String importFilePath = "";
+	private String emailSongKey = "";
 	
 	private ArrayList<Item> songsList = new ArrayList<Item>();
 	private ArrayAdapter<Item> songsAdapter;
@@ -2061,54 +2064,97 @@ public class MainActivity extends FragmentActivity {
      * Emails the song
      * @param songName The song to email
      */
-    private void emailSong(SongItem songI, String songName) {
-    	String attFileName = songName + "_att.txt";
+    private void emailSong(final SongItem songI, final String songName) {
+    	final String attFileName = songName + "_att.txt";
+    	String songKey = dbAdapter.getSongKey(songName);
+    	emailSongKey = songKey;
     	
-    	// Create the email intent
-    	Intent i = new Intent(android.content.Intent.ACTION_SEND);
-		i.setType("text/html");
-		
-		// Create the text file attachment
-		String temp = createSongFileText(songName);
-		try {
-			// Write the file
-			FileOutputStream out = openFileOutput(attFileName, Context.MODE_PRIVATE);
-	    	out.write(temp.getBytes());
-			out.close(); 
-			
-			// Add the file as an attachment
-			File att = new File(attFileName);
-			i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.parse("file://" + att));			
-			
-		} catch (Exception e) {
-			Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
-		}
-		
-		// Add the subject and body
-		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
-		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
-		
-		startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
-		
-		// Delete the file
-		deleteFile(attFileName);
+    	// Check for a special key
+    	if (MainStrings.keyMap.containsKey(songKey)) {
+    		// Set the song key to the associated key
+    		songKey = MainStrings.keyMap.get(songKey);
+    	}
+    	
+    	// Check to make sure the song has a proper key
+    	if (MainStrings.songKeys.contains(songKey)) {
+    		// Create the key array
+    		CharSequence[] keys = MainStrings.songKeys.toArray(new CharSequence[MainStrings.songKeys.size() + 1]);
+    		keys[MainStrings.songKeys.size()] = "Original Key";
+    		
+    		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        	alert.setTitle("Email Song in Which Key?");
+        	alert.setItems(keys, new OnClickListener() {
+        		public void onClick (DialogInterface dialog, int whichItem) {
+        			// Set the new song key
+        			if (whichItem < MainStrings.songKeys.size())
+        				emailSongKey = MainStrings.songKeys.get(whichItem);
+        			
+        			// Create the email intent
+        	    	Intent i = new Intent(android.content.Intent.ACTION_SEND);
+        			i.setType("text/html");
+        			
+        			// Create the text file attachment
+        			String temp = createSongFileText(songName, emailSongKey);
+        			
+        			try {
+        				// Write the file
+        				FileOutputStream out = openFileOutput(attFileName, Context.MODE_PRIVATE);
+        		    	out.write(temp.getBytes());
+        				out.close(); 
+        				
+        				// Add the file as an attachment
+        				File att = new File(attFileName);
+        				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.parse("file://" + att));			
+        				
+        			} catch (Exception e) {
+        				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
+        			}
+        			
+        			// Add the subject and body
+        			i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
+        			//i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
+        			i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
+        					"<h2>SBGSoft Virtual SongBook</h2>" +
+        					"<b>Song Name:</b>&nbsp;&nbsp;" + songName + "<br/>" +
+        					"<b>Song Key:&nbsp;&nbsp;" + emailSongKey + "<br/>" +
+        					"<br/>" +
+        					"The music for this song has been attached to this email as a text file."));
+        
+        			startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
+        			
+        			/********** DEBUG - UNCOMMENT DELETE FOR RELEASE **************/
+        			// Delete the file
+        			deleteFile(attFileName);
+        		}
+        	});
+        	
+        	alert.show();
+    	}
     }
     
     /**
      * Creates a monospace text string of the song
      * @param songName The song name to create the text for
+     * @param transposeKey The key to transpose the song into
      * @return The monospace text string
      */
-    public String createSongFileText(String songName) {
+    public String createSongFileText(String songName, String transposeKey) {
     	StringBuilder sb = new StringBuilder();
-    	String songText = "";
-    	String chordLine = "";
-    	String lyricLine = "";
+    	String songText = "", chordLine = "", lyricLine = "", currentChord = "", newChord = "";
+    	String songKey = dbAdapter.getSongKey(songName);
+    	boolean transposeSong = false;
     	
     	// Add the song title
     	sb.append(songName + MainStrings.EOL);
     			
     	try {
+    		// Check to see if the song needs to be transposed
+        	if(!songKey.equals(transposeKey)) {
+        		// Transpose the song
+        		transposeSong = true;
+        	}
+        	
         	FileInputStream fis = openFileInput(dbAdapter.getSongFile(songName));
         	DataInputStream in = new DataInputStream(fis);
         	BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -2124,10 +2170,28 @@ public class MainActivity extends FragmentActivity {
             	// For intro add the line with chord formatting but all on the same line
         		if (line.startsWith("{intro:")) {
         			for (char c : line.substring(7, line.length() - 1).toCharArray()) {
-        				if (c == '[' || c == ']') {
+        				if (c == '[') {
+        					inChord = true;
         					continue;
         				}
-        				lyricLine += c;
+        				if (c == ']') {
+        					inChord = false;
+        					
+        					// Transpose the chord
+        					if (transposeSong)
+        						newChord = Transpose.transposeChord(currentChord, transposeKey, songKey);
+                			
+                			// Add the chord to the line
+        					lyricLine += newChord;
+        					currentChord = "";
+        					continue;
+        				}
+        				
+        				// If in a chord fill the currentChord, else add to lyric line
+        				if (inChord)
+        					currentChord += c;
+        				else
+        					lyricLine += c;
         			}
         			
         			if (!lyricLine.isEmpty()) {
@@ -2149,6 +2213,20 @@ public class MainActivity extends FragmentActivity {
                 		// If the character is a closed bracket set inChord false and continue
                 		if (c == ']' && !delimiter.equals("lc")) {
                 			inChord = false;
+                			
+                			// Transpose the chord
+                			if (transposeSong)
+        						newChord = Transpose.transposeChord(currentChord, transposeKey, songKey);
+                			
+                			// Check for different sized chords
+                			if (newChord.length() > currentChord.length())
+                				skipCounter++;
+                			else if (newChord.length() < currentChord.length())
+                				skipCounter--;
+                			
+                			// Add the chord to the line
+        					chordLine += newChord;
+        					currentChord = "";
                 			continue;
                 		}
                 		
@@ -2202,7 +2280,7 @@ public class MainActivity extends FragmentActivity {
                 		
                 		// If in a chord, add the chord to the chord line
                 		if (inChord) {
-                			chordLine += c;
+                			currentChord += c;
                 			skipCounter++;
                 		} else {
                 			if (skipCounter > 0)
