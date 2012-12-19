@@ -28,6 +28,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -344,30 +345,18 @@ public class MainActivity extends FragmentActivity {
     			songI = (SongItem)songsList.get(info.position);
     			songName = songI.getName();
     			
-    			// Create the email intent
-    			i = new Intent(android.content.Intent.ACTION_SEND);
-    			i.setType("text/html");
+    			// Email the song
+    			emailSong(songI, songName);
     			
-    			// Add the subject and body
-    			i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
-    			i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
-    			
-    			startActivity(Intent.createChooser(i, "Send song email via:"));  
     			return true;
     		case MainStrings.EMAIL_SONG_CS:
     			// Get the song name
     			songI = (SongItem)currSetList.get(info.position);
     			songName = songI.getName();
     			
-    			// Create the email intent
-    			i = new Intent(android.content.Intent.ACTION_SEND);
-    			i.setType("text/html");
+    			// Email the song
+    			emailSong(songI, songName);
     			
-    			// Add the subject and body
-    			i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
-    			i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
-    			
-    			startActivity(Intent.createChooser(i, "Send song email via:"));  
     			return true;
     		case MainStrings.REMOVE_SONG_FROM_SET:
     			// Get the set name and song name
@@ -1223,7 +1212,7 @@ public class MainActivity extends FragmentActivity {
 	    		if (songKey.length() > 0) {
 		        	if (!MainStrings.keyMap.containsKey(songKey) && !MainStrings.songKeys.contains(songKey)) {
 		        		Toast.makeText(getBaseContext(), "That is not a valid key!" + 
-		        				System.getProperty("line.separator") + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
+		        				MainStrings.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
 		        		return;
 		        	}
 	    		}
@@ -1319,14 +1308,14 @@ public class MainActivity extends FragmentActivity {
         
         // Add author to song
         sb.append("{author:" + songAuthor + "}");
-        sb.append(System.getProperty("line.separator"));
+        sb.append(MainStrings.EOL);
         
         // Read each line of the file
         while (line != null) {
         	// Check for only white spaces
         	if(line.trim().length() <= 0) {
         		// Add system line break
-            	sb.append(System.getProperty("line.separator"));
+            	sb.append(MainStrings.EOL);
             	
             	// Read the next line and continue
             	line = br.readLine();
@@ -1406,7 +1395,7 @@ public class MainActivity extends FragmentActivity {
 	            			startedSong = false;
 	            		}
 	            		else if (chords.length() == 0 && (MainStrings.songParts.contains(lyrics.split("\\W+")[0].toLowerCase(Locale.US)))) {
-	            			sb.append(System.getProperty("line.separator"));
+	            			sb.append(MainStrings.EOL);
 	            			sb.append("{title:");
 	                		sb.append(lyrics);
 	                    	sb.append("}");
@@ -1497,7 +1486,7 @@ public class MainActivity extends FragmentActivity {
         	}
         	
         	// Add system line break
-        	sb.append(System.getProperty("line.separator"));
+        	sb.append(MainStrings.EOL);
         	
         	// Read the next line
         	line = br.readLine();
@@ -1657,7 +1646,7 @@ public class MainActivity extends FragmentActivity {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Delete All?!");
-    	alert.setMessage("Are you sure you want to delete ALL songs???" + System.getProperty("line.separator") +
+    	alert.setMessage("Are you sure you want to delete ALL songs???" + MainStrings.EOL +
     			"This will delete all sets as well...");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -2043,7 +2032,7 @@ public class MainActivity extends FragmentActivity {
 	    		if (key.length() > 0) {
 		        	if (!MainStrings.keyMap.containsKey(key) && !MainStrings.songKeys.contains(key)) {
 		        		Toast toast = Toast.makeText(getBaseContext(), "That is not a valid key!" + 
-		        				System.getProperty("line.separator") + "Please enter a valid key and try again.", Toast.LENGTH_LONG);
+		        				MainStrings.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG);
 		        		toast.setGravity(Gravity.CENTER, 0, 0);
 		        		toast.show();
 		        		return;
@@ -2068,6 +2057,193 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
 
+    /**
+     * Emails the song
+     * @param songName The song to email
+     */
+    private void emailSong(SongItem songI, String songName) {
+    	String attFileName = songName + "_att.txt";
+    	
+    	// Create the email intent
+    	Intent i = new Intent(android.content.Intent.ACTION_SEND);
+		i.setType("text/html");
+		
+		// Create the text file attachment
+		String temp = createSongFileText(songName);
+		try {
+			// Write the file
+			FileOutputStream out = openFileOutput(attFileName, Context.MODE_PRIVATE);
+	    	out.write(temp.getBytes());
+			out.close(); 
+			
+			// Add the file as an attachment
+			File att = new File(attFileName);
+			i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.parse("file://" + att));			
+			
+		} catch (Exception e) {
+			Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
+		}
+		
+		// Add the subject and body
+		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
+		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
+		
+		startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
+		
+		// Delete the file
+		//deleteFile(attFileName);
+    }
+    
+    /**
+     * Creates a monospace text string of the song
+     * @param songName The song name to create the text for
+     * @return The monospace text string
+     */
+    public String createSongFileText(String songName) {
+    	StringBuilder sb = new StringBuilder();
+    	String songText = "";
+    	String chordLine = "";
+    	String lyricLine = "";
+    	
+    	// Add the song title
+    	sb.append(songName + MainStrings.EOL);
+    			
+    	try {
+        	FileInputStream fis = openFileInput(dbAdapter.getSongFile(songName));
+        	DataInputStream in = new DataInputStream(fis);
+        	BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String line = br.readLine();
+
+            // Read each line of the file
+            while (line != null) {
+            	boolean inChord = false;
+            	boolean inDelimiter = false;
+            	int skipCounter = 0, charCounter = 0, commentLoc = 0;
+            	String delimiter = "";    
+            	
+            	// For intro add the line with chord formatting but all on the same line
+        		if (line.startsWith("{intro:")) {
+        			for (char c : line.substring(7, line.length() - 1).toCharArray()) {
+        				if (c == '[' || c == ']') {
+        					continue;
+        				}
+        				lyricLine += c;
+        			}
+        			
+        			if (!lyricLine.isEmpty()) {
+		                sb.append(lyricLine);
+		                sb.append(MainStrings.EOL);
+	            	}
+        		} else {
+        			// Step through each character in the line
+                	for (char c : line.toCharArray()) {
+                		// Increment the character counter
+                		charCounter++;
+                		
+                		// If the character is an open bracket set inChord true and continue
+                		if (c == '[' && !delimiter.equals("lc")) {
+                			inChord = true;
+                			continue;
+                		}
+                		
+                		// If the character is a closed bracket set inChord false and continue
+                		if (c == ']' && !delimiter.equals("lc")) {
+                			inChord = false;
+                			continue;
+                		}
+                		
+                		// If the character is an open { set inComment true and continue
+                		if (c == '{') {
+                			inDelimiter = true;
+                			
+                			// Set the comment type
+                			commentLoc = line.indexOf(":", charCounter);
+                			delimiter = line.substring(charCounter, commentLoc);
+                			
+                			continue;
+                		}
+                		
+                		// If the character is a closed } set inComment false and continue
+                		if (c == '}') {
+                			inDelimiter = false;
+                    		
+                			delimiter = "";
+                			commentLoc = 0;
+                			continue;
+                		}
+                		
+                		// If in a comment
+                		if (inDelimiter) {
+                			// A chord comment type
+                			if (delimiter.equals("cc")) {
+                				if (charCounter > commentLoc + 1) {
+                					chordLine += c;
+                					skipCounter++;
+                				}
+                			}
+                			
+                			// A lyric chord type
+                			if (delimiter.equals("lc")) {
+                				if (charCounter > commentLoc + 1) {
+                					if (!(c == '[' || c == ']')) 
+                						lyricLine += c;
+                				}
+                			}
+                			
+                			// For comments just add the line with no formatting
+                    		if (delimiter.equals("comment") || delimiter.equals("title") || delimiter.equals("author")) {
+                    			//sb.append(line.substring(i + 1, line.length() - 1) + "<br/>");
+                    			if (charCounter > commentLoc + 1)
+                    				lyricLine += c;
+                    		}
+                    	
+                    		continue;
+                		}
+                		
+                		// If in a chord, add the chord to the chord line
+                		if (inChord) {
+                			chordLine += c;
+                			skipCounter++;
+                		} else {
+                			if (skipCounter > 0)
+                				skipCounter--;
+                			else
+                				chordLine += " ";
+                			lyricLine += c;
+                		}
+                	}
+    	            	
+                	// Add the chord and lyric lines to the overall string builder
+                	if (!chordLine.isEmpty()) {
+    	                sb.append(chordLine);
+    	                sb.append(MainStrings.EOL);
+                	}
+                	if (!lyricLine.isEmpty()) {
+    	                sb.append(lyricLine);
+    	                sb.append(MainStrings.EOL);
+                	}
+                	if (chordLine.isEmpty() && lyricLine.isEmpty())
+                		sb.append(MainStrings.EOL);
+        		}
+        		
+        		// Clear the chord and lyric lines
+                chordLine = "";
+                lyricLine = "";
+                
+                // Read the next line
+                line = br.readLine();
+            }
+            
+            songText = sb.toString();
+            br.close();
+        } catch (Exception e) {
+    		Toast.makeText(getApplicationContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+        }     	
+    	
+    	
+    	return songText.toString();	
+    }
+    
     
     /*****************************************************************************
      * 
@@ -2863,7 +3039,7 @@ public class MainActivity extends FragmentActivity {
 	    	        
 	    	        // Cycle through each line in the sql file and add it to the string builder
 	    	        while(line != null) {
-	    	        	sb.append(line + System.getProperty("line.separator"));
+	    	        	sb.append(line + MainStrings.EOL);
 	    	        	line = br.readLine();
 	    	        }
 	    	        

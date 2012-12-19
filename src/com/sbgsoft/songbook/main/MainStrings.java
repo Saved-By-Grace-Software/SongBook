@@ -20,6 +20,7 @@ public class MainStrings {
 	public static final String FILE_ACTIVITY = "fileActivity";
 
 	// General
+	public static final String EOL = System.getProperty("line.separator");
 	public static final String UNKNOWN = "Unknown";
 	public static final String EXPORT_SQL_FILE = "dbbak.sql";
 	public static final String EXPORT_ZIP_FILE = "sbgvsb.bak";
