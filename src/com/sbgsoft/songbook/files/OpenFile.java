@@ -108,13 +108,15 @@ public class OpenFile extends ListActivity {
     		String extension = file.getAbsolutePath().substring(temp + 1);
     		
     		if(!file.isHidden() && file.canRead()){
-    			path.add(file.getPath());
     			if(file.isDirectory()){
+    				path.add(file.getPath());
     				item.add(file.getName() + "/");
     			}else{
-    				// Only show .txt, .pro, .chordpro, .chopro files
-    	    		if (extensions.contains(extension) || allFiles)
+    				// Only show selected file type
+    	    		if (extensions.contains(extension) || allFiles) {
+    	    			path.add(file.getPath());
     	    			item.add(file.getName());
+    	    		}
     			}
     		} 
     	}
