@@ -474,34 +474,12 @@ public class MainActivity extends FragmentActivity {
             	
             	return true;
     		case MainStrings.EMAIL_SET:
-    			// Get the set name
+    			// Get the song name
     			setI = (SetItem)setsList.get(info.position);
     			setName = setI.getName();
-    			String setDate = setI.getDate();
     			
-    			// Start the output string
-    			StringBuilder sb = new StringBuilder();
-    			sb.append("<h2>" + setName + "</h2>");
-    			sb.append("<i>" + setDate + "</i><br/><br/>");
-    			
-    			// Get the set songs
-    			Cursor c2 = dbAdapter.getSetSongs(setName);
-    			startManagingCursor(c2);
-    			while (c2.moveToNext()) {
-    				sb.append(c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)) +
-    						" - " + c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY)) +
-    						"<br/>");
-    			}
-    			
-    			// Create the email intent
-    			i = new Intent(android.content.Intent.ACTION_SEND);
-    			i.setType("text/html");
-    			
-    			// Add the subject and body
-    			i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + setName);
-    			i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(sb.toString()));
-    			
-    			startActivity(Intent.createChooser(i, "Send song email via:"));  
+    			// Email the song
+    			emailSet(setI, setName);
     			return true;
     		case MainStrings.SET_GROUPS_ADD:
     			// Get the song name
@@ -1167,6 +1145,60 @@ public class MainActivity extends FragmentActivity {
     	});
 
     	alert.show();
+    }
+    
+    /**
+     * Emails the set with the songs as attachments
+     * @param setI The set item object
+     * @param setName the set name
+     */
+    private void emailSet(final SetItem setI, final String setName) {
+		String setDate = setI.getDate();
+		ArrayList<Uri> uris = new ArrayList<Uri>();
+		
+		// Start the output string
+		StringBuilder sb = new StringBuilder();
+		sb.append("<h2>" + setName + "</h2>");
+		sb.append("<i>" + setDate + "</i><br/><br/>");
+		
+		// Get the set songs
+		Cursor c2 = dbAdapter.getSetSongs(setName);
+		startManagingCursor(c2);
+		while (c2.moveToNext()) {
+			String sn = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+			String sk = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY));
+			
+			// Create the text file attachment
+			String temp = createSongPlainText(sn, "");
+			
+			try {
+				// Write the file
+				File att = new File(Environment.getExternalStorageDirectory(), sn + "_att.txt");
+				att.deleteOnExit();
+				FileOutputStream out = new FileOutputStream(att);
+		    	out.write(temp.getBytes());
+				out.close(); 
+				
+				// Add the file as an attachment
+				uris.add(Uri.fromFile(att));			
+				
+			} catch (Exception e) {
+				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
+			}
+			
+			sb.append(sn + " - " + sk + "<br/>");
+		}
+		
+		// Create the email intent
+		Intent i = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
+		i.setType("text/html");
+		
+		// Add the subject, body and attachments
+		i.putParcelableArrayListExtra(android.content.Intent.EXTRA_STREAM, uris);
+		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + setName);
+		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(sb.toString()));
+		
+		startActivity(Intent.createChooser(i, "Send song email via:"));  
     }
     
     
@@ -2200,26 +2232,25 @@ public class MainActivity extends FragmentActivity {
         			
         			// Create the email intent
         	    	Intent i = new Intent(android.content.Intent.ACTION_SEND);
-        			i.setType("text/html");
+        			i.setType("text/Message");
         			
         			// Create the text file attachment
         			String temp = createSongPlainText(songName, emailSongKey);
         			
         			try {
         				// Write the file
-        				FileOutputStream out = openFileOutput(attFileName, Context.MODE_PRIVATE);
+        				File att = new File(Environment.getExternalStorageDirectory(), attFileName);
+        				att.deleteOnExit();
+        				FileOutputStream out = new FileOutputStream(att);
         		    	out.write(temp.getBytes());
         				out.close(); 
         				
         				// Add the file as an attachment
-        				File att = new File(getFilesDir() + "/" + attFileName);
-        				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.parse("file://" + att));			
+        				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));			
         				
         			} catch (Exception e) {
         				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
         			}
-        			
-        			File att = new File(getFilesDir() + "/" + attFileName);
         			
         			// Add the subject and body
         			i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
@@ -2230,13 +2261,9 @@ public class MainActivity extends FragmentActivity {
         					"<b>Song Key:</b>&nbsp;&nbsp;" + emailSongKey + "<br/>" +
         					"<br/>" +
         					"The music for this song has been attached to this email as a text file." +
-        					"<br/>" +
-        					att.toString()));
+        					"<br/>"));
         
         			startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
-        			
-        			// Delete the file
-        			deleteFile(attFileName);
         		}
         	});
         	
@@ -2264,7 +2291,7 @@ public class MainActivity extends FragmentActivity {
     			
     	try {
     		// Check to see if the song needs to be transposed
-        	if(!songKey.equals(transposeKey)) {
+        	if(!transposeKey.isEmpty() && !songKey.equals(transposeKey)) {
         		// Transpose the song
         		transposeSong = true;
         	}
