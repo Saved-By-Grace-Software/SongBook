@@ -4,7 +4,7 @@ public class DBStrings {
 
 	// Database Strings
 	public static final String DATABASE_NAME = "tabAppDB";
-	public static final int DATABASE_VERSION = 1;
+	public static final int DATABASE_VERSION = 2;
 	
 	// Sets Table
 	public static final String SETS_TABLE = "tblSets";
@@ -44,6 +44,7 @@ public class DBStrings {
 	public static final String TBLSLOOKUP_ID = "ID";
 	public static final String TBLSLOOKUP_SET = "setID";
 	public static final String TBLSLOOKUP_SONG = "songID";
+	public static final String TBLSLOOKUP_KEY = "songKey";
 	
 	// Song Group Lookup Table
 	public static final String SONGGPLOOKUP_TABLE = "tblSongGroupLookup";

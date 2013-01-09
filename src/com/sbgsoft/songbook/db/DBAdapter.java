@@ -95,9 +95,11 @@ public class DBAdapter {
 				// Add the songs to the set
 				for(String song : setSongs) {
 					if (song != "") {
-						mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + DBStrings.TBLSLOOKUP_SONG + ") " + 
+						mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + 
+								DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ") " + 
 								" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
-								" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "') );" );
+								" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'), " +
+								" (SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'));" );
 					}
 				}
 			}
@@ -124,9 +126,11 @@ public class DBAdapter {
 			// Add the songs in the new order
 			for(String song : songs) {
 				if (song != "") {
-					mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + DBStrings.TBLSLOOKUP_SONG + ") " + 
+					mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + 
+							DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ") " +
 							" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
-							" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "') );" );
+							" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'), " +
+							" (SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'));" );
 				}
 			}
 		} catch (SQLiteException e) {
@@ -145,9 +149,11 @@ public class DBAdapter {
 	public boolean addSongToSet(String setName, String songName) {
 		try {
 			// Add the song to the set
-			mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + DBStrings.TBLSLOOKUP_SONG + ") " + 
+			mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + 
+					DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ") " +
 					" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
-					" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "') );" );
+					" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'), " +
+					" (SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'));" );
 		} catch (SQLiteException e) {
 			return false;
 		}
@@ -230,7 +236,7 @@ public class DBAdapter {
 			// Get the list of songs from the sets lookup table
 			String query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_NAME + 
 					", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_FILE + ", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + 
-					", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_KEY +
+					", " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_KEY +
 					" FROM " + DBStrings.SETLOOKUP_TABLE + ", " + DBStrings.CURRSET_TABLE +
 					" INNER JOIN " + DBStrings.SONGS_TABLE + " ON " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG + 
 					" = " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID +
@@ -581,6 +587,26 @@ public class DBAdapter {
 		return true;
 	}
 
+	/**
+	 * Updates the song key for the set
+	 * @param setName The set to update
+	 * @param songName The song to update
+	 * @param newKey The key to set
+	 * @return
+	 */
+	public boolean setSongKeyForSet(String setName, String songName, String newKey) {
+		try {
+			String query = "UPDATE " + DBStrings.SETLOOKUP_TABLE + " SET " + DBStrings.TBLSLOOKUP_KEY + " = '" + newKey + "'" +
+					" WHERE " + DBStrings.TBLSLOOKUP_SET + 
+					" = (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "')" +
+					" AND " + DBStrings.TBLSLOOKUP_SONG +
+					" = (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "')";
+			mDb.execSQL(query);
+		} catch (SQLException e) {
+			return false;
+		}
+		return true;
+	}
 	
 	/*****************************************************************************
     *
@@ -610,7 +636,7 @@ public class DBAdapter {
 		try {	
 			String query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.SONGS_TABLE + "." + 
 					DBStrings.TBLSONG_NAME + ", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_FILE + ", " +
-					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_KEY +
+					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_KEY +
 					" FROM " + DBStrings.SETLOOKUP_TABLE + ", " + DBStrings.CURRSET_TABLE +
 					" INNER JOIN " + DBStrings.SONGS_TABLE + " ON " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG + 
 					" = " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID +
@@ -1128,7 +1154,8 @@ public class DBAdapter {
     			db.execSQL("create table " + DBStrings.SETLOOKUP_TABLE +
     					"(" + DBStrings.TBLSLOOKUP_ID + " integer PRIMARY KEY autoincrement, " + 
     					DBStrings.TBLSLOOKUP_SET + " int, " + 
-    					DBStrings.TBLSLOOKUP_SONG + " int ); " );
+    					DBStrings.TBLSLOOKUP_SONG + " int, " +
+    					DBStrings.TBLSLOOKUP_KEY + " text ); " );
     			
     			// Song Group lookup table
     			db.execSQL("create table " + DBStrings.SONGGPLOOKUP_TABLE +
@@ -1157,11 +1184,22 @@ public class DBAdapter {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            //Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
-            //        + newVersion + ", which will destroy all old data");
-            //db.execSQL("DROP TABLE IF EXISTS notes");
-            //onCreate(db);
-        	//TODO: Add upgrade functionality
+        	// Add the tables
+    		try{
+    			db.beginTransaction();
+    			
+    			// Add set key column
+    			db.execSQL("ALTER TABLE " + DBStrings.SETLOOKUP_TABLE + " ADD COLUMN " + DBStrings.TBLSLOOKUP_KEY + " text");
+    			db.execSQL("UPDATE " + DBStrings.SETLOOKUP_TABLE + " SET " + DBStrings.TBLSLOOKUP_KEY + " = " +
+    					"(SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " +
+    					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " = " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG + ")");
+    			
+    			db.setTransactionSuccessful(); 
+    		}catch(SQLiteException e) {
+    			Log.e(TAG, e.getMessage());
+    		}finally{
+    			db.endTransaction();
+    		}
         }
     }
 }

@@ -166,17 +166,18 @@ public final class R {
         public static final int add_song_subnote=0x7f04000d;
         public static final int app_name=0x7f040001;
         public static final int cancel=0x7f040002;
-        public static final int cmenu_set_group_add=0x7f040047;
-        public static final int cmenu_set_group_delete=0x7f040048;
-        public static final int cmenu_sets_delete=0x7f04003f;
-        public static final int cmenu_sets_edit=0x7f040040;
-        public static final int cmenu_sets_edit_att=0x7f040041;
-        public static final int cmenu_sets_email=0x7f040042;
-        public static final int cmenu_sets_remove_song=0x7f040049;
-        public static final int cmenu_sets_reorder=0x7f040043;
-        public static final int cmenu_song_add_set=0x7f040044;
-        public static final int cmenu_song_group_add=0x7f040045;
-        public static final int cmenu_song_group_delete=0x7f040046;
+        public static final int cmenu_set_group_add=0x7f040048;
+        public static final int cmenu_set_group_delete=0x7f040049;
+        public static final int cmenu_sets_delete=0x7f040040;
+        public static final int cmenu_sets_edit=0x7f040041;
+        public static final int cmenu_sets_edit_att=0x7f040042;
+        public static final int cmenu_sets_email=0x7f040043;
+        public static final int cmenu_sets_remove_song=0x7f04004a;
+        public static final int cmenu_sets_reorder=0x7f040044;
+        public static final int cmenu_sets_set_song_key=0x7f04003f;
+        public static final int cmenu_song_add_set=0x7f040045;
+        public static final int cmenu_song_group_add=0x7f040046;
+        public static final int cmenu_song_group_delete=0x7f040047;
         /**  Context Menu Strings 
          */
         public static final int cmenu_songs_delete=0x7f04003b;

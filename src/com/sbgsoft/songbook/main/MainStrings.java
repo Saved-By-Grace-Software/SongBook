@@ -57,8 +57,9 @@ public class MainStrings {
 	// Current Set Context Menu Keys
 	public static final int EDIT_SONG_CS = 20;
 	public static final int EDIT_SONG_ATT_CS = 21;
-	public static final int EMAIL_SONG_CS = 22;
-	public static final int REMOVE_SONG_FROM_SET = 23;
+	public static final int SET_SONG_KEY_CS = 22;
+	public static final int EMAIL_SONG_CS = 23;
+	public static final int REMOVE_SONG_FROM_SET = 24;
 	
 	// Sort Arrays
 	public static final ArrayList<String> songSortBy = new ArrayList<String>(Arrays.asList("Song Title", "Song Author", "Song Key"));

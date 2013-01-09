@@ -284,6 +284,7 @@ public class MainActivity extends FragmentActivity {
     		menu.setHeaderTitle("Current Set Menu");
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_CS, MainStrings.EDIT_SONG_CS, R.string.cmenu_songs_edit);
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_ATT_CS, MainStrings.EDIT_SONG_ATT_CS, R.string.cmenu_songs_edit_att);
+    		menu.add(Menu.NONE, MainStrings.SET_SONG_KEY_CS, MainStrings.SET_SONG_KEY_CS, R.string.cmenu_sets_set_song_key);
     		menu.add(Menu.NONE, MainStrings.EMAIL_SONG_CS, MainStrings.EMAIL_SONG_CS, R.string.cmenu_songs_email);
     		menu.add(Menu.NONE, MainStrings.REMOVE_SONG_FROM_SET, MainStrings.REMOVE_SONG_FROM_SET, R.string.cmenu_sets_remove_song);
     	}
@@ -362,6 +363,13 @@ public class MainActivity extends FragmentActivity {
     			
     			// Email the song
     			emailSong(songI, songName);
+    			
+    			return true;
+    		case MainStrings.SET_SONG_KEY_CS:
+    			songI = (SongItem)currSetList.get(info.position);
+    			setName = dbAdapter.getCurrentSetName();
+    			
+    			setSongKeyForSet(setName, songI);
     			
     			return true;
     		case MainStrings.REMOVE_SONG_FROM_SET:
@@ -1166,10 +1174,10 @@ public class MainActivity extends FragmentActivity {
 		startManagingCursor(c2);
 		while (c2.moveToNext()) {
 			String sn = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
-			String sk = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY));
+			String sk = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_KEY));
 			
 			// Create the text file attachment
-			String temp = createSongPlainText(sn, "");
+			String temp = createSongPlainText(sn, sk);
 			
 			try {
 				// Write the file
@@ -2530,6 +2538,31 @@ public class MainActivity extends FragmentActivity {
     	return songText.toString();	
     }
     
+    /**
+     * Sets the song key for the set
+     */
+    private void setSongKeyForSet(final String setName, final SongItem songI) {
+    	// Create the key array
+		CharSequence[] keys = MainStrings.songKeys.toArray(new CharSequence[MainStrings.songKeys.size() + 1]);
+		keys[MainStrings.songKeys.size()] = "Original Key";
+		
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Which Key?");
+    	alert.setItems(keys, new OnClickListener() {
+    		public void onClick (DialogInterface dialog, int whichItem) {
+    			// Set the new song key for the set
+    			if (whichItem < MainStrings.songKeys.size())
+    				dbAdapter.setSongKeyForSet(setName, songI.getName(), MainStrings.songKeys.get(whichItem));
+    			
+    			// Refresh current set list
+    			fillCurrentSetListView();
+    		}
+    	});
+    	
+    	alert.show();
+    }
+    
     
     /*****************************************************************************
      * 
@@ -2552,7 +2585,7 @@ public class MainActivity extends FragmentActivity {
     		// Get the strings from the cursor
         	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
         	String songAuthor = c.getString(c.getColumnIndex(DBStrings.TBLSONG_AUTHOR));
-        	String songKey = c.getString(c.getColumnIndex(DBStrings.TBLSONG_KEY));
+        	String songKey = c.getString(c.getColumnIndex(DBStrings.TBLSLOOKUP_KEY));
         	String songFile = c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE));
     		
         	// Add the song item
