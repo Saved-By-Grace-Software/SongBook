@@ -934,7 +934,8 @@ public class DBAdapter {
 			}
 			
 			// Add set lookup to the export file
-			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_NAME + ", " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_NAME +
+			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_NAME + ", " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_NAME + ", " +
+					DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_KEY + 
 					" FROM " + DBStrings.SETLOOKUP_TABLE +
 					" INNER JOIN " + DBStrings.SONGS_TABLE + " ON " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + 
 					" = " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG +
@@ -946,11 +947,13 @@ public class DBAdapter {
 				// Get the song properties
 				String songName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
 				String setName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
+				String songKey = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_KEY));
 				
 				// Append the insert statement with a line ending
-				output.append("INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + DBStrings.TBLSLOOKUP_SONG + ") " + 
+				output.append("INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ") " + 
 						" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
-						" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "') ); ");
+						" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'), " +
+						"'" + songKey + "'); ");
 				output.append(System.getProperty("line.separator"));
 			}
 			
