@@ -145,7 +145,7 @@ public class SetSongFragment extends Fragment {
     	}
     	
     	// Compile the regex 
-    	regex = Pattern.compile("(<b>|<font color =\"#006b9f\">)(?:&#160;)*([A-G][#bmad0-9su]*/*[A-G]*[#bmad0-9su]*)(?:&#160;)*(</font>|</b>)");
+    	regex = Pattern.compile("(<b>|<font color =\"#006b9f\">)(?:&#160;)*([A-G][#bmadinj0-9su]*/*[A-G]*[#bmadinj0-9su]*)(?:&#160;)*(</font>|</b>)");
     	matcher = regex.matcher(updatedText);
     	try {    		
     		// Cycle through each match
