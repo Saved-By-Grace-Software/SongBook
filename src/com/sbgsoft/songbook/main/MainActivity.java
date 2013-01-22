@@ -2295,7 +2295,7 @@ public class MainActivity extends FragmentActivity {
     	int currentCapo = 0, newCapo = 0;
     	
     	// Add the song title
-    	sb.append(songName + MainStrings.EOL);
+    	sb.append(songName + "\r\n");
     			
     	try {
     		// Check to see if the song needs to be transposed
@@ -2373,7 +2373,7 @@ public class MainActivity extends FragmentActivity {
         			
         			if (!lyricLine.isEmpty()) {
 		                sb.append(lyricLine);
-		                sb.append(MainStrings.EOL);
+		                sb.append("\r\n");
 	            	}
         		} else {
         			// Step through each character in the line
@@ -2496,14 +2496,14 @@ public class MainActivity extends FragmentActivity {
                 	// Add the chord and lyric lines to the overall string builder
                 	if (!chordLine.isEmpty()) {
     	                sb.append(chordLine);
-    	                sb.append(MainStrings.EOL);
+    	                sb.append("\r\n");
                 	}
                 	if (!lyricLine.isEmpty()) {
     	                sb.append(lyricLine);
-    	                sb.append(MainStrings.EOL);
+    	                sb.append("\r\n");
                 	}
                 	if (chordLine.isEmpty() && lyricLine.isEmpty())
-                		sb.append(MainStrings.EOL);
+                		sb.append("\r\n");
         		}
         		
         		// Clear the chord and lyric lines
@@ -2525,7 +2525,7 @@ public class MainActivity extends FragmentActivity {
     	    	if (matcher.find()) {
     	    		newCapo = Transpose.getCapo(songKey, transposeKey, 0);
     	    		if (newCapo != 0)
-    	    			songText = songText.substring(0, matcher.end()) + MainStrings.EOL + "Capo " + newCapo + MainStrings.EOL + songText.substring(matcher.end());
+    	    			songText = songText.substring(0, matcher.end()) + "\r\n" + "Capo " + newCapo + "\r\n" + songText.substring(matcher.end());
     	    	}	
             }
             
