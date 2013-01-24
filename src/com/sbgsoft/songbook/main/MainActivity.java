@@ -3392,31 +3392,48 @@ public class MainActivity extends FragmentActivity {
      * Exports all songbook files and db
      */
     private void exportAll() {
-    	// Create the db backup sql script
-    	String exportSQLData = dbAdapter.exportDBData();
-    	
-    	// Store the backup script in the app files folder
-    	try {
-	    	FileOutputStream out = openFileOutput(MainStrings.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
-	    	out.write(exportSQLData.getBytes());
-			out.close(); 
-    	} catch (Exception e) {
-    		Toast.makeText(getBaseContext(), "Could not write db file!", Toast.LENGTH_LONG).show();
-    	}
-    	
-    	// Get a list of all the files in the app files folder
-    	String[] files = fileList();
-    	for(int i = 0; i < files.length; i++) {
-    		files[i] = getFilesDir() + "/" + files[i];
-    	}
-    	
-    	// Zip the files and save to the external storage
-    	Compress newZip = new Compress(files, Environment.getExternalStorageDirectory() + "/" + MainStrings.EXPORT_ZIP_FILE);
-    	if (newZip.zip())
-    		Toast.makeText(getBaseContext(), "Your data has been successfully saved to: " + Environment.getExternalStorageDirectory() +
-    				"/" + MainStrings.EXPORT_ZIP_FILE, Toast.LENGTH_LONG).show();
-    	else
-    		Toast.makeText(getBaseContext(), "There was an error backing up your data. Please try again.", Toast.LENGTH_LONG).show();
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Export");
+    	alert.setMessage("Are you sure you want to export your data?");
+
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Create the db backup sql script
+	        	String exportSQLData = dbAdapter.exportDBData();
+	        	
+	        	// Store the backup script in the app files folder
+	        	try {
+	    	    	FileOutputStream out = openFileOutput(MainStrings.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
+	    	    	out.write(exportSQLData.getBytes());
+	    			out.close(); 
+	        	} catch (Exception e) {
+	        		Toast.makeText(getBaseContext(), "Could not write db file!", Toast.LENGTH_LONG).show();
+	        	}
+	        	
+	        	// Get a list of all the files in the app files folder
+	        	String[] files = fileList();
+	        	for(int i = 0; i < files.length; i++) {
+	        		files[i] = getFilesDir() + "/" + files[i];
+	        	}
+	        	
+	        	// Zip the files and save to the external storage
+	        	Compress newZip = new Compress(files, Environment.getExternalStorageDirectory() + "/" + MainStrings.EXPORT_ZIP_FILE);
+	        	if (newZip.zip())
+	        		Toast.makeText(getBaseContext(), "Your data has been successfully saved to: " + Environment.getExternalStorageDirectory() +
+	        				"/" + MainStrings.EXPORT_ZIP_FILE, Toast.LENGTH_LONG).show();
+	        	else
+	        		Toast.makeText(getBaseContext(), "There was an error backing up your data. Please try again.", Toast.LENGTH_LONG).show();
+			}
+    	});
+
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		// Canceled, do not import
+	    	}
+    	});
+
+    	alert.show();
     }
     
     /**
