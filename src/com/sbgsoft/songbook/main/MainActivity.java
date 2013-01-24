@@ -30,8 +30,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.graphics.PixelFormat;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,6 +44,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
@@ -209,7 +215,7 @@ public class MainActivity extends FragmentActivity {
 	        case R.id.menu_sets_create:
 	        	// Create a new set and refresh the list view
 	        	createSet();
-	            return true; 
+	            return true;
 	        case R.id.menu_sets_clear:
 	        	// Delete all sets and refresh the list view
 	        	deleteAllSets();
@@ -246,6 +252,9 @@ public class MainActivity extends FragmentActivity {
 	        	return true;
 	        case R.id.menu_backup_import:
 	        	importAll(MainStrings.EXPORT_ZIP_FILE);
+	        	return true;
+	        case R.id.menu_about:
+	        	showAboutBox();
 	        	return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
@@ -618,6 +627,58 @@ public class MainActivity extends FragmentActivity {
      */
     public void setImportFilePath(String path) {
     	importFilePath = path;
+    }
+    
+    /**
+     * Shows the about box with app information
+     */
+    public void showAboutBox() {
+    	// Create the dialog
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    	alert.setTitle("About " + getString(R.string.app_name));
+    	
+    	// Build the message
+    	int start = 0, end = 0;
+    	SpannableStringBuilder message = new SpannableStringBuilder();
+    	StyleSpan italics = new StyleSpan(Typeface.ITALIC);
+    	RelativeSizeSpan smallFont = new RelativeSizeSpan(0.75f);
+    	try {
+			message.append(getString(R.string.full_app_name) + " v" + 
+					getPackageManager().getPackageInfo(getPackageName(), 0).versionName +
+					MainStrings.EOL);
+		} catch (NameNotFoundException e) {
+			message.append(getString(R.string.full_app_name) + MainStrings.EOL);
+		}
+    	message.append("Database Version " + DBStrings.DATABASE_VERSION + MainStrings.EOL);
+    	message.append(MainStrings.EOL);
+    	message.append("Saved By Grace Software" + MainStrings.EOL);
+    	message.append("San Antonio, TX" + MainStrings.EOL);
+    	message.append("SavedByGraceSoft@gmail.com" + MainStrings.EOL);
+    	message.append(MainStrings.EOL);
+    	message.append("Virtual SongBook is designed to allow you to carry all of your guitar music with you wherever " + 
+    			"you go on your 7-inch or larger tablet. It also allows you to create sets of songs for performances, gigs " +
+    			"or worship. If you have any problems or questions please send us an email.  God Bless!!" + MainStrings.EOL);
+    	message.append(MainStrings.EOL);
+    	start = message.length();
+    	message.append("\"For by grace you have been saved through faith. And this is not your own doing; it is the gift of God, " +
+    			"not a result of works so that no one may boast." +
+    			MainStrings.EOL + "-Ephesians 2:8-9");
+    	end = message.length();
+    	italics = new StyleSpan(Typeface.ITALIC);
+    	smallFont = new RelativeSizeSpan(0.75f);
+    	message.setSpan(italics, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+    	message.setSpan(smallFont, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+    	
+    	// Display information
+    	alert.setMessage(message);
+    	
+    	// Add an OK button
+    	alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {}
+		});
+
+    	alert.show();
     }
     
     
