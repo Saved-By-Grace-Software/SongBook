@@ -68,7 +68,8 @@ public class SetActivity extends FragmentActivity {
             	Fragment songFrag = new SetSongFragment();
             	Bundle bSong = new Bundle();
             	bSong.putString(MainStrings.SONG_NAME_KEY, songData[0]);
-            	bSong.putString(MainStrings.SONG_TEXT_KEY, songData[1]);
+            	bSong.putString(MainStrings.SONG_KEY_KEY, songData[1]);
+            	bSong.putString(MainStrings.SONG_TEXT_KEY, songData[2]);
             	songFrag.setArguments(bSong);
             	
             	// Add the fragment to the page adapter

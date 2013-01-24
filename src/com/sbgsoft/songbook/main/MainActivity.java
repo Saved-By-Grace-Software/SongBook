@@ -2618,10 +2618,11 @@ public class MainActivity extends FragmentActivity {
             	// Loop through each song in the current set and add it to the array
             	for (Item i : currSetList) {
             		String songName = i.getName();
+            		String songKey = ((SongItem)i).getKey();
             		try {
     					FileInputStream fis = openFileInput(dbAdapter.getSongFile(songName));
-    					String songText = getSongHtmlText(((SongItem)i).getName(), ((SongItem)i).getKey(), fis);
-    					setSongs.add(new String[] {songName, "<h2>" + songName + "</h2>" + songText});                
+    					String songText = getSongHtmlText(((SongItem)i).getName(), songKey, fis);
+    					setSongs.add(new String[] {songName, songKey, "<h2>" + songName + "</h2>" + songText});                
     				} catch (FileNotFoundException e) {
     					Toast.makeText(getBaseContext(), "Could not open one of the song files!", Toast.LENGTH_LONG).show();
     					return;

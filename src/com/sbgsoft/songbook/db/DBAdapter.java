@@ -608,6 +608,7 @@ public class DBAdapter {
 		return true;
 	}
 	
+	
 	/*****************************************************************************
     *
     * Current Set Functions

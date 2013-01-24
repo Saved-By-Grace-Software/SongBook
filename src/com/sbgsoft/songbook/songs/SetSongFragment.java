@@ -3,10 +3,6 @@ package com.sbgsoft.songbook.songs;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.sbgsoft.songbook.R;
-import com.sbgsoft.songbook.main.MainActivity;
-import com.sbgsoft.songbook.main.MainStrings;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -21,6 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.main.MainStrings;
 
 public class SetSongFragment extends Fragment {
 	public TextView song;
@@ -43,11 +42,11 @@ public class SetSongFragment extends Fragment {
         // Populate it with the song text
         Bundle extras = getArguments();
         if (extras != null) {
-        	String songName = extras.getString(MainStrings.SONG_NAME_KEY);
+        	//String songName = extras.getString(MainStrings.SONG_NAME_KEY);
             String songText = extras.getString(MainStrings.SONG_TEXT_KEY);
             
             // Set the song key
-            songKey = MainActivity.dbAdapter.getSongKey(songName);
+            songKey = extras.getString(MainStrings.SONG_KEY_KEY);
             
             // Populate the song text
             if (songText != "") {
