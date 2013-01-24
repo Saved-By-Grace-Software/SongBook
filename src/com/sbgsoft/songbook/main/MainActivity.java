@@ -264,6 +264,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG, MainStrings.EDIT_SONG, R.string.cmenu_songs_edit);
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_ATT, MainStrings.EDIT_SONG_ATT, R.string.cmenu_songs_edit_att);
     		menu.add(Menu.NONE, MainStrings.ADD_SONG_SET, MainStrings.ADD_SONG_SET, R.string.cmenu_song_add_set);
+    		menu.add(Menu.NONE, MainStrings.ADD_SONG_CURR_SET, MainStrings.ADD_SONG_CURR_SET, R.string.cmenu_song_add_curr_set);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_ADD, MainStrings.SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_DEL, MainStrings.SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
     		menu.add(Menu.NONE, MainStrings.EMAIL_SONG, MainStrings.EMAIL_SONG, R.string.cmenu_songs_email);
@@ -409,6 +410,14 @@ public class MainActivity extends FragmentActivity {
     			
     			// Edit the songs groups
     			addSongToSet(songName);
+    			
+    			return true;
+    		case MainStrings.ADD_SONG_CURR_SET:
+    			// Get the song name
+    			songName = songsList.get(info.position).getName();
+    			
+    			// Edit the songs groups
+    			addSongToCurrentSet(songName);
     			
     			return true;
     		case MainStrings.SONG_GROUPS_ADD:
@@ -1649,6 +1658,34 @@ public class MainActivity extends FragmentActivity {
 		});
 
     	alert.show();
+    }
+    
+    /**
+     * Adds the song to a set
+     * @param songName The song to add
+     */
+    private void addSongToCurrentSet(final String songName) {
+    	// Get the current set
+    	final String currentSet = dbAdapter.getCurrentSetName();
+   
+		AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+		alert.setTitle("Add Song to Set?");
+		alert.setMessage("Do you want to add '" + songName + "' to '" + currentSet + "'?");
+		
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		dbAdapter.addSongToSet(currentSet, songName);
+				
+	    		// Refresh the current set list
+	    		fillCurrentSetListView();
+			}
+    	});
+
+		alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) { 	}
+    	});
+
+		alert.show();
     }
     
     /**
