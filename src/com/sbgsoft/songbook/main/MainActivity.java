@@ -2132,8 +2132,11 @@ public class MainActivity extends FragmentActivity {
                 			// A chord comment type
                 			if (delimiter.equals("cc")) {
                 				if (charCounter > commentLoc + 1) {
-                					chordLine += c;
                 					skipCounter++;
+                					if (inChord)
+                    					currentChord += c;
+                					else
+                						chordLine += c;
                 				}
                 			}
                 			
@@ -2229,7 +2232,7 @@ public class MainActivity extends FragmentActivity {
         	in.close();
         	br.close();
         } catch (Exception e) {
-    		//
+    		// Error
         }     	
     	
     	return songText;
@@ -2532,8 +2535,11 @@ public class MainActivity extends FragmentActivity {
                 			// A chord comment type
                 			if (delimiter.equals("cc")) {
                 				if (charCounter > commentLoc + 1) {
-                					chordLine += c;
                 					skipCounter++;
+                					if (inChord)
+                						currentChord += c;
+                					else
+                						chordLine += c;
                 				}
                 			}
                 			
