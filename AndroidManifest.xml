@@ -35,7 +35,11 @@
             android:label="@string/title_activity_set"
             android:screenOrientation="sensorPortait" />
         <activity
-            android:name="com.sbgsoft.songbook.songs.EditSongActivity"
+            android:name="com.sbgsoft.songbook.songs.EditSongRawActivity"
+            android:label="@string/title_activity_edit_song"
+            android:screenOrientation="sensorPortait" />
+        <activity
+            android:name="com.sbgsoft.songbook.songs.EditSongTextActivity"
             android:label="@string/title_activity_edit_song"
             android:screenOrientation="sensorPortait" />
         <activity

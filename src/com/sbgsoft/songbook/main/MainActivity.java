@@ -82,7 +82,8 @@ import com.sbgsoft.songbook.sets.CurrentSetTab;
 import com.sbgsoft.songbook.sets.SetActivity;
 import com.sbgsoft.songbook.sets.SetGroupArrayAdapter;
 import com.sbgsoft.songbook.sets.SetsTab;
-import com.sbgsoft.songbook.songs.EditSongActivity;
+import com.sbgsoft.songbook.songs.EditSongRawActivity;
+import com.sbgsoft.songbook.songs.EditSongTextActivity;
 import com.sbgsoft.songbook.songs.SongActivity;
 import com.sbgsoft.songbook.songs.SongGroupArrayAdapter;
 import com.sbgsoft.songbook.songs.SongsTab;
@@ -320,22 +321,45 @@ public class MainActivity extends FragmentActivity {
                 return true;
     		case MainStrings.EDIT_SONG:
     			// Get the song name
-    			songName = songsList.get(info.position).getName();
-                    
-				// Create the edit activity intent
-            	i = new Intent(getBaseContext(), EditSongActivity.class);
-                i.putExtra(MainStrings.SONG_NAME_KEY, songName);
-                
-                // Start the activity
-                startActivity(i);
-            	
+    			final String editSongName = songsList.get(info.position).getName();
+    			final String editSongFile = ((SongItem)songsList.get(info.position)).getSongFile();
+    			
+    			CharSequence[] keys = {"Raw Format", "Text Format"};
+    		
+	    		AlertDialog.Builder editAlert = new AlertDialog.Builder(this);
+	
+	    		editAlert.setTitle("How do you want to edit the song?");
+	    		editAlert.setItems(keys, new OnClickListener() {
+	        		public void onClick (DialogInterface dialog, int whichItem) {
+	        			if(whichItem == 0) { //Raw Format
+	        				// Create the edit activity intent
+	                    	Intent i = new Intent(getBaseContext(), EditSongRawActivity.class);
+	                        i.putExtra(MainStrings.SONG_NAME_KEY, editSongName);
+	                        i.putExtra(MainStrings.SONG_FILE_KEY, editSongFile);
+	                        
+	                        // Start the activity
+	                        startActivity(i);
+	        			} else { //Text Format
+	        				// Create the edit activity intent
+	                    	Intent i = new Intent(getBaseContext(), EditSongTextActivity.class);
+	                        i.putExtra(MainStrings.SONG_NAME_KEY, editSongName);
+	                        i.putExtra(MainStrings.SONG_TEXT_KEY, createSongPlainText(editSongName, "", false, false));
+	                        i.putExtra(MainStrings.SONG_FILE_KEY, editSongFile);
+	                        
+	                        // Start the activity
+	                        startActivity(i);
+	        			}
+	        		}
+	        	});
+	        	
+	    		editAlert.show();
                 return true;
     		case MainStrings.EDIT_SONG_CS:
     			// Get the song name
     			songName = currSetList.get(info.position).getName();
                     
 				// Create the edit activity intent
-            	i = new Intent(getBaseContext(), EditSongActivity.class);
+            	i = new Intent(getBaseContext(), EditSongRawActivity.class);
                 i.putExtra(MainStrings.SONG_NAME_KEY, songName);
                 
                 // Start the activity
@@ -544,7 +568,6 @@ public class MainActivity extends FragmentActivity {
     	return false;
     }
     
-
 	/**
      * Called when the activity is stopped
      */
@@ -1257,7 +1280,7 @@ public class MainActivity extends FragmentActivity {
 			String sk = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_KEY));
 			
 			// Create the text file attachment
-			String temp = createSongPlainText(sn, sk);
+			String temp = createSongPlainText(sn, sk, true, true);
 			
 			try {
 				// Write the file
@@ -2354,7 +2377,7 @@ public class MainActivity extends FragmentActivity {
         			i.setType("text/Message");
         			
         			// Create the text file attachment
-        			String temp = createSongPlainText(songName, emailSongKey);
+        			String temp = createSongPlainText(songName, emailSongKey, true, true);
         			
         			try {
         				// Write the file
@@ -2396,17 +2419,25 @@ public class MainActivity extends FragmentActivity {
      * @param transposeKey The key to transpose the song into
      * @return The monospace text string
      */
-    public String createSongPlainText(String songName, String transposeKey) {
+    public String createSongPlainText(String songName, String transposeKey, boolean includeTitle, boolean winLineFeed) {
     	StringBuilder sb = new StringBuilder();
     	String songText = "", chordLine = "", lyricLine = "", currentChord = "", newChord = "", authorLine = "";
     	String songKey = dbAdapter.getSongKey(songName);
+    	String lineFeed = "";
     	boolean transposeSong = false, addCapo = true;
     	Pattern regex;
     	Matcher matcher;
     	int currentCapo = 0, newCapo = 0;
     	
+    	// Set the line feed to use
+    	if(winLineFeed)
+    		lineFeed = "\r\n";
+    	else
+    		lineFeed = MainStrings.EOL;
+    	
     	// Add the song title
-    	sb.append(songName + "\r\n");
+    	if(includeTitle)
+    		sb.append(songName + lineFeed);
     			
     	try {
     		// Check to see if the song needs to be transposed
@@ -2484,7 +2515,7 @@ public class MainActivity extends FragmentActivity {
         			
         			if (!lyricLine.isEmpty()) {
 		                sb.append(lyricLine);
-		                sb.append("\r\n");
+		                sb.append(lineFeed);
 	            	}
         		} else {
         			// Step through each character in the line
@@ -2610,14 +2641,14 @@ public class MainActivity extends FragmentActivity {
                 	// Add the chord and lyric lines to the overall string builder
                 	if (!chordLine.isEmpty()) {
     	                sb.append(chordLine);
-    	                sb.append("\r\n");
+    	                sb.append(lineFeed);
                 	}
                 	if (!lyricLine.isEmpty()) {
     	                sb.append(lyricLine);
-    	                sb.append("\r\n");
+    	                sb.append(lineFeed);
                 	}
                 	if (chordLine.isEmpty() && lyricLine.isEmpty())
-                		sb.append("\r\n");
+                		sb.append(lineFeed);
         		}
         		
         		// Clear the chord and lyric lines
@@ -2639,7 +2670,7 @@ public class MainActivity extends FragmentActivity {
     	    	if (matcher.find()) {
     	    		newCapo = Transpose.getCapo(songKey, transposeKey, 0);
     	    		if (newCapo != 0)
-    	    			songText = songText.substring(0, matcher.end()) + "\r\n" + "Capo " + newCapo + "\r\n" + songText.substring(matcher.end());
+    	    			songText = songText.substring(0, matcher.end()) + lineFeed + "Capo " + newCapo + lineFeed + songText.substring(matcher.end());
     	    	}	
             }
             
