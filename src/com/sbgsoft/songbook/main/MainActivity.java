@@ -269,14 +269,15 @@ public class MainActivity extends FragmentActivity {
     	// Songs context menu
     	if (v.getId() == R.id.songs_list) {
     		menu.setHeaderTitle("Song Menu");
-    		menu.add(Menu.NONE, MainStrings.DELETE_SONG, MainStrings.DELETE_SONG, R.string.cmenu_songs_delete);
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG, MainStrings.EDIT_SONG, R.string.cmenu_songs_edit);
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_ATT, MainStrings.EDIT_SONG_ATT, R.string.cmenu_songs_edit_att);
+    		menu.add(Menu.NONE, MainStrings.DELETE_SONG, MainStrings.DELETE_SONG, R.string.cmenu_songs_delete);
     		menu.add(Menu.NONE, MainStrings.ADD_SONG_SET, MainStrings.ADD_SONG_SET, R.string.cmenu_song_add_set);
     		menu.add(Menu.NONE, MainStrings.ADD_SONG_CURR_SET, MainStrings.ADD_SONG_CURR_SET, R.string.cmenu_song_add_curr_set);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_ADD, MainStrings.SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_DEL, MainStrings.SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
     		menu.add(Menu.NONE, MainStrings.EMAIL_SONG, MainStrings.EMAIL_SONG, R.string.cmenu_songs_email);
+    		menu.add(Menu.NONE, MainStrings.SONG_STATS, MainStrings.SONG_STATS, R.string.cmenu_songs_stats);
     	}
     	// Sets context menu
     	else if (v.getId() == R.id.sets_list) {
@@ -429,6 +430,14 @@ public class MainActivity extends FragmentActivity {
     			addSongToCurrentSet(songName);
     			
     			return true;
+    		case MainStrings.SONG_STATS:
+    			// Get the song name
+    			songName = songsList.get(info.position).getName();
+    			
+    			// Show the song stats dialog
+    			showSongStats(songName);
+    			
+    			return true;
     		case MainStrings.SONG_GROUPS_ADD:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
@@ -535,7 +544,8 @@ public class MainActivity extends FragmentActivity {
     	return false;
     }
     
-    /**
+
+	/**
      * Called when the activity is stopped
      */
     @Override
@@ -2666,6 +2676,59 @@ public class MainActivity extends FragmentActivity {
     	
     	alert.show();
     }
+    
+    /**
+     * Shows the song statistics dialog
+     * @param songName The song to give stats for
+     */
+    private void showSongStats(String songName) {
+    	// Create the dialog
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    	alert.setTitle("'" + songName + "' Statistics");
+    	
+    	// Build the message
+    	StringBuilder message = new StringBuilder();
+    	
+    	// Show last 5 uses
+    	message.append("Last 5 Uses: ");
+    	message.append(MainStrings.EOL);
+    	
+    	Cursor c = dbAdapter.getSongLastFive(songName);
+    	startManagingCursor(c);
+    	c.moveToLast(); //Loop backwards to get latest first
+    	int counter = 0;
+    	while(!c.isBeforeFirst()) {
+    		String setName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
+    		String setDate = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_DATE));
+    		message.append("\t" + setName + ", " + setDate);
+        	message.append(MainStrings.EOL);
+        	c.moveToPrevious();
+        	if (counter++ >= 4) //Only grab the top 5
+        		break;
+    	}
+    	message.append(MainStrings.EOL);
+    	
+    	// Show total usage
+    	message.append("Total Usage in Sets: ");
+    	message.append(28 + "%");
+    	message.append(MainStrings.EOL);
+    	message.append(MainStrings.EOL);
+    	
+    	// Show most common position in set
+    	message.append("Most Common Position in Set: ");
+    	message.append("" + 5);
+    	
+    	// Display information
+    	alert.setMessage(message);
+    	
+    	// Add an OK button
+    	alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {}
+		});
+
+    	alert.show();
+	}
     
     
     /*****************************************************************************

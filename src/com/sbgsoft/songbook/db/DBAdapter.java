@@ -608,6 +608,23 @@ public class DBAdapter {
 		return true;
 	}
 	
+	/**
+	 * Gets all existing song names
+	 * @return Cursor to the query
+	 */	
+	public Cursor getSongLastFive(String songName) {
+		String query = "";
+		
+		query = "SELECT DISTINCT " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_NAME + ", " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_DATE + " " +
+				"FROM " + DBStrings.SETLOOKUP_TABLE + ", " + DBStrings.SETS_TABLE + " " +
+				"WHERE " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + " = " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SET + " and " +
+				DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG + " = " +
+				"(SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "') " +
+				"ORDER BY date(" + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_DATE + ")";
+		
+		return mDb.rawQuery(query, null);
+	}
+	
 	
 	/*****************************************************************************
     *
