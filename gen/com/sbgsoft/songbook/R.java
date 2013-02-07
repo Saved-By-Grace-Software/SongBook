@@ -186,6 +186,7 @@ public final class R {
         public static final int cmenu_songs_edit=0x7f04003d;
         public static final int cmenu_songs_edit_att=0x7f04003e;
         public static final int cmenu_songs_email=0x7f04003f;
+        public static final int cmenu_songs_stats=0x7f04004d;
         public static final int down_arrow=0x7f040019;
         public static final int empty_current=0x7f04001c;
         public static final int empty_song=0x7f040013;
