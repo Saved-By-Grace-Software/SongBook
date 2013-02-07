@@ -2710,13 +2710,28 @@ public class MainActivity extends FragmentActivity {
     	
     	// Show total usage
     	message.append("Total Usage in Sets: ");
-    	message.append(28 + "%");
+    	float percent = dbAdapter.getSongTotalUsage(songName);
+    	message.append(String.format("%.2f", percent) + "%");
     	message.append(MainStrings.EOL);
     	message.append(MainStrings.EOL);
     	
-    	// Show most common position in set
-    	message.append("Most Common Position in Set: ");
-    	message.append("" + 5);
+    	// Show group membership
+    	message.append("Member of Song Groups: ");
+    	
+    	c = dbAdapter.getSongGroups(songName);
+    	startManagingCursor(c);
+    	if(c.getCount() > 0) {
+	    	c.moveToFirst();
+	    	while(!c.isAfterLast()) {
+	    		String songGroupName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
+	    		message.append(MainStrings.EOL);
+	    		message.append("\t" + songGroupName);
+	        	c.moveToNext();
+	    	}
+    	} else {
+    		message.append(MainStrings.EOL);
+    		message.append("\tNo Groups");
+    	}
     	
     	// Display information
     	alert.setMessage(message);

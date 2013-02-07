@@ -609,9 +609,10 @@ public class DBAdapter {
 	}
 	
 	/**
-	 * Gets all existing song names
-	 * @return Cursor to the query
-	 */	
+	 * Gets the list of last times a song was used
+	 * @param songName The song to query
+	 * @return The list of times the song was used in a set
+	 */
 	public Cursor getSongLastFive(String songName) {
 		String query = "";
 		
@@ -621,6 +622,62 @@ public class DBAdapter {
 				DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG + " = " +
 				"(SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "') " +
 				"ORDER BY date(" + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_DATE + ")";
+		
+		return mDb.rawQuery(query, null);
+	}
+	
+	/**
+	 * Returns the total usage percentage of the song
+	 * @param songName The song to get usage for
+	 * @return Percentage of use
+	 */
+	public float getSongTotalUsage(String songName) {
+		int totalSets = 0;
+		int songSets = 0;
+		float percentage = 0;
+		
+		try {
+			// Get the total number of sets
+			String query = "SELECT COUNT(DISTINCT " + DBStrings.TBLSETS_ID + ") AS total FROM " + DBStrings.SETS_TABLE;
+			Cursor c = mDb.rawQuery(query, null);
+			c.moveToFirst();
+			totalSets = c.getInt(c.getColumnIndexOrThrow("total"));
+			
+			// Get the number of sets the song is in
+			query = "SELECT COUNT(DISTINCT " + DBStrings.TBLSLOOKUP_SET + ") AS sets " +
+					"FROM " + DBStrings.SETLOOKUP_TABLE + " " + 
+					"WHERE " + DBStrings.TBLSLOOKUP_SONG + " = " +
+					"(SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "')";
+			c = mDb.rawQuery(query, null);
+			c.moveToFirst();
+			songSets = c.getInt(c.getColumnIndexOrThrow("sets"));
+			
+			// Calculate the percentage
+			percentage = ((float)songSets / (float)totalSets) * 100;
+			
+			c.close();
+		} catch (IndexOutOfBoundsException e) {
+			return 0;
+		} catch (SQLiteException s) {
+			return 0;
+		}
+		
+		return percentage;
+	}
+	
+	/**
+	 * Gets the groups of which the song is a member
+	 * @param songName The song to query
+	 * @return The list of song groups
+	 */
+	public Cursor getSongGroups(String songName) {
+		String query = "";
+		
+		query = "SELECT " + DBStrings.SONGGROUPS_TABLE + "." + DBStrings.TBLSONGGROUPS_NAME + " " +
+				"FROM " + DBStrings.SONGGROUPS_TABLE + ", " + DBStrings.SONGGPLOOKUP_TABLE + " " +
+				"WHERE " + DBStrings.SONGGROUPS_TABLE + "." + DBStrings.TBLSONGGROUPS_ID + " = " + DBStrings.SONGGPLOOKUP_TABLE + "." + DBStrings.TBLSONGGPLOOKUP_GROUP + " and " +
+				DBStrings.SONGGPLOOKUP_TABLE + "." + DBStrings.TBLSONGGPLOOKUP_SONG + " = " +
+				"(SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "')";
 		
 		return mDb.rawQuery(query, null);
 	}
