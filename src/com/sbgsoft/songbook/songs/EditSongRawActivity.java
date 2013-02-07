@@ -20,8 +20,9 @@ import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.MainStrings;
 
-public class EditSongActivity extends Activity {
+public class EditSongRawActivity extends Activity {
 	private String songName = "";
+	private String songFile = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class EditSongActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             songName = extras.getString(MainStrings.SONG_NAME_KEY);
+            songFile = extras.getString(MainStrings.SONG_FILE_KEY);
         }
         
         // Fill the edit text with the song file
@@ -52,7 +54,7 @@ public class EditSongActivity extends Activity {
     	// Save the file
     	try {
     		// Open file to output
-	    	OutputStream os = openFileOutput(songName + ".txt", Context.MODE_PRIVATE);
+	    	OutputStream os = openFileOutput(songFile, Context.MODE_PRIVATE);
 	    	PrintStream printStream = new PrintStream(os);
 	    	
 	    	// Get the edited text
