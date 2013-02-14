@@ -311,7 +311,10 @@ public class MainActivity extends FragmentActivity {
     	Intent i;
     	SongItem songI;
     	SetItem setI;
+    	CharSequence[] editFormat = {"Raw Format", "Text Format"};
     	AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+    	AlertDialog.Builder alert;
+    	
     	switch (item.getItemId()) {
     		case MainStrings.DELETE_SONG:
     			// Get the song name and delete it
@@ -323,13 +326,11 @@ public class MainActivity extends FragmentActivity {
     			// Get the song name
     			final String editSongName = songsList.get(info.position).getName();
     			final String editSongFile = ((SongItem)songsList.get(info.position)).getSongFile();
-    			
-    			CharSequence[] keys = {"Raw Format", "Text Format"};
     		
-	    		AlertDialog.Builder editAlert = new AlertDialog.Builder(this);
+    			alert = new AlertDialog.Builder(this);
 	
-	    		editAlert.setTitle("How do you want to edit the song?");
-	    		editAlert.setItems(keys, new OnClickListener() {
+    			alert.setTitle("How do you want to edit the song?");
+    			alert.setItems(editFormat, new OnClickListener() {
 	        		public void onClick (DialogInterface dialog, int whichItem) {
 	        			if(whichItem == 0) { //Raw Format
 	        				// Create the edit activity intent
@@ -352,19 +353,40 @@ public class MainActivity extends FragmentActivity {
 	        		}
 	        	});
 	        	
-	    		editAlert.show();
+    			alert.show();
                 return true;
     		case MainStrings.EDIT_SONG_CS:
     			// Get the song name
-    			songName = currSetList.get(info.position).getName();
-                    
-				// Create the edit activity intent
-            	i = new Intent(getBaseContext(), EditSongRawActivity.class);
-                i.putExtra(MainStrings.SONG_NAME_KEY, songName);
-                
-                // Start the activity
-                startActivity(i);
-            	
+    			final String editSongCSName = currSetList.get(info.position).getName();
+    			final String editSongCSFile = ((SongItem)currSetList.get(info.position)).getSongFile();
+    		
+    			alert = new AlertDialog.Builder(this);
+	
+    			alert.setTitle("How do you want to edit the song?");
+    			alert.setItems(editFormat, new OnClickListener() {
+	        		public void onClick (DialogInterface dialog, int whichItem) {
+	        			if(whichItem == 0) { //Raw Format
+	        				// Create the edit activity intent
+	                    	Intent i = new Intent(getBaseContext(), EditSongRawActivity.class);
+	                        i.putExtra(MainStrings.SONG_NAME_KEY, editSongCSName);
+	                        i.putExtra(MainStrings.SONG_FILE_KEY, editSongCSFile);
+	                        
+	                        // Start the activity
+	                        startActivity(i);
+	        			} else { //Text Format
+	        				// Create the edit activity intent
+	                    	Intent i = new Intent(getBaseContext(), EditSongTextActivity.class);
+	                        i.putExtra(MainStrings.SONG_NAME_KEY, editSongCSName);
+	                        i.putExtra(MainStrings.SONG_TEXT_KEY, createSongPlainText(editSongCSName, "", false, false));
+	                        i.putExtra(MainStrings.SONG_FILE_KEY, editSongCSFile);
+	                        
+	                        // Start the activity
+	                        startActivity(i);
+	        			}
+	        		}
+	        	});
+	        	
+    			alert.show();
                 return true;
     		case MainStrings.EDIT_SONG_ATT:
     			// Get the song name
@@ -414,7 +436,7 @@ public class MainActivity extends FragmentActivity {
     			final String fsongName = songName;
     			final String fsetName = setName;
     			
-    			AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    			alert = new AlertDialog.Builder(this);
 
     	    	alert.setTitle("Remove Song?!");
     	    	alert.setMessage("Are you sure you want to remove '" + songName + "' from the set '" + setName + "'?");
