@@ -2757,16 +2757,13 @@ public class MainActivity extends FragmentActivity {
     	
     	Cursor c = dbAdapter.getSongLastFive(songName);
     	startManagingCursor(c);
-    	c.moveToLast(); //Loop backwards to get latest first
-    	int counter = 0;
-    	while(!c.isBeforeFirst()) {
+    	c.moveToFirst(); //Loop backwards to get latest first
+    	while(!c.isAfterLast()) {
     		String setName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
     		String setDate = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_DATE));
     		message.append("\t" + setName + ", " + setDate);
         	message.append(MainStrings.EOL);
-        	c.moveToPrevious();
-        	if (counter++ >= 4) //Only grab the top 5
-        		break;
+        	c.moveToNext();
     	}
     	message.append(MainStrings.EOL);
     	
