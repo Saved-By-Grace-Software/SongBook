@@ -123,21 +123,59 @@ public class DBAdapter {
 	 * @return True if success, False if failure
 	 */
 	public boolean updateSet(String setName, String[] songs) {
-		// Create a new set with the specified name
+		String song = "";
+		int order = 1;
+		
 		try {
 			// Delete the songs from the sets lookup table
 			mDb.execSQL("DELETE FROM " + DBStrings.SETLOOKUP_TABLE + " WHERE " + DBStrings.TBLSLOOKUP_SET +
 					" = (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "')");
 						
 			// Add the songs in the new order
-			for(String song : songs) {
+			for(int i = 0; i < songs.length; i++) {
+				song = songs[i];
+				order = i + 1;
 				if (song != "") {
 					mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + 
-							DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ") " +
+							DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ", " + DBStrings.TBLSLOOKUP_ORDER + ") " +
 							" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
 							" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'), " +
-							" (SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'));" );
+							" (SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'), " +
+							order + ");" );
 				}
+			}
+		} catch (SQLiteException e) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Reorders the songs in the set
+	 * @param setName The set to reorder
+	 * @param newOrder A string array with songs in the new order
+	 * @return True if success, False if failure
+	 */
+	public boolean reorderSet(String setName, String[] newOrder) {
+		String song = "";
+		int order = 1;
+		
+		try {
+			// Cycle through the new song list
+			for (int i = 0; i < newOrder.length; i++) {
+				song = newOrder[i];
+				order = i + 1;
+				
+				// Update the order of the songs
+				mDb.execSQL("UPDATE " + DBStrings.SETLOOKUP_TABLE +
+				" SET " + DBStrings.TBLSLOOKUP_ORDER + " = " + order + " WHERE " +
+				DBStrings.TBLSLOOKUP_SET + 
+				" = (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + 
+					" WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "') AND " +
+				DBStrings.TBLSLOOKUP_SONG + 
+				" = (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + 
+					" WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "');");
 			}
 		} catch (SQLiteException e) {
 			return false;
@@ -759,7 +797,8 @@ public class DBAdapter {
 					" = " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID +
 					" INNER JOIN " + DBStrings.SETS_TABLE + " ON " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SET + 
 					" = " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID +
-					" WHERE " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + " = " + DBStrings.CURRSET_TABLE + "." + DBStrings.TBLCURRSET_SET;
+					" WHERE " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + " = " + DBStrings.CURRSET_TABLE + "." + DBStrings.TBLCURRSET_SET +
+					" ORDER BY " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_ORDER;
 		
 			return mDb.rawQuery(query, null);
 		} catch (SQLiteException s) {
