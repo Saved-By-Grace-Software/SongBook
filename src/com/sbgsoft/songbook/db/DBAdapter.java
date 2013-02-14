@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.sbgsoft.songbook.main.MainStrings;
 import com.sbgsoft.songbook.sets.SetsTab;
 import com.sbgsoft.songbook.songs.SongsTab;
 
@@ -1031,7 +1032,7 @@ public class DBAdapter {
 				output.append("INSERT INTO " + DBStrings.SONGS_TABLE + "(" + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
 						DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + 
 						") VALUES ('" + songName + "', '" + songFileName + "', '" + author + "', '" + key + "'); ");
-				output.append(System.getProperty("line.separator"));
+				output.append(MainStrings.EOL);
 			}
 			
 			// Add sets to the export file
@@ -1046,12 +1047,12 @@ public class DBAdapter {
 				// Append the insert statement with a line ending
 				output.append("INSERT INTO " + DBStrings.SETS_TABLE + "(" + DBStrings.TBLSETS_NAME + ", " + DBStrings.TBLSETS_DATE +
 						") VALUES ('" + setName + "', '" + setDate + "'); ");
-				output.append(System.getProperty("line.separator"));
+				output.append(MainStrings.EOL);
 			}
 			
 			// Add set lookup to the export file
 			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_NAME + ", " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_NAME + ", " +
-					DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_KEY + 
+					DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_KEY + ", " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_ORDER + 
 					" FROM " + DBStrings.SETLOOKUP_TABLE +
 					" INNER JOIN " + DBStrings.SONGS_TABLE + " ON " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + 
 					" = " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG +
@@ -1064,13 +1065,15 @@ public class DBAdapter {
 				String songName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
 				String setName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
 				String songKey = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_KEY));
+				int order = c.getInt(c.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_ORDER));
 				
 				// Append the insert statement with a line ending
-				output.append("INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ") " + 
+				output.append("INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + DBStrings.TBLSLOOKUP_SONG + ", " + 
+						DBStrings.TBLSLOOKUP_KEY + ", " + DBStrings.TBLSLOOKUP_ORDER + ") " + 
 						" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
 						" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'), " +
-						"'" + songKey + "'); ");
-				output.append(System.getProperty("line.separator"));
+						"'" + songKey + "', " + order + "); ");
+				output.append(MainStrings.EOL);
 			}
 			
 			// Add song groups to the export file
@@ -1085,7 +1088,7 @@ public class DBAdapter {
 				// Append the insert statement with a line ending
 				output.append("INSERT INTO " + DBStrings.SONGGROUPS_TABLE + "(" + DBStrings.TBLSONGGROUPS_NAME + ", " + 
 						DBStrings.TBLSONGGROUPS_PARENT + ") values ('" + groupName + "', " + parentID + " ); ");
-				output.append(System.getProperty("line.separator"));
+				output.append(MainStrings.EOL);
 			}
 			
 			
@@ -1107,7 +1110,7 @@ public class DBAdapter {
 				output.append("INSERT INTO " + DBStrings.SONGGPLOOKUP_TABLE + "(" + DBStrings.TBLSONGGPLOOKUP_GROUP + ", " + DBStrings.TBLSONGGPLOOKUP_SONG + ") " + 
 						" VALUES ((SELECT " + DBStrings.TBLSONGGROUPS_ID + " FROM " + DBStrings.SONGGROUPS_TABLE + " WHERE " + DBStrings.TBLSONGGROUPS_NAME + " = '" + groupName + "'), " + 
 						" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "') ); ");
-				output.append(System.getProperty("line.separator"));
+				output.append(MainStrings.EOL);
 			}
 			
 			// Add set groups to the export file
@@ -1122,7 +1125,7 @@ public class DBAdapter {
 				// Append the insert statement with a line ending
 				output.append("INSERT INTO " + DBStrings.SETGROUPS_TABLE + "(" + DBStrings.TBLSETGROUPS_NAME + ", " + 
 						DBStrings.TBLSETGROUPS_PARENT + ") values ('" + groupName + "', " + parentID + " ); ");
-				output.append(System.getProperty("line.separator"));
+				output.append(MainStrings.EOL);
 			}
 			
 			
@@ -1144,7 +1147,7 @@ public class DBAdapter {
 				output.append("INSERT INTO " + DBStrings.SETGPLOOKUP_TABLE + "(" + DBStrings.TBLSETGPLOOKUP_GROUP + ", " + DBStrings.TBLSETGPLOOKUP_SET + ") " + 
 						" VALUES ((SELECT " + DBStrings.TBLSETGROUPS_ID + " FROM " + DBStrings.SETGROUPS_TABLE + " WHERE " + DBStrings.TBLSETGROUPS_NAME + " = '" + groupName + "'), " + 
 						" (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "') ); ");
-				output.append(System.getProperty("line.separator"));
+				output.append(MainStrings.EOL);
 			}
 			
 			// Close the cursor
