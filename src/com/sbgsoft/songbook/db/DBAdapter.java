@@ -88,18 +88,23 @@ public class DBAdapter {
 	 * @return True if success, False if failure
 	 */
 	public boolean createSet(String setName, ArrayList<String> setSongs, String setDate) {
+		String song = "";
+		int order = 1;
 		// Create a new set with the specified name
 		try {
 			// Add the set name
 			if (createSet(setName, setDate)) {
 				// Add the songs to the set
-				for(String song : setSongs) {
+				for(int i = 0; i < setSongs.size(); i++) {
+					song = setSongs.get(i);
+					order = i + 1;
 					if (song != "") {
 						mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + 
-								DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ") " + 
+								DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ", " + DBStrings.TBLSLOOKUP_ORDER + ") " + 
 								" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
 								" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'), " +
-								" (SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'));" );
+								" (SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'), " +
+								" " + order + " );" );
 					}
 				}
 			}
@@ -148,12 +153,26 @@ public class DBAdapter {
 	 */
 	public boolean addSongToSet(String setName, String songName) {
 		try {
+			String query = "";
+			
+			// Get order number
+			query = "SELECT max(" + DBStrings.TBLSLOOKUP_ORDER + ") as maxOrder " +
+					"FROM " + DBStrings.SETLOOKUP_TABLE + " " +
+					"WHERE " + DBStrings.TBLSLOOKUP_SET + " = " +
+					"(SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + 
+					DBStrings.TBLSETS_NAME + " = '" + setName + "')";
+			Cursor c = mDb.rawQuery(query, null);
+			c.moveToFirst();
+			int order = c.getInt(c.getColumnIndexOrThrow("maxOrder")) + 1;
+			
 			// Add the song to the set
-			mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + 
-					DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ") " +
+			query = "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + 
+					DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ", " + DBStrings.TBLSLOOKUP_ORDER + ") " +
 					" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
 					" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'), " +
-					" (SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'));" );
+					" (SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'), " +
+					order + ");";
+			mDb.execSQL(query);
 		} catch (SQLiteException e) {
 			return false;
 		}
@@ -169,11 +188,31 @@ public class DBAdapter {
 	 */
 	public boolean removeSongFromSet(String setName, String songName) {
 		try {
-			// Add the song to the set3
-			mDb.execSQL( "DELETE FROM " + DBStrings.SETLOOKUP_TABLE + " WHERE " + DBStrings.TBLSLOOKUP_SET + " = " +
+			String query = "";
+			
+			// Get the order of the song being deleted
+			query = "SELECT " + DBStrings.TBLSLOOKUP_ORDER + " FROM " + DBStrings.SETLOOKUP_TABLE + " " +
+					"WHERE " + DBStrings.TBLSLOOKUP_SET + " = " +
 					" (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "') " + 
 					" AND " + DBStrings.TBLSLOOKUP_SONG + " = " +
-					" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "');" );
+					" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "');";
+			Cursor c = mDb.rawQuery(query, null);
+			c.moveToFirst();
+			int order = c.getInt(c.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_ORDER));
+			
+			// Remove the song from the set
+			query = "DELETE FROM " + DBStrings.SETLOOKUP_TABLE + " WHERE " + DBStrings.TBLSLOOKUP_SET + " = " +
+					" (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "') " + 
+					" AND " + DBStrings.TBLSLOOKUP_SONG + " = " +
+					" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "');";
+			mDb.execSQL(query);
+			
+			// Update the set order
+			query = "UPDATE " + DBStrings.SETLOOKUP_TABLE + " SET " + DBStrings.TBLSLOOKUP_ORDER + " = " + DBStrings.TBLSLOOKUP_ORDER + " - 1" + " " +
+					"WHERE " + DBStrings.TBLSLOOKUP_SET + " = " +
+					"(SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "') " + 
+					"AND " + DBStrings.TBLSLOOKUP_ORDER + " > " + order;
+			mDb.execSQL(query);
 		} catch (SQLiteException e) {
 			return false;
 		}
@@ -243,7 +282,8 @@ public class DBAdapter {
 					" INNER JOIN " + DBStrings.SETS_TABLE + " ON " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SET + 
 					" = " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID +
 					" WHERE " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + " = (SELECT " + DBStrings.TBLSETS_ID + 
-					" FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "')";
+					" FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "')" +
+					" ORDER BY " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_ORDER;
 			
 			return mDb.rawQuery(query, null);
 		} catch (SQLiteException s) {
@@ -1234,7 +1274,8 @@ public class DBAdapter {
     					"(" + DBStrings.TBLSLOOKUP_ID + " integer PRIMARY KEY autoincrement, " + 
     					DBStrings.TBLSLOOKUP_SET + " int, " + 
     					DBStrings.TBLSLOOKUP_SONG + " int, " +
-    					DBStrings.TBLSLOOKUP_KEY + " text ); " );
+    					DBStrings.TBLSLOOKUP_KEY + " text, " +
+    					DBStrings.TBLSLOOKUP_ORDER + " int ); " );
     			
     			// Song Group lookup table
     			db.execSQL("create table " + DBStrings.SONGGPLOOKUP_TABLE +
@@ -1267,11 +1308,23 @@ public class DBAdapter {
     		try{
     			db.beginTransaction();
     			
-    			// Add set key column
-    			db.execSQL("ALTER TABLE " + DBStrings.SETLOOKUP_TABLE + " ADD COLUMN " + DBStrings.TBLSLOOKUP_KEY + " text");
-    			db.execSQL("UPDATE " + DBStrings.SETLOOKUP_TABLE + " SET " + DBStrings.TBLSLOOKUP_KEY + " = " +
-    					"(SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " +
-    					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " = " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG + ")");
+    			// Updates from DB version 1
+    			if (oldVersion == 1) {
+	    			// Add set key column
+	    			db.execSQL("ALTER TABLE " + DBStrings.SETLOOKUP_TABLE + " ADD COLUMN " + DBStrings.TBLSLOOKUP_KEY + " text");
+	    			db.execSQL("UPDATE " + DBStrings.SETLOOKUP_TABLE + " SET " + DBStrings.TBLSLOOKUP_KEY + " = " +
+	    					"(SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " +
+	    					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " = " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG + ")");
+    			}
+    			
+    			// Updates from DB version 2 or lower
+    			if (oldVersion <= 2) {
+	    			// Add set order column
+	    			db.execSQL("ALTER TABLE " + DBStrings.SETLOOKUP_TABLE + " ADD COLUMN " + DBStrings.TBLSLOOKUP_ORDER + " int");
+	    			
+	    			// Update current sets to add set order
+	    			addSetOrder(db);
+    			}
     			
     			db.setTransactionSuccessful(); 
     		}catch(SQLiteException e) {
@@ -1279,6 +1332,41 @@ public class DBAdapter {
     		}finally{
     			db.endTransaction();
     		}
+        }
+        
+        /**
+         * Adds the set order to current sets on upgrade
+         * @param db The database
+         */
+        private void addSetOrder(SQLiteDatabase db) {
+        	int counter = 0;
+        	
+        	// Get a list of all set IDs
+        	Cursor c = db.rawQuery("SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE, null);
+        	int setIDs[] = new int[c.getCount()];
+        	while (c.moveToNext()) {
+        		setIDs[counter++] = c.getInt(c.getColumnIndexOrThrow(DBStrings.TBLSETS_ID));
+        	}
+        	
+        	// For each set ID, add the orders
+        	for (int i : setIDs) {
+        		counter = 1;
+        		
+        		// Get the rows of the current set
+        		c = db.rawQuery("SELECT " + DBStrings.TBLSLOOKUP_SONG + " " +
+        				"FROM " + DBStrings.SETLOOKUP_TABLE + " " +
+        				"WHERE " + DBStrings.TBLSLOOKUP_SET + " = " + i, null);
+        		
+        		// Update each row for the current set
+        		while (c.moveToNext()) {
+        			int songID = c.getInt(c.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_SONG));
+        			db.execSQL("UPDATE " + DBStrings.SETLOOKUP_TABLE + " " +
+        					"SET " + DBStrings.TBLSLOOKUP_ORDER + " = " + counter + " " +
+        					"WHERE " + DBStrings.TBLSLOOKUP_SET + " = " + i + " AND " +
+        					DBStrings.TBLSLOOKUP_SONG + " = " + songID);
+        			counter++;
+        		}
+        	}
         }
     }
 }
