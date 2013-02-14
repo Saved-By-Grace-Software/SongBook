@@ -299,6 +299,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.SET_SONG_KEY_CS, MainStrings.SET_SONG_KEY_CS, R.string.cmenu_sets_set_song_key);
     		menu.add(Menu.NONE, MainStrings.EMAIL_SONG_CS, MainStrings.EMAIL_SONG_CS, R.string.cmenu_songs_email);
     		menu.add(Menu.NONE, MainStrings.REMOVE_SONG_FROM_SET, MainStrings.REMOVE_SONG_FROM_SET, R.string.cmenu_sets_remove_song);
+    		menu.add(Menu.NONE, MainStrings.SONG_STATS_CS, MainStrings.SONG_STATS_CS, R.string.cmenu_songs_stats);
     	}
     }
     
@@ -479,6 +480,14 @@ public class MainActivity extends FragmentActivity {
     		case MainStrings.SONG_STATS:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
+    			
+    			// Show the song stats dialog
+    			showSongStats(songName);
+    			
+    			return true;
+    		case MainStrings.SONG_STATS_CS:
+    			// Get the song name
+    			songName = currSetList.get(info.position).getName();
     			
     			// Show the song stats dialog
     			showSongStats(songName);
