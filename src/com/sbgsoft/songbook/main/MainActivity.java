@@ -664,12 +664,12 @@ public class MainActivity extends FragmentActivity {
         		String[] newOrder = data.getStringArrayExtra(MainStrings.SET_SONGS_KEY);
         		String setName = data.getStringExtra(MainStrings.SET_NAME_KEY);
         		
-        		if(!dbAdapter.updateSet(setName, newOrder)) {
+        		if(!dbAdapter.reorderSet(setName, newOrder)) {
         			Toast.makeText(getApplicationContext(), "Could not update set order!", Toast.LENGTH_LONG).show();
         		}
         		
         		// Refresh the current set view
-        		currSetAdapter.notifyDataSetChanged();
+        		fillCurrentSetListView();
         	}
         } 
 
@@ -1088,9 +1088,8 @@ public class MainActivity extends FragmentActivity {
 	    		if(!dbAdapter.updateSet(setName, setSongs.toArray(new String[setSongs.size()])))
 	    			Toast.makeText(getApplicationContext(), "Failed to update set!", Toast.LENGTH_LONG).show();
 	    		else {
-	    			// Update the sets and current set list
-	    			setsAdapter.notifyDataSetChanged();
-	    			currSetAdapter.notifyDataSetChanged();
+	    			// Update current set list
+	    			fillCurrentSetListView();
 	    		}
 	    		
 	    		// Set the current tab
