@@ -771,7 +771,7 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		// Get the date and set name
 	    		String setName = setNameET.getText().toString();
-	    		String setDate = (setDateDP.getMonth() + 1) + "/" + setDateDP.getDayOfMonth() + "/" + setDateDP.getYear();
+	    		String setDate = setDateDP.getYear() + "-" + String.format("%02d", (setDateDP.getMonth() + 1)) + "-" + String.format("%02d", setDateDP.getDayOfMonth());
 	    		
 	    		if (setName.length() > 0) {
 		    			selectSetSongs(setName, setDate);
@@ -1196,6 +1196,8 @@ public class MainActivity extends FragmentActivity {
     		// Get the strings from the cursor
         	String setName = c.getString(c.getColumnIndex(DBStrings.TBLSETS_NAME));
         	String setDate = c.getString(c.getColumnIndex(DBStrings.TBLSETS_DATE));
+        	String[] datesplit = setDate.split("-");
+        	setDate = datesplit[1] + "/" + datesplit[2] + "/" + datesplit[0];
     		
         	// Add the song item
         	setsList.add(new SetItem(setName, setDate));
@@ -1265,7 +1267,7 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		// Get the date and set name
 	    		String newSetName = setNameET.getText().toString();
-	    		String setDate = (setDateDP.getMonth() + 1) + "/" + setDateDP.getDayOfMonth() + "/" + setDateDP.getYear();
+	    		String setDate = setDateDP.getYear() + "-" + String.format("%02d", (setDateDP.getMonth() + 1)) + "-" + String.format("%02d", setDateDP.getDayOfMonth());
 	    		
 	    		if (newSetName.length() > 0) {
 	    			dbAdapter.updateSetAttributes(setName, newSetName, setDate);
@@ -2756,10 +2758,14 @@ public class MainActivity extends FragmentActivity {
     	
     	Cursor c = dbAdapter.getSongLastFive(songName);
     	startManagingCursor(c);
-    	c.moveToFirst(); //Loop backwards to get latest first
+    	c.moveToFirst(); 
     	while(!c.isAfterLast()) {
+    		// Get the set name and date
     		String setName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
     		String setDate = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_DATE));
+    		String[] datesplit = setDate.split("-");
+    		setDate = datesplit[1] + "/" + datesplit[2] + "/" + datesplit[0];
+    		
     		message.append("\t" + setName + ", " + setDate);
         	message.append(MainStrings.EOL);
         	c.moveToNext();
