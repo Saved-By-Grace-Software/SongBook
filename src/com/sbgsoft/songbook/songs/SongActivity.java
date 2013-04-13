@@ -7,7 +7,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
@@ -32,6 +34,15 @@ public class SongActivity extends Activity {
 	TextView song;
 	private String songName = "";
 	private String songKey = "";
+	private final int duration = 1; // seconds
+    private final int sampleRate = 8000;
+    private final int numSamples = duration * sampleRate;
+    private final double sample[] = new double[numSamples];
+    private final double freqOfTone = 440; // hz
+
+    private final byte generatedSnd[] = new byte[2 * numSamples];
+
+    Handler handler = new Handler();
 
 	
 	/*****************************************************************************
@@ -174,5 +185,33 @@ public class SongActivity extends Activity {
         	
         	alert.show();
     	}
+    }
+
+    /**
+     * Starts the metronome
+     * @param v
+     */
+    public void onMetronomeButtonClick(View v) {
+    	
+    	Thread t = new Thread(){
+            public void run(){
+                MediaPlayer player = null;
+                int countBeep = 0;
+                while(countBeep<4){
+	                player = MediaPlayer.create(getBaseContext(),R.raw.logicclick1);
+	                player.start();
+	                countBeep+=1;
+	                try {
+	                    // 500 milisecond is duration gap between two beep
+	                    Thread.sleep(player.getDuration()+500);
+	                                       player.release();
+	                } catch (InterruptedException e) {
+	                    e.printStackTrace();
+	                }
+                }
+            }
+        };
+
+        t.start(); 
     }
 }
