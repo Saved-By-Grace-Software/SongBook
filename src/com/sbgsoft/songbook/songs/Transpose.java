@@ -26,21 +26,19 @@ public class Transpose {
     	else
     		root = originalChord;
     	
+    	// Check for key from keymap
+    	if (MainStrings.keyMap.containsKey(root)) {
+			root = MainStrings.keyMap.get(root);
+		}
+    	
     	// Get the root note index
-    	//rootIndex = MainStrings.songKeys.lastIndexOf(root);
-    	rootIndex = MainStrings.songKeys.indexOf(root);
+    	rootIndex = MainStrings.songKeys_transpose.lastIndexOf(root);
     	
     	// Get the index difference
-    	//diff = MainStrings.songKeys.lastIndexOf(songKey) - MainStrings.songKeys.lastIndexOf(transposeKey);
-    	diff = MainStrings.songKeys.indexOf(songKey) - MainStrings.songKeys.indexOf(transposeKey);
+    	diff = getCapo(songKey, transposeKey, 0);
     	
     	// Set the new root note
-    	if (diff < 0 && rootIndex - diff > MainStrings.songKeys.size() - 1) //wrap around right
-    		newRoot = MainStrings.songKeys.get((rootIndex - diff) - MainStrings.songKeys.size());
-    	else if (rootIndex - diff < 0) //wrap around left
-			newRoot = MainStrings.songKeys.get(MainStrings.songKeys.size() - (diff - rootIndex));
-		else 
-			newRoot = MainStrings.songKeys.get(rootIndex - diff);
+    	newRoot = MainStrings.songKeys_transpose.get(rootIndex - diff);
     	
     	// Check for a bass note
     	if (originalChord.contains("/")) {
@@ -55,15 +53,10 @@ public class Transpose {
     		}
     		
     		// Get the bass note index
-    		bassIndex = MainStrings.songKeys.indexOf(bass);
+    		bassIndex = MainStrings.songKeys_transpose.lastIndexOf(bass);
     		
     		// Set the new bass note
-        	if (diff < 0 && bassIndex - diff > MainStrings.songKeys.size() - 1) //wrap around right
-        		newBass = MainStrings.songKeys.get((bassIndex - diff) - MainStrings.songKeys.size());
-        	else if (bassIndex - diff < 0) //wrap around left
-        		newBass = MainStrings.songKeys.get(MainStrings.songKeys.size() - (diff - bassIndex));
-    		else 
-    			newBass = MainStrings.songKeys.get(bassIndex - diff);
+        	newBass = MainStrings.songKeys_transpose.get(bassIndex - diff);
     		
     		// Create the new chord
     		// Replace the root note
@@ -100,28 +93,23 @@ public class Transpose {
     	int newCapo = 0;
     	
     	// Get the song key and transpose key locations
-    	int songKeyLoc = MainStrings.songKeys.lastIndexOf(songKey);
-    	//int tranKeyLoc = MainStrings.songKeys.indexOf(transposeKey);
+    	int songKeyLoc = MainStrings.songKeys_transpose.lastIndexOf(songKey);
     	int tranKeyLoc = lastIndexOf(transposeKey, songKeyLoc);
     	
     	//If the current capo is not 0 then change the song key location
     	if (currentCapo != 0) {
     		// Set the new song key location
-//    		if (songKeyLoc + currentCapo > MainStrings.songKeys.size())
-//    			songKeyLoc = (songKeyLoc + currentCapo) - MainStrings.songKeys.size();
-//    		else
-    			songKeyLoc = songKeyLoc + currentCapo;
+    		songKeyLoc = songKeyLoc + currentCapo;
     	}
     	
     	// Determine the capo number
-//    	if (songKeyLoc > tranKeyLoc)
-    		newCapo = songKeyLoc - tranKeyLoc;
-//    	else
-//    		newCapo = songKeyLoc + (MainStrings.songKeys.size() - tranKeyLoc);
+    	newCapo = songKeyLoc - tranKeyLoc;
     	
     	// Check for capo 12
     	if (newCapo == 12)
     		newCapo = 0;
+    	else if (newCapo > 12)
+    		newCapo -= 12;
     	
     	return newCapo;
     }
@@ -135,9 +123,10 @@ public class Transpose {
     private static int lastIndexOf(String indexKey, int startAt) {
     	int index = 0;
     	
-    	for (ListIterator<String> it = MainStrings.songKeys.listIterator(startAt); it.hasPrevious();) {
+    	for (ListIterator<String> it = MainStrings.songKeys_transpose.listIterator(startAt); it.hasPrevious();) {
+    		index = it.previousIndex();
     		if (it.previous().equals(indexKey)) {
-    			index = it.previousIndex();
+    			break;
     		}
     	}
     	
