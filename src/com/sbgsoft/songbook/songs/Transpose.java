@@ -1,5 +1,7 @@
 package com.sbgsoft.songbook.songs;
 
+import java.util.ListIterator;
+
 import com.sbgsoft.songbook.main.MainStrings;
 
 public class Transpose {
@@ -25,9 +27,11 @@ public class Transpose {
     		root = originalChord;
     	
     	// Get the root note index
+    	//rootIndex = MainStrings.songKeys.lastIndexOf(root);
     	rootIndex = MainStrings.songKeys.indexOf(root);
     	
     	// Get the index difference
+    	//diff = MainStrings.songKeys.lastIndexOf(songKey) - MainStrings.songKeys.lastIndexOf(transposeKey);
     	diff = MainStrings.songKeys.indexOf(songKey) - MainStrings.songKeys.indexOf(transposeKey);
     	
     	// Set the new root note
@@ -96,28 +100,47 @@ public class Transpose {
     	int newCapo = 0;
     	
     	// Get the song key and transpose key locations
-    	int songKeyLoc = MainStrings.songKeys.indexOf(songKey);
-    	int tranKeyLoc = MainStrings.songKeys.indexOf(transposeKey);
+    	int songKeyLoc = MainStrings.songKeys.lastIndexOf(songKey);
+    	//int tranKeyLoc = MainStrings.songKeys.indexOf(transposeKey);
+    	int tranKeyLoc = lastIndexOf(transposeKey, songKeyLoc);
     	
     	//If the current capo is not 0 then change the song key location
     	if (currentCapo != 0) {
     		// Set the new song key location
-    		if (songKeyLoc + currentCapo > MainStrings.songKeys.size())
-    			songKeyLoc = (songKeyLoc + currentCapo) - MainStrings.songKeys.size();
-    		else
+//    		if (songKeyLoc + currentCapo > MainStrings.songKeys.size())
+//    			songKeyLoc = (songKeyLoc + currentCapo) - MainStrings.songKeys.size();
+//    		else
     			songKeyLoc = songKeyLoc + currentCapo;
     	}
     	
     	// Determine the capo number
-    	if (songKeyLoc > tranKeyLoc)
+//    	if (songKeyLoc > tranKeyLoc)
     		newCapo = songKeyLoc - tranKeyLoc;
-    	else
-    		newCapo = songKeyLoc + (MainStrings.songKeys.size() - tranKeyLoc);
+//    	else
+//    		newCapo = songKeyLoc + (MainStrings.songKeys.size() - tranKeyLoc);
     	
     	// Check for capo 12
     	if (newCapo == 12)
     		newCapo = 0;
     	
     	return newCapo;
+    }
+    
+    /**
+     * Returns the last index of the specified key, starting at the specified position
+     * @param indexKey The key to search for
+     * @param startAt The position to start at
+     * @return
+     */
+    private static int lastIndexOf(String indexKey, int startAt) {
+    	int index = 0;
+    	
+    	for (ListIterator<String> it = MainStrings.songKeys.listIterator(startAt); it.hasPrevious();) {
+    		if (it.previous().equals(indexKey)) {
+    			index = it.previousIndex();
+    		}
+    	}
+    	
+    	return index;
     }
 }

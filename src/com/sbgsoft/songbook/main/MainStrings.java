@@ -25,8 +25,11 @@ public class MainStrings {
 	public static final String UNKNOWN = "Unknown";
 	public static final String EXPORT_SQL_FILE = "dbbak.sql";
 	public static final String EXPORT_ZIP_FILE = "sbgvsb.bak";
-	public static final ArrayList<String> songParts = new ArrayList<String>(Arrays.asList("verse", "chorus", "coda", "outro", "bridge", "tag", "refrain", "prechorus", "pre-chorus"));
-	public static final ArrayList<String> songKeys = new ArrayList<String>(Arrays.asList("Ab", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G"));
+	public static final ArrayList<String> songParts = new ArrayList<String>(
+			Arrays.asList("verse", "chorus", "coda", "outro", "bridge", "tag", "refrain", "prechorus", "pre-chorus", "guitar", "instrumental"));
+	public static final ArrayList<String> songKeys_old = new ArrayList<String>(Arrays.asList("Ab", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G"));
+	public static final ArrayList<String> songKeys = new ArrayList<String>(
+			Arrays.asList("C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B", "C"));
 	public static final HashMap<String, String> keyMap = new HashMap<String, String>() {
 		private static final long serialVersionUID = 94512194672735973L;
 		{
