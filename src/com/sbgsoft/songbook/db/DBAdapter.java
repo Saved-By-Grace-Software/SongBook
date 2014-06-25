@@ -570,7 +570,7 @@ public class DBAdapter {
 	 */
 	public boolean addSongToGroup(String songName, String groupName) {
 		try {
-			if(!groupName.equals(SongsTab.ALL_SONGS_LABEL)) {
+			if(!isSongInGroup(songName, groupName) && !groupName.equals(SongsTab.ALL_SONGS_LABEL)) {
 				mDb.execSQL("INSERT INTO " + DBStrings.SONGGPLOOKUP_TABLE + " (" + DBStrings.TBLSONGGPLOOKUP_SONG + ", " + DBStrings.TBLSONGGPLOOKUP_GROUP + ") " +
 						" VALUES ( " +
 						" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'), " +
@@ -580,6 +580,26 @@ public class DBAdapter {
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean isSongInGroup(String songName, String groupName) {
+		boolean ret = false;
+		
+		try {
+			Cursor c = mDb.rawQuery("SELECT * FROM " + DBStrings.SONGGPLOOKUP_TABLE +
+					" WHERE " +
+					DBStrings.TBLSONGGPLOOKUP_SONG + " =  (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "') AND " +
+					DBStrings.TBLSONGGPLOOKUP_GROUP + " = (SELECT " + DBStrings.TBLSONGGROUPS_ID + " FROM " + DBStrings.SONGGROUPS_TABLE + " WHERE " + DBStrings.TBLSONGGROUPS_NAME + " = '" + groupName + "')", null);
+			if (c.moveToFirst())
+				ret = true;
+			c.close();
+		} catch (IndexOutOfBoundsException e) {
+			ret = false;
+		} catch (SQLiteException s) {
+			ret = false;
+		}
+		
+		return ret;
 	}
 	
 	/**
