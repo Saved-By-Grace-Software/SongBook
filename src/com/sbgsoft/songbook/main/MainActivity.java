@@ -1831,7 +1831,9 @@ public class MainActivity extends FragmentActivity {
 	    		dbAdapter.removeSongFromGroup(songName, groupName);
 	    		
 	    		// Refresh the song list
-	    		songsAdapter.notifyDataSetChanged();
+	    		//songsAdapter.notifyDataSetChanged();
+	    		fillSongGroupsSpinner();
+	    		fillSongsListView();
 	        	
 	        	// Set the current tab
 	        	currentTab = 3;
