@@ -312,7 +312,7 @@ public class MainActivity extends FragmentActivity {
     	Intent i;
     	SongItem songI;
     	SetItem setI;
-    	CharSequence[] editFormat = {"Raw Format", "Text Format"};
+    	CharSequence[] editFormat = {"ChordPro Format", "Text Format"};
     	AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
     	AlertDialog.Builder alert;
     	
@@ -2085,9 +2085,9 @@ public class MainActivity extends FragmentActivity {
 	            	}
             	}
             	
-            	// For intro add the line with chord formatting but all on the same line
-        		if (line.startsWith("{intro:")) {
-        			for (char c : line.substring(7, line.length() - 1).toCharArray()) {
+            	// For intro and single add the line with chord formatting but all on the same line
+        		if (line.startsWith("{intro:") || line.startsWith("{single:")) {
+        			for (char c : line.substring(line.indexOf(':') + 1, line.length() - 1).toCharArray()) {        				
         				if (c == '[') {
         					inChord = true;
         					lyricLine += "<b><font color=\"#006B9F\">";
@@ -2111,8 +2111,14 @@ public class MainActivity extends FragmentActivity {
         				// If in a chord fill the currentChord, else add to lyric line
         				if (inChord)
         					currentChord += c;
-        				else
-        					lyricLine += c;
+        				else {
+        					// Replace space with &nbsp;
+        					if (c == ' ') {
+        						lyricLine += "&nbsp;";
+        					} else {
+        						lyricLine += c;
+        					}
+        				}
         			}
         			
         			if (!lyricLine.isEmpty()) {
@@ -2171,6 +2177,21 @@ public class MainActivity extends FragmentActivity {
                     		if (delimiter.equals("author")) {
                     			lyricLine += "<i>";
                     		}
+                    		
+                    		// For bold delimiter add bold
+                    		if (delimiter.equals("b")) {
+                    			lyricLine += "<b>";
+                    		}
+                    		
+                    		// For italic delimiter add italics
+                    		if (delimiter.equals("i")) {
+                    			lyricLine += "<i>";
+                    		}
+                    		
+                    		// For bold/italic delimiter add bold and italics
+                    		if (delimiter.equals("bi")) {
+                    			lyricLine += "<b><i>";
+                    		}
                 			
                 			continue;
                 		}
@@ -2189,6 +2210,21 @@ public class MainActivity extends FragmentActivity {
                     			lyricLine += "</i>";
                     		}
                     		
+                    		// For bold delimiter end bold
+                    		if (delimiter.equals("b")) {
+                    			lyricLine += "</b>";
+                    		}
+                    		
+                    		// For italic delimiter end italics
+                    		if (delimiter.equals("i")) {
+                    			lyricLine += "</i>";
+                    		}
+                    		
+                    		// For bold/italic delimiter end bold and italics
+                    		if (delimiter.equals("bi")) {
+                    			lyricLine += "</i></b>";
+                    		}
+                    		
                 			delimiter = "";
                 			commentLoc = 0;
                 			continue;
@@ -2202,13 +2238,19 @@ public class MainActivity extends FragmentActivity {
                 					skipCounter++;
                 					if (inChord)
                     					currentChord += c;
-                					else
-                						chordLine += c;
+                					else {
+                						// Replace space with &nbsp;
+                    					if (c == ' ') {
+                    						chordLine += "&nbsp;";
+                    					} else {
+                    						chordLine += c;
+                    					}
+                					}
                 				}
                 			}
                 			
                 			// A lyric chord type
-                			if (delimiter.equals("lc")) {
+                			else if (delimiter.equals("lc")) {
                 				if (charCounter > commentLoc + 1) {
                 					if (c == '[') {
                 						inChord = true;
@@ -2230,17 +2272,30 @@ public class MainActivity extends FragmentActivity {
                 					else {
                 						if (inChord)
                         					currentChord += c;
-                        				else
-                        					lyricLine += c;
+                        				else {
+                        					// Replace space with &nbsp;
+                        					if (c == ' ') {
+                        						lyricLine += "&nbsp;";
+                        					} else {
+                        						lyricLine += c;
+                        					}
+                        				}
                 					}
                 				}
                 			}
                 			
                 			// For comments just add the line with no formatting
-                    		if (delimiter.equals("comment") || delimiter.equals("title") || delimiter.equals("author")) {
+                    		//if (delimiter.equals("comment") || delimiter.equals("title") || delimiter.equals("author")) {
+                    		else {
                     			//sb.append(line.substring(i + 1, line.length() - 1) + "<br/>");
-                    			if (charCounter > commentLoc + 1)
-                    				lyricLine += c;
+                    			if (charCounter > commentLoc + 1) {
+                    				// Replace space with &nbsp;
+                					if (c == ' ') {
+                						lyricLine += "&nbsp;";
+                					} else {
+                						lyricLine += c;
+                					}
+                    			}
                     		}
                     	
                     		continue;
@@ -2255,7 +2310,13 @@ public class MainActivity extends FragmentActivity {
                 				skipCounter--;
                 			else
                 				chordLine += "&nbsp;";
-                			lyricLine += c;
+                			
+                			// Replace space with &nbsp;
+        					if (c == ' ') {
+        						lyricLine += "&nbsp;";
+        					} else {
+        						lyricLine += c;
+        					}
                 		}
                 	}
     	            	
