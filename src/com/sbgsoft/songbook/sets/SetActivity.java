@@ -19,6 +19,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.items.SetItem;
+import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainStrings;
 import com.sbgsoft.songbook.songs.SetSongFragment;
 
@@ -59,17 +61,14 @@ public class SetActivity extends FragmentActivity {
         if (extras != null) {
         	// Get the extras
             int currSong = extras.getInt(MainStrings.CURRENT_SONG_KEY);
-			ArrayList<?> setSongs = (ArrayList<?>)extras.getSerializable(MainStrings.SET_SONGS_KEY);
+            SetItem setItem = extras.getParcelable(MainStrings.SET_SONGS_KEY);
             
             // Create each song fragment
-            for (Object entry : setSongs) {
-            	String[] songData = (String[])entry;
+            for (SongItem song : setItem.songs) {
             	// Create song fragment
             	Fragment songFrag = new SetSongFragment();
             	Bundle bSong = new Bundle();
-            	bSong.putString(MainStrings.SONG_NAME_KEY, songData[0]);
-            	bSong.putString(MainStrings.SONG_KEY_KEY, songData[1]);
-            	bSong.putString(MainStrings.SONG_TEXT_KEY, songData[2]);
+            	bSong.putParcelable(MainStrings.SONG_ITEM_KEY, song);
             	songFrag.setArguments(bSong);
             	
             	// Add the fragment to the page adapter
@@ -174,8 +173,8 @@ public class SetActivity extends FragmentActivity {
     	// Get the current fragment
     	Fragment f = mPagerAdapter.mFragments.get(currentSong);
     	
-    	// Increase the font size for the fragment
-    	((SetSongFragment)f).transposeSong();
+    	// Transpose the current song
+    	((SetSongFragment)f).onTransposeButtonClick();
     }
     
     

@@ -7,6 +7,7 @@ import java.util.HashMap;
 public class MainStrings {
 
 	// Keys
+	public static final String SONG_ITEM_KEY = "songItem";
 	public static final String SONG_NAME_KEY = "songName";
 	public static final String SONG_TEXT_KEY = "songText";
 	public static final String SONG_KEY_KEY = "songKey";

@@ -37,6 +37,7 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -2002,18 +2003,14 @@ public class MainActivity extends FragmentActivity {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
             	// Get the song to show
             	SongItem song = (SongItem)songsList.get(position);
-            	String songName = song.getName();
-            	String songKey = song.getKey();
 				try {
-					FileInputStream fis = openFileInput(dbAdapter.getSongFile(songName));
-					String songText = getSongHtmlText(song.getName(), song.getKey(), fis);
+					FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
+					song.setText(getSongHtmlText(song.getName(), song.getKey(), fis));
 					
 					// Show the song activity
 	            	SongActivity songA = new SongActivity();
 	            	Intent showSong = new Intent(v.getContext(), songA.getClass());
-	            	showSong.putExtra(MainStrings.SONG_NAME_KEY, songName);
-	            	showSong.putExtra(MainStrings.SONG_KEY_KEY, songKey);
-	            	showSong.putExtra(MainStrings.SONG_TEXT_KEY, songText);
+	            	showSong.putExtra(MainStrings.SONG_ITEM_KEY, (Parcelable)song);
 	                startActivity(showSong);
 	                
 				} catch (FileNotFoundException e) {
@@ -2921,29 +2918,31 @@ public class MainActivity extends FragmentActivity {
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-            	// Create the string array of the song text
-            	ArrayList<String[]> setSongs = new ArrayList<String[]>();
+            	// Create a new SetItem to pass
+            	SetItem setItem = new SetItem();
             	
             	// Loop through each song in the current set and add it to the array
             	for (Item i : currSetList) {
-            		String songName = i.getName();
-            		String songKey = ((SongItem)i).getKey();
+            		SongItem currSong = (SongItem)i;
+            		
+            		// Set song text
             		try {
-    					FileInputStream fis = openFileInput(dbAdapter.getSongFile(songName));
-    					String songText = getSongHtmlText(((SongItem)i).getName(), songKey, fis);
-    					setSongs.add(new String[] {songName, songKey, "<h2>" + songName + "</h2>" + songText});                
-    				} catch (FileNotFoundException e) {
-    					Toast.makeText(getBaseContext(), "Could not open one of the song files!", Toast.LENGTH_LONG).show();
+	            		FileInputStream fis = openFileInput(dbAdapter.getSongFile(currSong.getName()));
+	            		currSong.setText(getSongHtmlText(currSong.getName(), currSong.getKey(), fis));
+	            		
+	            		setItem.songs.add(currSong);      
+            		} catch (FileNotFoundException e) {
+            			Toast.makeText(getBaseContext(), "Could not open one of the song files!", Toast.LENGTH_LONG).show();
     					return;
-    				}                	
+            		}
             	}
             	
             	// Show the set activity
-            	SetActivity song = new SetActivity();
-            	Intent showSong = new Intent(v.getContext(), song.getClass());
-            	showSong.putExtra(MainStrings.CURRENT_SONG_KEY, position);
-            	showSong.putExtra(MainStrings.SET_SONGS_KEY, setSongs);
-                startActivity(showSong);
+            	SetActivity set = new SetActivity();
+            	Intent showSet = new Intent(v.getContext(), set.getClass());
+            	showSet.putExtra(MainStrings.CURRENT_SONG_KEY, position);
+            	showSet.putExtra(MainStrings.SET_SONGS_KEY, setItem);
+                startActivity(showSet);
             }
     	});
       
@@ -3867,7 +3866,7 @@ public class MainActivity extends FragmentActivity {
         public int compare(Object o1, Object o2) {
             String s1 = (String) o1;
             String s2 = (String) o2;
-            return s1.toLowerCase(Locale.US).compareTo(s2.toLowerCase());
+            return s1.toLowerCase(Locale.ENGLISH).compareTo(s2.toLowerCase());
         }
     }
     

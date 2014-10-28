@@ -2,6 +2,7 @@ package com.sbgsoft.songbook.songs;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.MainStrings;
 
@@ -30,8 +32,7 @@ public class SongActivity extends Activity {
      * 
      *****************************************************************************/
 	TextView song;
-	private String songName = "";
-	private String songKey = "";
+	private SongItem mSongItem;
 
 	
 	/*****************************************************************************
@@ -56,13 +57,15 @@ public class SongActivity extends Activity {
         // Populate it with the song text
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            songName = extras.getString(MainStrings.SONG_NAME_KEY);
-            if (extras.getString(MainStrings.SONG_KEY_KEY).length() > 1)
-            	songKey = extras.getString(MainStrings.SONG_KEY_KEY).substring(0, 1).toUpperCase() + extras.getString(MainStrings.SONG_KEY_KEY).substring(1).trim();
+        	mSongItem = extras.getParcelable(MainStrings.SONG_ITEM_KEY);
+        	
+            if (mSongItem.getKey().length() > 1)
+            	mSongItem.setKey(mSongItem.getKey().substring(0, 1).toUpperCase(Locale.ENGLISH) + mSongItem.getKey().substring(1).trim());
             else
-            	songKey = extras.getString(MainStrings.SONG_KEY_KEY).toUpperCase();
-            String songText = extras.getString(MainStrings.SONG_TEXT_KEY);
-            song.setText(Html.fromHtml("<h2>" + songName + "</h2>" + songText));
+            	mSongItem.setKey(mSongItem.getKey().toUpperCase(Locale.ENGLISH));
+            
+            // Set song text
+            song.setText(Html.fromHtml("<h2>" + mSongItem.getName() + "</h2>" + mSongItem.getText()));
         }
         
         // Keep the screen on
@@ -144,13 +147,13 @@ public class SongActivity extends Activity {
     public void onTransposeButtonClick(View v) {
     	
     	// Check for a special key
-    	if (MainStrings.keyMap.containsKey(songKey)) {
+    	if (MainStrings.keyMap.containsKey(mSongItem.getKey())) {
     		// Set the song key to the associated key
-    		songKey = MainStrings.keyMap.get(songKey);
+    		mSongItem.setKey(MainStrings.keyMap.get(mSongItem.getKey()));
     	}
     	
     	// Check to make sure the song has a proper key
-    	if (!MainStrings.songKeys.contains(songKey)) {
+    	if (!MainStrings.songKeys.contains(mSongItem.getKey())) {
     		Toast.makeText(getBaseContext(), 
     				"You cannot transpose a song without an legit assigned key. Please edit the song attributes, edit the key, and try again.", Toast.LENGTH_LONG).show();
     	}
@@ -162,9 +165,9 @@ public class SongActivity extends Activity {
         		public void onClick (DialogInterface dialog, int whichItem) {
         			// Transpose the song
 					try {
-						FileInputStream fis = openFileInput(MainActivity.dbAdapter.getSongFile(songName));
-						String songText = MainActivity.getSongHtmlText(songName, MainStrings.songKeys.get(whichItem), fis);
-	        			song.setText(Html.fromHtml("<h2>" + songName + "</h2>" + songText));
+						FileInputStream fis = openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
+						String transposedSongText = MainActivity.getSongHtmlText(mSongItem.getName(), MainStrings.songKeys.get(whichItem), fis);
+	        			song.setText(Html.fromHtml("<h2>" + mSongItem.getName() + "</h2>" + transposedSongText));
 					} catch (FileNotFoundException e) {
 						Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
 						return;
