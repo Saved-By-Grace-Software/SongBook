@@ -2,6 +2,7 @@ package com.sbgsoft.songbook.songs;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Locale;
 
 import android.app.AlertDialog;
@@ -52,7 +53,7 @@ public class SetSongFragment extends Fragment {
             
             // Populate the song text
             if (mSongItem.getText() != "") {
-                song.setText(Html.fromHtml("<h2>" + mSongItem.getName() + "</h2>" + mSongItem.getText()));
+                song.setText(Html.fromHtml(mSongItem.getText()));
             }
         }
 		
@@ -97,9 +98,12 @@ public class SetSongFragment extends Fragment {
         			// Transpose the song
 					try {
 						FileInputStream fis = getActivity().openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
-						String transposedSongText = MainActivity.getSongHtmlText(mSongItem.getName(), MainStrings.songKeys.get(whichItem), fis);
-	        			song.setText(Html.fromHtml("<h2>" + mSongItem.getName() + "</h2>" + transposedSongText));
+						String transposedSongText = ChordProParser.ParseSongFile(mSongItem, MainStrings.songKeys.get(whichItem), fis);
+	        			song.setText(Html.fromHtml(transposedSongText));
 					} catch (FileNotFoundException e) {
+						Toast.makeText(getActivity(), "Could not open song file!", Toast.LENGTH_LONG).show();
+						return;
+					} catch (IOException e) {
 						Toast.makeText(getActivity(), "Could not open song file!", Toast.LENGTH_LONG).show();
 						return;
 					}
