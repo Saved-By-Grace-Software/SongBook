@@ -65,7 +65,7 @@ public class SongActivity extends Activity {
             	mSongItem.setKey(mSongItem.getKey().toUpperCase(Locale.ENGLISH));
             
             // Set song text
-            song.setText(Html.fromHtml("<h2>" + mSongItem.getName() + "</h2>" + mSongItem.getText()));
+            song.setText(Html.fromHtml(mSongItem.getText()));
         }
         
         // Keep the screen on

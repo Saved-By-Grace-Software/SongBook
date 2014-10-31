@@ -83,6 +83,7 @@ import com.sbgsoft.songbook.sets.CurrentSetTab;
 import com.sbgsoft.songbook.sets.SetActivity;
 import com.sbgsoft.songbook.sets.SetGroupArrayAdapter;
 import com.sbgsoft.songbook.sets.SetsTab;
+import com.sbgsoft.songbook.songs.ChordProParser;
 import com.sbgsoft.songbook.songs.EditSongRawActivity;
 import com.sbgsoft.songbook.songs.EditSongTextActivity;
 import com.sbgsoft.songbook.songs.SongActivity;
@@ -2005,7 +2006,8 @@ public class MainActivity extends FragmentActivity {
             	SongItem song = (SongItem)songsList.get(position);
 				try {
 					FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
-					song.setText(getSongHtmlText(song.getName(), song.getKey(), fis));
+					//song.setText(getSongHtmlText(song.getName(), song.getKey(), fis));
+					song.setText(ChordProParser.ParseSongFile(song, song.getKey(), fis));
 					
 					// Show the song activity
 	            	SongActivity songA = new SongActivity();
@@ -2014,6 +2016,8 @@ public class MainActivity extends FragmentActivity {
 	                startActivity(showSong);
 	                
 				} catch (FileNotFoundException e) {
+					Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+				} catch (IOException e) {
 					Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
 				}
             }
@@ -2056,7 +2060,8 @@ public class MainActivity extends FragmentActivity {
             while (line != null) {
             	boolean inChord = false;
             	boolean inDelimiter = false;
-            	int skipCounter = 0, charCounter = 0, commentLoc = 0;
+            	boolean inHtml = false;
+            	int skipCounter = 0, charCounter = 0, commentLoc = 0, htmlCounter = 0;
             	String delimiter = "";  
             	
             	// Check for capo and adjust if necessary
@@ -2174,21 +2179,6 @@ public class MainActivity extends FragmentActivity {
                     		if (delimiter.equals("author")) {
                     			lyricLine += "<i>";
                     		}
-                    		
-                    		// For bold delimiter add bold
-                    		if (delimiter.equals("b")) {
-                    			lyricLine += "<b>";
-                    		}
-                    		
-                    		// For italic delimiter add italics
-                    		if (delimiter.equals("i")) {
-                    			lyricLine += "<i>";
-                    		}
-                    		
-                    		// For bold/italic delimiter add bold and italics
-                    		if (delimiter.equals("bi")) {
-                    			lyricLine += "<b><i>";
-                    		}
                 			
                 			continue;
                 		}
@@ -2207,21 +2197,6 @@ public class MainActivity extends FragmentActivity {
                     			lyricLine += "</i>";
                     		}
                     		
-                    		// For bold delimiter end bold
-                    		if (delimiter.equals("b")) {
-                    			lyricLine += "</b>";
-                    		}
-                    		
-                    		// For italic delimiter end italics
-                    		if (delimiter.equals("i")) {
-                    			lyricLine += "</i>";
-                    		}
-                    		
-                    		// For bold/italic delimiter end bold and italics
-                    		if (delimiter.equals("bi")) {
-                    			lyricLine += "</i></b>";
-                    		}
-                    		
                 			delimiter = "";
                 			commentLoc = 0;
                 			continue;
@@ -2231,7 +2206,7 @@ public class MainActivity extends FragmentActivity {
                 		if (inDelimiter) {
                 			// A chord comment type
                 			if (delimiter.equals("cc")) {
-                				if (charCounter > commentLoc + 1) {
+                        		if (charCounter > commentLoc + 1) {
                 					skipCounter++;
                 					if (inChord)
                     					currentChord += c;
@@ -2248,7 +2223,7 @@ public class MainActivity extends FragmentActivity {
                 			
                 			// A lyric chord type
                 			else if (delimiter.equals("lc")) {
-                				if (charCounter > commentLoc + 1) {
+                        		if (charCounter > commentLoc + 1) {
                 					if (c == '[') {
                 						inChord = true;
                 						lyricLine += "<b><font color=\"#006B9F\">";
@@ -2303,7 +2278,22 @@ public class MainActivity extends FragmentActivity {
                 			currentChord += c;
                 			skipCounter++;
                 		} else {
-                			if (skipCounter > 0)
+                			// If the character is an opening to html formatting
+                    		if (c == '<') {
+                    			inHtml = true;
+                    			lyricLine += c;
+                    			skipCounter++;
+                    			
+                    			continue;
+                    		} 
+                    		else if (c == '>') {
+                    			inHtml = false;
+                    			lyricLine += c;
+                    			
+                    			continue;
+                    		}
+                    		
+                    		if (skipCounter > 0)
                 				skipCounter--;
                 			else
                 				chordLine += "&nbsp;";
@@ -2934,7 +2924,9 @@ public class MainActivity extends FragmentActivity {
             		} catch (FileNotFoundException e) {
             			Toast.makeText(getBaseContext(), "Could not open one of the song files!", Toast.LENGTH_LONG).show();
     					return;
-            		}
+            		} catch (IOException e) {
+    					Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+    				}
             	}
             	
             	// Show the set activity
