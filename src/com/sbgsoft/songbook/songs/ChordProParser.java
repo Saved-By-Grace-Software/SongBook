@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.sbgsoft.songbook.items.SongItem;
 
@@ -31,8 +33,19 @@ public class ChordProParser {
 		StringBuilder chordLine = new StringBuilder();
 		StringBuilder lyricLine = new StringBuilder();
 		String line = "";
-		boolean inHtml = false;
+		boolean inHtml = false, transposeSong = false;
 		int skipCounter = 0;
+		Pattern regex;
+    	Matcher matcher;
+		
+		// Check to see if the song needs to be transposed
+		if(!songItem.getKey().equals(transposeKey)) {
+    		// Transpose the song
+    		transposeSong = true;
+    	}
+		
+		// Compile the regex to look for a capo
+        regex = Pattern.compile("([Cc][Aa][Pp][Oo])\\D*(\\d+)");
 		
 		// Add HTML tags to output
 		parsedOutput.append("<html><body>");
@@ -177,14 +190,14 @@ public class ChordProParser {
 											i++;
 											
 											// Add that character to the chord
-											if (lineCharArray[charLoc] == ' ')
-												chord.append("&nbsp;");
-											else
-												chord.append(lineCharArray[charLoc]);
+											chord.append(lineCharArray[charLoc]);
 										}
 										
 										// Append the chord
-										intro.append(chord.toString());
+										if (transposeSong) 
+											intro.append(Transpose.transposeChord(chord.toString(), transposeKey, songItem.getKey()));
+										else
+											intro.append(chord.toString());
 										
 										// Skip the final ']'
 										charLoc++;
@@ -317,17 +330,17 @@ public class ChordProParser {
 											i++;
 											
 											// Add that character to the chord
-											if (lineCharArray[charLoc] == ' ')
-												chord.append("&nbsp;");
-											else
-												chord.append(lineCharArray[charLoc]);
+											chord.append(lineCharArray[charLoc]);
 											
 											// Increment the skip counter
 											skipCounter++;
 										}
 										
 										// Append the chord
-										cc.append(chord.toString());
+										if (transposeSong) 
+											cc.append(Transpose.transposeChord(chord.toString(), transposeKey, songItem.getKey()));
+										else
+											cc.append(chord.toString());
 										
 										// Skip the final ']'
 										charLoc++;
@@ -385,14 +398,14 @@ public class ChordProParser {
 											i++;
 											
 											// Add that character to the chord
-											if (lineCharArray[charLoc] == ' ')
-												chord.append("&nbsp;");
-											else
-												chord.append(lineCharArray[charLoc]);
+											chord.append(lineCharArray[charLoc]);
 										}
 										
 										// Append the chord
-										lc.append(chord.toString());
+										if (transposeSong) 
+											lc.append(Transpose.transposeChord(chord.toString(), transposeKey, songItem.getKey()));
+										else
+											lc.append(chord.toString());
 										
 										// Skip the final ']'
 										charLoc++;
@@ -454,17 +467,17 @@ public class ChordProParser {
 							charLoc++;
 							
 							// Add that character to the chord
-							if (lineCharArray[charLoc] == ' ')
-								chord.append("&nbsp;");
-							else
-								chord.append(lineCharArray[charLoc]);
+							chord.append(lineCharArray[charLoc]);
 							
 							// Increment the skip counter
 							skipCounter++;
 						}
 						
 						// Append the chord
-						chordLine.append(chord.toString());
+						if (transposeSong) 
+							chordLine.append(Transpose.transposeChord(chord.toString(), transposeKey, songItem.getKey()));
+						else
+							chordLine.append(chord.toString());
 						
 						// Skip the final ']'
 						charLoc++;
