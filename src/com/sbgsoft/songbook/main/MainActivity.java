@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -85,7 +86,6 @@ import com.sbgsoft.songbook.sets.SetGroupArrayAdapter;
 import com.sbgsoft.songbook.sets.SetsTab;
 import com.sbgsoft.songbook.songs.ChordProParser;
 import com.sbgsoft.songbook.songs.EditSongRawActivity;
-import com.sbgsoft.songbook.songs.EditSongTextActivity;
 import com.sbgsoft.songbook.songs.SongActivity;
 import com.sbgsoft.songbook.songs.SongGroupArrayAdapter;
 import com.sbgsoft.songbook.songs.SongsTab;
@@ -314,7 +314,6 @@ public class MainActivity extends FragmentActivity {
     	Intent i;
     	SongItem songI;
     	SetItem setI;
-    	CharSequence[] editFormat = {"ChordPro Format", "Text Format"};
     	AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
     	AlertDialog.Builder alert;
     	
@@ -329,67 +328,27 @@ public class MainActivity extends FragmentActivity {
     			// Get the song name
     			final String editSongName = songsList.get(info.position).getName();
     			final String editSongFile = ((SongItem)songsList.get(info.position)).getSongFile();
-    		
-    			alert = new AlertDialog.Builder(this);
-	
-    			alert.setTitle("How do you want to edit the song?");
-    			alert.setItems(editFormat, new OnClickListener() {
-	        		public void onClick (DialogInterface dialog, int whichItem) {
-	        			if(whichItem == 0) { //Raw Format
-	        				// Create the edit activity intent
-	                    	Intent i = new Intent(getBaseContext(), EditSongRawActivity.class);
-	                        i.putExtra(MainStrings.SONG_NAME_KEY, editSongName);
-	                        i.putExtra(MainStrings.SONG_FILE_KEY, editSongFile);
-	                        
-	                        // Start the activity
-	                        startActivity(i);
-	        			} else { //Text Format
-	        				// Create the edit activity intent
-	                    	Intent i = new Intent(getBaseContext(), EditSongTextActivity.class);
-	                        i.putExtra(MainStrings.SONG_NAME_KEY, editSongName);
-	                        i.putExtra(MainStrings.SONG_TEXT_KEY, createSongPlainText(editSongName, "", false, false));
-	                        i.putExtra(MainStrings.SONG_FILE_KEY, editSongFile);
-	                        
-	                        // Start the activity
-	                        startActivity(i);
-	        			}
-	        		}
-	        	});
-	        	
-    			alert.show();
+    			
+    			// Create the edit activity intent
+            	i = new Intent(getBaseContext(), EditSongRawActivity.class);
+                i.putExtra(MainStrings.SONG_NAME_KEY, editSongName);
+                i.putExtra(MainStrings.SONG_FILE_KEY, editSongFile);
+                
+                // Start the activity
+                startActivity(i);
                 return true;
     		case MainStrings.EDIT_SONG_CS:
     			// Get the song name
     			final String editSongCSName = currSetList.get(info.position).getName();
     			final String editSongCSFile = ((SongItem)currSetList.get(info.position)).getSongFile();
     		
-    			alert = new AlertDialog.Builder(this);
-	
-    			alert.setTitle("How do you want to edit the song?");
-    			alert.setItems(editFormat, new OnClickListener() {
-	        		public void onClick (DialogInterface dialog, int whichItem) {
-	        			if(whichItem == 0) { //Raw Format
-	        				// Create the edit activity intent
-	                    	Intent i = new Intent(getBaseContext(), EditSongRawActivity.class);
-	                        i.putExtra(MainStrings.SONG_NAME_KEY, editSongCSName);
-	                        i.putExtra(MainStrings.SONG_FILE_KEY, editSongCSFile);
-	                        
-	                        // Start the activity
-	                        startActivity(i);
-	        			} else { //Text Format
-	        				// Create the edit activity intent
-	                    	Intent i = new Intent(getBaseContext(), EditSongTextActivity.class);
-	                        i.putExtra(MainStrings.SONG_NAME_KEY, editSongCSName);
-	                        i.putExtra(MainStrings.SONG_TEXT_KEY, createSongPlainText(editSongCSName, "", false, false));
-	                        i.putExtra(MainStrings.SONG_FILE_KEY, editSongCSFile);
-	                        
-	                        // Start the activity
-	                        startActivity(i);
-	        			}
-	        		}
-	        	});
-	        	
-    			alert.show();
+    			// Create the edit activity intent
+            	i = new Intent(getBaseContext(), EditSongRawActivity.class);
+                i.putExtra(MainStrings.SONG_NAME_KEY, editSongCSName);
+                i.putExtra(MainStrings.SONG_FILE_KEY, editSongCSFile);
+                
+                // Start the activity
+                startActivity(i);
                 return true;
     		case MainStrings.EDIT_SONG_ATT:
     			// Get the song name
@@ -3529,7 +3488,8 @@ public class MainActivity extends FragmentActivity {
      * @author SamIAm
      *
      */
-    public class SortIgnoreCase implements Comparator<Object> {
+    @SuppressLint("DefaultLocale")
+	public class SortIgnoreCase implements Comparator<Object> {
         public int compare(Object o1, Object o2) {
             String s1 = (String) o1;
             String s2 = (String) o2;

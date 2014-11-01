@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.sbgsoft.songbook.items.SongItem;
 
@@ -33,19 +31,14 @@ public class ChordProParser {
 		StringBuilder chordLine = new StringBuilder();
 		StringBuilder lyricLine = new StringBuilder();
 		String line = "";
-		boolean inHtml = false, transposeSong = false;
+		boolean inHtml = false, transposeSong = false, addedCapo = false;
 		int skipCounter = 0;
-		Pattern regex;
-    	Matcher matcher;
 		
 		// Check to see if the song needs to be transposed
 		if(!songItem.getKey().equals(transposeKey)) {
     		// Transpose the song
     		transposeSong = true;
     	}
-		
-		// Compile the regex to look for a capo
-        regex = Pattern.compile("([Cc][Aa][Pp][Oo])\\D*(\\d+)");
 		
 		// Add HTML tags to output
 		parsedOutput.append("<html><body>");
@@ -93,6 +86,44 @@ public class ChordProParser {
 						
 						// Check for valid delimeter
 						if (validDelimeters.contains(delim.toString())) {
+							
+							// Capo delimeter
+							if (delim.toString().equals("capo")) {
+								// Read to end of the delimeter, until '}'
+								StringBuilder capo = new StringBuilder();
+								stopRead = line.indexOf('}', charLoc);
+								for (int i = charLoc; i < stopRead - 1; i++) {
+									// Go to the next character
+									charLoc++;
+									
+									// Add that character to the capo
+									capo.append(lineCharArray[charLoc]);
+								}
+								
+								// Parse capo to integer
+								int currentCapo = Integer.parseInt(capo.toString());
+								
+								// Get the new capo
+								int newCapo = Transpose.getCapo(songItem.getKey(), transposeKey, currentCapo);
+								
+								// Append the capo
+								if (newCapo != 0) {
+									// Add beginning of italics 
+									lyricLine.append("<i>");
+									
+									// Append the capo
+									lyricLine.append("Capo ");
+									lyricLine.append(newCapo);
+									
+									// Close the italics
+									lyricLine.append("</i>");
+								}
+								
+								addedCapo = true;
+								
+								// Nothing else allowed after the capo delimeter
+								break;
+							}
 							
 							// Author delimeter
 							if (delim.toString().equals("author")) {
@@ -280,8 +311,10 @@ public class ChordProParser {
 				}
 				
 				// Completed line, append to output
-				parsedOutput.append(lyricLine);
-				parsedOutput.append("<br />");
+				if (lyricLine.length() > 0) {
+					parsedOutput.append(lyricLine);
+					parsedOutput.append("<br />");
+				}
 			} 
 			else if (line.length() > 0) {
 				// Go through line character by character
@@ -503,10 +536,14 @@ public class ChordProParser {
 				}
 				
 				// Completed line, append to output
-				parsedOutput.append(chordLine);
-				parsedOutput.append("<br />");
-				parsedOutput.append(lyricLine);
-				parsedOutput.append("<br />");
+				if (chordLine.length() > 0) {
+					parsedOutput.append(chordLine);
+					parsedOutput.append("<br />");
+				}
+				if (lyricLine.length() > 0) {
+					parsedOutput.append(lyricLine);
+					parsedOutput.append("<br />");
+				}
 			}
 			else {
 				// Empty line, add a line break
@@ -523,6 +560,25 @@ public class ChordProParser {
 		
 		// Close HTML tags in output
 		parsedOutput.append("</body></html>");
+		
+		// Check to see if capo needs added
+		if (transposeSong && !addedCapo) {
+			int newCapo = Transpose.getCapo(songItem.getKey(), transposeKey, 0);
+			if (newCapo != 0) {
+				// Find the end of the title
+				int eot = parsedOutput.toString().indexOf("</h2>") + 5;
+				
+				// Build the capo string
+				String capoString = "<i>Capo " + newCapo + "</i><br />";
+				
+				// Insert the new capo
+				parsedOutput.insert(eot, capoString);
+			}
+		}
+        
+        // Close the input stream and reader
+    	in.close();
+    	br.close();
 		
 		return parsedOutput.toString();
 	}
