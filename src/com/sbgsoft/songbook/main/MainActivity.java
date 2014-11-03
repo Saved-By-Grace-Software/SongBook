@@ -130,6 +130,9 @@ public class MainActivity extends FragmentActivity {
 	private Map<String, Boolean> addSongsDialogMap = new HashMap<String, Boolean>();
 	private ArrayList<String> addSongsDialogList = new ArrayList<String>();
 	
+	private Map<String, Boolean> addSetsDialogMap = new HashMap<String, Boolean>();
+	private ArrayList<String> addSetsDialogList = new ArrayList<String>();
+	
 	
 	/*****************************************************************************
      * 
@@ -1704,48 +1707,107 @@ public class MainActivity extends FragmentActivity {
     	Cursor c = dbAdapter.getSetNames(SetsTab.ALL_SETS_LABEL);
     	startManagingCursor(c);
     	
-    	final CharSequence[] setNames = new CharSequence[c.getCount()];
-    	int counter = 0;
+    	// Clear the previous song lists
+    	addSetsDialogList.clear();
+    	addSetsDialogMap.clear();
     	
-    	// Add groups to list view
+    	// Populate the songs lists
     	while(c.moveToNext()) {
     		String setName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
-    		setNames[counter++] = setName;
+    		addSetsDialogList.add(setName);
+    		addSetsDialogMap.put(setName, dbAdapter.isSongInSet(songName, setName));
     	}
+    	Collections.sort(addSongsDialogList, new SortIgnoreCase());
     	
     	// Create the dialog to choose which group to add the song to
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
     	alert.setTitle("Add Song to Which Set?");
-    	alert.setItems(setNames, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// Confirm they want to delete the group
-				final String setName = (String) setNames[which];
-				AlertDialog.Builder confirm = new AlertDialog.Builder(MainActivity.this);
-				confirm.setTitle("Add Song to Set?");
-				confirm.setMessage("Do you want to add '" + songName + "' to '" + setName + "'?");
-				
-				confirm.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-			    	public void onClick(DialogInterface dialog, int whichButton) {
-			    		dbAdapter.addSongToSet(setName, songName);
-						
-			    		// Refresh the current set list
-			    		fillCurrentSetListView();
-					}
-		    	});
-
-				confirm.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			    	public void onClick(DialogInterface dialog, int whichButton) { 	}
-		    	});
-
-				confirm.show();
-				
+    	
+    	// Set the dialog view to gather user input
+    	LayoutInflater inflater = getLayoutInflater();
+    	View dialoglayout = inflater.inflate(R.layout.add_set_songs, (ViewGroup) findViewById(R.id.add_set_songs_root));
+    	alert.setView(dialoglayout);
+    	
+    	// Get the views
+    	final Spinner setGroupSP = (Spinner)dialoglayout.findViewById(R.id.add_set_songs_spinner);
+    	final ListView setsLV = (ListView)dialoglayout.findViewById(R.id.add_set_songs_list);
+    	final ArrayAdapter<String> setsAD;
+    	
+    	// Fill the list view
+    	setsLV.setEmptyView(findViewById(R.id.empty_sets));
+    	setsLV.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+    	setsLV.setOnItemClickListener(new ListView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
+            	String set = addSetsDialogList.get(position);
+            	addSetsDialogMap.put(set, !addSetsDialogMap.get(set));
+            }
+        });
+    	setsAD = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, addSetsDialogList);
+    	setsLV.setAdapter(setsAD);
+    	
+    	// Fill the group spinner
+    	setSetGroupsList();
+    	setGroupSP.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+            	// Get the selected group
+            	String groupName = (String)setGroupSP.getSelectedItem();
+            	
+            	// Fill the new songs list
+            	Cursor c = dbAdapter.getSetNames(groupName);
+            	startManagingCursor(c);
+            	addSetsDialogList.clear();
+            	
+            	// Populate the ArrayList
+            	while (c.moveToNext()) {
+            		// Get the strings from the cursor
+                	String setName = c.getString(c.getColumnIndex(DBStrings.TBLSETS_NAME));
+                	addSetsDialogList.add(setName);
+            	}
+            	Collections.sort(addSetsDialogList, new SortIgnoreCase());
+            	
+            	// Update list view
+            	setsAD.notifyDataSetChanged();
+            	
+            	// Set the list view checked properties
+            	for(int i = 0; i < setsLV.getCount(); i++) {
+            		setsLV.setItemChecked(i, addSetsDialogMap.get(setsLV.getItemAtPosition(i)));
+            	}
+            }
+            
+            public void onNothingSelected(AdapterView<?> arg0) {
+            	// Nothing was clicked so ignore it
+            }
+        });
+    	setGroupSP.setAdapter(setGroupsAdapter);
+    	
+    	// Set positive button of the dialog
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {
+	    		
+				// Set all selected items to the set	    		
+	    		ArrayList<String> sets = new ArrayList<String>();
+	    		for(String s : addSetsDialogMap.keySet()) {
+	    			if(addSetsDialogMap.get(s))
+	    				dbAdapter.addSongToSet(s, songName);
+	    		}
+	    		
+	    		// Refresh the current set list
+	    		fillCurrentSetListView();
 			}
-		});
+    	});
 
-    	alert.show();
+    	// Set negative button of the dialog
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	public void onClick(DialogInterface dialog, int whichButton) {	}
+    	});
+
+    	// Show the dialog
+    	AlertDialog a = alert.create();
+    	a.show();
+    	Display display = getWindowManager().getDefaultDisplay(); 
+    	int height = display.getHeight();
+    	height = (int) (height / 1.5);
+    	a.getWindow().setLayout(LayoutParams.WRAP_CONTENT, height);
     }
     
     /**
