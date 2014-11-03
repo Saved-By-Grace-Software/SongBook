@@ -2552,7 +2552,8 @@ public class MainActivity extends FragmentActivity {
             		// Set song text
             		try {
 	            		FileInputStream fis = openFileInput(dbAdapter.getSongFile(currSong.getName()));
-	            		currSong.setText(ChordProParser.ParseSongFile(currSong, currSong.getKey(), fis));
+	            		currSong.setKey(dbAdapter.getSongKey(currSong.getName()));
+	            		currSong.setText(ChordProParser.ParseSongFile(currSong, dbAdapter.getSongKeyForSet(dbAdapter.getCurrentSetName(), currSong.getName()), fis));
 	            		
 	            		setItem.songs.add(currSong);      
             		} catch (FileNotFoundException e) {

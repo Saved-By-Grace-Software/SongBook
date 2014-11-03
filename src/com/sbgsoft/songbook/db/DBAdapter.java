@@ -708,6 +708,32 @@ public class DBAdapter {
 	}
 	
 	/**
+	 * Returns the song key for the specified song and set
+	 * @param setName The name of the set
+	 * @param songName The name of the song
+	 * @return String value containing the song key for that set
+	 */
+	public String getSongKeyForSet(String setName, String songName) {
+		String ret = "";
+		try {
+			String query = "SELECT " + DBStrings.TBLSLOOKUP_KEY + " " +
+							"FROM " + DBStrings.SETLOOKUP_TABLE + " " +
+							"WHERE " + DBStrings.TBLSLOOKUP_SET + 
+							" = (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "')" +
+							" AND " + DBStrings.TBLSLOOKUP_SONG +
+							" = (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "')";
+			Cursor c = mDb.rawQuery(query, null);
+			c.moveToFirst();
+			ret = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY));
+			c.close();
+		} catch (SQLException e) {
+			ret = "";
+		}
+		
+		return ret;
+	}
+	
+	/**
 	 * Gets the list of last times a song was used
 	 * @param songName The song to query
 	 * @return The list of times the song was used in a set

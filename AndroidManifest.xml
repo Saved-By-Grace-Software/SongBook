@@ -7,7 +7,7 @@
 
     <uses-sdk
         android:minSdkVersion="13"
-        android:targetSdkVersion="15" />
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="false"
@@ -17,7 +17,7 @@
             android:name="com.sbgsoft.songbook.main.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="sensorPortait" >
+            android:screenOrientation="sensorPortrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,30 +28,30 @@
             android:name="com.sbgsoft.songbook.songs.SongActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_song"
-            android:screenOrientation="sensorPortait" />
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name="com.sbgsoft.songbook.sets.SetActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_set"
-            android:screenOrientation="sensorPortait" />
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name="com.sbgsoft.songbook.songs.EditSongRawActivity"
             android:label="@string/title_activity_edit_song"
-            android:screenOrientation="sensorPortait" />
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name="com.sbgsoft.songbook.songs.EditSongTextActivity"
             android:label="@string/title_activity_edit_song"
-            android:screenOrientation="sensorPortait" />
+            android:screenOrientation="sensorPortrait" />
         <activity
-            android:name="com.ericharlow.DragNDrop.DragNDropListActivity"
+            android:name="com$ericharlow$DragNDrop$DragNDropListActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="sensorPortait" />
+            android:screenOrientation="sensorPortrait" />
         <activity
             android:name="com.sbgsoft.songbook.files.OpenFile"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_open_file"
-            android:screenOrientation="sensorPortait" >
+            android:screenOrientation="sensorPortrait" >
         </activity>
     </application>
 
