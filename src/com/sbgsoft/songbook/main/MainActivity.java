@@ -1209,7 +1209,7 @@ public class MainActivity extends FragmentActivity {
     private void editSetAtt(final String setName) {
     	// Create the alert dialog
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
-    	alert.setTitle("Create Set");
+    	alert.setTitle("Edit Set");
     	
     	// Set the dialog view to gather user input
     	LayoutInflater inflater = getLayoutInflater();
@@ -1220,8 +1220,9 @@ public class MainActivity extends FragmentActivity {
     	
     	// Populate the set fields
     	setNameET.setText(setName);
-    	String temp[] = dbAdapter.getSetDate(setName).split("/");
-    	setDateDP.updateDate(Integer.parseInt(temp[2].trim()), Integer.parseInt(temp[0].trim()) - 1, Integer.parseInt(temp[1].trim()));
+    	String temp[] = dbAdapter.getSetDate(setName).split("-");
+    	if (temp.length >= 2)
+    		setDateDP.updateDate(Integer.parseInt(temp[0].trim()), Integer.parseInt(temp[1].trim()) - 1, Integer.parseInt(temp[2].trim()));
 
     	// Set the OK button
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
