@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.Html;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,11 +25,11 @@ import com.sbgsoft.songbook.main.MainStrings;
 
 public class OpenFile extends ListActivity {
 	public static final String RESULT_PATH = "filePath";
-	private ArrayList<String> extensions = new ArrayList<String>(Arrays.asList("txt", "pro", "chordpro", "chopro"));
+	private ArrayList<String> extensions;
 	private boolean allFiles = false;
 	private List<String> item = null;
 	private List<String> path = null;
-	private String root;
+	private String root, activityType;
 	private TextView myPath;
 	private String currentDir;
 
@@ -37,20 +39,67 @@ public class OpenFile extends ListActivity {
     	setContentView(R.layout.activity_open_file);
         myPath = (TextView)findViewById(R.id.open_file_path);
         
+        // Get Extras
+        activityType = "";
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+        	activityType = extras.getString(MainStrings.FILE_ACTIVITY_KEY);
+        }
+        
         // Set the SD card as the root directory
         root = Environment.getExternalStorageDirectory().getPath();
         currentDir = root;
         
         // Fill the file type spinner
-        fillFileTypeSpinner();
+        if (activityType.equals(MainStrings.IMPORT_DB_ACTIVITY)) {
+        	fillDBFileTypeSpinner();
+        } else {
+        	fillSongFileTypeSpinner();
+        }
+        
         
         // Show the files
         getDir(root);
     }
 	
-	private void fillFileTypeSpinner() {
+	private void fillSongFileTypeSpinner() {
+		// Set the extensions
+		extensions = new ArrayList<String>(Arrays.asList("txt", "pro", "chordpro", "chopro"));
+		
 		// Create the spinner adapter
 		ArrayList<String> fileTypes = new ArrayList<String>(Arrays.asList("SongBook Files", "All Files"));
+    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.file_spinner_item, fileTypes);
+    	adapter.setDropDownViewResource( R.layout.file_spinner_dropdown_item );
+    	final Spinner fileSpinner = (Spinner) findViewById(R.id.file_type_spinner);
+    	
+    	// Set the on click listener for each item
+    	fileSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+            	if (((String)a.getItemAtPosition(position)).equals("All Files")) {
+	            	allFiles = true;
+	            	getDir(currentDir);
+            	}
+            	else {
+            		allFiles = false;
+            		getDir(currentDir);
+            	}
+            }
+            
+            public void onNothingSelected(AdapterView<?> arg0) {
+            	// Nothing was clicked so ignore it
+            }
+        });
+    	
+    	// Set the adapter
+    	fileSpinner.setAdapter(adapter);
+	}
+	
+	private void fillDBFileTypeSpinner() {
+		// Set the extensions
+		extensions = new ArrayList<String>(Arrays.asList("bak"));
+				
+		// Create the spinner adapter
+		ArrayList<String> fileTypes = new ArrayList<String>(Arrays.asList("SongBook Backup Files", "All Files"));
     	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.file_spinner_item, fileTypes);
     	adapter.setDropDownViewResource( R.layout.file_spinner_dropdown_item );
     	final Spinner fileSpinner = (Spinner) findViewById(R.id.file_type_spinner);
@@ -168,12 +217,12 @@ public class OpenFile extends ListActivity {
 	    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
 	    	alert.setIcon(R.drawable.ic_launcher);
-	    	alert.setTitle("Are You Sure?");
-	    	alert.setMessage("Are you sure you want to import '" + file.getName() + "'?");
+	    	alert.setTitle("Correct File?");
+	    	alert.setMessage("Is '" + file.getName() + "' the correct file?");
 	    	
 	    	alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 		    	public void onClick(DialogInterface dialog, int whichButton) {
-		    		getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, MainStrings.FILE_ACTIVITY);
+		    		getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, activityType);
 					getIntent().putExtra(RESULT_PATH, file.getAbsolutePath());
 					setResult(RESULT_OK, getIntent());
 					finish();
@@ -195,7 +244,7 @@ public class OpenFile extends ListActivity {
 	 * @param v
 	 */
 	public void onCancelClick(View v) {
-		getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, MainStrings.FILE_ACTIVITY);
+		getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, activityType);
 		setResult(RESULT_CANCELED, getIntent());
 		finish();
 	}

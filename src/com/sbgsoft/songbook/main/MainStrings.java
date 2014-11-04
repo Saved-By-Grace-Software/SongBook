@@ -15,11 +15,13 @@ public class MainStrings {
 	public static final String CURRENT_SONG_KEY = "setCurrentSong";
 	public static final String SET_SONGS_KEY = "setSongs";
 	public static final String SET_NAME_KEY = "setName";
+	public static final String FILE_ACTIVITY_KEY = "fileActivityKey";
 	
 	// Activity Strings
 	public static final String ACTIVITY_RESPONSE_TYPE = "activityResponseType";
 	public static final String REORDER_ACTIVITY = "reorderActivity";
-	public static final String FILE_ACTIVITY = "fileActivity";
+	public static final String IMPORT_SONG_ACTIVITY = "importSongActivity";
+	public static final String IMPORT_DB_ACTIVITY = "importDBActivity";
 
 	// General
 	public static final String EOL = System.getProperty("line.separator");
