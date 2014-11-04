@@ -65,6 +65,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -3373,22 +3374,34 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {	  
 	    		// Configure progress dialog
 	    		progressDialog = new ProgressDialog(MainActivity.this);
-	    		progressDialog.setMessage("Importing Data. Please wait...");
+	    		progressDialog.setMessage("Importing Data. This may take a few minutes." + System.getProperty("line.separator") + "Please wait...");
 	    		progressDialog.setTitle("Please Wait!");
 				progressDialog.setCancelable(true);
 				progressDialog.setCanceledOnTouchOutside(false);
-				progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+				progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", (DialogInterface.OnClickListener)null);
+				
+				progressDialog.setOnShowListener(new DialogInterface.OnShowListener() {
 					
 					@Override
-					public void onClick(DialogInterface dialog, int which) {
-//						// Stop the import
-//						t.stopImport();
-						
-						// Dismiss the dialog
-						dialog.dismiss();
-						
+					public void onShow(DialogInterface dialog) {
+						Button b = progressDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+						b.setOnClickListener(new View.OnClickListener() {
+							
+							@Override
+							public void onClick(View view) {
+								// Update the progress dialog text
+					    		progressDialog.setMessage("Please wait while we stop the import..." + System.getProperty("line.separator") + "This may take a few minutes.");
+					    		
+					    		// Hide the cancel button
+					    		progressDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.INVISIBLE);
+					    		
+					    		// Cancel the import task
+								importDBTask.cancel(true);
+							}
+						});
 					}
 				});
+				
 	    		
 	    		// Show progress dialog
 				progressDialog.show();
@@ -3419,23 +3432,17 @@ public class MainActivity extends FragmentActivity {
     		String ret = "";
     		
     		// Decompress the backup file
-        	String unzipLocation = Environment.getExternalStorageDirectory() + "/unzipped/"; 
+    		String unzipFolder = "sbg_unzipped";
+        	String unzipLocation = Environment.getExternalStorageDirectory() + "/" + unzipFolder + "/"; 
         	 
         	Decompress d = new Decompress(filePath[0], unzipLocation); 
         	if (!d.unzip()) {
         		ret = "There was an error decompressing your backup file. Please try again.";
         	}
         	else {
-        		// Clear the database and files
-        		dbAdapter.clearDB();
-            	String[] files = fileList();
-            	for(int i = 0; i < files.length; i++) {
-            		deleteFile(files[i]);
-            	}
-            		
-            	
             	// Run the sql script to import songs
             	try {
+            		// Open and read the export file
         	    	InputStream fis = new FileInputStream(unzipLocation + "/" + MainStrings.EXPORT_SQL_FILE);
         	    	DataInputStream din = new DataInputStream(fis);
         	    	BufferedReader br = new BufferedReader(new InputStreamReader(din));
@@ -3450,8 +3457,30 @@ public class MainActivity extends FragmentActivity {
         	        
         	        br.close();
         	        
-        	        // Import the sql
+        	        // Check for cancel
+                	if (isCancelled()) {
+                		return ret;
+                	}
+                	
+                	// Clear the database and files
+            		dbAdapter.clearDB();
+                	String[] files = fileList();
+                	for(int i = 0; i < files.length; i++) {
+                		deleteFile(files[i]);
+                	}
+                	
+                	// Check for cancel
+                	if (isCancelled()) {
+                		return ret;
+                	}
+        	        
+        	        // Execute the SQL file
         	        dbAdapter.importDBData(sb.toString());
+        	        
+        	        // Check for cancel
+                	if (isCancelled()) {
+                		return ret;
+                	}
         	        
         	        // Add the song files to the files directory
                 	File dir = new File(unzipLocation);
@@ -3481,6 +3510,11 @@ public class MainActivity extends FragmentActivity {
                 			}
                 			
                 		}
+                		
+                		// Check for cancel
+                    	if (isCancelled()) {
+                    		return ret;
+                    	}
                 	}
             	}
             	catch (Exception e) {
@@ -3490,10 +3524,14 @@ public class MainActivity extends FragmentActivity {
             		ret = "Could not import database file. Import aborted.";
             	}
             	
-            	
-            	
-            	// Delete the sql file
-            	deleteFile(MainStrings.EXPORT_SQL_FILE);
+            	// Delete the unzipped files
+            	File dir = new File(Environment.getExternalStorageDirectory(), unzipFolder);
+            	if (dir.isDirectory()) {
+            		String filesList[] = dir.list();
+            		for (String f : filesList) {
+            			new File(dir, f).delete();
+            		}
+            	}
         	}
         	
         	// Set return value
@@ -3520,6 +3558,34 @@ public class MainActivity extends FragmentActivity {
         	
         	// Show success message
         	Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+    	}
+    	
+    	@Override
+    	protected void onCancelled(String result) {
+    		// Clear the database and files
+    		dbAdapter.clearDB();
+        	String[] files = fileList();
+        	for(int i = 0; i < files.length; i++) {
+        		deleteFile(files[i]);
+        	}
+        	
+        	// Add the default values back into the db
+    		dbAdapter.addDBDefaults();
+    		
+    		// Refresh all the lists
+    		fillSetGroupsSpinner();
+    		fillSongGroupsSpinner();
+        	fillSongGroupsSpinner();
+        	fillSongsListView();
+        	fillSetGroupsSpinner();
+        	fillSetsListView();
+        	fillCurrentSetListView();
+        	
+        	// Close the progress dialog
+        	progressDialog.dismiss();
+        	
+        	// Show success message
+        	Toast.makeText(getBaseContext(), "Your import was cancelled!", Toast.LENGTH_LONG).show();
     	}
     }
     
