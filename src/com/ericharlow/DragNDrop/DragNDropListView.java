@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.ericharlow.DragNDrop;
+package com.ericharlow.dragndrop;
 
 import android.content.Context;
 import android.graphics.Bitmap;

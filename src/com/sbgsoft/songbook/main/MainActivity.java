@@ -71,7 +71,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ericharlow.DragNDrop.DragNDropListActivity;
+import com.ericharlow.dragndrop.DragNDropListActivity;
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.db.DBAdapter;
 import com.sbgsoft.songbook.db.DBStrings;
@@ -3413,25 +3413,25 @@ public class MainActivity extends FragmentActivity {
     	public void run() {
     		running = true;
     		
-    		// Clear the database and files
-    		dbAdapter.clearDB();
-        	String[] files = fileList();
-        	for(int i = 0; i < files.length; i++) {
-        		deleteFile(files[i]);
-        	}
-    		
     		// Decompress the backup file
         	String unzipLocation = Environment.getExternalStorageDirectory() + "/unzipped/"; 
         	 
         	Decompress d = new Decompress(filePath, unzipLocation); 
         	if (!d.unzip()) {
-        		// Add the default values back into the db
-        		dbAdapter.addDBDefaults();
-        		fillSetGroupsSpinner();
-        		fillSongGroupsSpinner();
+//        		// Add the default values back into the db
+//        		dbAdapter.addDBDefaults();
+//        		fillSetGroupsSpinner();
+//        		fillSongGroupsSpinner();
         		
         		Toast.makeText(getBaseContext(), "There was an error decompressing your backup file. Please try again.", Toast.LENGTH_LONG).show();
         		return;
+        	}
+        	
+        	// Clear the database and files
+    		dbAdapter.clearDB();
+        	String[] files = fileList();
+        	for(int i = 0; i < files.length; i++) {
+        		deleteFile(files[i]);
         	}
         	
         	// Run the sql script to import songs

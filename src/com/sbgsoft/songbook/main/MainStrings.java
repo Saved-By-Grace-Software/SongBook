@@ -30,13 +30,13 @@ public class MainStrings {
 	public static final String EXPORT_ZIP_FILE = "sbgvsb.bak";
 	public static final ArrayList<String> songParts = new ArrayList<String>(
 			Arrays.asList("verse", "chorus", "coda", "outro", "bridge", "tag", "refrain", "prechorus", "pre-chorus", "guitar", "instrumental", "interlude"));
-	public static final ArrayList<String> songKeys = new ArrayList<String>(Arrays.asList("Ab", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G"));
+	public static final ArrayList<String> songKeys = new ArrayList<String>(Arrays.asList("G#", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G"));
 	public static final ArrayList<String> songKeys_transpose = new ArrayList<String>(
-			Arrays.asList("C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "Ab", "A", "Bb", "B", "C"));
+			Arrays.asList("C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B", "C"));
 	public static final HashMap<String, String> keyMap = new HashMap<String, String>() {
 		private static final long serialVersionUID = 94512194672735973L;
 		{
-			put("Abm", "Ab"); put("G#", "Ab"); put("G#m", "Ab"); put("Am", "A"); put("Bbm", "Bb"); put("A#", "Bb");
+			put("Abm", "G#"); put("Ab", "G#"); put("Am", "A"); put("Bbm", "Bb"); put("A#", "Bb");
 			put("A#m", "Bb"); put("Bm", "B"); put("Cm", "C"); put("C#m", "C#"); put("Db", "C#"); put("Dbm", "C#");
 			put("Dm", "Db"); put("Ebm", "Eb"); put("D#", "Eb"); put("D#m", "Eb"); put("Em", "E"); put("Fm", "F");
 			put("F#m", "F#"); put("Gb", "F#"); put("Gbm", "F#"); put("Gm", "G");
