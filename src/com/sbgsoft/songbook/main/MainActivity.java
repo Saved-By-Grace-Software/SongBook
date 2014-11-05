@@ -1105,9 +1105,10 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		dbAdapter.deleteAllSets();
 	    		
-	    		// Refresh the set and current set lists
-	        	setsAdapter.notifyDataSetChanged();
-	        	currSetAdapter.notifyDataSetChanged();
+	    		// Refresh song, set and current set lists
+	    		fillCurrentSetListView();
+	    		fillSetGroupsSpinner();
+	    		fillSetsListView();
 	        	
 	        	// Set the current tab
 	        	currentTab = 2;
