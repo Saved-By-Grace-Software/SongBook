@@ -46,6 +46,8 @@ public class ChordProParser {
 		// Add song title
 		parsedOutput.append("<h2>");
 		parsedOutput.append(songItem.getName());
+		parsedOutput.append(" - ");
+		parsedOutput.append(transposeKey);
 		parsedOutput.append("</h2>");
 				
     	// Begin reading the file
