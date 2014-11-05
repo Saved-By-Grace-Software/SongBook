@@ -259,7 +259,7 @@ public class MainActivity extends FragmentActivity {
 	        	deleteAllSetGroups();
 	        	return true;
 	        case R.id.menu_backup_export:
-	        	exportAll();
+	        	selectExportFolder();
 	        	return true;
 	        case R.id.menu_backup_import:
 	        	selectImportFile();
@@ -631,6 +631,11 @@ public class MainActivity extends FragmentActivity {
         	else if (activityType.equals(MainStrings.IMPORT_DB_ACTIVITY)) {
         		String filePath = data.getStringExtra(OpenFile.RESULT_PATH);
         		importAll(filePath);
+        	}
+        	// If returning from an export database activity
+        	else if (activityType.equals(MainStrings.EXPORT_DB_ACTIVITY)) {
+        		String folder = data.getStringExtra(OpenFile.RESULT_PATH);
+        		exportAll(folder);
         	}
         	// If returning from the reorder activity
         	else if (activityType.equals(MainStrings.REORDER_ACTIVITY)) {
@@ -2066,6 +2071,7 @@ public class MainActivity extends FragmentActivity {
         // Create the open file intent
         Intent intent = new Intent(getBaseContext(), OpenFile.class);
         intent.putExtra(MainStrings.FILE_ACTIVITY_KEY, MainStrings.IMPORT_SONG_ACTIVITY);
+        intent.putExtra(MainStrings.FILE_ACTIVITY_TYPE_KEY, MainStrings.FILE_ACTIVITY_FILE);
         
         // Start the activity
         startActivityForResult(intent, 1);
@@ -3299,41 +3305,60 @@ public class MainActivity extends FragmentActivity {
      * 
      *****************************************************************************/
     /**
+     * Selects the folder to export the backup file to
+     */
+    private void selectExportFolder() {
+    	// Create the open file intent
+        Intent intent = new Intent(getBaseContext(), OpenFile.class);
+        intent.putExtra(MainStrings.FILE_ACTIVITY_KEY, MainStrings.EXPORT_DB_ACTIVITY);
+        intent.putExtra(MainStrings.FILE_ACTIVITY_TYPE_KEY, MainStrings.FILE_ACTIVITY_FOLDER);
+        
+        // Start the activity
+        startActivityForResult(intent, 1);
+    }
+    
+    /**
      * Exports all songbook files and db
      */
-    private void exportAll() {
+    private void exportAll(String folder) {
+    	final String exportZipLocation = folder + "/" + MainStrings.EXPORT_ZIP_FILE;
+    	
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Export");
-    	alert.setMessage("Are you sure you want to export your data?");
+    	alert.setMessage("Are you sure you want to export your data to '" + exportZipLocation + "'?");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		// Create the db backup sql script
 	        	String exportSQLData = dbAdapter.exportDBData();
 	        	
-	        	// Store the backup script in the app files folder
 	        	try {
+	        		// Store the backup script in the app files folder
 	    	    	FileOutputStream out = openFileOutput(MainStrings.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
 	    	    	out.write(exportSQLData.getBytes());
 	    			out.close(); 
+	    			
+	    			// Get a list of all the files in the app files folder
+		        	String[] files = fileList();
+		        	for(int i = 0; i < files.length; i++) {
+		        		files[i] = getFilesDir() + "/" + files[i];
+		        	}
+		        	
+		        	// Zip the files and save to the external storage
+		        	Compress newZip = new Compress(files, exportZipLocation);
+		        	if (newZip.zip())
+		        		Toast.makeText(getBaseContext(), "Your data has been successfully saved to: " + exportZipLocation, Toast.LENGTH_LONG).show();
+		        	else
+		        		Toast.makeText(getBaseContext(), "There was an error backing up your data. Please try again.", Toast.LENGTH_LONG).show();
+		        	
+		        	// Delete the backup script
+		        	deleteFile(MainStrings.EXPORT_SQL_FILE);
 	        	} catch (Exception e) {
 	        		Toast.makeText(getBaseContext(), "Could not write db file!", Toast.LENGTH_LONG).show();
 	        	}
 	        	
-	        	// Get a list of all the files in the app files folder
-	        	String[] files = fileList();
-	        	for(int i = 0; i < files.length; i++) {
-	        		files[i] = getFilesDir() + "/" + files[i];
-	        	}
 	        	
-	        	// Zip the files and save to the external storage
-	        	Compress newZip = new Compress(files, Environment.getExternalStorageDirectory() + "/" + MainStrings.EXPORT_ZIP_FILE);
-	        	if (newZip.zip())
-	        		Toast.makeText(getBaseContext(), "Your data has been successfully saved to: " + Environment.getExternalStorageDirectory() +
-	        				"/" + MainStrings.EXPORT_ZIP_FILE, Toast.LENGTH_LONG).show();
-	        	else
-	        		Toast.makeText(getBaseContext(), "There was an error backing up your data. Please try again.", Toast.LENGTH_LONG).show();
 			}
     	});
 
@@ -3353,6 +3378,7 @@ public class MainActivity extends FragmentActivity {
     	// Create the open file intent
         Intent intent = new Intent(getBaseContext(), OpenFile.class);
         intent.putExtra(MainStrings.FILE_ACTIVITY_KEY, MainStrings.IMPORT_DB_ACTIVITY);
+        intent.putExtra(MainStrings.FILE_ACTIVITY_TYPE_KEY, MainStrings.FILE_ACTIVITY_FILE);
         
         // Start the activity
         startActivityForResult(intent, 1);

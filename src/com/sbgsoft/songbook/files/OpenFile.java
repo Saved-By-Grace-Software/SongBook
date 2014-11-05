@@ -5,14 +5,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.Html;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -29,7 +27,7 @@ public class OpenFile extends ListActivity {
 	private boolean allFiles = false;
 	private List<String> item = null;
 	private List<String> path = null;
-	private String root, activityType;
+	private String root, activityType, fileType;
 	private TextView myPath;
 	private String currentDir;
 
@@ -43,7 +41,21 @@ public class OpenFile extends ListActivity {
         activityType = "";
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+        	// Get the activity type
         	activityType = extras.getString(MainStrings.FILE_ACTIVITY_KEY);
+        	
+        	// Get the file type
+        	fileType = extras.getString(MainStrings.FILE_ACTIVITY_TYPE_KEY);
+        }
+        
+        // Change buttons for folder type
+        if (fileType.equals(MainStrings.FILE_ACTIVITY_FOLDER)) {
+        	// Remove the file type views
+        	findViewById(R.id.file_type_text).setVisibility(View.GONE);
+        	findViewById(R.id.file_type_spinner).setVisibility(View.GONE);
+        	
+        	// Show the select folder button
+        	findViewById(R.id.open_file_select_folder).setVisibility(View.VISIBLE);
         }
         
         // Set the SD card as the root directory
@@ -246,6 +258,17 @@ public class OpenFile extends ListActivity {
 	public void onCancelClick(View v) {
 		getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, activityType);
 		setResult(RESULT_CANCELED, getIntent());
+		finish();
+	}
+	
+	/**
+	 * Select folder was clicked
+	 * @param v
+	 */
+	public void onSelectFolderClick(View v) {
+		getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, activityType);
+		getIntent().putExtra(RESULT_PATH, currentDir);
+		setResult(RESULT_OK, getIntent());
 		finish();
 	}
 }	
