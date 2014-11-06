@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_set_name"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:paddingTop="5dp" />
 
     <EditText
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:maxLines="1"
-        android:textSize="20dp" >
+        android:textSize="20sp" >
 
         <requestFocus />
     </EditText>
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_set_date"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:paddingTop="25dp" />
 
     <DatePicker

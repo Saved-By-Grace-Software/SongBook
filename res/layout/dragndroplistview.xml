@@ -15,7 +15,17 @@
 	<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
+        android:layout_alignParentBottom="true"
+        style="?android:attr/buttonBarStyle" >
+        
+	    <Button
+            android:id="@+id/set_edit_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onCancelClick"
+            android:text="@string/cancel"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/set_edit_save"
@@ -23,15 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onSaveClick"
-            android:text="@string/set_edit_save" />
-
-        <Button
-            android:id="@+id/set_edit_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onCancelClick"
-            android:text="@string/cancel" />
+            android:text="@string/set_edit_save"
+            style="?android:attr/buttonBarButtonStyle" />
 
     </LinearLayout>
 </RelativeLayout>

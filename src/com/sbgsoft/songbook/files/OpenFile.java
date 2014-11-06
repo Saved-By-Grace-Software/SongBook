@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -192,7 +193,7 @@ public class OpenFile extends ListActivity {
 		public int compare(File file1, File file2) {
 			if(file1.isDirectory()){
 				if (file2.isDirectory()){
-					return String.valueOf(file1.getName().toLowerCase()).compareTo(file2.getName().toLowerCase());
+					return String.valueOf(file1.getName().toLowerCase(Locale.ENGLISH)).compareTo(file2.getName().toLowerCase());
 				}else{
 					return -1;
 				}
@@ -200,7 +201,7 @@ public class OpenFile extends ListActivity {
 				if (file2.isDirectory()){
 					return 1;
 				}else{
-					return String.valueOf(file1.getName().toLowerCase()).compareTo(file2.getName().toLowerCase());
+					return String.valueOf(file1.getName().toLowerCase(Locale.ENGLISH)).compareTo(file2.getName().toLowerCase());
 				}
 			}
 		}  

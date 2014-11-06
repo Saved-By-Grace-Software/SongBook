@@ -28,7 +28,7 @@
 		        android:textColor="#000000"
 		        android:typeface="monospace"
 		        android:background="@android:color/white"
-		        android:textSize="20dp"
+		        android:textSize="20sp"
 		        android:text="@string/empty_song" />
 			
 		</HorizontalScrollView>
@@ -39,7 +39,17 @@
         android:id="@+id/button_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
+        android:layout_alignParentBottom="true"
+        style="?android:attr/buttonBarStyle" >
+        
+        <Button
+            android:id="@+id/song_edit_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onCancelClick"
+            android:text="@string/cancel"
+            style="?android:attr/buttonBarButtonStyle" />
 
         <Button
             android:id="@+id/song_edit_save"
@@ -47,15 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onSaveClick"
-            android:text="@string/song_edit_save" />
-
-        <Button
-            android:id="@+id/song_edit_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onCancelClick"
-            android:text="@string/cancel" />
+            android:text="@string/song_edit_save"
+            style="?android:attr/buttonBarButtonStyle" />
 
     </LinearLayout>    
 
