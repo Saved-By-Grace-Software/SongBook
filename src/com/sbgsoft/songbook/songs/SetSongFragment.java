@@ -64,14 +64,14 @@ public class SetSongFragment extends Fragment {
 	 * Increases the size of the text in the text view
 	 */
 	public void incTextSize() {
-		song.setTextSize(TypedValue.COMPLEX_UNIT_DIP, song.getTextSize() + 1);
+		song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() + 1);
 	}
 	
 	/**
 	 * Decreases the size of the text in the text view
 	 */
 	public void decTextSize() {
-		song.setTextSize(TypedValue.COMPLEX_UNIT_DIP, song.getTextSize() - 1);
+		song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() - 1);
 	}
 
 	/**

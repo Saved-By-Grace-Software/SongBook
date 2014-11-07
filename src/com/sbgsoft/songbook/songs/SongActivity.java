@@ -122,7 +122,7 @@ public class SongActivity extends Activity {
      * @param v
      */
     public void incFontSize(View v) {
-    	song.setTextSize(TypedValue.COMPLEX_UNIT_DIP, song.getTextSize() + 1);
+    	song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() + 1);
     }
     
     /**
@@ -130,7 +130,7 @@ public class SongActivity extends Activity {
      * @param v
      */
     public void decFontSize(View v) {
-    	song.setTextSize(TypedValue.COMPLEX_UNIT_DIP, song.getTextSize() - 1);
+    	song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() - 1);
     }
     
     /**
