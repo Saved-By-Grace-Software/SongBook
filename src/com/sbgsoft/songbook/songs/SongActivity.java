@@ -34,6 +34,7 @@ public class SongActivity extends Activity {
      *****************************************************************************/
 	TextView song;
 	private SongItem mSongItem;
+	private int incSize;
 
 	
 	/*****************************************************************************
@@ -50,6 +51,9 @@ public class SongActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_song);
+        
+        // Get text increment size
+     	incSize = getResources().getInteger(R.integer.textSizeIncrement);
         
         // Get the song textview
         song = (TextView)findViewById(R.id.song_text);
@@ -122,7 +126,7 @@ public class SongActivity extends Activity {
      * @param v
      */
     public void incFontSize(View v) {
-    	song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() + 1);
+    	song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() + incSize);
     }
     
     /**
@@ -130,7 +134,7 @@ public class SongActivity extends Activity {
      * @param v
      */
     public void decFontSize(View v) {
-    	song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() - 1);
+    	song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() - incSize);
     }
     
     /**

@@ -27,6 +27,7 @@ import com.sbgsoft.songbook.main.MainStrings;
 public class SetSongFragment extends Fragment {
 	public TextView song;
 	private SongItem mSongItem;
+	private int incSize;
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -36,6 +37,9 @@ public class SetSongFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.set_song, container, false);
+		
+		// Get text increment size
+		incSize = getResources().getInteger(R.integer.textSizeIncrement);
 		
 		// Get the song textview
         song = (TextView)view.findViewById(R.id.set_song_text);
@@ -64,14 +68,14 @@ public class SetSongFragment extends Fragment {
 	 * Increases the size of the text in the text view
 	 */
 	public void incTextSize() {
-		song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() + 1);
+		song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() + incSize);
 	}
 	
 	/**
 	 * Decreases the size of the text in the text view
 	 */
 	public void decTextSize() {
-		song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() - 1);
+		song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() - incSize);
 	}
 
 	/**
