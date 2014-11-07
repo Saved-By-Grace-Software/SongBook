@@ -14,7 +14,7 @@
         <TextView android:id="@+id/songs_tab_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="40sp"
+            android:textSize="@dimen/tabTitleTextSize"
             android:layout_alignParentLeft="true"
             android:textColor="@color/TransparentWhite"
             android:textStyle="bold"

@@ -2659,8 +2659,10 @@ public class MainActivity extends FragmentActivity {
         
         // Append the current set name to the title
         TextView title = ((TextView)findViewById(R.id.current_set_tab_title));
-        if (dbAdapter.getCurrentSetName() != "")
-        	title.setText(getResources().getString(R.string.title_current_set) + " - " + dbAdapter.getCurrentSetName());
+        if (dbAdapter.getCurrentSetName() != "") {
+        	//title.setText(getResources().getString(R.string.title_current_set) + " - " + dbAdapter.getCurrentSetName());
+        	title.setText(dbAdapter.getCurrentSetName());
+        }
     }
     
     

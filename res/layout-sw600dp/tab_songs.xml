@@ -6,16 +6,15 @@
     android:orientation="vertical"
     android:gravity="top">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:orientation="horizontal" >
+        android:layout_height="88dp"
+        android:orientation="vertical" >
         
         <TextView android:id="@+id/songs_tab_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="40sp"
-            android:layout_alignParentLeft="true"
+            android:textSize="@dimen/tabTitleTextSize"
             android:textColor="@color/TransparentWhite"
             android:textStyle="bold"
             android:text="@string/title_songs"
@@ -26,57 +25,66 @@
 			android:shadowDy="3" 
 			android:shadowRadius="1.5" />
         
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_toLeftOf="@+id/song_sort_spinner"
-            android:layout_alignParentBottom="true"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:shadowColor="@color/TransparentGrey" 
-			android:shadowDx="2"
-			android:shadowDy="2" 
-			android:shadowRadius="1"
-            android:text="@string/sort_by"
-            android:paddingBottom="10dip" />
+        <RelativeLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
         
-        <Spinner
-            android:id="@+id/song_sort_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dip"
-            android:layout_toLeftOf="@+id/song_group_label"
-            android:layout_alignParentBottom="true"
-            android:popupBackground="@color/TranslucentWhite" />
+	        <TextView
+	            android:id="@+id/song_sort_label"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textSize="@dimen/tabSpinnerTextSize"
+	            android:layout_alignParentBottom="true"
+	            android:layout_alignParentLeft="true"
+	            android:textColor="@color/white"
+	            android:textStyle="bold"
+	            android:shadowColor="@color/TransparentGrey" 
+				android:shadowDx="2"
+				android:shadowDy="2" 
+				android:shadowRadius="1"
+	            android:text="@string/sort_by"
+	            android:paddingLeft="5dip"
+	            android:paddingBottom="7dip" />
+	        
+	        <Spinner
+	            android:id="@+id/song_sort_spinner"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:paddingLeft="5dip"
+	            android:layout_toRightOf="@+id/song_sort_label"
+	            android:layout_alignParentBottom="true"
+	            android:popupBackground="@color/TranslucentWhite" />
+	        
+	        <TextView
+	            android:id="@+id/song_group_label"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textSize="@dimen/tabSpinnerTextSize"
+	            android:layout_toLeftOf="@+id/song_group_spinner"
+	            android:layout_alignParentBottom="true"
+	            android:textColor="@color/white"
+	            android:textStyle="bold"
+	            android:shadowColor="@color/TransparentGrey" 
+				android:shadowDx="2"
+				android:shadowDy="2" 
+				android:shadowRadius="1"
+	            android:text="@string/song_group"
+	            android:paddingBottom="7dip" />
+	
+	        <Spinner
+	            android:id="@+id/song_group_spinner"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:paddingLeft="5dip"
+	            android:paddingRight="2dip"
+	            android:layout_alignParentRight="true"
+	            android:layout_alignParentBottom="true"
+	            android:popupBackground="@color/TranslucentWhite" />
+	        
+	        </RelativeLayout>
         
-        <TextView
-            android:id="@+id/song_group_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_toLeftOf="@+id/song_group_spinner"
-            android:layout_alignParentBottom="true"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:shadowColor="@color/TransparentGrey" 
-			android:shadowDx="2"
-			android:shadowDy="2" 
-			android:shadowRadius="1"
-            android:text="@string/song_group"
-            android:paddingBottom="10dip"
-            android:paddingLeft="30dp" />
-
-        <Spinner
-            android:id="@+id/song_group_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dip"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:popupBackground="@color/TranslucentWhite" />
-        
-    </RelativeLayout>
+    </LinearLayout>
     
     <TextView android:id="@+id/horizontal_bar"
         android:layout_width="fill_parent"

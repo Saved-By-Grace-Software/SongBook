@@ -49,14 +49,16 @@ public class OpenFile extends ListActivity {
         	fileType = extras.getString(MainStrings.FILE_ACTIVITY_TYPE_KEY);
         }
         
-        // Change buttons for folder type
+        // Change buttons and title for folder type
         if (fileType.equals(MainStrings.FILE_ACTIVITY_FOLDER)) {
         	// Remove the file type views
-        	findViewById(R.id.file_type_text).setVisibility(View.GONE);
         	findViewById(R.id.file_type_spinner).setVisibility(View.GONE);
         	
         	// Show the select folder button
         	findViewById(R.id.open_file_select_folder).setVisibility(View.VISIBLE);
+        	
+        	// Set the title
+        	setTitle(getResources().getString(R.string.title_activity_open_folder));
         }
         
         // Set the SD card as the root directory

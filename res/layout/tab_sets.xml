@@ -30,7 +30,7 @@
 	        android:layout_height="wrap_content"
 	        android:orientation="horizontal" >
 	        
-	        <TextView
+	        <!-- <TextView
 	            android:id="@+id/set_sort_label"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
@@ -45,18 +45,18 @@
 				android:shadowRadius="1"
 	            android:text="@string/sort_by"
 	            android:paddingLeft="2dip"
-	            android:paddingBottom="7dp" />
+	            android:paddingBottom="7dp" /> -->
 	        
 	        <Spinner
 	            android:id="@+id/set_sort_spinner"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-				android:layout_toRightOf="@+id/set_sort_label"
 				android:layout_alignParentBottom="true"
+				android:layout_alignParentLeft="true"
 	            android:paddingLeft="5dip"
 	            android:popupBackground="@color/TranslucentWhite" />
 	        
-	        <TextView
+	        <!-- <TextView
 	            android:id="@+id/set_group_label"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
 				android:shadowDy="2" 
 				android:shadowRadius="1"
 	            android:text="@string/set_group"
-	            android:paddingBottom="7dp" />
+	            android:paddingBottom="7dp" /> -->
 	
 	        <Spinner
 	            android:id="@+id/set_group_spinner"

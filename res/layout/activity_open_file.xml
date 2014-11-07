@@ -17,7 +17,7 @@
 	        android:layout_width="fill_parent" 
 	        android:layout_height="wrap_content"
 	        android:includeFontPadding="true"
-		    android:textSize="20sp"
+		    android:textSize="@dimen/filePathTextSize"
 		    android:textColor="@color/defaultTextColor" />
 	    
 	    <ListView
@@ -51,17 +51,6 @@
             android:text="@string/select_folder"
             android:onClick="onSelectFolderClick"
             android:visibility="gone" />
-        
-        <TextView
-            android:id="@+id/file_type_text"
-	        android:layout_width="0dp" 
-	        android:layout_height="wrap_content"
-	        android:includeFontPadding="true"
-		    android:textSize="20sp"
-		    android:textStyle="bold"
-		    android:textColor="@color/defaultTextColor"
-		    android:layout_weight="1"
-		    android:text="@string/file_type" />
         
         <Spinner
             android:id="@+id/file_type_spinner"
