@@ -116,6 +116,12 @@ public class MainActivity extends FragmentActivity {
 	FragmentTransaction transaction;
 	private String importFilePath = "";
 	private String emailSongKey = "";
+	private int setsCurrentScrollPosition = 0;
+	private int setsCurrentScrollOffset = 0;
+	private int songsCurrentScrollPosition = 0;
+	private int songsCurrentScrollOffset = 0;
+	private int csetsCurrentScrollPosition = 0;
+	private int csetsCurrentScrollOffset = 0;
 	
 	private ArrayList<Item> songsList = new ArrayList<Item>();
 	private ArrayAdapter<Item> songsAdapter;
@@ -893,6 +899,11 @@ public class MainActivity extends FragmentActivity {
      * @param songName The song to add
      */
     private void addSetToGroup(final String setName) {
+    	// Remember the current scroll position
+    	ListView lv = ((ListView)findViewById(R.id.sets_list));
+    	setsCurrentScrollPosition = lv.getFirstVisiblePosition();
+    	setsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
+    	
     	// Get the list of group names
     	Cursor c = dbAdapter.getSetGroupNames();
     	startManagingCursor(c);
@@ -934,7 +945,7 @@ public class MainActivity extends FragmentActivity {
 				
 				// Refresh song list
 				fillSetsListView();
-    			fillSetGroupsSpinner();
+				fillSetGroupsSpinner();
 			}
 		});
 
@@ -947,6 +958,11 @@ public class MainActivity extends FragmentActivity {
      * @param groupName The group to remove the song from
      */
     private void removeSetFromGroup(final String setName, final String groupName) {
+    	// Remember the current scroll position
+    	ListView lv = ((ListView)findViewById(R.id.sets_list));
+    	setsCurrentScrollPosition = lv.getFirstVisiblePosition();
+    	setsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
+    	
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Remove Set From Group?!");
@@ -956,6 +972,9 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		// Remove song from the group
 	    		dbAdapter.removeSetFromGroup(setName, groupName);
+	    		
+	    		// Update set list view
+	    		fillSetsListView();
 	        	
 	        	// Set the current tab
 	        	currentTab = 2;
@@ -971,6 +990,7 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
+    
     
     /**
      * Updates the songs for the set
@@ -1092,6 +1112,7 @@ public class MainActivity extends FragmentActivity {
     	a.getWindow().setLayout(LayoutParams.WRAP_CONTENT, height);
     }
     
+    
     /**
      * Prompts the user to confirm then deletes all sets
      */
@@ -1124,6 +1145,7 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
+    
     
     /**
      * Prompts the user to confirm then deletes the specified set
@@ -1159,6 +1181,7 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
     
+   
     /**
      * Sets the sets array list
      */
@@ -1189,6 +1212,7 @@ public class MainActivity extends FragmentActivity {
     	Collections.sort(setsList, new ItemComparableName());
     }
     
+    
     /**
      * Fills the sets list
      * @param v The view for the list
@@ -1218,13 +1242,22 @@ public class MainActivity extends FragmentActivity {
         // Register the context menu and set the adapter
         registerForContextMenu(lv);
         lv.setAdapter(setsAdapter);
+        
+        // Scroll to the previous scroll position
+        lv.setSelectionFromTop(setsCurrentScrollPosition, setsCurrentScrollOffset);
     }
+    
     
     /**
      * Edits the set name and date
      * @param setName The set to edit
      */
     private void editSetAtt(final String setName) {
+    	// Remember the current scroll position
+    	ListView lv = ((ListView)findViewById(R.id.sets_list));
+    	setsCurrentScrollPosition = lv.getFirstVisiblePosition();
+    	setsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
+    	
     	// Create the alert dialog
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
     	alert.setTitle("Edit Set");
@@ -1269,6 +1302,7 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
+    
     
     /**
      * Emails the set with the songs as attachments
@@ -1452,6 +1486,7 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
+    
     
     /**
      * Imports a straight text file into chord pro format
@@ -1662,11 +1697,17 @@ public class MainActivity extends FragmentActivity {
         ps.print(sb);
     }
     
+    
     /**
      * Adds the song to a group
      * @param songName The song to add
      */
     private void addSongToGroup(final String songName) {
+    	// Remember the current scroll position
+    	ListView lv = ((ListView)findViewById(R.id.songs_list));
+    	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
+    	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
+    	
     	// Get the list of group names
     	Cursor c = dbAdapter.getSongGroupNames();
     	startManagingCursor(c);
@@ -1713,11 +1754,17 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
     
+    
     /**
      * Adds the song to a set
      * @param songName The song to add
      */
     private void addSongToSet(final String songName) {
+    	// Remember the current scroll position
+    	ListView lv = ((ListView)findViewById(R.id.songs_list));
+    	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
+    	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
+    	
     	// Get the list of group names
     	Cursor c = dbAdapter.getSetNames(SetsTab.ALL_SETS_LABEL);
     	startManagingCursor(c);
@@ -1825,11 +1872,17 @@ public class MainActivity extends FragmentActivity {
     	a.getWindow().setLayout(LayoutParams.WRAP_CONTENT, height);
     }
     
+    
     /**
      * Adds the song to a set
      * @param songName The song to add
      */
     private void addSongToCurrentSet(final String songName) {
+    	// Remember the current scroll position
+    	ListView lv = ((ListView)findViewById(R.id.songs_list));
+    	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
+    	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
+    	
     	// Get the current set
     	final String currentSet = dbAdapter.getCurrentSetName();
    
@@ -1853,12 +1906,18 @@ public class MainActivity extends FragmentActivity {
 		alert.show();
     }
     
+    
     /**
      * Removes the song from the specified group
      * @param songName The song to remove
      * @param groupName The group to remove the song from
      */
     private void removeSongFromGroup(final String songName, final String groupName) {
+    	// Remember the current scroll position
+    	ListView lv = ((ListView)findViewById(R.id.songs_list));
+    	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
+    	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
+    	
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Remove Song From Group?!");
@@ -1888,6 +1947,7 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
+    
     
     /**
      * Prompts the user to confirm then deletes all songs
@@ -1933,6 +1993,7 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
     
+    
     /**
      * Prompts the user to confirm then deletes the specified song
      */
@@ -1972,6 +2033,7 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
+    
     
     /**
      * Sets the current song list for the specified group
@@ -2022,6 +2084,7 @@ public class MainActivity extends FragmentActivity {
     	}
     }
     
+    
     /**
      * Fills the songs list
      * @param v The view for the list
@@ -2063,8 +2126,12 @@ public class MainActivity extends FragmentActivity {
         // Register the context menu and add the adapter
         registerForContextMenu(lv);
         lv.setAdapter(songsAdapter);
+        
+        // Scroll to the previous scroll position
+        lv.setSelectionFromTop(songsCurrentScrollPosition, songsCurrentScrollOffset);
     }
         
+    
     /**
      * Imports a song text file into the db
      */
@@ -2078,11 +2145,17 @@ public class MainActivity extends FragmentActivity {
         startActivityForResult(intent, 1);
     }
     
+    
     /**
      * Edits the song name, author and key
      * @param songName The song to edit
      */
     private void editSongAtt(final String songName) {
+    	// Remember the current scroll position
+    	ListView lv = ((ListView)findViewById(R.id.songs_list));
+    	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
+    	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
+    	
     	CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
     	alert.setTitle("Add Song");
 
@@ -2138,6 +2211,7 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
 
+    
     /**
      * Emails the song
      * @param songName The song to email
@@ -2208,6 +2282,7 @@ public class MainActivity extends FragmentActivity {
         	alert.show();
     	}
     }
+    
     
     /**
      * Creates a monospace text string of the song
@@ -2479,6 +2554,7 @@ public class MainActivity extends FragmentActivity {
     	return songText.toString();	
     }
     
+    
     /**
      * Sets the song key for the set
      */
@@ -2504,6 +2580,8 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
     
+    
+
     /**
      * Shows the song statistics dialog
      * @param songName The song to give stats for
@@ -2606,6 +2684,7 @@ public class MainActivity extends FragmentActivity {
     	}
     }
     
+    
     /**
      * Fills the current set list
      * @param v The view for the list
@@ -2693,6 +2772,7 @@ public class MainActivity extends FragmentActivity {
     	Collections.sort(songGroupsList, new SortIgnoreCase());
     }
     
+    
     /**
      * Fills the group list spinner
      * @param v
@@ -2710,6 +2790,14 @@ public class MainActivity extends FragmentActivity {
             public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
             	// Get the selected item and populate the songs list
             	String groupName = songGroupsList.get(position);
+            	
+            	// Reset the scroll positions
+            	if (!currentSongGroup.equals(groupName)) {
+	            	songsCurrentScrollPosition = 0;
+	            	songsCurrentScrollOffset = 0;
+            	}
+            	
+            	// Refill song list
             	currentSongGroup = groupName;
             	fillSongsListView();
             	
@@ -2728,6 +2816,7 @@ public class MainActivity extends FragmentActivity {
     	// Set the selected item to the current group
     	groupSpinner.setSelection(songGroupsList.indexOf(currentSongGroup));
     }
+    
     
     /**
      * Creates a new song group
@@ -2998,9 +3087,17 @@ public class MainActivity extends FragmentActivity {
     	
     	// Set the on click listener for each item
     	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {            	
             	// Get the selected item and populate the sets list
-            	currentSetGroup = setGroupsList.get(position);
+            	String groupName = setGroupsList.get(position);
+            	
+            	// Reset the scroll positions
+            	if (!currentSetGroup.equals(groupName)) {
+	            	setsCurrentScrollPosition = 0;
+	            	setsCurrentScrollOffset = 0;
+            	}
+            	
+            	currentSetGroup = groupName;
             	fillSetsListView();
             	
             	// Set the sort by spinner back to default
