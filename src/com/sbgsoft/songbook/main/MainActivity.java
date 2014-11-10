@@ -1151,6 +1151,11 @@ public class MainActivity extends FragmentActivity {
      * Prompts the user to confirm then deletes the specified set
      */
     private void deleteSet(final String setName) {
+    	// Remember the current scroll position
+    	ListView lv = ((ListView)findViewById(R.id.sets_list));
+    	setsCurrentScrollPosition = lv.getFirstVisiblePosition();
+    	setsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
+    	
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Delete Song?!");
@@ -1998,6 +2003,11 @@ public class MainActivity extends FragmentActivity {
      * Prompts the user to confirm then deletes the specified song
      */
     private void deleteSong(final String songName) {
+    	// Remember the current scroll position
+    	ListView lv = ((ListView)findViewById(R.id.songs_list));
+    	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
+    	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
+    	
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Delete Song?!");
