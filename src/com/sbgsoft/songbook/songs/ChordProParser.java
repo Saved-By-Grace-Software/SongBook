@@ -103,7 +103,10 @@ public class ChordProParser {
 								}
 								
 								// Parse capo to integer
-								int currentCapo = Integer.parseInt(capo.toString());
+								int currentCapo = 0;
+								try {
+									currentCapo = Integer.parseInt(capo.toString());
+								} catch (Exception e) { }
 								
 								// Get the new capo
 								int newCapo = Transpose.getCapo(songItem.getKey(), transposeKey, currentCapo);
