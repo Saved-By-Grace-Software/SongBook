@@ -120,8 +120,6 @@ public class MainActivity extends FragmentActivity {
 	private int setsCurrentScrollOffset = 0;
 	private int songsCurrentScrollPosition = 0;
 	private int songsCurrentScrollOffset = 0;
-	private int csetsCurrentScrollPosition = 0;
-	private int csetsCurrentScrollOffset = 0;
 	
 	private ArrayList<Item> songsList = new ArrayList<Item>();
 	private ArrayAdapter<Item> songsAdapter;
@@ -991,7 +989,6 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
     
-    
     /**
      * Updates the songs for the set
      */
@@ -1112,7 +1109,6 @@ public class MainActivity extends FragmentActivity {
     	a.getWindow().setLayout(LayoutParams.WRAP_CONTENT, height);
     }
     
-    
     /**
      * Prompts the user to confirm then deletes all sets
      */
@@ -1145,7 +1141,6 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
-    
     
     /**
      * Prompts the user to confirm then deletes the specified set
@@ -1186,7 +1181,6 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
     
-   
     /**
      * Sets the sets array list
      */
@@ -1216,7 +1210,6 @@ public class MainActivity extends FragmentActivity {
     	// Sort the array list
     	Collections.sort(setsList, new ItemComparableName());
     }
-    
     
     /**
      * Fills the sets list
@@ -1251,7 +1244,6 @@ public class MainActivity extends FragmentActivity {
         // Scroll to the previous scroll position
         lv.setSelectionFromTop(setsCurrentScrollPosition, setsCurrentScrollOffset);
     }
-    
     
     /**
      * Edits the set name and date
@@ -1307,7 +1299,6 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
-    
     
     /**
      * Emails the set with the songs as attachments
@@ -1491,7 +1482,6 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
-    
     
     /**
      * Imports a straight text file into chord pro format
@@ -1702,7 +1692,6 @@ public class MainActivity extends FragmentActivity {
         ps.print(sb);
     }
     
-    
     /**
      * Adds the song to a group
      * @param songName The song to add
@@ -1758,7 +1747,6 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
-    
     
     /**
      * Adds the song to a set
@@ -1877,7 +1865,6 @@ public class MainActivity extends FragmentActivity {
     	a.getWindow().setLayout(LayoutParams.WRAP_CONTENT, height);
     }
     
-    
     /**
      * Adds the song to a set
      * @param songName The song to add
@@ -1910,7 +1897,6 @@ public class MainActivity extends FragmentActivity {
 
 		alert.show();
     }
-    
     
     /**
      * Removes the song from the specified group
@@ -1952,7 +1938,6 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
-    
     
     /**
      * Prompts the user to confirm then deletes all songs
@@ -1998,7 +1983,6 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
     
-    
     /**
      * Prompts the user to confirm then deletes the specified song
      */
@@ -2043,7 +2027,6 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
-    
     
     /**
      * Sets the current song list for the specified group
@@ -2094,7 +2077,6 @@ public class MainActivity extends FragmentActivity {
     	}
     }
     
-    
     /**
      * Fills the songs list
      * @param v The view for the list
@@ -2141,7 +2123,6 @@ public class MainActivity extends FragmentActivity {
         lv.setSelectionFromTop(songsCurrentScrollPosition, songsCurrentScrollOffset);
     }
         
-    
     /**
      * Imports a song text file into the db
      */
@@ -2154,7 +2135,6 @@ public class MainActivity extends FragmentActivity {
         // Start the activity
         startActivityForResult(intent, 1);
     }
-    
     
     /**
      * Edits the song name, author and key
@@ -2221,7 +2201,6 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
 
-    
     /**
      * Emails the song
      * @param songName The song to email
@@ -2292,7 +2271,6 @@ public class MainActivity extends FragmentActivity {
         	alert.show();
     	}
     }
-    
     
     /**
      * Creates a monospace text string of the song
@@ -2564,7 +2542,6 @@ public class MainActivity extends FragmentActivity {
     	return songText.toString();	
     }
     
-    
     /**
      * Sets the song key for the set
      */
@@ -2589,9 +2566,7 @@ public class MainActivity extends FragmentActivity {
     	
     	alert.show();
     }
-    
-    
-
+      
     /**
      * Shows the song statistics dialog
      * @param songName The song to give stats for
@@ -2694,7 +2669,6 @@ public class MainActivity extends FragmentActivity {
     	}
     }
     
-    
     /**
      * Fills the current set list
      * @param v The view for the list
@@ -2782,7 +2756,6 @@ public class MainActivity extends FragmentActivity {
     	Collections.sort(songGroupsList, new SortIgnoreCase());
     }
     
-    
     /**
      * Fills the group list spinner
      * @param v
@@ -2826,7 +2799,6 @@ public class MainActivity extends FragmentActivity {
     	// Set the selected item to the current group
     	groupSpinner.setSelection(songGroupsList.indexOf(currentSongGroup));
     }
-    
     
     /**
      * Creates a new song group
