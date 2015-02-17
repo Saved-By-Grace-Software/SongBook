@@ -1,20 +1,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#FFFFFF" >
 
-    <TextView
-        android:id="@+id/song_text"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/empty_song"
-        android:textColor="#000000"
-        android:typeface="monospace"
-        android:background="#FFFFFF"
-        android:textSize="@dimen/defaultSongTextSize"
-        tools:context=".SongActivity" />
+    <HorizontalScrollView
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+	    
+	    <TextView
+	        android:id="@+id/song_text"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:scrollHorizontally="true"
+	        android:text="@string/empty_song"
+	        android:textColor="#000000"
+	        android:typeface="monospace"
+	        android:background="#FFFFFF"
+	        android:textSize="@dimen/defaultSongTextSize"
+	        tools:context=".SongActivity" />
+    
+    </HorizontalScrollView>
 
     <ImageButton
         android:id="@+id/song_up_button"
