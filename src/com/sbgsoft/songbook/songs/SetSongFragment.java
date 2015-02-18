@@ -60,7 +60,7 @@ public class SetSongFragment extends Fragment {
                 song.setText(Html.fromHtml(mSongItem.getText()));
             }
         }
-		
+        
 		return view;
 	}
 	

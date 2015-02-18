@@ -28,17 +28,18 @@ public final class R {
         public static final int white=0x7f040007;
     }
     public static final class dimen {
-        public static final int currentSetTitleTextSize=0x7f050006;
+        public static final int currentSetTitleTextSize=0x7f050007;
         public static final int defaultSongTextSize=0x7f050000;
-        public static final int dragRowTextSize=0x7f05000a;
-        public static final int filePathTextSize=0x7f050007;
-        public static final int fileRowTextSize=0x7f050009;
-        public static final int fileSpinnerTextSize=0x7f050008;
-        public static final int listMainTextSize=0x7f050003;
-        public static final int listRowHeaderTextSize=0x7f050005;
-        public static final int listSubTextSize=0x7f050004;
-        public static final int tabSpinnerTextSize=0x7f050002;
-        public static final int tabTitleTextSize=0x7f050001;
+        public static final int dragRowTextSize=0x7f05000b;
+        public static final int filePathTextSize=0x7f050008;
+        public static final int fileRowTextSize=0x7f05000a;
+        public static final int fileSpinnerTextSize=0x7f050009;
+        public static final int listMainTextSize=0x7f050004;
+        public static final int listRowHeaderTextSize=0x7f050006;
+        public static final int listSubTextSize=0x7f050005;
+        public static final int maximumSongTextSize=0x7f050001;
+        public static final int tabSpinnerTextSize=0x7f050003;
+        public static final int tabTitleTextSize=0x7f050002;
     }
     public static final class drawable {
         public static final int background_main=0x7f020000;

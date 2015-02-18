@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +35,9 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
+import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfDocument.Page;
@@ -71,7 +74,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -97,6 +99,7 @@ import com.sbgsoft.songbook.songs.SongActivity;
 import com.sbgsoft.songbook.songs.SongGroupArrayAdapter;
 import com.sbgsoft.songbook.songs.SongsTab;
 import com.sbgsoft.songbook.songs.Transpose;
+import com.sbgsoft.songbook.views.AutoFitTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
 
@@ -2294,7 +2297,8 @@ public class MainActivity extends FragmentActivity {
     	int pageWidth = 450;
     	int pageHeight = 700;
     	int padding = 30;
-    	float textSize = 6.0f;
+    	final float densityMultiplier = getResources().getDisplayMetrics().density;
+    	float defaultTextSize = 6.0f;
     	
     	// Create a new PDF document
     	PdfDocument document = new PdfDocument();
@@ -2307,15 +2311,22 @@ public class MainActivity extends FragmentActivity {
 	    	Page page = document.startPage(pageInfo);
 	    	
 	    	// Create the text view to add to the page
-	    	TextView tv = new TextView(MainActivity.this);
-	    	tv.setTextSize(textSize);
+	    	AutoFitTextView tv = new AutoFitTextView(MainActivity.this);
 	    	tv.setTypeface(Typeface.MONOSPACE);
 	    	tv.setPadding(padding, padding, padding, padding);
-	    	tv.layout(0, 0, pageWidth, pageHeight);	    	
+	    	tv.layout(0, 0, pageWidth, pageHeight);	 
+	    	tv.setTextSize(defaultTextSize);
+	    	tv.setTextDecrement(1.0f);
+	    	tv.setMinimumTextSizePixels(2.0f * densityMultiplier);
+	    	
+	    	// Get the fitted text size
+	    	FileInputStream fis = openFileInput(dbAdapter.getSongFile(songI.getName()));
+	    	String songText = ChordProParser.ParseSongFile(songI, songI.getKey(), fis);
+	    	//tv.setTextSize(getFittedTextSize(songText, pageWidth, pageHeight, tv));
 	    	
 	    	// Add the song text to the text view
-	    	FileInputStream fis = openFileInput(dbAdapter.getSongFile(songI.getName()));
-	    	tv.setText(Html.fromHtml(ChordProParser.ParseSongFile(songI, songI.getKey(), fis)));
+	    	tv.setText(Html.fromHtml(songText));
+	    	tv.shrinkToFit();
 	    	
 	    	// Add the song to the page
 	    	tv.draw(page.getCanvas());
@@ -2613,7 +2624,6 @@ public class MainActivity extends FragmentActivity {
     	return songText.toString();	
     }
     
-    
     /**
      * Sets the song key for the set
      */
@@ -2639,7 +2649,6 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
     }
       
-    
     /**
      * Shows the song statistics dialog
      * @param songName The song to give stats for
