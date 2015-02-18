@@ -23,9 +23,10 @@ import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.MainStrings;
+import com.sbgsoft.songbook.views.AutoFitTextView;
 
 public class SetSongFragment extends Fragment {
-	public TextView song;
+	public AutoFitTextView song;
 	private SongItem mSongItem;
 	private int incSize;
 
@@ -36,13 +37,13 @@ public class SetSongFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.set_song, container, false);
+		View view = inflater.inflate(R.layout.activity_song, container, false);
 		
 		// Get text increment size
 		incSize = getResources().getInteger(R.integer.textSizeIncrement);
 		
 		// Get the song textview
-        song = (TextView)view.findViewById(R.id.set_song_text);
+        song = (AutoFitTextView)view.findViewById(R.id.song_text);
         song.setMovementMethod(new ScrollingMovementMethod());
         
         // Populate it with the song text
@@ -68,6 +69,9 @@ public class SetSongFragment extends Fragment {
 	 * Increases the size of the text in the text view
 	 */
 	public void incTextSize() {
+		// Disable auto-fit to allow user to manually change text size
+		song.setFitTextToBox(false);
+		
 		song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() + incSize);
 	}
 	
@@ -75,6 +79,9 @@ public class SetSongFragment extends Fragment {
 	 * Decreases the size of the text in the text view
 	 */
 	public void decTextSize() {
+		// Disable auto-fit to allow user to manually change text size
+		song.setFitTextToBox(false);
+				
 		song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() - incSize);
 	}
 

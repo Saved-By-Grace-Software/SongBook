@@ -2322,7 +2322,6 @@ public class MainActivity extends FragmentActivity {
 	    	// Get the fitted text size
 	    	FileInputStream fis = openFileInput(dbAdapter.getSongFile(songI.getName()));
 	    	String songText = ChordProParser.ParseSongFile(songI, songI.getKey(), fis);
-	    	//tv.setTextSize(getFittedTextSize(songText, pageWidth, pageHeight, tv));
 	    	
 	    	// Add the song text to the text view
 	    	tv.setText(Html.fromHtml(songText));

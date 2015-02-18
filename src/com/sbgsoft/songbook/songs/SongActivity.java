@@ -24,6 +24,7 @@ import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.MainStrings;
+import com.sbgsoft.songbook.views.AutoFitTextView;
 
 public class SongActivity extends Activity {
 	
@@ -32,7 +33,7 @@ public class SongActivity extends Activity {
      * Class Variables
      * 
      *****************************************************************************/
-	TextView song;
+	AutoFitTextView song;
 	private SongItem mSongItem;
 	private int incSize;
 
@@ -56,7 +57,7 @@ public class SongActivity extends Activity {
      	incSize = getResources().getInteger(R.integer.textSizeIncrement);
         
         // Get the song textview
-        song = (TextView)findViewById(R.id.song_text);
+        song = (AutoFitTextView)findViewById(R.id.song_text);
         song.setMovementMethod(new ScrollingMovementMethod());
         
         // Populate it with the song text
@@ -126,6 +127,9 @@ public class SongActivity extends Activity {
      * @param v
      */
     public void incFontSize(View v) {
+    	// Disable auto-fit to allow user to manually change text size
+    	song.setFitTextToBox(false);
+    			
     	song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() + incSize);
     }
     
@@ -134,6 +138,9 @@ public class SongActivity extends Activity {
      * @param v
      */
     public void decFontSize(View v) {
+    	// Disable auto-fit to allow user to manually change text size
+    	song.setFitTextToBox(false);
+    			
     	song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() - incSize);
     }
     

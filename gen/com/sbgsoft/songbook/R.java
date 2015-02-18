@@ -9,6 +9,21 @@ package com.sbgsoft.songbook;
 
 public final class R {
     public static final class attr {
+        /**  used to set the minTextSize via xml 
+         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+         */
+        public static final int autoScaleTextViewStyle=0x7f010000;
+        /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int minTextSize=0x7f010001;
     }
     public static final class color {
         public static final int TranslucentWhite=0x7f040008;
@@ -63,38 +78,38 @@ public final class R {
         public static final int add_song_name=0x7f0a0019;
         public static final int add_song_root=0x7f0a0018;
         public static final int button_bottom=0x7f0a0001;
-        public static final int current_list=0x7f0a0030;
-        public static final int current_set_tab_title=0x7f0a002f;
-        public static final int empty_current=0x7f0a0031;
-        public static final int empty_sets=0x7f0a0037;
-        public static final int empty_songs=0x7f0a0040;
+        public static final int current_list=0x7f0a002b;
+        public static final int current_set_tab_title=0x7f0a002a;
+        public static final int empty_current=0x7f0a002c;
+        public static final int empty_sets=0x7f0a0032;
+        public static final int empty_songs=0x7f0a003b;
         public static final int file_type_spinner=0x7f0a000a;
         public static final int group_spinner_dropdown_item_text=0x7f0a0021;
         public static final int group_spinner_item_text=0x7f0a0020;
-        public static final int horizontal_bar=0x7f0a003e;
+        public static final int horizontal_bar=0x7f0a0039;
         public static final int hscroll_view=0x7f0a0002;
-        public static final int menu_about=0x7f0a0057;
-        public static final int menu_backup=0x7f0a0054;
-        public static final int menu_backup_export=0x7f0a0055;
-        public static final int menu_backup_import=0x7f0a0056;
-        public static final int menu_set_groups=0x7f0a0050;
-        public static final int menu_set_groups_create=0x7f0a0051;
-        public static final int menu_set_groups_delete=0x7f0a0052;
-        public static final int menu_set_groups_delete_all=0x7f0a0053;
-        public static final int menu_sets=0x7f0a0043;
-        public static final int menu_sets_clear=0x7f0a0046;
-        public static final int menu_sets_create=0x7f0a0044;
-        public static final int menu_sets_find=0x7f0a0045;
-        public static final int menu_settings=0x7f0a0042;
-        public static final int menu_song_groups=0x7f0a004c;
-        public static final int menu_song_groups_create=0x7f0a004d;
-        public static final int menu_song_groups_delete=0x7f0a004e;
-        public static final int menu_song_groups_delete_all=0x7f0a004f;
-        public static final int menu_songs=0x7f0a0047;
-        public static final int menu_songs_clear=0x7f0a004b;
-        public static final int menu_songs_create=0x7f0a0048;
-        public static final int menu_songs_find=0x7f0a004a;
-        public static final int menu_songs_import=0x7f0a0049;
+        public static final int menu_about=0x7f0a0052;
+        public static final int menu_backup=0x7f0a004f;
+        public static final int menu_backup_export=0x7f0a0050;
+        public static final int menu_backup_import=0x7f0a0051;
+        public static final int menu_set_groups=0x7f0a004b;
+        public static final int menu_set_groups_create=0x7f0a004c;
+        public static final int menu_set_groups_delete=0x7f0a004d;
+        public static final int menu_set_groups_delete_all=0x7f0a004e;
+        public static final int menu_sets=0x7f0a003e;
+        public static final int menu_sets_clear=0x7f0a0041;
+        public static final int menu_sets_create=0x7f0a003f;
+        public static final int menu_sets_find=0x7f0a0040;
+        public static final int menu_settings=0x7f0a003d;
+        public static final int menu_song_groups=0x7f0a0047;
+        public static final int menu_song_groups_create=0x7f0a0048;
+        public static final int menu_song_groups_delete=0x7f0a0049;
+        public static final int menu_song_groups_delete_all=0x7f0a004a;
+        public static final int menu_songs=0x7f0a0042;
+        public static final int menu_songs_clear=0x7f0a0046;
+        public static final int menu_songs_create=0x7f0a0043;
+        public static final int menu_songs_find=0x7f0a0045;
+        public static final int menu_songs_import=0x7f0a0044;
         public static final int open_file_bottom_bar=0x7f0a0007;
         public static final int open_file_cancel=0x7f0a000b;
         public static final int open_file_path=0x7f0a0008;
@@ -103,40 +118,35 @@ public final class R {
         public static final int pager=0x7f0a0006;
         public static final int set_edit_cancel=0x7f0a001e;
         public static final int set_edit_save=0x7f0a001f;
-        public static final int set_group_label=0x7f0a0039;
-        public static final int set_group_spinner=0x7f0a0035;
+        public static final int set_group_label=0x7f0a0034;
+        public static final int set_group_spinner=0x7f0a0030;
         public static final int set_pager=0x7f0a000c;
-        public static final int set_song_down_button=0x7f0a0026;
-        public static final int set_song_font_text=0x7f0a0025;
-        public static final int set_song_text=0x7f0a0023;
-        public static final int set_song_up_button=0x7f0a0024;
-        public static final int set_sort_spinner=0x7f0a0034;
-        public static final int set_transpose_button=0x7f0a0027;
-        public static final int sets_list=0x7f0a0036;
-        public static final int sets_row_date=0x7f0a0029;
-        public static final int sets_row_text=0x7f0a0028;
-        public static final int sets_tab_title=0x7f0a0033;
+        public static final int set_sort_spinner=0x7f0a002f;
+        public static final int sets_list=0x7f0a0031;
+        public static final int sets_row_date=0x7f0a0024;
+        public static final int sets_row_text=0x7f0a0023;
+        public static final int sets_tab_title=0x7f0a002e;
         public static final int song_down_button=0x7f0a0010;
         public static final int song_edit_cancel=0x7f0a0004;
         public static final int song_edit_save=0x7f0a0005;
         public static final int song_edit_text=0x7f0a0003;
         public static final int song_font_text=0x7f0a000f;
-        public static final int song_group_label=0x7f0a0041;
-        public static final int song_group_spinner=0x7f0a003d;
-        public static final int song_sort_label=0x7f0a0038;
-        public static final int song_sort_spinner=0x7f0a003c;
+        public static final int song_group_label=0x7f0a003c;
+        public static final int song_group_spinner=0x7f0a0038;
+        public static final int song_sort_label=0x7f0a0033;
+        public static final int song_sort_spinner=0x7f0a0037;
         public static final int song_text=0x7f0a000d;
         public static final int song_transpose_button=0x7f0a0011;
         public static final int song_up_button=0x7f0a000e;
-        public static final int songs_list=0x7f0a003f;
-        public static final int songs_row_author=0x7f0a002b;
-        public static final int songs_row_key=0x7f0a002c;
-        public static final int songs_row_section=0x7f0a002d;
-        public static final int songs_row_text=0x7f0a002a;
-        public static final int songs_tab_title=0x7f0a003b;
-        public static final int tabSets=0x7f0a0032;
-        public static final int tabSongs=0x7f0a003a;
-        public static final int tab_current=0x7f0a002e;
+        public static final int songs_list=0x7f0a003a;
+        public static final int songs_row_author=0x7f0a0026;
+        public static final int songs_row_key=0x7f0a0027;
+        public static final int songs_row_section=0x7f0a0028;
+        public static final int songs_row_text=0x7f0a0025;
+        public static final int songs_tab_title=0x7f0a0036;
+        public static final int tabSets=0x7f0a002d;
+        public static final int tabSongs=0x7f0a0035;
+        public static final int tab_current=0x7f0a0029;
         public static final int vscroll_view=0x7f0a0000;
     }
     public static final class integer {
@@ -158,13 +168,12 @@ public final class R {
         public static final int group_spinner_dropdown_item=0x7f03000c;
         public static final int group_spinner_item=0x7f03000d;
         public static final int open_file_row=0x7f03000e;
-        public static final int set_song=0x7f03000f;
-        public static final int sets_row=0x7f030010;
-        public static final int songs_row=0x7f030011;
-        public static final int songs_row_section=0x7f030012;
-        public static final int tab_current_set=0x7f030013;
-        public static final int tab_sets=0x7f030014;
-        public static final int tab_songs=0x7f030015;
+        public static final int sets_row=0x7f03000f;
+        public static final int songs_row=0x7f030010;
+        public static final int songs_row_section=0x7f030011;
+        public static final int tab_current_set=0x7f030012;
+        public static final int tab_sets=0x7f030013;
+        public static final int tab_songs=0x7f030014;
     }
     public static final class menu {
         public static final int menu_main=0x7f090000;
@@ -264,4 +273,35 @@ public final class R {
     public static final class style {
         public static final int AppTheme=0x7f080000;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a AutoScaleTextView.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #AutoScaleTextView_minTextSize com.sbgsoft.songbook:minTextSize}</code></td><td></td></tr>
+           </table>
+           @see #AutoScaleTextView_minTextSize
+         */
+        public static final int[] AutoScaleTextView = {
+            0x7f010001
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.sbgsoft.songbook.R.attr#minTextSize}
+          attribute's value can be found in the {@link #AutoScaleTextView} array.
+
+
+          <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
+Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
+in (inches), mm (millimeters).
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name com.sbgsoft.songbook:minTextSize
+        */
+        public static final int AutoScaleTextView_minTextSize = 0;
+    };
 }
