@@ -11,9 +11,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.StringReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -32,8 +35,13 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
+import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
+import android.graphics.pdf.PdfDocument.Page;
+import android.graphics.pdf.PdfDocument.PageInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -91,6 +99,7 @@ import com.sbgsoft.songbook.songs.SongActivity;
 import com.sbgsoft.songbook.songs.SongGroupArrayAdapter;
 import com.sbgsoft.songbook.songs.SongsTab;
 import com.sbgsoft.songbook.songs.Transpose;
+import com.sbgsoft.songbook.views.AutoFitTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
 
@@ -292,6 +301,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_ADD, MainStrings.SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_DEL, MainStrings.SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
     		menu.add(Menu.NONE, MainStrings.EMAIL_SONG, MainStrings.EMAIL_SONG, R.string.cmenu_songs_email);
+    		menu.add(Menu.NONE, MainStrings.SAVE_SONG_PDF, MainStrings.SAVE_SONG_PDF, R.string.cmenu_songs_save_pdf);
     		menu.add(Menu.NONE, MainStrings.SONG_STATS, MainStrings.SONG_STATS, R.string.cmenu_songs_stats);
     	}
     	// Sets context menu
@@ -394,6 +404,14 @@ public class MainActivity extends FragmentActivity {
     			
     			// Email the song
     			emailSong(songI, songName);
+    			
+    			return true;
+    		case MainStrings.SAVE_SONG_PDF:
+    			// Get the song name
+    			songI = (SongItem)songsList.get(info.position);
+    			
+    			// Save the song as a PDF
+    			saveSongAsPdf(songI);
     			
     			return true;
     		case MainStrings.SET_SONG_KEY_CS:
@@ -1364,7 +1382,7 @@ public class MainActivity extends FragmentActivity {
 		startActivity(Intent.createChooser(i, "Send song email via:"));  
     }
     
-
+    
     /*****************************************************************************
      * 
      * Song Functions
@@ -2283,6 +2301,71 @@ public class MainActivity extends FragmentActivity {
     }
     
     /**
+     * Saves the song as a PDF file
+     * @param songI The song to save
+     */
+    public void saveSongAsPdf(SongItem songI) {
+    	String fileName = songI.getName() + ".pdf";
+    	int pageWidth = 450;
+    	int pageHeight = 700;
+    	int padding = 30;
+    	final float densityMultiplier = getResources().getDisplayMetrics().density;
+    	float defaultTextSize = 6.0f;
+    	
+    	// Create a new PDF document
+    	PdfDocument document = new PdfDocument();
+    	
+    	try {
+	    	// Create a page description
+	    	PageInfo pageInfo = new PageInfo.Builder(pageWidth, pageHeight, 1).create();
+	    	
+	    	// Create a new page from the page info
+	    	Page page = document.startPage(pageInfo);
+	    	
+	    	// Create the text view to add to the page
+	    	AutoFitTextView tv = new AutoFitTextView(MainActivity.this);
+	    	tv.setTypeface(Typeface.MONOSPACE);
+	    	tv.setPadding(padding, padding, padding, padding);
+	    	tv.layout(0, 0, pageWidth, pageHeight);	 
+	    	tv.setTextSize(defaultTextSize);
+	    	tv.setTextDecrement(1.0f);
+	    	tv.setMinimumTextSizePixels(2.0f * densityMultiplier);
+	    	
+	    	// Get the fitted text size
+	    	FileInputStream fis = openFileInput(dbAdapter.getSongFile(songI.getName()));
+	    	String songText = ChordProParser.ParseSongFile(songI, songI.getKey(), fis);
+	    	
+	    	// Add the song text to the text view
+	    	tv.setText(Html.fromHtml(songText));
+	    	tv.shrinkToFit();
+	    	
+	    	// Add the song to the page
+	    	tv.draw(page.getCanvas());
+	    	
+	    	// Finish the page
+	    	document.finishPage(page);
+    	
+	    	// Write the document
+	    	File att = new File(Environment.getExternalStorageDirectory(), fileName);
+			att.deleteOnExit();
+			FileOutputStream out = new FileOutputStream(att);
+	    	document.writeTo(out);
+    	} catch (Exception e) {
+    		Toast.makeText(getApplicationContext(), 
+        			"Failed to save \"" + songI.getName() + "\" to \"" + Environment.getExternalStorageDirectory() + "/" + fileName,
+        			Toast.LENGTH_LONG).show();
+    	}
+    	
+    	// Close the document
+    	document.close();
+    	
+    	// Alert on success
+    	Toast.makeText(getApplicationContext(), 
+    			"Saved \"" + songI.getName() + "\" to \"" + Environment.getExternalStorageDirectory() + "/" + fileName,
+    			Toast.LENGTH_LONG).show();
+    }
+    
+    /**
      * Creates a monospace text string of the song
      * @param songName The song name to create the text for
      * @param transposeKey The key to transpose the song into
@@ -2576,7 +2659,7 @@ public class MainActivity extends FragmentActivity {
     	
     	alert.show();
     }
-    
+      
     /**
      * Shows the song statistics dialog
      * @param songName The song to give stats for
@@ -2645,6 +2728,7 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
 	}
+    
     
     /*****************************************************************************
      * 

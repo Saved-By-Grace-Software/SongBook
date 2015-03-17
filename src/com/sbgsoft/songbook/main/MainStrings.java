@@ -56,24 +56,25 @@ public class MainStrings {
 	public static final int SONG_GROUPS_ADD = 6;
 	public static final int SONG_GROUPS_DEL = 7;
 	public static final int EMAIL_SONG = 8;
-	public static final int SONG_STATS = 9;
+	public static final int SAVE_SONG_PDF = 9;
+	public static final int SONG_STATS = 10;
 	
 	// Set Context Menu Keys
-	public static final int DELETE_SET = 10;
-	public static final int EDIT_SET = 11;
-	public static final int EDIT_SET_ATT = 12;
-	public static final int REORDER_SET = 13;
-	public static final int SET_GROUPS_ADD = 14;
-	public static final int SET_GROUPS_DEL = 15;
-	public static final int EMAIL_SET = 16;
+	public static final int DELETE_SET = 100;
+	public static final int EDIT_SET = 110;
+	public static final int EDIT_SET_ATT = 120;
+	public static final int REORDER_SET = 130;
+	public static final int SET_GROUPS_ADD = 140;
+	public static final int SET_GROUPS_DEL = 150;
+	public static final int EMAIL_SET = 160;
 	
 	// Current Set Context Menu Keys
-	public static final int EDIT_SONG_CS = 20;
-	public static final int EDIT_SONG_ATT_CS = 21;
-	public static final int SET_SONG_KEY_CS = 22;
-	public static final int EMAIL_SONG_CS = 23;
-	public static final int REMOVE_SONG_FROM_SET = 24;
-	public static final int SONG_STATS_CS = 25;
+	public static final int EDIT_SONG_CS = 200;
+	public static final int EDIT_SONG_ATT_CS = 210;
+	public static final int SET_SONG_KEY_CS = 220;
+	public static final int EMAIL_SONG_CS = 230;
+	public static final int REMOVE_SONG_FROM_SET = 240;
+	public static final int SONG_STATS_CS = 250;
 	
 	// Sort Arrays
 	public static final ArrayList<String> songSortBy = new ArrayList<String>(Arrays.asList("Song Title", "Song Author", "Song Key"));
