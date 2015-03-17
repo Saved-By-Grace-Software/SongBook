@@ -697,12 +697,12 @@ public class MainActivity extends FragmentActivity {
 		}
     	message.append("Database Version " + DBStrings.DATABASE_VERSION + MainStrings.EOL);
     	message.append(MainStrings.EOL);
-    	message.append("Saved By Grace Software" + MainStrings.EOL);
-    	message.append("San Antonio, TX" + MainStrings.EOL);
-    	message.append("SavedByGraceSoft@gmail.com" + MainStrings.EOL);
+    	message.append("Truth Gaming & Saved By Grace Software" + MainStrings.EOL);
+    	message.append("Pittsburgh, PA" + MainStrings.EOL);
+    	message.append("http://truthgaming.net" + MainStrings.EOL);
     	message.append(MainStrings.EOL);
     	message.append("Virtual SongBook is designed to allow you to carry all of your guitar music with you wherever " + 
-    			"you go on your 7-inch or larger tablet. It also allows you to create sets of songs for performances, gigs " +
+    			"you go on your Android phone or tablet. It also allows you to create sets of songs for performances, gigs " +
     			"or worship. If you have any problems or questions please send us an email.  God Bless!!" + MainStrings.EOL);
     	message.append(MainStrings.EOL);
     	start = message.length();
