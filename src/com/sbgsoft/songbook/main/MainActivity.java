@@ -291,7 +291,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.ADD_SONG_CURR_SET, MainStrings.ADD_SONG_CURR_SET, R.string.cmenu_song_add_curr_set);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_ADD, MainStrings.SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_DEL, MainStrings.SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
-    		menu.add(Menu.NONE, MainStrings.EMAIL_SONG, MainStrings.EMAIL_SONG, R.string.cmenu_songs_email);
+    		menu.add(Menu.NONE, MainStrings.SHARE_SONG, MainStrings.SHARE_SONG, R.string.cmenu_songs_share);
     		menu.add(Menu.NONE, MainStrings.SONG_STATS, MainStrings.SONG_STATS, R.string.cmenu_songs_stats);
     	}
     	// Sets context menu
@@ -311,7 +311,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_CS, MainStrings.EDIT_SONG_CS, R.string.cmenu_songs_edit);
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_ATT_CS, MainStrings.EDIT_SONG_ATT_CS, R.string.cmenu_songs_edit_att);
     		menu.add(Menu.NONE, MainStrings.SET_SONG_KEY_CS, MainStrings.SET_SONG_KEY_CS, R.string.cmenu_sets_set_song_key);
-    		menu.add(Menu.NONE, MainStrings.EMAIL_SONG_CS, MainStrings.EMAIL_SONG_CS, R.string.cmenu_songs_email);
+    		menu.add(Menu.NONE, MainStrings.SHARE_SONG_CS, MainStrings.SHARE_SONG_CS, R.string.cmenu_songs_share);
     		menu.add(Menu.NONE, MainStrings.REMOVE_SONG_FROM_SET, MainStrings.REMOVE_SONG_FROM_SET, R.string.cmenu_sets_remove_song);
     		menu.add(Menu.NONE, MainStrings.SONG_STATS_CS, MainStrings.SONG_STATS_CS, R.string.cmenu_songs_stats);
     	}
@@ -378,16 +378,16 @@ public class MainActivity extends FragmentActivity {
     			editSongAtt(songName);
     			
                 return true;
-    		case MainStrings.EMAIL_SONG:
+    		case MainStrings.SHARE_SONG:
     			// Get the song name
     			songI = (SongItem)songsList.get(info.position);
     			songName = songI.getName();
     			
     			// Email the song
-    			emailSong(songI, songName);
+    			shareSong(songI, songName);
     			
     			return true;
-    		case MainStrings.EMAIL_SONG_CS:
+    		case MainStrings.SHARE_SONG_CS:
     			// Get the song name
     			songI = (SongItem)currSetList.get(info.position);
     			songName = songI.getName();
@@ -2280,6 +2280,71 @@ public class MainActivity extends FragmentActivity {
         	
         	alert.show();
     	}
+    }
+    
+    /**
+     * Shares the song via email or saving it
+     * @param songI The SongItem
+     * @param songName The song name
+     */
+    public void shareSong(final SongItem songI, final String songName) {
+    	final String attFileName = songName + "_att.txt";
+    	String songKey = dbAdapter.getSongKey(songName);
+    	emailSongKey = songKey;
+    	
+    	// Create the options array
+    	CharSequence[] options = {getString(R.string.cmenu_songs_share_email), 
+    			getString(R.string.cmenu_songs_share_email_cp), 
+    			getString(R.string.cmenu_songs_share_save), 
+    			getString(R.string.cmenu_songs_share_save_cp)};
+		
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Email Song in Which Key?");
+    	alert.setItems(options, new OnClickListener() {
+    		public void onClick (DialogInterface dialog, int whichItem) {
+    			// Set the new song key
+    			if (whichItem < MainStrings.songKeys.size())
+    				emailSongKey = MainStrings.songKeys.get(whichItem);
+    			
+    			// Create the email intent
+    	    	Intent i = new Intent(android.content.Intent.ACTION_SEND);
+    			i.setType("text/Message");
+    			
+    			// Create the text file attachment
+    			String temp = createSongPlainText(songName, emailSongKey, true, true);
+    			
+    			try {
+    				// Write the file
+    				File att = new File(Environment.getExternalStorageDirectory(), attFileName);
+    				att.deleteOnExit();
+    				FileOutputStream out = new FileOutputStream(att);
+    		    	out.write(temp.getBytes());
+    				out.close(); 
+    				
+    				// Add the file as an attachment
+    				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));			
+    				
+    			} catch (Exception e) {
+    				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
+    			}
+    			
+    			// Add the subject and body
+    			i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
+    			//i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
+    			i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
+    					"<h2>SBGSoft Virtual SongBook</h2>" +
+    					"<b>Song Name:</b>&nbsp;&nbsp;" + songName + "<br/>" +
+    					"<b>Song Key:</b>&nbsp;&nbsp;" + emailSongKey + "<br/>" +
+    					"<br/>" +
+    					"The music for this song has been attached to this email as a text file." +
+    					"<br/>"));
+    
+    			startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
+    		}
+    	});
+    	
+    	alert.show();
     }
     
     /**
