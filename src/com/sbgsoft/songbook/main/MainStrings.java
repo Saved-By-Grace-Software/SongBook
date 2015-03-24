@@ -78,4 +78,11 @@ public class MainStrings {
 	// Sort Arrays
 	public static final ArrayList<String> songSortBy = new ArrayList<String>(Arrays.asList("Song Title", "Song Author", "Song Key"));
 	public static final ArrayList<String> setSortBy = new ArrayList<String>(Arrays.asList("Set Date - Recent", "Set Date - Oldest", "Set Title"));
+	
+	// Enums
+	public enum ShareType {
+		plainText,
+		chordPro,
+		PDF
+	}
 }
