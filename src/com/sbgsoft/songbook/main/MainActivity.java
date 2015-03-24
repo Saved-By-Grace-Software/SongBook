@@ -113,7 +113,6 @@ public class MainActivity extends FragmentActivity {
 	
 	FragmentTransaction transaction;
 	private String importFilePath = "";
-	private String emailSongKey = "";
 	private int setsCurrentScrollPosition = 0;
 	private int setsCurrentScrollOffset = 0;
 	private int songsCurrentScrollPosition = 0;
@@ -2217,222 +2216,164 @@ public class MainActivity extends FragmentActivity {
      * Emails the song
      * @param songName The song to email
      */
-    private void emailSong(final SongItem songI, final MainStrings.ShareType shareType) {
-    	String songKey = dbAdapter.getSongKey(songI.getName());
-    	emailSongKey = songKey;
-    	
-    	// Check for a special key
-    	if (MainStrings.keyMap.containsKey(songKey)) {
-    		// Set the song key to the associated key
-    		songKey = MainStrings.keyMap.get(songKey);
-    	}
-    	
-    	// Check to make sure the song has a proper key
-    	if (MainStrings.songKeys.contains(songKey)) {
-    		// Create the key array
-    		CharSequence[] keys = MainStrings.songKeys.toArray(new CharSequence[MainStrings.songKeys.size() + 1]);
-    		keys[MainStrings.songKeys.size()] = "Original Key";
-    		
-    		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    private void emailSong(SongItem songI, MainStrings.ShareType shareType, String newSongKey) {
+		// Create the email intent
+    	Intent i = new Intent(android.content.Intent.ACTION_SEND);
+		i.setType("text/Message");
+		
+		// Craft the file name
+		String fileName = songI.getName() + " - " + songI.getAuthor();
+		
+		// Add the attachment
+		switch (shareType) {
+			case plainText:
+				// Add the file extension
+				fileName += ".txt";
+				
+				// Create the text file attachment
+				try {
+					// Open the file and translate it
+    				FileInputStream fis = openFileInput(songI.getFile());
+    				String temp = ChordProParser.ParseSongFile(songI, newSongKey, fis, false, true);
+    				
+    				// Write the file
+    				File att = new File(Environment.getExternalStorageDirectory(), fileName);
+    				FileOutputStream out = new FileOutputStream(att);
+    		    	out.write(temp.getBytes());
+    				
+    		    	// Close the files
+    		    	fis.close();
+    		    	out.close();
+    				
+    				// Add the file as an attachment
+    				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));			
+    				
+    			} catch (Exception e) {
+    				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
+    			}
+				
+				break;
+			case chordPro:
+				// Add the file extension
+				fileName += ".pro";
+				
+				try {	        					
+					// Open the input file
+    				FileInputStream fis = openFileInput(songI.getFile());
+    				
+    				// Open the output file
+    				File att = new File(Environment.getExternalStorageDirectory(), fileName);
+    				FileOutputStream out = new FileOutputStream(att);
+    		    	
+    				// Copy the file
+    				byte[] buffer = new byte[1024];
+    				int read;
+    				while ((read = fis.read(buffer)) != -1) {
+    					out.write(buffer, 0, read);
+    				}
+    				
+    				// Close the files
+    		    	fis.close();
+    		    	out.close();
+    		    	
+    		    	// Add the file as an attachment
+    				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));
+    				
+    			} catch (Exception e) {
+    				Toast.makeText(getBaseContext(), "Unable to save ChordPro file!", Toast.LENGTH_LONG).show();
+    			}
+				
+				break;
+			case PDF:
+			default:
+				break;
+		}
+		
+		// Add the subject and body
+		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songI.getName());
+		//i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
+		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
+				"<h2>SBGSoft Virtual SongBook</h2>" +
+				"<b>Song Name:</b>&nbsp;&nbsp;" + songI.getName() + "<br/>" +
+				"<b>Song Key:</b>&nbsp;&nbsp;" + newSongKey + "<br/>" +
+				"<br/>" +
+				"The music for this song has been attached to this email as a file." +
+				"<br/>"));
 
-        	alert.setTitle("Email Song in Which Key?");
-        	alert.setItems(keys, new OnClickListener() {
-        		public void onClick (DialogInterface dialog, int whichItem) {
-        			// Set the new song key
-        			if (whichItem < MainStrings.songKeys.size())
-        				emailSongKey = MainStrings.songKeys.get(whichItem);
-        			
-        			// Create the email intent
-        	    	Intent i = new Intent(android.content.Intent.ACTION_SEND);
-        			i.setType("text/Message");
-        			
-        			// Craft the file name
-					String fileName = songI.getName() + " - " + songI.getAuthor();
-        			
-        			// Add the attachment
-        			switch (shareType) {
-	        			case plainText:
-	        				// Add the file extension
-        					fileName += ".txt";
-        					
-	        				// Create the text file attachment
-	        				try {
-	        					// Open the file and translate it
-		        				FileInputStream fis = openFileInput(songI.getFile());
-		        				String temp = ChordProParser.ParseSongFile(songI, emailSongKey, fis, false, true);
-		        				
-	            				// Write the file
-	            				File att = new File(Environment.getExternalStorageDirectory(), fileName);
-	            				FileOutputStream out = new FileOutputStream(att);
-	            		    	out.write(temp.getBytes());
-	            				
-	            		    	// Close the files
-	            		    	fis.close();
-	            		    	out.close();
-	            				
-	            				// Add the file as an attachment
-	            				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));			
-	            				
-	            			} catch (Exception e) {
-	            				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
-	            			}
-	        				
-	        				break;
-	        			case chordPro:
-	        				// Add the file extension
-        					fileName += ".pro";
-        					
-	        				try {	        					
-	        					// Open the input file
-		        				FileInputStream fis = openFileInput(songI.getFile());
-		        				
-	            				// Open the output file
-	            				File att = new File(Environment.getExternalStorageDirectory(), fileName);
-	            				FileOutputStream out = new FileOutputStream(att);
-	            		    	
-	            				// Copy the file
-	            				byte[] buffer = new byte[1024];
-	            				int read;
-	            				while ((read = fis.read(buffer)) != -1) {
-	            					out.write(buffer, 0, read);
-	            				}
-	            				
-	            				// Close the files
-	            		    	fis.close();
-	            		    	out.close();
-	            		    	
-	            		    	// Add the file as an attachment
-	            				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));
-	            				
-	            			} catch (Exception e) {
-	            				Toast.makeText(getBaseContext(), "Unable to save ChordPro file!", Toast.LENGTH_LONG).show();
-	            			}
-	        				
-	        				break;
-	        			case PDF:
-						default:
-							break;
-        			}
-        			
-        			// Add the subject and body
-        			i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songI.getName());
-        			//i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
-        			i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
-        					"<h2>SBGSoft Virtual SongBook</h2>" +
-        					"<b>Song Name:</b>&nbsp;&nbsp;" + songI.getName() + "<br/>" +
-        					"<b>Song Key:</b>&nbsp;&nbsp;" + emailSongKey + "<br/>" +
-        					"<br/>" +
-        					"The music for this song has been attached to this email as a file." +
-        					"<br/>"));
-        
-        			startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
-        		}
-        	});
-        	
-        	alert.show();
-    	}
+		startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
     }
     
     /**
      * Saves the song
      * @param songName The song to save
      */
-    private void saveSong(final SongItem songI, final MainStrings.ShareType shareType) {
-    	String songKey = dbAdapter.getSongKey(songI.getName());
-    	emailSongKey = songKey;
-    	
-    	// Check for a special key
-    	if (MainStrings.keyMap.containsKey(songKey)) {
-    		// Set the song key to the associated key
-    		songKey = MainStrings.keyMap.get(songKey);
-    	}
-    	
-    	// Check to make sure the song has a proper key
-    	if (MainStrings.songKeys.contains(songKey)) {
-    		// Create the key array
-    		CharSequence[] keys = MainStrings.songKeys.toArray(new CharSequence[MainStrings.songKeys.size() + 1]);
-    		keys[MainStrings.songKeys.size()] = "Original Key";
-    		
-    		AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        	alert.setTitle("Email Song in Which Key?");
-        	alert.setItems(keys, new OnClickListener() {
-        		public void onClick (DialogInterface dialog, int whichItem) {
-        			// Set the new song key
-        			if (whichItem < MainStrings.songKeys.size())
-        				emailSongKey = MainStrings.songKeys.get(whichItem);
-        			
-        			// Craft the file name
-					String fileName = songI.getName() + " - " + songI.getAuthor();
-        			
-        			// Save the file
-        			switch (shareType) {
-	        			case plainText:
-	        				// Add the file extension
-        					fileName += ".txt";
-        					
-	        				try {
-	        					// Open the file and translate it
-		        				FileInputStream fis = openFileInput(songI.getFile());
-		        				String temp = ChordProParser.ParseSongFile(songI, emailSongKey, fis, false, true);
-		        				
-	            				// Write the file
-	            				File att = new File(Environment.getExternalStorageDirectory(), fileName);
-	            				FileOutputStream out = new FileOutputStream(att);
-	            		    	out.write(temp.getBytes());
-	            				
-	            		    	// Close the files
-	            		    	fis.close();
-	            		    	out.close();
-	            				
-	            			} catch (Exception e) {
-	            				Toast.makeText(getBaseContext(), "Unable to save text file!", Toast.LENGTH_LONG).show();
-	            			}
-	        				
-	        				Toast.makeText(getBaseContext(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Toast.LENGTH_LONG).show();
-	        				
-	        				break;
-	        			case chordPro:
-	        				// Add the file extension
-        					fileName += ".pro";
-        					
-	        				try {	        					
-	        					// Open the input file
-		        				FileInputStream fis = openFileInput(songI.getFile());
-		        				
-	            				// Open the output file
-	            				File att = new File(Environment.getExternalStorageDirectory(), fileName);
-	            				FileOutputStream out = new FileOutputStream(att);
-	            		    	
-	            				// Copy the file
-	            				byte[] buffer = new byte[1024];
-	            				int read;
-	            				while ((read = fis.read(buffer)) != -1) {
-	            					out.write(buffer, 0, read);
-	            				}
-	            				
-	            				// Close the files
-	            		    	fis.close();
-	            		    	out.close();
-	            				
-	            			} catch (Exception e) {
-	            				Toast.makeText(getBaseContext(), "Unable to save ChordPro file!", Toast.LENGTH_LONG).show();
-	            			}
-	        				
-	        				Toast.makeText(getBaseContext(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Toast.LENGTH_LONG).show();
-	        				
-	        				break;
-	        			case PDF:
-						default:
-							break;
-        			}
-        		}
-        	});
-        	
-        	alert.show();
-    	}
+    private void saveSong(final SongItem songI, final MainStrings.ShareType shareType, String newSongKey) {
+		// Craft the file name
+		String fileName = songI.getName() + " - " + songI.getAuthor();
+		
+		// Save the file
+		switch (shareType) {
+			case plainText:
+				// Add the file extension
+				fileName += ".txt";
+				
+				try {
+					// Open the file and translate it
+    				FileInputStream fis = openFileInput(songI.getFile());
+    				String temp = ChordProParser.ParseSongFile(songI, newSongKey, fis, false, true);
+    				
+    				// Write the file
+    				File att = new File(Environment.getExternalStorageDirectory(), fileName);
+    				FileOutputStream out = new FileOutputStream(att);
+    		    	out.write(temp.getBytes());
+    				
+    		    	// Close the files
+    		    	fis.close();
+    		    	out.close();
+    				
+    			} catch (Exception e) {
+    				Toast.makeText(getBaseContext(), "Unable to save text file!", Toast.LENGTH_LONG).show();
+    			}
+				
+				Toast.makeText(getBaseContext(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Toast.LENGTH_LONG).show();
+				
+				break;
+			case chordPro:
+				// Add the file extension
+				fileName += ".pro";
+				
+				try {	        					
+					// Open the input file
+    				FileInputStream fis = openFileInput(songI.getFile());
+    				
+    				// Open the output file
+    				File att = new File(Environment.getExternalStorageDirectory(), fileName);
+    				FileOutputStream out = new FileOutputStream(att);
+    		    	
+    				// Copy the file
+    				byte[] buffer = new byte[1024];
+    				int read;
+    				while ((read = fis.read(buffer)) != -1) {
+    					out.write(buffer, 0, read);
+    				}
+    				
+    				// Close the files
+    		    	fis.close();
+    		    	out.close();
+    				
+    			} catch (Exception e) {
+    				Toast.makeText(getBaseContext(), "Unable to save ChordPro file!", Toast.LENGTH_LONG).show();
+    			}
+				
+				Toast.makeText(getBaseContext(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Toast.LENGTH_LONG).show();
+				
+				break;
+			case PDF:
+			default:
+				break;
+		}
     }
-    
+        
     /**
      * Shares the song via email or saving it
      * @param songI The SongItem
@@ -2450,18 +2391,73 @@ public class MainActivity extends FragmentActivity {
     	alert.setTitle("Share How?");
     	alert.setItems(options, new OnClickListener() {
     		public void onClick (DialogInterface dialog, int whichItem) {
+    			// Dismiss the current dialog
+    			dialog.dismiss();
+    			
+    			// Create the key array
+	    		CharSequence[] keys = MainStrings.songKeys.toArray(new CharSequence[MainStrings.songKeys.size() + 1]);
+	    		keys[MainStrings.songKeys.size()] = "Original Key";
+	    	
+	    		AlertDialog.Builder keysAlert;
+	    		
     			switch (whichItem) {
 	    			case 0:		// Email, plain text
-	    				emailSong(songI, MainStrings.ShareType.plainText);
+	    				// Check for a special key
+	    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+	    		    		// Set the song key to the associated key
+	    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+	    		    	}
+	    		    	
+	    	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
+
+	    	    		keysAlert.setTitle("Email Song in Which Key?");
+	    	    		keysAlert.setItems(keys, new OnClickListener() {
+	    	        		public void onClick (DialogInterface dialog, int whichItem) {
+	    	        			// Set the new song key
+	    	        			String newSongKey = "";
+	    	        			if (whichItem < MainStrings.songKeys.size()) {
+	    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+	    	        			}
+	    	        			
+	    	        			// Check to make sure the song has a proper key
+	    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
+	    	        	    		emailSong(songI, MainStrings.ShareType.plainText, newSongKey);
+	    	        		}
+	    	        	});
+	    	        	
+	    	    		keysAlert.show();
 	    				break;
 	    			case 1:		// Email, chordpro
-	    				emailSong(songI, MainStrings.ShareType.chordPro);
+	    				emailSong(songI, MainStrings.ShareType.chordPro, "");
 	    				break;
 	    			case 2:		// Save, plain text
-	    				saveSong(songI, MainStrings.ShareType.plainText);
+	    				// Check for a special key
+	    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+	    		    		// Set the song key to the associated key
+	    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+	    		    	}
+	    	    		
+	    		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
+
+	    		    	keysAlert.setTitle("Email Song in Which Key?");
+	    		    	keysAlert.setItems(keys, new OnClickListener() {
+	    	        		public void onClick (DialogInterface dialog, int whichItem) {
+	    	        			// Set the new song key
+	    	        			String newSongKey = "";
+	    	        			if (whichItem < MainStrings.songKeys.size()) {
+	    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+	    	        			}
+	    	        			
+	    	        			// Check to make sure the song has a proper key
+	    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
+	    	        	    		saveSong(songI, MainStrings.ShareType.plainText, newSongKey);
+	    	        		}
+	    	        	});
+	    	        	
+	    		    	keysAlert.show();
 	    				break;
 	    			case 3:		// Save, chordpro
-	    				saveSong(songI, MainStrings.ShareType.chordPro);
+	    				saveSong(songI, MainStrings.ShareType.chordPro, "");
 	    				break;
     			}
     		}
