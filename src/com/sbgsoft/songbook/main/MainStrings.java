@@ -55,7 +55,7 @@ public class MainStrings {
 	public static final int ADD_SONG_CURR_SET = 5;
 	public static final int SONG_GROUPS_ADD = 6;
 	public static final int SONG_GROUPS_DEL = 7;
-	public static final int EMAIL_SONG = 8;
+	public static final int SHARE_SONG = 8;
 	public static final int SONG_STATS = 9;
 	
 	// Set Context Menu Keys
@@ -71,11 +71,18 @@ public class MainStrings {
 	public static final int EDIT_SONG_CS = 20;
 	public static final int EDIT_SONG_ATT_CS = 21;
 	public static final int SET_SONG_KEY_CS = 22;
-	public static final int EMAIL_SONG_CS = 23;
+	public static final int SHARE_SONG_CS = 23;
 	public static final int REMOVE_SONG_FROM_SET = 24;
 	public static final int SONG_STATS_CS = 25;
 	
 	// Sort Arrays
 	public static final ArrayList<String> songSortBy = new ArrayList<String>(Arrays.asList("Song Title", "Song Author", "Song Key"));
 	public static final ArrayList<String> setSortBy = new ArrayList<String>(Arrays.asList("Set Date - Recent", "Set Date - Oldest", "Set Title"));
+	
+	// Enums
+	public enum ShareType {
+		plainText,
+		chordPro,
+		PDF
+	}
 }

@@ -207,30 +207,34 @@ containing a value of this type.
         public static final int add_song_subnote=0x7f07000e;
         public static final int app_name=0x7f070001;
         public static final int cancel=0x7f070002;
-        public static final int cmenu_set_group_add=0x7f07004a;
-        public static final int cmenu_set_group_delete=0x7f07004b;
-        public static final int cmenu_sets_delete=0x7f070041;
-        public static final int cmenu_sets_edit=0x7f070042;
-        public static final int cmenu_sets_edit_att=0x7f070043;
-        public static final int cmenu_sets_email=0x7f070044;
-        public static final int cmenu_sets_remove_song=0x7f07004c;
-        public static final int cmenu_sets_reorder=0x7f070045;
-        public static final int cmenu_sets_set_song_key=0x7f070040;
-        public static final int cmenu_song_add_curr_set=0x7f070047;
-        public static final int cmenu_song_add_set=0x7f070046;
-        public static final int cmenu_song_group_add=0x7f070048;
-        public static final int cmenu_song_group_delete=0x7f070049;
+        public static final int cmenu_set_group_add=0x7f07004e;
+        public static final int cmenu_set_group_delete=0x7f07004f;
+        public static final int cmenu_sets_delete=0x7f070045;
+        public static final int cmenu_sets_edit=0x7f070046;
+        public static final int cmenu_sets_edit_att=0x7f070047;
+        public static final int cmenu_sets_email=0x7f070048;
+        public static final int cmenu_sets_remove_song=0x7f070050;
+        public static final int cmenu_sets_reorder=0x7f070049;
+        public static final int cmenu_sets_set_song_key=0x7f070044;
+        public static final int cmenu_song_add_curr_set=0x7f07004b;
+        public static final int cmenu_song_add_set=0x7f07004a;
+        public static final int cmenu_song_group_add=0x7f07004c;
+        public static final int cmenu_song_group_delete=0x7f07004d;
         /**  Context Menu Strings 
          */
         public static final int cmenu_songs_delete=0x7f07003c;
         public static final int cmenu_songs_edit=0x7f07003d;
         public static final int cmenu_songs_edit_att=0x7f07003e;
-        public static final int cmenu_songs_email=0x7f07003f;
-        public static final int cmenu_songs_stats=0x7f07004d;
+        public static final int cmenu_songs_share=0x7f07003f;
+        public static final int cmenu_songs_share_email=0x7f070040;
+        public static final int cmenu_songs_share_email_cp=0x7f070041;
+        public static final int cmenu_songs_share_save=0x7f070042;
+        public static final int cmenu_songs_share_save_cp=0x7f070043;
+        public static final int cmenu_songs_stats=0x7f070051;
         public static final int content_description=0x7f070004;
         public static final int down_arrow=0x7f07001a;
-        public static final int dummy_button=0x7f07004f;
-        public static final int dummy_content=0x7f070050;
+        public static final int dummy_button=0x7f070053;
+        public static final int dummy_content=0x7f070054;
         public static final int empty_current=0x7f07001d;
         public static final int empty_song=0x7f070014;
         public static final int file_type=0x7f070009;
@@ -278,7 +282,7 @@ containing a value of this type.
         public static final int songs_row_key_text=0x7f07000f;
         public static final int sort_by=0x7f070003;
         public static final int title_activity_edit_song=0x7f070016;
-        public static final int title_activity_logo=0x7f07004e;
+        public static final int title_activity_logo=0x7f070052;
         /**  Open File Strings 
          */
         public static final int title_activity_open_file=0x7f070006;

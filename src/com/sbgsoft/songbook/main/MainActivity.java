@@ -113,7 +113,6 @@ public class MainActivity extends FragmentActivity {
 	
 	FragmentTransaction transaction;
 	private String importFilePath = "";
-	private String emailSongKey = "";
 	private int setsCurrentScrollPosition = 0;
 	private int setsCurrentScrollOffset = 0;
 	private int songsCurrentScrollPosition = 0;
@@ -291,7 +290,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.ADD_SONG_CURR_SET, MainStrings.ADD_SONG_CURR_SET, R.string.cmenu_song_add_curr_set);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_ADD, MainStrings.SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
     		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_DEL, MainStrings.SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
-    		menu.add(Menu.NONE, MainStrings.EMAIL_SONG, MainStrings.EMAIL_SONG, R.string.cmenu_songs_email);
+    		menu.add(Menu.NONE, MainStrings.SHARE_SONG, MainStrings.SHARE_SONG, R.string.cmenu_songs_share);
     		menu.add(Menu.NONE, MainStrings.SONG_STATS, MainStrings.SONG_STATS, R.string.cmenu_songs_stats);
     	}
     	// Sets context menu
@@ -311,7 +310,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_CS, MainStrings.EDIT_SONG_CS, R.string.cmenu_songs_edit);
     		menu.add(Menu.NONE, MainStrings.EDIT_SONG_ATT_CS, MainStrings.EDIT_SONG_ATT_CS, R.string.cmenu_songs_edit_att);
     		menu.add(Menu.NONE, MainStrings.SET_SONG_KEY_CS, MainStrings.SET_SONG_KEY_CS, R.string.cmenu_sets_set_song_key);
-    		menu.add(Menu.NONE, MainStrings.EMAIL_SONG_CS, MainStrings.EMAIL_SONG_CS, R.string.cmenu_songs_email);
+    		menu.add(Menu.NONE, MainStrings.SHARE_SONG_CS, MainStrings.SHARE_SONG_CS, R.string.cmenu_songs_share);
     		menu.add(Menu.NONE, MainStrings.REMOVE_SONG_FROM_SET, MainStrings.REMOVE_SONG_FROM_SET, R.string.cmenu_sets_remove_song);
     		menu.add(Menu.NONE, MainStrings.SONG_STATS_CS, MainStrings.SONG_STATS_CS, R.string.cmenu_songs_stats);
     	}
@@ -378,22 +377,20 @@ public class MainActivity extends FragmentActivity {
     			editSongAtt(songName);
     			
                 return true;
-    		case MainStrings.EMAIL_SONG:
+    		case MainStrings.SHARE_SONG:
     			// Get the song name
     			songI = (SongItem)songsList.get(info.position);
-    			songName = songI.getName();
     			
     			// Email the song
-    			emailSong(songI, songName);
+    			shareSong(songI);
     			
     			return true;
-    		case MainStrings.EMAIL_SONG_CS:
+    		case MainStrings.SHARE_SONG_CS:
     			// Get the song name
     			songI = (SongItem)currSetList.get(info.position);
-    			songName = songI.getName();
     			
     			// Email the song
-    			emailSong(songI, songName);
+    			shareSong(songI);
     			
     			return true;
     		case MainStrings.SET_SONG_KEY_CS:
@@ -1325,18 +1322,22 @@ public class MainActivity extends FragmentActivity {
 		sb.append("<i>" + setDate + "</i><br/><br/>");
 		
 		// Get the set songs
-		Cursor c2 = dbAdapter.getSetSongs(setName);
-		startManagingCursor(c2);
-		while (c2.moveToNext()) {
-			String sn = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
-			String sk = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_KEY));
+//		Cursor c2 = dbAdapter.getSetSongs(setName);
+//		startManagingCursor(c2);
+//		while (c2.moveToNext()) {
+		
+		for (SongItem songI : setI.songs) {
+//			String sn = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+//			String sk = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_KEY));
+			String songKey = dbAdapter.getSongKeyForSet(setI.getName(), songI.getName());
 			
-			// Create the text file attachment
-			String temp = createSongPlainText(sn, sk, true, true);
-			
-			try {
+			try {				
+				// Create the text file attachment
+				FileInputStream fis = openFileInput(songI.getFile());
+				String temp = ChordProParser.ParseSongFile(songI, songKey, fis, false, true);
+				
 				// Write the file
-				File att = new File(Environment.getExternalStorageDirectory(), sn + "_att.txt");
+				File att = new File(Environment.getExternalStorageDirectory(), songI.getName() + "_att.txt");
 				att.deleteOnExit();
 				FileOutputStream out = new FileOutputStream(att);
 		    	out.write(temp.getBytes());
@@ -1349,7 +1350,7 @@ public class MainActivity extends FragmentActivity {
 				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
 			}
 			
-			sb.append(sn + " - " + sk + "<br/>");
+			sb.append(songI.getName() + " - " + songKey + "<br/>");
 		}
 		
 		// Create the email intent
@@ -2109,7 +2110,7 @@ public class MainActivity extends FragmentActivity {
 				try {
 					FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
 					//song.setText(getSongHtmlText(song.getName(), song.getKey(), fis));
-					song.setText(ChordProParser.ParseSongFile(song, song.getKey(), fis));
+					song.setText(ChordProParser.ParseSongFile(song, song.getKey(), fis, true, false));
 					
 					// Show the song activity
 	            	SongActivity songA = new SongActivity();
@@ -2215,343 +2216,256 @@ public class MainActivity extends FragmentActivity {
      * Emails the song
      * @param songName The song to email
      */
-    private void emailSong(final SongItem songI, final String songName) {
-    	final String attFileName = songName + "_att.txt";
-    	String songKey = dbAdapter.getSongKey(songName);
-    	emailSongKey = songKey;
-    	
-    	// Check for a special key
-    	if (MainStrings.keyMap.containsKey(songKey)) {
-    		// Set the song key to the associated key
-    		songKey = MainStrings.keyMap.get(songKey);
-    	}
-    	
-    	// Check to make sure the song has a proper key
-    	if (MainStrings.songKeys.contains(songKey)) {
-    		// Create the key array
-    		CharSequence[] keys = MainStrings.songKeys.toArray(new CharSequence[MainStrings.songKeys.size() + 1]);
-    		keys[MainStrings.songKeys.size()] = "Original Key";
-    		
-    		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+    private void emailSong(SongItem songI, MainStrings.ShareType shareType, String newSongKey) {
+		// Create the email intent
+    	Intent i = new Intent(android.content.Intent.ACTION_SEND);
+		i.setType("text/Message");
+		
+		// Craft the file name
+		String fileName = songI.getName() + " - " + songI.getAuthor();
+		
+		// Add the attachment
+		switch (shareType) {
+			case plainText:
+				// Add the file extension
+				fileName += ".txt";
+				
+				// Create the text file attachment
+				try {
+					// Open the file and translate it
+    				FileInputStream fis = openFileInput(songI.getFile());
+    				String temp = ChordProParser.ParseSongFile(songI, newSongKey, fis, false, true);
+    				
+    				// Write the file
+    				File att = new File(Environment.getExternalStorageDirectory(), fileName);
+    				FileOutputStream out = new FileOutputStream(att);
+    		    	out.write(temp.getBytes());
+    				
+    		    	// Close the files
+    		    	fis.close();
+    		    	out.close();
+    				
+    				// Add the file as an attachment
+    				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));			
+    				
+    			} catch (Exception e) {
+    				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
+    			}
+				
+				break;
+			case chordPro:
+				// Add the file extension
+				fileName += ".pro";
+				
+				try {	        					
+					// Open the input file
+    				FileInputStream fis = openFileInput(songI.getFile());
+    				
+    				// Open the output file
+    				File att = new File(Environment.getExternalStorageDirectory(), fileName);
+    				FileOutputStream out = new FileOutputStream(att);
+    		    	
+    				// Copy the file
+    				byte[] buffer = new byte[1024];
+    				int read;
+    				while ((read = fis.read(buffer)) != -1) {
+    					out.write(buffer, 0, read);
+    				}
+    				
+    				// Close the files
+    		    	fis.close();
+    		    	out.close();
+    		    	
+    		    	// Add the file as an attachment
+    				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));
+    				
+    			} catch (Exception e) {
+    				Toast.makeText(getBaseContext(), "Unable to save ChordPro file!", Toast.LENGTH_LONG).show();
+    			}
+				
+				break;
+			case PDF:
+			default:
+				break;
+		}
+		
+		// Add the subject and body
+		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songI.getName());
+		//i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
+		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
+				"<h2>SBGSoft Virtual SongBook</h2>" +
+				"<b>Song Name:</b>&nbsp;&nbsp;" + songI.getName() + "<br/>" +
+				"<b>Song Key:</b>&nbsp;&nbsp;" + newSongKey + "<br/>" +
+				"<br/>" +
+				"The music for this song has been attached to this email as a file." +
+				"<br/>"));
 
-        	alert.setTitle("Email Song in Which Key?");
-        	alert.setItems(keys, new OnClickListener() {
-        		public void onClick (DialogInterface dialog, int whichItem) {
-        			// Set the new song key
-        			if (whichItem < MainStrings.songKeys.size())
-        				emailSongKey = MainStrings.songKeys.get(whichItem);
-        			
-        			// Create the email intent
-        	    	Intent i = new Intent(android.content.Intent.ACTION_SEND);
-        			i.setType("text/Message");
-        			
-        			// Create the text file attachment
-        			String temp = createSongPlainText(songName, emailSongKey, true, true);
-        			
-        			try {
-        				// Write the file
-        				File att = new File(Environment.getExternalStorageDirectory(), attFileName);
-        				att.deleteOnExit();
-        				FileOutputStream out = new FileOutputStream(att);
-        		    	out.write(temp.getBytes());
-        				out.close(); 
-        				
-        				// Add the file as an attachment
-        				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));			
-        				
-        			} catch (Exception e) {
-        				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
-        			}
-        			
-        			// Add the subject and body
-        			i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songName);
-        			//i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
-        			i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
-        					"<h2>SBGSoft Virtual SongBook</h2>" +
-        					"<b>Song Name:</b>&nbsp;&nbsp;" + songName + "<br/>" +
-        					"<b>Song Key:</b>&nbsp;&nbsp;" + emailSongKey + "<br/>" +
-        					"<br/>" +
-        					"The music for this song has been attached to this email as a text file." +
-        					"<br/>"));
-        
-        			startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
-        		}
-        	});
-        	
-        	alert.show();
-    	}
+		startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
     }
     
     /**
-     * Creates a monospace text string of the song
-     * @param songName The song name to create the text for
-     * @param transposeKey The key to transpose the song into
-     * @return The monospace text string
+     * Saves the song
+     * @param songName The song to save
      */
-    public String createSongPlainText(String songName, String transposeKey, boolean includeTitle, boolean winLineFeed) {
-    	StringBuilder sb = new StringBuilder();
-    	String songText = "", chordLine = "", lyricLine = "", currentChord = "", newChord = "", authorLine = "";
-    	String songKey = dbAdapter.getSongKey(songName);
-    	String lineFeed = "";
-    	boolean transposeSong = false, addCapo = true;
-    	Pattern regex;
-    	Matcher matcher;
-    	int currentCapo = 0, newCapo = 0;
-    	
-    	// Set the line feed to use
-    	if(winLineFeed)
-    		lineFeed = "\r\n";
-    	else
-    		lineFeed = MainStrings.EOL;
-    	
-    	// Add the song title
-    	if(includeTitle)
-    		sb.append(songName + lineFeed);
-    			
-    	try {
-    		// Check to see if the song needs to be transposed
-        	if(!transposeKey.isEmpty() && !songKey.equals(transposeKey)) {
-        		// Transpose the song
-        		transposeSong = true;
-        	}
-        	
-        	// Compile the regex to look for a capo
-            regex = Pattern.compile("([Cc][Aa][Pp][Oo])\\D*(\\d+)");
-        	
-        	FileInputStream fis = openFileInput(dbAdapter.getSongFile(songName));
-        	DataInputStream in = new DataInputStream(fis);
-        	BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String line = br.readLine();
-
-            // Read each line of the file
-            while (line != null) {
-            	boolean inChord = false;
-            	boolean inDelimiter = false;
-            	int skipCounter = 0, charCounter = 0, commentLoc = 0;
-            	String delimiter = "";  
-            	
-            	// Check for capo and adjust if necessary
-            	if (transposeSong && addCapo) {
-	        		matcher = regex.matcher(line);
-	            	if (matcher.find()) {
-	            		currentCapo = Integer.parseInt(matcher.group(2));
-	            		newCapo = Transpose.getCapo(songKey, transposeKey, currentCapo);
-	            		// If capo 0 remove the capo line
-	            		if (newCapo == 0) {
-	            			// Clear the chord and lyric lines
-	                        chordLine = "";
-	                        lyricLine = "";
-	                        
-	                        // Read the next line
-	                        line = br.readLine();
-	            		}
-	            		else
-	            			line = line.substring(0, matcher.start()) + "Capo " + newCapo + line.substring(matcher.end());
-	            		
-	            		addCapo = false;
-            			continue;
-	            	}
-            	}
-            	
-            	// For intro add the line with chord formatting but all on the same line
-        		if (line.startsWith("{intro:")) {
-        			for (char c : line.substring(7, line.length() - 1).toCharArray()) {
-        				if (c == '[') {
-        					inChord = true;
-        					continue;
-        				}
-        				if (c == ']') {
-        					inChord = false;
-        					
-        					// Transpose the chord
-        					if (transposeSong)
-        						newChord = Transpose.transposeChord(currentChord, transposeKey, songKey);
-        					else
-        						newChord = currentChord;
-                			
-                			// Add the chord to the line
-        					lyricLine += newChord;
-        					currentChord = "";
-        					continue;
-        				}
-        				
-        				// If in a chord fill the currentChord, else add to lyric line
-        				if (inChord)
-        					currentChord += c;
-        				else
-        					lyricLine += c;
-        			}
-        			
-        			if (!lyricLine.isEmpty()) {
-		                sb.append(lyricLine);
-		                sb.append(lineFeed);
-	            	}
-        		} else {
-        			// Step through each character in the line
-                	for (char c : line.toCharArray()) {
-                		// Increment the character counter
-                		charCounter++;
-                		
-                		// If the character is an open bracket set inChord true and continue
-                		if (c == '[' && !delimiter.equals("lc")) {
-                			inChord = true;
-                			continue;
-                		}
-                		
-                		// If the character is a closed bracket set inChord false and continue
-                		if (c == ']' && !delimiter.equals("lc")) {
-                			inChord = false;
-                			
-                			// Transpose the chord
-                			if (transposeSong)
-        						newChord = Transpose.transposeChord(currentChord, transposeKey, songKey);
-                			else
-                				newChord = currentChord;
-                			
-                			// Check for different sized chords
-                			if (newChord.length() > currentChord.length())
-                				skipCounter++;
-                			else if (newChord.length() < currentChord.length())
-                				skipCounter--;
-                			
-                			// Add the chord to the line
-        					chordLine += newChord;
-        					currentChord = "";
-                			continue;
-                		}
-                		
-                		// If the character is an open { set inComment true and continue
-                		if (c == '{') {
-                			inDelimiter = true;
-                			
-                			// Set the comment type
-                			commentLoc = line.indexOf(":", charCounter);
-                			delimiter = line.substring(charCounter, commentLoc);
-                			
-                			continue;
-                		}
-                		
-                		// If the character is a closed } set inComment false and continue
-                		if (c == '}') {
-                			inDelimiter = false;
-                    		
-                			delimiter = "";
-                			commentLoc = 0;
-                			continue;
-                		}
-                		
-                		// If in a comment
-                		if (inDelimiter) {
-                			// A chord comment type
-                			if (delimiter.equals("cc")) {
-                				if (charCounter > commentLoc + 1) {
-                					skipCounter++;
-                					if (inChord)
-                						currentChord += c;
-                					else
-                						chordLine += c;
-                				}
-                			}
-                			
-                			// A lyric chord type
-                			if (delimiter.equals("lc")) {
-                				if (charCounter > commentLoc + 1) {
-                					if (c == '[') {
-                						inChord = true;
-                					}
-                					else if (c == ']') {
-                						inChord = false;
-                						
-                						// Transpose the chord
-                    					if (transposeSong)
-                    						newChord = Transpose.transposeChord(currentChord, transposeKey, songKey);
-                    					else 
-                    						newChord = currentChord;
-                            			
-                            			// Add the chord to the line
-                    					lyricLine += newChord;
-                    					currentChord = "";
-                					}
-                					else {
-                						if (inChord)
-                        					currentChord += c;
-                        				else
-                        					lyricLine += c;
-                					}
-                				}
-                			}
-                			
-                			// For comments just add the line with no formatting
-                    		if (delimiter.equals("comment") || delimiter.equals("title") || delimiter.equals("author")) {
-                    			//sb.append(line.substring(i + 1, line.length() - 1) + "<br/>");
-                    			if (charCounter > commentLoc + 1) {
-                    				lyricLine += c;
-                    				if (delimiter.equals("author")) 
-                    					authorLine += c;
-                    			}
-                    		}
-                    	
-                    		continue;
-                		}
-                		
-                		// If in a chord, add the chord to the chord line
-                		if (inChord) {
-                			currentChord += c;
-                			skipCounter++;
-                		} else {
-                			if (skipCounter > 0)
-                				skipCounter--;
-                			else
-                				chordLine += " ";
-                			lyricLine += c;
-                		}
-                	}
-    	            	
-                	// Add the chord and lyric lines to the overall string builder
-                	if (!chordLine.isEmpty()) {
-    	                sb.append(chordLine);
-    	                sb.append(lineFeed);
-                	}
-                	if (!lyricLine.isEmpty()) {
-    	                sb.append(lyricLine);
-    	                sb.append(lineFeed);
-                	}
-                	if (chordLine.isEmpty() && lyricLine.isEmpty())
-                		sb.append(lineFeed);
-        		}
-        		
-        		// Clear the chord and lyric lines
-                chordLine = "";
-                lyricLine = "";
-                
-                // Read the next line
-                line = br.readLine();
-            }
-            
-            // Set the song text
-            songText = sb.toString();
-            
-            // If a capo was not added and a capo is needed, add one
-            if (addCapo && transposeSong) {
-            	// Search for the author line
-        		regex = Pattern.compile(authorLine);
-        		matcher = regex.matcher(songText);
-    	    	if (matcher.find()) {
-    	    		newCapo = Transpose.getCapo(songKey, transposeKey, 0);
-    	    		if (newCapo != 0)
-    	    			songText = songText.substring(0, matcher.end()) + lineFeed + "Capo " + newCapo + lineFeed + songText.substring(matcher.end());
-    	    	}	
-            }
-            
-            br.close();
-        } catch (Exception e) {
-    		Toast.makeText(getApplicationContext(), "Failed to create file attachment!", Toast.LENGTH_LONG).show();
-        }     	
-    	
-    	
-    	return songText.toString();	
+    private void saveSong(final SongItem songI, final MainStrings.ShareType shareType, String newSongKey) {
+		// Craft the file name
+		String fileName = songI.getName() + " - " + songI.getAuthor();
+		
+		// Save the file
+		switch (shareType) {
+			case plainText:
+				// Add the file extension
+				fileName += ".txt";
+				
+				try {
+					// Open the file and translate it
+    				FileInputStream fis = openFileInput(songI.getFile());
+    				String temp = ChordProParser.ParseSongFile(songI, newSongKey, fis, false, true);
+    				
+    				// Write the file
+    				File att = new File(Environment.getExternalStorageDirectory(), fileName);
+    				FileOutputStream out = new FileOutputStream(att);
+    		    	out.write(temp.getBytes());
+    				
+    		    	// Close the files
+    		    	fis.close();
+    		    	out.close();
+    				
+    			} catch (Exception e) {
+    				Toast.makeText(getBaseContext(), "Unable to save text file!", Toast.LENGTH_LONG).show();
+    			}
+				
+				Toast.makeText(getBaseContext(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Toast.LENGTH_LONG).show();
+				
+				break;
+			case chordPro:
+				// Add the file extension
+				fileName += ".pro";
+				
+				try {	        					
+					// Open the input file
+    				FileInputStream fis = openFileInput(songI.getFile());
+    				
+    				// Open the output file
+    				File att = new File(Environment.getExternalStorageDirectory(), fileName);
+    				FileOutputStream out = new FileOutputStream(att);
+    		    	
+    				// Copy the file
+    				byte[] buffer = new byte[1024];
+    				int read;
+    				while ((read = fis.read(buffer)) != -1) {
+    					out.write(buffer, 0, read);
+    				}
+    				
+    				// Close the files
+    		    	fis.close();
+    		    	out.close();
+    				
+    			} catch (Exception e) {
+    				Toast.makeText(getBaseContext(), "Unable to save ChordPro file!", Toast.LENGTH_LONG).show();
+    			}
+				
+				Toast.makeText(getBaseContext(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Toast.LENGTH_LONG).show();
+				
+				break;
+			case PDF:
+			default:
+				break;
+		}
     }
-    
+        
+    /**
+     * Shares the song via email or saving it
+     * @param songI The SongItem
+     * @param songName The song name
+     */
+    public void shareSong(final SongItem songI) {    	
+    	// Create the options array
+    	CharSequence[] options = {getString(R.string.cmenu_songs_share_email), 
+    			getString(R.string.cmenu_songs_share_email_cp), 
+    			getString(R.string.cmenu_songs_share_save), 
+    			getString(R.string.cmenu_songs_share_save_cp)};
+		
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Share How?");
+    	alert.setItems(options, new OnClickListener() {
+    		public void onClick (DialogInterface dialog, int whichItem) {
+    			// Dismiss the current dialog
+    			dialog.dismiss();
+    			
+    			// Create the key array
+	    		CharSequence[] keys = MainStrings.songKeys.toArray(new CharSequence[MainStrings.songKeys.size() + 1]);
+	    		keys[MainStrings.songKeys.size()] = "Original Key";
+	    	
+	    		AlertDialog.Builder keysAlert;
+	    		
+    			switch (whichItem) {
+	    			case 0:		// Email, plain text
+	    				// Check for a special key
+	    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+	    		    		// Set the song key to the associated key
+	    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+	    		    	}
+	    		    	
+	    	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
+
+	    	    		keysAlert.setTitle("Email Song in Which Key?");
+	    	    		keysAlert.setItems(keys, new OnClickListener() {
+	    	        		public void onClick (DialogInterface dialog, int whichItem) {
+	    	        			// Set the new song key
+	    	        			String newSongKey = "";
+	    	        			if (whichItem < MainStrings.songKeys.size()) {
+	    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+	    	        			}
+	    	        			
+	    	        			// Check to make sure the song has a proper key
+	    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
+	    	        	    		emailSong(songI, MainStrings.ShareType.plainText, newSongKey);
+	    	        		}
+	    	        	});
+	    	        	
+	    	    		keysAlert.show();
+	    				break;
+	    			case 1:		// Email, chordpro
+	    				emailSong(songI, MainStrings.ShareType.chordPro, "");
+	    				break;
+	    			case 2:		// Save, plain text
+	    				// Check for a special key
+	    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+	    		    		// Set the song key to the associated key
+	    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+	    		    	}
+	    	    		
+	    		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
+
+	    		    	keysAlert.setTitle("Email Song in Which Key?");
+	    		    	keysAlert.setItems(keys, new OnClickListener() {
+	    	        		public void onClick (DialogInterface dialog, int whichItem) {
+	    	        			// Set the new song key
+	    	        			String newSongKey = "";
+	    	        			if (whichItem < MainStrings.songKeys.size()) {
+	    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+	    	        			}
+	    	        			
+	    	        			// Check to make sure the song has a proper key
+	    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
+	    	        	    		saveSong(songI, MainStrings.ShareType.plainText, newSongKey);
+	    	        		}
+	    	        	});
+	    	        	
+	    		    	keysAlert.show();
+	    				break;
+	    			case 3:		// Save, chordpro
+	    				saveSong(songI, MainStrings.ShareType.chordPro, "");
+	    				break;
+    			}
+    		}
+    	});
+    	
+    	alert.show();
+    }
+        
     /**
      * Sets the song key for the set
      */
@@ -2646,6 +2560,7 @@ public class MainActivity extends FragmentActivity {
     	alert.show();
 	}
     
+    
     /*****************************************************************************
      * 
      * Current Set Functions
@@ -2705,7 +2620,7 @@ public class MainActivity extends FragmentActivity {
             		try {
 	            		FileInputStream fis = openFileInput(dbAdapter.getSongFile(currSong.getName()));
 	            		currSong.setKey(dbAdapter.getSongKey(currSong.getName()));
-	            		currSong.setText(ChordProParser.ParseSongFile(currSong, dbAdapter.getSongKeyForSet(dbAdapter.getCurrentSetName(), currSong.getName()), fis));
+	            		currSong.setText(ChordProParser.ParseSongFile(currSong, dbAdapter.getSongKeyForSet(dbAdapter.getCurrentSetName(), currSong.getName()), fis, true, false));
 	            		
 	            		setItem.songs.add(currSong);      
             		} catch (FileNotFoundException e) {
