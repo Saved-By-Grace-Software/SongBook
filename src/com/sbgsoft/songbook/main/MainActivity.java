@@ -53,6 +53,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
@@ -2372,6 +2373,12 @@ public class MainActivity extends FragmentActivity {
 				
 				break;
 			case PDF:
+				// Add the file extension
+				fileName += ".pdf";
+				
+				// Save the songs as a PDF
+				saveSongAsPdf(songI, newSongKey, fileName);
+				
 			default:
 				break;
 		}
@@ -2447,7 +2454,30 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		// Email, PDF
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_email_pdf)) {
-	    			
+	    			// Check for a special key
+    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+    		    		// Set the song key to the associated key
+    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+    		    	}
+    		    	
+    	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
+
+    	    		keysAlert.setTitle("Email Song in Which Key?");
+    	    		keysAlert.setItems(keys, new OnClickListener() {
+    	        		public void onClick (DialogInterface dialog, int whichItem) {
+    	        			// Set the new song key
+    	        			String newSongKey = "";
+    	        			if (whichItem < MainStrings.songKeys.size()) {
+    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+    	        			}
+    	        			
+    	        			// Check to make sure the song has a proper key
+    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
+    	        	    		emailSong(songI, MainStrings.ShareType.PDF, newSongKey);
+    	        		}
+    	        	});
+    	        	
+    	    		keysAlert.show();
 	    		}
 	    		// Save, plain text
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save)) {
@@ -2501,7 +2531,7 @@ public class MainActivity extends FragmentActivity {
     	        			
     	        			// Check to make sure the song has a proper key
     	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
-    	        	    		saveSongAsPdf(songI, newSongKey);
+    	        	    		saveSong(songI, MainStrings.ShareType.PDF, newSongKey);
     	        		}
     	        	});
     	        	
@@ -2518,8 +2548,7 @@ public class MainActivity extends FragmentActivity {
      * @param songI The song to save
      */
     @TargetApi(19)
-    public void saveSongAsPdf(SongItem songI, String songKey) {
-    	String fileName = songI.getName() + ".pdf";
+    public void saveSongAsPdf(SongItem songI, String songKey, String fileName) {
     	int pageWidth = 450;
     	int pageHeight = 700;
     	int padding = 30;

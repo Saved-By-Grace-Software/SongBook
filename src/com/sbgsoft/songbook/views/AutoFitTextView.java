@@ -67,10 +67,14 @@ public class AutoFitTextView extends TextView {
 		if (!(currentTextSize <= minimumTextSizePixels)) {
 			// Shrink the width to fit any long lines
 			shrinkToFitWidth();
-			
+		}
+		
+		// Check to make sure we aren't already at the minimum size
+		currentTextSize = this.getTextSize();
+		if (!(currentTextSize <= minimumTextSizePixels)) {
 			// Shrink the height to fit any extra lines
 			shrinkToFitHeight();
-		}		
+		}
 	}
 	
 	protected void shrinkToFitWidth() {
@@ -89,11 +93,12 @@ public class AutoFitTextView extends TextView {
 		    		// Get the width of the text
 		    		Rect bounds = new Rect();
 		    		Paint textPaint = this.getPaint();
-		    		textPaint.getTextBounds(line, 0, line.length(), bounds);
-		    		int lineWidth = bounds.width();
+//		    		textPaint.getTextBounds(line, 0, line.length(), bounds);
+//		    		int lineWidth1 = bounds.width();
+		    		float lineWidth = textPaint.measureText(line);
 		    		
 		    		// Check to see if the text size needs decremented
-		    		if (lineWidth >= width) {
+		    		if (lineWidth >= (float)width) {
 		    			// Decrement the text size
 		    			if (currentTextSize - textDecrement >= minimumTextSizePixels) {
 		    				this.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentTextSize - textDecrement);
