@@ -2226,6 +2226,10 @@ public class MainActivity extends FragmentActivity {
 		
 		// Craft the file name
 		String fileName = songI.getName() + " - " + songI.getAuthor();
+		if (newSongKey == "")
+			fileName += " (" + songI.getKey() + ")";
+		else
+			fileName += " (" + newSongKey + ")";
 		
 		// Add the attachment
 		switch (shareType) {
@@ -2322,6 +2326,10 @@ public class MainActivity extends FragmentActivity {
     private void saveSong(final SongItem songI, final MainStrings.ShareType shareType, String newSongKey) {
 		// Craft the file name
 		String fileName = songI.getName() + " - " + songI.getAuthor();
+		if (newSongKey == "")
+			fileName += " (" + songI.getKey() + ")";
+		else
+			fileName += " (" + newSongKey + ")";
 		
 		// Save the file
 		switch (shareType) {
