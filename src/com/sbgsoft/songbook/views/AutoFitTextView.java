@@ -115,24 +115,22 @@ public class AutoFitTextView extends TextView {
 	}
 	
 	protected void shrinkToFitHeight() {
-		int height = this.getHeight() - this.getPaddingTop() - this.getPaddingBottom();
+		int height = this.getHeight();
 		
 		// Get the current text size in pixels
 		float currentTextSize = this.getTextSize();
 		
 		// Check to make sure we aren't already at the minimum size
 		if (!(currentTextSize <= minimumTextSizePixels)) {
-			// Get number of lines
-			int lines = this.getLineCount();
+			int widthMeasureSpec = MeasureSpec.makeMeasureSpec(this.getWidth(), MeasureSpec.AT_MOST);
+			int heightMeasureSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+			this.measure(widthMeasureSpec, heightMeasureSpec);
+			int textHeight = this.getMeasuredHeight();
 			
-			Rect r = new Rect();
-			int y1 = this.getLineBounds(0, r);
-			int y2 = this.getLineBounds(lines-1, r);
-			
-			float size = this.getTextSize();
-			if ((y2 + y1) >= height && size > 2.0f) {
+			// Check the overall height
+			if (textHeight > height && currentTextSize > 2.0f) {
 				// Set the text size in pixels
-				this.setTextSize(TypedValue.COMPLEX_UNIT_PX, size - 1.0f);
+				this.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentTextSize - textDecrement);
 				shrinkToFitHeight();
 			}	
 		}

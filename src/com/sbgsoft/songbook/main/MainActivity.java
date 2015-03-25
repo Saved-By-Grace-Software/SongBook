@@ -2582,12 +2582,10 @@ public class MainActivity extends FragmentActivity {
 	    	tv.setText(Html.fromHtml(songText));
 	    	
 	    	// Force the text to shrink
-	    	tv.draw(new Canvas());
 	    	tv.shrinkToFit();
 	    	
 	    	// Add the song to the page
 	    	tv.draw(page.getCanvas());
-	    	
 	    	
 	    	// Finish the page
 	    	document.finishPage(page);
@@ -3438,11 +3436,11 @@ public class MainActivity extends FragmentActivity {
     }
     
     
-    /*****************************************************************************
-     * 
-     * Import / Export Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Import / Export Functions
+    // * 
+    // *****************************************************************************
     /**
      * Selects the folder to export the backup file to
      */
