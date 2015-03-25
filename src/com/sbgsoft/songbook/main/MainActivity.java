@@ -17,10 +17,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -34,8 +33,12 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
+import android.graphics.pdf.PdfDocument.Page;
+import android.graphics.pdf.PdfDocument.PageInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
@@ -90,17 +93,17 @@ import com.sbgsoft.songbook.songs.EditSongRawActivity;
 import com.sbgsoft.songbook.songs.SongActivity;
 import com.sbgsoft.songbook.songs.SongGroupArrayAdapter;
 import com.sbgsoft.songbook.songs.SongsTab;
-import com.sbgsoft.songbook.songs.Transpose;
+import com.sbgsoft.songbook.views.AutoFitTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
 
 public class MainActivity extends FragmentActivity {
 	
-	/*****************************************************************************
-	 * 
-	 * Class Variables
-	 * 
-	 *****************************************************************************/
+	// *****************************************************************************
+	// * 
+	// * Class Variables
+	// * 
+	// *****************************************************************************
 	private static int currentTab = 1;
 	private static String currentSongGroup = SongsTab.ALL_SONGS_LABEL;
 	private static String currentSetGroup = SetsTab.ALL_SETS_LABEL;
@@ -142,11 +145,11 @@ public class MainActivity extends FragmentActivity {
 	private ProgressDialog progressDialog;
 	
 	
-	/*****************************************************************************
-     * 
-     * Class Functions
-     * 
-     *****************************************************************************/
+	// *****************************************************************************
+    // * 
+    // * Class Functions
+    // * 
+    // *****************************************************************************
     /**
      *  Called when the activity is first created. 
      **/
@@ -725,11 +728,11 @@ public class MainActivity extends FragmentActivity {
     }
     
     
-    /*****************************************************************************
-     * 
-     * Set Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Set Functions
+    // * 
+    // *****************************************************************************
     /**
      * Prompts the user for a name and creates the set
      */
@@ -1366,11 +1369,11 @@ public class MainActivity extends FragmentActivity {
     }
     
 
-    /*****************************************************************************
-     * 
-     * Song Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Song Functions
+    // * 
+    // *****************************************************************************
     /**
      * Prompts the user for a name and creates the set
      */
@@ -2223,6 +2226,10 @@ public class MainActivity extends FragmentActivity {
 		
 		// Craft the file name
 		String fileName = songI.getName() + " - " + songI.getAuthor();
+		if (newSongKey == "")
+			fileName += " (" + songI.getKey() + ")";
+		else
+			fileName += " (" + newSongKey + ")";
 		
 		// Add the attachment
 		switch (shareType) {
@@ -2285,9 +2292,25 @@ public class MainActivity extends FragmentActivity {
 				
 				break;
 			case PDF:
+				// Add the file extension
+				fileName += ".pdf";
+				
+				// Save the song as a PDF
+				File att = saveSongAsPdf(songI, newSongKey, fileName);
+				att.deleteOnExit();
+				
+				// Add the file as an attachment
+				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));
 			default:
 				break;
 		}
+		
+		// Set the songkey for the email
+		String tmpkey = "";
+		if (newSongKey == "")
+			tmpkey = songI.getKey();
+		else
+			tmpkey = newSongKey;
 		
 		// Add the subject and body
 		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songI.getName());
@@ -2295,7 +2318,7 @@ public class MainActivity extends FragmentActivity {
 		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
 				"<h2>SBGSoft Virtual SongBook</h2>" +
 				"<b>Song Name:</b>&nbsp;&nbsp;" + songI.getName() + "<br/>" +
-				"<b>Song Key:</b>&nbsp;&nbsp;" + newSongKey + "<br/>" +
+				"<b>Song Key:</b>&nbsp;&nbsp;" + tmpkey + "<br/>" +
 				"<br/>" +
 				"The music for this song has been attached to this email as a file." +
 				"<br/>"));
@@ -2310,6 +2333,10 @@ public class MainActivity extends FragmentActivity {
     private void saveSong(final SongItem songI, final MainStrings.ShareType shareType, String newSongKey) {
 		// Craft the file name
 		String fileName = songI.getName() + " - " + songI.getAuthor();
+		if (newSongKey == "")
+			fileName += " (" + songI.getKey() + ")";
+		else
+			fileName += " (" + newSongKey + ")";
 		
 		// Save the file
 		switch (shareType) {
@@ -2369,6 +2396,12 @@ public class MainActivity extends FragmentActivity {
 				
 				break;
 			case PDF:
+				// Add the file extension
+				fileName += ".pdf";
+				
+				// Save the songs as a PDF
+				saveSongAsPdf(songI, newSongKey, fileName);
+				
 			default:
 				break;
 		}
@@ -2381,10 +2414,21 @@ public class MainActivity extends FragmentActivity {
      */
     public void shareSong(final SongItem songI) {    	
     	// Create the options array
-    	CharSequence[] options = {getString(R.string.cmenu_songs_share_email), 
-    			getString(R.string.cmenu_songs_share_email_cp), 
-    			getString(R.string.cmenu_songs_share_save), 
-    			getString(R.string.cmenu_songs_share_save_cp)};
+    	final CharSequence[] options;
+    	
+    	if (Build.VERSION.SDK_INT >= 19) {
+	    	options = new CharSequence[] {getString(R.string.cmenu_songs_share_email), 
+	    			getString(R.string.cmenu_songs_share_email_cp),
+	    			getString(R.string.cmenu_songs_share_email_pdf),
+	    			getString(R.string.cmenu_songs_share_save), 
+	    			getString(R.string.cmenu_songs_share_save_cp),
+	    			getString(R.string.cmenu_songs_share_save_pdf)};
+    	} else {
+    		options = new CharSequence[] {getString(R.string.cmenu_songs_share_email), 
+	    			getString(R.string.cmenu_songs_share_email_cp),
+	    			getString(R.string.cmenu_songs_share_save), 
+	    			getString(R.string.cmenu_songs_share_save_cp)};
+    	}
 		
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -2400,72 +2444,198 @@ public class MainActivity extends FragmentActivity {
 	    	
 	    		AlertDialog.Builder keysAlert;
 	    		
-    			switch (whichItem) {
-	    			case 0:		// Email, plain text
-	    				// Check for a special key
-	    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
-	    		    		// Set the song key to the associated key
-	    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
-	    		    	}
-	    		    	
-	    	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
+	    		// Email, plain text
+	    		if (options[whichItem] == getString(R.string.cmenu_songs_share_email)) {
+	    			// Check for a special key
+    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+    		    		// Set the song key to the associated key
+    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+    		    	}
+    		    	
+    	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
 
-	    	    		keysAlert.setTitle("Email Song in Which Key?");
-	    	    		keysAlert.setItems(keys, new OnClickListener() {
-	    	        		public void onClick (DialogInterface dialog, int whichItem) {
-	    	        			// Set the new song key
-	    	        			String newSongKey = "";
-	    	        			if (whichItem < MainStrings.songKeys.size()) {
-	    	        				newSongKey = MainStrings.songKeys.get(whichItem);
-	    	        			}
-	    	        			
-	    	        			// Check to make sure the song has a proper key
-	    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
-	    	        	    		emailSong(songI, MainStrings.ShareType.plainText, newSongKey);
-	    	        		}
-	    	        	});
-	    	        	
-	    	    		keysAlert.show();
-	    				break;
-	    			case 1:		// Email, chordpro
-	    				emailSong(songI, MainStrings.ShareType.chordPro, "");
-	    				break;
-	    			case 2:		// Save, plain text
-	    				// Check for a special key
-	    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
-	    		    		// Set the song key to the associated key
-	    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
-	    		    	}
-	    	    		
-	    		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
+    	    		keysAlert.setTitle("Email Song in Which Key?");
+    	    		keysAlert.setItems(keys, new OnClickListener() {
+    	        		public void onClick (DialogInterface dialog, int whichItem) {
+    	        			// Set the new song key
+    	        			String newSongKey = "";
+    	        			if (whichItem < MainStrings.songKeys.size()) {
+    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+    	        			}
+    	        			
+    	        			// Check to make sure the song has a proper key
+    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
+    	        	    		emailSong(songI, MainStrings.ShareType.plainText, newSongKey);
+    	        		}
+    	        	});
+    	        	
+    	    		keysAlert.show();
+	    		}
+	    		// Email, chordpro
+	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_email_cp)) {
+	    			emailSong(songI, MainStrings.ShareType.chordPro, "");
+	    		}
+	    		// Email, PDF
+	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_email_pdf)) {
+	    			// Check for a special key
+    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+    		    		// Set the song key to the associated key
+    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+    		    	}
+    		    	
+    	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
 
-	    		    	keysAlert.setTitle("Email Song in Which Key?");
-	    		    	keysAlert.setItems(keys, new OnClickListener() {
-	    	        		public void onClick (DialogInterface dialog, int whichItem) {
-	    	        			// Set the new song key
-	    	        			String newSongKey = "";
-	    	        			if (whichItem < MainStrings.songKeys.size()) {
-	    	        				newSongKey = MainStrings.songKeys.get(whichItem);
-	    	        			}
-	    	        			
-	    	        			// Check to make sure the song has a proper key
-	    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
-	    	        	    		saveSong(songI, MainStrings.ShareType.plainText, newSongKey);
-	    	        		}
-	    	        	});
-	    	        	
-	    		    	keysAlert.show();
-	    				break;
-	    			case 3:		// Save, chordpro
-	    				saveSong(songI, MainStrings.ShareType.chordPro, "");
-	    				break;
-    			}
+    	    		keysAlert.setTitle("Email Song in Which Key?");
+    	    		keysAlert.setItems(keys, new OnClickListener() {
+    	        		public void onClick (DialogInterface dialog, int whichItem) {
+    	        			// Set the new song key
+    	        			String newSongKey = "";
+    	        			if (whichItem < MainStrings.songKeys.size()) {
+    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+    	        			}
+    	        			
+    	        			// Check to make sure the song has a proper key
+    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
+    	        	    		emailSong(songI, MainStrings.ShareType.PDF, newSongKey);
+    	        		}
+    	        	});
+    	        	
+    	    		keysAlert.show();
+	    		}
+	    		// Save, plain text
+	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save)) {
+	    			// Check for a special key
+    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+    		    		// Set the song key to the associated key
+    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+    		    	}
+    	    		
+    		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
+
+    		    	keysAlert.setTitle("Save Song in Which Key?");
+    		    	keysAlert.setItems(keys, new OnClickListener() {
+    	        		public void onClick (DialogInterface dialog, int whichItem) {
+    	        			// Set the new song key
+    	        			String newSongKey = "";
+    	        			if (whichItem < MainStrings.songKeys.size()) {
+    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+    	        			}
+    	        			
+    	        			// Check to make sure the song has a proper key
+    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
+    	        	    		saveSong(songI, MainStrings.ShareType.plainText, newSongKey);
+    	        		}
+    	        	});
+    	        	
+    		    	keysAlert.show();
+	    		}
+	    		// Save, chordpro
+	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save_cp)) {
+	    			saveSong(songI, MainStrings.ShareType.chordPro, "");
+	    		}
+	    		// Save, PDF
+	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save_pdf)) {
+	    			// Check for a special key
+    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+    		    		// Set the song key to the associated key
+    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+    		    	}
+    	    		
+    		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
+
+    		    	keysAlert.setTitle("Save Song in Which Key?");
+    		    	keysAlert.setItems(keys, new OnClickListener() {
+    	        		public void onClick (DialogInterface dialog, int whichItem) {
+    	        			// Set the new song key
+    	        			String newSongKey = "";
+    	        			if (whichItem < MainStrings.songKeys.size()) {
+    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+    	        			}
+    	        			
+    	        			// Check to make sure the song has a proper key
+    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
+    	        	    		saveSong(songI, MainStrings.ShareType.PDF, newSongKey);
+    	        		}
+    	        	});
+    	        	
+    		    	keysAlert.show();
+	    		}
     		}
     	});
     	
     	alert.show();
     }
-        
+    
+    /**
+     * Saves the song as a PDF file
+     * @param songI The song to save
+     * @return The created file
+     */
+    @TargetApi(19)
+    public File saveSongAsPdf(SongItem songI, String songKey, String fileName) {
+    	int pageWidth = 450;
+    	int pageHeight = 700;
+    	int padding = 30;
+    	final float densityMultiplier = getResources().getDisplayMetrics().density;
+    	float defaultTextSize = 6.0f;
+    	File att = new File("");
+    	
+    	// Create a new PDF document
+    	PdfDocument document = new PdfDocument();
+    	
+    	try {
+	    	// Create a page description
+	    	PageInfo pageInfo = new PageInfo.Builder(pageWidth, pageHeight, 1).create();
+	    	
+	    	// Create a new page from the page info
+	    	Page page = document.startPage(pageInfo);
+	    	
+	    	// Create the text view to add to the page
+	    	AutoFitTextView tv = new AutoFitTextView(MainActivity.this);
+	    	tv.setTypeface(Typeface.MONOSPACE);
+	    	tv.setPadding(padding, padding, padding, padding);
+	    	tv.layout(0, 0, pageWidth, pageHeight);	 
+	    	tv.setTextSize(defaultTextSize);
+	    	tv.setTextDecrement(0.25f);
+	    	tv.setMinimumTextSizePixels(2.0f * densityMultiplier);
+	    	
+	    	// Get the fitted text size
+	    	FileInputStream fis = openFileInput(dbAdapter.getSongFile(songI.getName()));
+	    	String songText = ChordProParser.ParseSongFile(songI, songKey, fis, true, false);
+	    	
+	    	// Add the song text to the text view
+	    	tv.setText(Html.fromHtml(songText));
+	    	
+	    	// Force the text to shrink
+	    	tv.shrinkToFit();
+	    	
+	    	// Add the song to the page
+	    	tv.draw(page.getCanvas());
+	    	
+	    	// Finish the page
+	    	document.finishPage(page);
+    	
+	    	// Write the document
+	    	att = new File(Environment.getExternalStorageDirectory(), fileName);
+			FileOutputStream out = new FileOutputStream(att);
+	    	document.writeTo(out);
+    	} catch (Exception e) {
+    		Toast.makeText(getApplicationContext(), 
+        			"Failed to save \"" + songI.getName() + "\" to \"" + Environment.getExternalStorageDirectory() + "/" + fileName,
+        			Toast.LENGTH_LONG).show();
+    	}
+    	
+    	// Close the document
+    	document.close();
+    	
+    	// Alert on success
+    	Toast.makeText(getApplicationContext(), 
+    			"Saved \"" + songI.getName() + "\" to \"" + Environment.getExternalStorageDirectory() + "/" + fileName,
+    			Toast.LENGTH_LONG).show();
+    	
+    	return att;
+    }
+    
     /**
      * Sets the song key for the set
      */
@@ -2561,11 +2731,11 @@ public class MainActivity extends FragmentActivity {
 	}
     
     
-    /*****************************************************************************
-     * 
-     * Current Set Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Current Set Functions
+    // * 
+    // *****************************************************************************
     /**
      * Fills the current set array list
      */
@@ -2582,11 +2752,12 @@ public class MainActivity extends FragmentActivity {
     		// Get the strings from the cursor
         	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
         	String songAuthor = c.getString(c.getColumnIndex(DBStrings.TBLSONG_AUTHOR));
-        	String songKey = c.getString(c.getColumnIndex(DBStrings.TBLSLOOKUP_KEY));
+        	String setKey = c.getString(c.getColumnIndex(DBStrings.TBLSLOOKUP_KEY));
         	String songFile = c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE));
+        	String songKey = dbAdapter.getSongKey(songName);
     		
         	// Add the song item
-        	currSetList.add(new SongItem(songName, songAuthor, songKey, songFile));
+        	currSetList.add(new SongItem(songName, songAuthor, songKey, songFile, setKey));
         	
         	// Move to the next song
         	c.moveToNext();
@@ -2653,11 +2824,11 @@ public class MainActivity extends FragmentActivity {
     }
     
     
-    /*****************************************************************************
-     * 
-     * Song Group Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Song Group Functions
+    // * 
+    // *****************************************************************************
     /**
      * Populates the song groups array list
      */
@@ -2952,11 +3123,11 @@ public class MainActivity extends FragmentActivity {
     }
         
     
-    /*****************************************************************************
-     * 
-     * Set Group Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Set Group Functions
+    // * 
+    // *****************************************************************************
     /**
      * Sets the set group array list
      */
@@ -3147,11 +3318,11 @@ public class MainActivity extends FragmentActivity {
     }
         
     
-    /*****************************************************************************
-     * 
-     * Sorting Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Sorting Functions
+    // * 
+    // *****************************************************************************
     /**
      * Fills the song sort spinner
      */
@@ -3291,11 +3462,11 @@ public class MainActivity extends FragmentActivity {
     }
     
     
-    /*****************************************************************************
-     * 
-     * Import / Export Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Import / Export Functions
+    // * 
+    // *****************************************************************************
     /**
      * Selects the folder to export the backup file to
      */
@@ -3439,11 +3610,11 @@ public class MainActivity extends FragmentActivity {
     }
     
     
-    /*****************************************************************************
-     * 
-     * Classes
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Classes
+    // * 
+    // *****************************************************************************
     public class ImportDatabase extends AsyncTask<String, Void, String> {    	
     	@Override
     	protected String doInBackground(String... filePath) {  

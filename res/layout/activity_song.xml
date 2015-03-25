@@ -1,9 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <TextView
+    android:layout_height="match_parent"
+    android:background="#FFFFFF" >
+    
+    <com.sbgsoft.songbook.views.AutoFitTextView
         android:id="@+id/song_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,8 +14,7 @@
         android:textColor="#000000"
         android:typeface="monospace"
         android:background="#FFFFFF"
-        android:textSize="@dimen/defaultSongTextSize"
-        tools:context=".SongActivity" />
+        android:textSize="@dimen/defaultSongTextSize" />
 
     <ImageButton
         android:id="@+id/song_up_button"

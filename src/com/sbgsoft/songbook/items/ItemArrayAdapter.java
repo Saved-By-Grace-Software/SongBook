@@ -58,10 +58,16 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
 			else if (i.getClass().equals(SongItem.class)) {
 				SongItem si = (SongItem)i;
 				
-				// Get the strings from the cursor
+				// Get the strings from the item
 		    	String songName = si.getName();
 		    	String songAuthor = si.getAuthor();
-		    	String songKey = si.getKey();
+		    	
+		    	String songKey = "";
+		    	if (si.getSetKey() == "") {
+		    		songKey = si.getKey();
+		    	} else {
+		    		songKey = si.getSetKey();
+		    	}
 		    	
 		    	// Get the text views
 		    	v = vi.inflate(R.layout.songs_row, null);
