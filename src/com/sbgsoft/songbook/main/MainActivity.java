@@ -99,11 +99,11 @@ import com.sbgsoft.songbook.zip.Decompress;
 
 public class MainActivity extends FragmentActivity {
 	
-	/*****************************************************************************
-	 * 
-	 * Class Variables
-	 * 
-	 *****************************************************************************/
+	// *****************************************************************************
+	// * 
+	// * Class Variables
+	// * 
+	// *****************************************************************************
 	private static int currentTab = 1;
 	private static String currentSongGroup = SongsTab.ALL_SONGS_LABEL;
 	private static String currentSetGroup = SetsTab.ALL_SETS_LABEL;
@@ -145,11 +145,11 @@ public class MainActivity extends FragmentActivity {
 	private ProgressDialog progressDialog;
 	
 	
-	/*****************************************************************************
-     * 
-     * Class Functions
-     * 
-     *****************************************************************************/
+	// *****************************************************************************
+    // * 
+    // * Class Functions
+    // * 
+    // *****************************************************************************
     /**
      *  Called when the activity is first created. 
      **/
@@ -728,11 +728,11 @@ public class MainActivity extends FragmentActivity {
     }
     
     
-    /*****************************************************************************
-     * 
-     * Set Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Set Functions
+    // * 
+    // *****************************************************************************
     /**
      * Prompts the user for a name and creates the set
      */
@@ -1369,11 +1369,11 @@ public class MainActivity extends FragmentActivity {
     }
     
 
-    /*****************************************************************************
-     * 
-     * Song Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Song Functions
+    // * 
+    // *****************************************************************************
     /**
      * Prompts the user for a name and creates the set
      */
@@ -2459,7 +2459,7 @@ public class MainActivity extends FragmentActivity {
     	    		
     		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
 
-    		    	keysAlert.setTitle("Email Song in Which Key?");
+    		    	keysAlert.setTitle("Save Song in Which Key?");
     		    	keysAlert.setItems(keys, new OnClickListener() {
     	        		public void onClick (DialogInterface dialog, int whichItem) {
     	        			// Set the new song key
@@ -2482,7 +2482,30 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		// Save, PDF
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save_pdf)) {
-	    			
+	    			// Check for a special key
+    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+    		    		// Set the song key to the associated key
+    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+    		    	}
+    	    		
+    		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
+
+    		    	keysAlert.setTitle("Save Song in Which Key?");
+    		    	keysAlert.setItems(keys, new OnClickListener() {
+    	        		public void onClick (DialogInterface dialog, int whichItem) {
+    	        			// Set the new song key
+    	        			String newSongKey = "";
+    	        			if (whichItem < MainStrings.songKeys.size()) {
+    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+    	        			}
+    	        			
+    	        			// Check to make sure the song has a proper key
+    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
+    	        	    		saveSongAsPdf(songI, newSongKey);
+    	        		}
+    	        	});
+    	        	
+    		    	keysAlert.show();
 	    		}
     		}
     	});
@@ -2495,7 +2518,7 @@ public class MainActivity extends FragmentActivity {
      * @param songI The song to save
      */
     @TargetApi(19)
-    public void saveSongAsPdf(SongItem songI) {
+    public void saveSongAsPdf(SongItem songI, String songKey) {
     	String fileName = songI.getName() + ".pdf";
     	int pageWidth = 450;
     	int pageHeight = 700;
@@ -2651,11 +2674,11 @@ public class MainActivity extends FragmentActivity {
 	}
     
     
-    /*****************************************************************************
-     * 
-     * Current Set Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Current Set Functions
+    // * 
+    // *****************************************************************************
     /**
      * Fills the current set array list
      */
@@ -2743,11 +2766,11 @@ public class MainActivity extends FragmentActivity {
     }
     
     
-    /*****************************************************************************
-     * 
-     * Song Group Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Song Group Functions
+    // * 
+    // *****************************************************************************
     /**
      * Populates the song groups array list
      */
@@ -3042,11 +3065,11 @@ public class MainActivity extends FragmentActivity {
     }
         
     
-    /*****************************************************************************
-     * 
-     * Set Group Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Set Group Functions
+    // * 
+    // *****************************************************************************
     /**
      * Sets the set group array list
      */
@@ -3237,11 +3260,11 @@ public class MainActivity extends FragmentActivity {
     }
         
     
-    /*****************************************************************************
-     * 
-     * Sorting Functions
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Sorting Functions
+    // * 
+    // *****************************************************************************
     /**
      * Fills the song sort spinner
      */
@@ -3529,11 +3552,11 @@ public class MainActivity extends FragmentActivity {
     }
     
     
-    /*****************************************************************************
-     * 
-     * Classes
-     * 
-     *****************************************************************************/
+    // *****************************************************************************
+    // * 
+    // * Classes
+    // * 
+    // *****************************************************************************
     public class ImportDatabase extends AsyncTask<String, Void, String> {    	
     	@Override
     	protected String doInBackground(String... filePath) {  
