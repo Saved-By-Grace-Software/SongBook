@@ -2296,8 +2296,8 @@ public class MainActivity extends FragmentActivity {
 				fileName += ".pdf";
 				
 				// Save the song as a PDF
-				String path = saveSongAsPdf(songI, newSongKey, fileName);
-				File att = new File(path);
+				File att = saveSongAsPdf(songI, newSongKey, fileName);
+				att.deleteOnExit();
 				
 				// Add the file as an attachment
 				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));
@@ -2305,13 +2305,20 @@ public class MainActivity extends FragmentActivity {
 				break;
 		}
 		
+		// Set the songkey for the email
+		String tmpkey = "";
+		if (newSongKey == "")
+			tmpkey = songI.getKey();
+		else
+			tmpkey = newSongKey;
+		
 		// Add the subject and body
 		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songI.getName());
 		//i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
 		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
 				"<h2>SBGSoft Virtual SongBook</h2>" +
 				"<b>Song Name:</b>&nbsp;&nbsp;" + songI.getName() + "<br/>" +
-				"<b>Song Key:</b>&nbsp;&nbsp;" + newSongKey + "<br/>" +
+				"<b>Song Key:</b>&nbsp;&nbsp;" + tmpkey + "<br/>" +
 				"<br/>" +
 				"The music for this song has been attached to this email as a file." +
 				"<br/>"));
@@ -2562,15 +2569,16 @@ public class MainActivity extends FragmentActivity {
     /**
      * Saves the song as a PDF file
      * @param songI The song to save
-     * @return The full path of the created file
+     * @return The created file
      */
     @TargetApi(19)
-    public String saveSongAsPdf(SongItem songI, String songKey, String fileName) {
+    public File saveSongAsPdf(SongItem songI, String songKey, String fileName) {
     	int pageWidth = 450;
     	int pageHeight = 700;
     	int padding = 30;
     	final float densityMultiplier = getResources().getDisplayMetrics().density;
     	float defaultTextSize = 6.0f;
+    	File att = new File("");
     	
     	// Create a new PDF document
     	PdfDocument document = new PdfDocument();
@@ -2608,8 +2616,7 @@ public class MainActivity extends FragmentActivity {
 	    	document.finishPage(page);
     	
 	    	// Write the document
-	    	File att = new File(Environment.getExternalStorageDirectory(), fileName);
-			att.deleteOnExit();
+	    	att = new File(Environment.getExternalStorageDirectory(), fileName);
 			FileOutputStream out = new FileOutputStream(att);
 	    	document.writeTo(out);
     	} catch (Exception e) {
@@ -2626,7 +2633,7 @@ public class MainActivity extends FragmentActivity {
     			"Saved \"" + songI.getName() + "\" to \"" + Environment.getExternalStorageDirectory() + "/" + fileName,
     			Toast.LENGTH_LONG).show();
     	
-    	return "";
+    	return att;
     }
     
     /**
