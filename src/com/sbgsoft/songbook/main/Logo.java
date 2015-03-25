@@ -50,8 +50,6 @@ public class Logo extends Activity {
 	 * The instance of the {@link SystemUiHider} for this activity.
 	 */
 	private SystemUiHider mSystemUiHider;
-	
-	private ImageView logo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
