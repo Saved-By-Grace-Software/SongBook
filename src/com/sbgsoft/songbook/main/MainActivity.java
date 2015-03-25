@@ -31,6 +31,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
@@ -2593,6 +2594,7 @@ public class MainActivity extends FragmentActivity {
 	    	// Create the text view to add to the page
 	    	AutoFitTextView tv = new AutoFitTextView(MainActivity.this);
 	    	tv.setTypeface(Typeface.MONOSPACE);
+	    	tv.setTextColor(Color.BLACK);
 	    	tv.setPadding(padding, padding, padding, padding);
 	    	tv.layout(0, 0, pageWidth, pageHeight);	 
 	    	tv.setTextSize(defaultTextSize);
