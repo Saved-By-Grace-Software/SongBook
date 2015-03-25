@@ -31,7 +31,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
-import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
@@ -2289,6 +2288,15 @@ public class MainActivity extends FragmentActivity {
 				
 				break;
 			case PDF:
+				// Add the file extension
+				fileName += ".pdf";
+				
+				// Save the song as a PDF
+				String path = saveSongAsPdf(songI, newSongKey, fileName);
+				File att = new File(path);
+				
+				// Add the file as an attachment
+				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));
 			default:
 				break;
 		}
@@ -2546,9 +2554,10 @@ public class MainActivity extends FragmentActivity {
     /**
      * Saves the song as a PDF file
      * @param songI The song to save
+     * @return The full path of the created file
      */
     @TargetApi(19)
-    public void saveSongAsPdf(SongItem songI, String songKey, String fileName) {
+    public String saveSongAsPdf(SongItem songI, String songKey, String fileName) {
     	int pageWidth = 450;
     	int pageHeight = 700;
     	int padding = 30;
@@ -2608,6 +2617,8 @@ public class MainActivity extends FragmentActivity {
     	Toast.makeText(getApplicationContext(), 
     			"Saved \"" + songI.getName() + "\" to \"" + Environment.getExternalStorageDirectory() + "/" + fileName,
     			Toast.LENGTH_LONG).show();
+    	
+    	return "";
     }
     
     /**

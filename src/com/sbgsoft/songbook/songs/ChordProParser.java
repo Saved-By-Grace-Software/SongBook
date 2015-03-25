@@ -7,11 +7,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import android.content.Context;
-import android.widget.Toast;
 
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainStrings;
@@ -40,7 +35,7 @@ public class ChordProParser {
     		lineFeed = MainStrings.EOL;
     	
 		// Check to see if the song needs to be transposed
-		if(!songItem.getKey().equals(transposeKey)) {
+		if(transposeKey != "" && !songItem.getKey().equals(transposeKey)) {
     		// Transpose the song
     		transposeSong = true;
     	}
@@ -53,12 +48,18 @@ public class ChordProParser {
 			parsedOutput.append("<h2>");
 			parsedOutput.append(songItem.getName());
 			parsedOutput.append(" - ");
-			parsedOutput.append(transposeKey);
+			if (transposeSong)
+				parsedOutput.append(transposeKey);
+			else
+				parsedOutput.append(songItem.getKey());
 			parsedOutput.append("</h2>");
 		} else {
 			parsedOutput.append(songItem.getName());
 			parsedOutput.append(" - ");
-			parsedOutput.append(transposeKey);
+			if (transposeSong)
+				parsedOutput.append(transposeKey);
+			else
+				parsedOutput.append(songItem.getKey());
 		}
 		parsedOutput.append(lineFeed);
 				
