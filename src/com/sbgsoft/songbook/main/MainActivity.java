@@ -11,19 +11,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.StringReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.Activity;
@@ -35,15 +31,14 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
-import android.graphics.Paint;
 import android.graphics.PixelFormat;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfDocument.Page;
 import android.graphics.pdf.PdfDocument.PageInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
@@ -98,7 +93,6 @@ import com.sbgsoft.songbook.songs.EditSongRawActivity;
 import com.sbgsoft.songbook.songs.SongActivity;
 import com.sbgsoft.songbook.songs.SongGroupArrayAdapter;
 import com.sbgsoft.songbook.songs.SongsTab;
-import com.sbgsoft.songbook.songs.Transpose;
 import com.sbgsoft.songbook.views.AutoFitTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
@@ -2390,10 +2384,21 @@ public class MainActivity extends FragmentActivity {
      */
     public void shareSong(final SongItem songI) {    	
     	// Create the options array
-    	CharSequence[] options = {getString(R.string.cmenu_songs_share_email), 
-    			getString(R.string.cmenu_songs_share_email_cp), 
-    			getString(R.string.cmenu_songs_share_save), 
-    			getString(R.string.cmenu_songs_share_save_cp)};
+    	final CharSequence[] options;
+    	
+    	if (Build.VERSION.SDK_INT >= 19) {
+	    	options = new CharSequence[] {getString(R.string.cmenu_songs_share_email), 
+	    			getString(R.string.cmenu_songs_share_email_cp),
+	    			getString(R.string.cmenu_songs_share_email_pdf),
+	    			getString(R.string.cmenu_songs_share_save), 
+	    			getString(R.string.cmenu_songs_share_save_cp),
+	    			getString(R.string.cmenu_songs_share_save_pdf)};
+    	} else {
+    		options = new CharSequence[] {getString(R.string.cmenu_songs_share_email), 
+	    			getString(R.string.cmenu_songs_share_email_cp),
+	    			getString(R.string.cmenu_songs_share_save), 
+	    			getString(R.string.cmenu_songs_share_save_cp)};
+    	}
 		
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -2409,66 +2414,76 @@ public class MainActivity extends FragmentActivity {
 	    	
 	    		AlertDialog.Builder keysAlert;
 	    		
-    			switch (whichItem) {
-	    			case 0:		// Email, plain text
-	    				// Check for a special key
-	    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
-	    		    		// Set the song key to the associated key
-	    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
-	    		    	}
-	    		    	
-	    	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
+	    		// Email, plain text
+	    		if (options[whichItem] == getString(R.string.cmenu_songs_share_email)) {
+	    			// Check for a special key
+    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+    		    		// Set the song key to the associated key
+    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+    		    	}
+    		    	
+    	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
 
-	    	    		keysAlert.setTitle("Email Song in Which Key?");
-	    	    		keysAlert.setItems(keys, new OnClickListener() {
-	    	        		public void onClick (DialogInterface dialog, int whichItem) {
-	    	        			// Set the new song key
-	    	        			String newSongKey = "";
-	    	        			if (whichItem < MainStrings.songKeys.size()) {
-	    	        				newSongKey = MainStrings.songKeys.get(whichItem);
-	    	        			}
-	    	        			
-	    	        			// Check to make sure the song has a proper key
-	    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
-	    	        	    		emailSong(songI, MainStrings.ShareType.plainText, newSongKey);
-	    	        		}
-	    	        	});
-	    	        	
-	    	    		keysAlert.show();
-	    				break;
-	    			case 1:		// Email, chordpro
-	    				emailSong(songI, MainStrings.ShareType.chordPro, "");
-	    				break;
-	    			case 2:		// Save, plain text
-	    				// Check for a special key
-	    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
-	    		    		// Set the song key to the associated key
-	    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
-	    		    	}
-	    	    		
-	    		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
+    	    		keysAlert.setTitle("Email Song in Which Key?");
+    	    		keysAlert.setItems(keys, new OnClickListener() {
+    	        		public void onClick (DialogInterface dialog, int whichItem) {
+    	        			// Set the new song key
+    	        			String newSongKey = "";
+    	        			if (whichItem < MainStrings.songKeys.size()) {
+    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+    	        			}
+    	        			
+    	        			// Check to make sure the song has a proper key
+    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
+    	        	    		emailSong(songI, MainStrings.ShareType.plainText, newSongKey);
+    	        		}
+    	        	});
+    	        	
+    	    		keysAlert.show();
+	    		}
+	    		// Email, chordpro
+	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_email_cp)) {
+	    			emailSong(songI, MainStrings.ShareType.chordPro, "");
+	    		}
+	    		// Email, PDF
+	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_email_pdf)) {
+	    			
+	    		}
+	    		// Save, plain text
+	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save)) {
+	    			// Check for a special key
+    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+    		    		// Set the song key to the associated key
+    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+    		    	}
+    	    		
+    		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
 
-	    		    	keysAlert.setTitle("Email Song in Which Key?");
-	    		    	keysAlert.setItems(keys, new OnClickListener() {
-	    	        		public void onClick (DialogInterface dialog, int whichItem) {
-	    	        			// Set the new song key
-	    	        			String newSongKey = "";
-	    	        			if (whichItem < MainStrings.songKeys.size()) {
-	    	        				newSongKey = MainStrings.songKeys.get(whichItem);
-	    	        			}
-	    	        			
-	    	        			// Check to make sure the song has a proper key
-	    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
-	    	        	    		saveSong(songI, MainStrings.ShareType.plainText, newSongKey);
-	    	        		}
-	    	        	});
-	    	        	
-	    		    	keysAlert.show();
-	    				break;
-	    			case 3:		// Save, chordpro
-	    				saveSong(songI, MainStrings.ShareType.chordPro, "");
-	    				break;
-    			}
+    		    	keysAlert.setTitle("Email Song in Which Key?");
+    		    	keysAlert.setItems(keys, new OnClickListener() {
+    	        		public void onClick (DialogInterface dialog, int whichItem) {
+    	        			// Set the new song key
+    	        			String newSongKey = "";
+    	        			if (whichItem < MainStrings.songKeys.size()) {
+    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+    	        			}
+    	        			
+    	        			// Check to make sure the song has a proper key
+    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
+    	        	    		saveSong(songI, MainStrings.ShareType.plainText, newSongKey);
+    	        		}
+    	        	});
+    	        	
+    		    	keysAlert.show();
+	    		}
+	    		// Save, chordpro
+	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save_cp)) {
+	    			saveSong(songI, MainStrings.ShareType.chordPro, "");
+	    		}
+	    		// Save, PDF
+	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save_pdf)) {
+	    			
+	    		}
     		}
     	});
     	
@@ -2479,6 +2494,7 @@ public class MainActivity extends FragmentActivity {
      * Saves the song as a PDF file
      * @param songI The song to save
      */
+    @TargetApi(19)
     public void saveSongAsPdf(SongItem songI) {
     	String fileName = songI.getName() + ".pdf";
     	int pageWidth = 450;
@@ -2508,7 +2524,7 @@ public class MainActivity extends FragmentActivity {
 	    	
 	    	// Get the fitted text size
 	    	FileInputStream fis = openFileInput(dbAdapter.getSongFile(songI.getName()));
-	    	String songText = ChordProParser.ParseSongFile(songI, songI.getKey(), fis);
+	    	String songText = ChordProParser.ParseSongFile(songI, songI.getKey(), fis, true, false);
 	    	
 	    	// Add the song text to the text view
 	    	tv.setText(Html.fromHtml(songText));

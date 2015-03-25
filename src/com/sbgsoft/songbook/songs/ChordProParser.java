@@ -124,7 +124,7 @@ public class ChordProParser {
 								int newCapo = Transpose.getCapo(songItem.getKey(), transposeKey, currentCapo);
 								
 								// Append the capo
-								if (newCapo != 0) {
+								if (newCapo != 0 && !(newCapo >= 12)) {
 									if (useHtml) {
 										// Add beginning of italics 
 										lyricLine.append("<i>");
