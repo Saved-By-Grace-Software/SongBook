@@ -31,6 +31,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
+import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
@@ -53,7 +54,6 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
@@ -2571,19 +2571,23 @@ public class MainActivity extends FragmentActivity {
 	    	tv.setPadding(padding, padding, padding, padding);
 	    	tv.layout(0, 0, pageWidth, pageHeight);	 
 	    	tv.setTextSize(defaultTextSize);
-	    	tv.setTextDecrement(1.0f);
+	    	tv.setTextDecrement(0.25f);
 	    	tv.setMinimumTextSizePixels(2.0f * densityMultiplier);
 	    	
 	    	// Get the fitted text size
 	    	FileInputStream fis = openFileInput(dbAdapter.getSongFile(songI.getName()));
-	    	String songText = ChordProParser.ParseSongFile(songI, songI.getKey(), fis, true, false);
+	    	String songText = ChordProParser.ParseSongFile(songI, songKey, fis, true, false);
 	    	
 	    	// Add the song text to the text view
 	    	tv.setText(Html.fromHtml(songText));
+	    	
+	    	// Force the text to shrink
+	    	tv.draw(new Canvas());
 	    	tv.shrinkToFit();
 	    	
 	    	// Add the song to the page
 	    	tv.draw(page.getCanvas());
+	    	
 	    	
 	    	// Finish the page
 	    	document.finishPage(page);
@@ -2724,11 +2728,12 @@ public class MainActivity extends FragmentActivity {
     		// Get the strings from the cursor
         	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
         	String songAuthor = c.getString(c.getColumnIndex(DBStrings.TBLSONG_AUTHOR));
-        	String songKey = c.getString(c.getColumnIndex(DBStrings.TBLSLOOKUP_KEY));
+        	String setKey = c.getString(c.getColumnIndex(DBStrings.TBLSLOOKUP_KEY));
         	String songFile = c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE));
+        	String songKey = dbAdapter.getSongKey(songName);
     		
         	// Add the song item
-        	currSetList.add(new SongItem(songName, songAuthor, songKey, songFile));
+        	currSetList.add(new SongItem(songName, songAuthor, songKey, songFile, setKey));
         	
         	// Move to the next song
         	c.moveToNext();

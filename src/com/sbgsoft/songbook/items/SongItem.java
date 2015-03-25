@@ -14,6 +14,7 @@ public class SongItem implements Item, Parcelable, Serializable {
 	private String file;
 	private String text;
 	private int capo;
+	private String setKey;
 	
 	@Override
 	public int describeContents() {
@@ -28,11 +29,12 @@ public class SongItem implements Item, Parcelable, Serializable {
 		out.writeString(file);
 		out.writeString(text);
 		out.writeInt(capo);
+		out.writeString(setKey);
 	}
 	
 	@Override
 	public String toString() {
-		return "SongItem [name=" + name + ", author=" + author + ", key=" + key + ", file=" + file + ", text=" + text + ", capo=" + capo + "]";
+		return "SongItem [name=" + name + ", author=" + author + ", key=" + key + ", file=" + file + ", text=" + text + ", capo=" + capo + ", setKey=" + setKey + "]";
 	}
 	
 	public static final Parcelable.Creator<SongItem> CREATOR = new Creator<SongItem>() {
@@ -44,6 +46,7 @@ public class SongItem implements Item, Parcelable, Serializable {
 			songItem.file = source.readString();
 			songItem.text = source.readString();
 			songItem.capo = source.readInt();
+			songItem.setKey = source.readString();
 			return songItem;
 		}
 		
@@ -63,6 +66,17 @@ public class SongItem implements Item, Parcelable, Serializable {
 		file = songFile;
 		setText("");
 		setCapo(0);
+		setSetKey("");
+	}
+	
+	public SongItem(String songName, String songAuthor, String songKey, String songFile, String setKey) {
+		name = songName;
+		author = songAuthor;
+		key = songKey;
+		file = songFile;
+		setText("");
+		setCapo(0);
+		setSetKey(setKey);
 	}
 	
 	public SongItem() {
@@ -72,6 +86,7 @@ public class SongItem implements Item, Parcelable, Serializable {
 		setFile("");
 		setText("");
 		setCapo(0);
+		setSetKey("");
 	}
 
 	/**
@@ -136,5 +151,13 @@ public class SongItem implements Item, Parcelable, Serializable {
 
 	public void setCapo(int capo) {
 		this.capo = capo;
+	}
+
+	public String getSetKey() {
+		return setKey;
+	}
+
+	public void setSetKey(String setKey) {
+		this.setKey = setKey;
 	}
 }

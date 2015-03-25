@@ -75,6 +75,8 @@ public class AutoFitTextView extends TextView {
 			// Shrink the height to fit any extra lines
 			shrinkToFitHeight();
 		}
+		
+		currentTextSize = this.getTextSize();
 	}
 	
 	protected void shrinkToFitWidth() {
@@ -91,10 +93,7 @@ public class AutoFitTextView extends TextView {
 		    	String line = null;
 		    	while ((line = bufReader.readLine()) != null) {
 		    		// Get the width of the text
-		    		Rect bounds = new Rect();
 		    		Paint textPaint = this.getPaint();
-//		    		textPaint.getTextBounds(line, 0, line.length(), bounds);
-//		    		int lineWidth1 = bounds.width();
 		    		float lineWidth = textPaint.measureText(line);
 		    		
 		    		// Check to see if the text size needs decremented
@@ -123,6 +122,7 @@ public class AutoFitTextView extends TextView {
 		
 		// Check to make sure we aren't already at the minimum size
 		if (!(currentTextSize <= minimumTextSizePixels)) {
+			// Get number of lines
 			int lines = this.getLineCount();
 			
 			Rect r = new Rect();
@@ -130,7 +130,7 @@ public class AutoFitTextView extends TextView {
 			int y2 = this.getLineBounds(lines-1, r);
 			
 			float size = this.getTextSize();
-			if ((y2 + y1) > height && size > 2.0f) {
+			if ((y2 + y1) >= height && size > 2.0f) {
 				// Set the text size in pixels
 				this.setTextSize(TypedValue.COMPLEX_UNIT_PX, size - 1.0f);
 				shrinkToFitHeight();
