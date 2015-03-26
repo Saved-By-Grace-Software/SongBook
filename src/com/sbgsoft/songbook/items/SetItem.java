@@ -2,6 +2,10 @@ package com.sbgsoft.songbook.items;
 
 import java.util.ArrayList;
 
+import com.sbgsoft.songbook.db.DBStrings;
+import com.sbgsoft.songbook.main.MainActivity;
+
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -74,5 +78,32 @@ public class SetItem implements Item, Parcelable {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+	
+	public void selfPopulateSongsList() {
+		// Clear current songs list
+		songs.clear();
+		
+    	Cursor c = MainActivity.dbAdapter.getSetSongs(name);
+    	c.moveToFirst();
+    	
+    	// Populate the ArrayList
+    	while (!c.isAfterLast()) {
+    		// Get the strings from the cursor
+        	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
+        	String songAuthor = c.getString(c.getColumnIndex(DBStrings.TBLSONG_AUTHOR));
+        	String setKey = c.getString(c.getColumnIndex(DBStrings.TBLSONG_KEY));
+        	String songFile = c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE));
+        	String songKey = MainActivity.dbAdapter.getSongKey(songName);
+    		
+        	// Add the song item
+        	songs.add(new SongItem(songName, songAuthor, songKey, songFile, setKey));
+        	
+        	// Move to the next song
+        	c.moveToNext();
+    	}
+    	
+    	// Close the cursor
+    	c.close();
 	}
 }

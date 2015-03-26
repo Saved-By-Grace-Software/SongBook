@@ -85,6 +85,7 @@ import com.sbgsoft.songbook.items.ItemArrayAdapter;
 import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SetItem;
 import com.sbgsoft.songbook.items.SongItem;
+import com.sbgsoft.songbook.main.MainStrings.ShareType;
 import com.sbgsoft.songbook.sets.CurrentSetTab;
 import com.sbgsoft.songbook.sets.SetActivity;
 import com.sbgsoft.songbook.sets.SetGroupArrayAdapter;
@@ -306,7 +307,7 @@ public class MainActivity extends FragmentActivity {
     		menu.add(Menu.NONE, MainStrings.REORDER_SET, MainStrings.REORDER_SET, R.string.cmenu_sets_reorder);
     		menu.add(Menu.NONE, MainStrings.SET_GROUPS_ADD, MainStrings.SET_GROUPS_ADD, R.string.cmenu_set_group_add);
     		menu.add(Menu.NONE, MainStrings.SET_GROUPS_DEL, MainStrings.SET_GROUPS_DEL, R.string.cmenu_set_group_delete);
-    		menu.add(Menu.NONE, MainStrings.EMAIL_SET, MainStrings.EMAIL_SET, R.string.cmenu_sets_email);
+    		menu.add(Menu.NONE, MainStrings.SHARE_SET, MainStrings.SHARE_SET, R.string.cmenu_sets_share);
     	}
     	// Current Set context menu
     	else if (v.getId() == R.id.current_list) {
@@ -504,7 +505,6 @@ public class MainActivity extends FragmentActivity {
             	
             	// Get the set songs
             	Cursor c = dbAdapter.getSetSongs(setName);
-            	startManagingCursor(c);
             	String[] setSongs = new String[c.getCount()];
             	c.moveToFirst();
             	int songCounter = 0;
@@ -515,6 +515,7 @@ public class MainActivity extends FragmentActivity {
                 	setSongs[songCounter++] = song;
                 	c.moveToNext();
             	}
+            	c.close();
             	
             	// Edit the set
             	i = new Intent(getBaseContext(), DragNDropListActivity.class);
@@ -537,13 +538,12 @@ public class MainActivity extends FragmentActivity {
             	editSetAtt(setName);
             	
             	return true;
-    		case MainStrings.EMAIL_SET:
+    		case MainStrings.SHARE_SET:
     			// Get the song name
     			setI = (SetItem)setsList.get(info.position);
-    			setName = setI.getName();
     			
     			// Email the song
-    			emailSet(setI, setName);
+    			shareSet(setI);
     			return true;
     		case MainStrings.SET_GROUPS_ADD:
     			// Get the song name
@@ -778,7 +778,6 @@ public class MainActivity extends FragmentActivity {
      */
     private void selectSetSongs(final String setName, final String setDate) {
     	Cursor c = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
-    	startManagingCursor(c);
     	
     	// Clear the previous song lists
     	addSongsDialogList.clear();
@@ -789,6 +788,7 @@ public class MainActivity extends FragmentActivity {
     		addSongsDialogList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)));
     		addSongsDialogMap.put(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)), false);
     	}
+    	c.close();
     	Collections.sort(addSongsDialogList, new SortIgnoreCase());
     	
     	// Create the alert dialog and set the title
@@ -826,7 +826,6 @@ public class MainActivity extends FragmentActivity {
             	
             	// Fill the new songs list
             	Cursor c = dbAdapter.getSongNames(groupName);
-            	startManagingCursor(c);
             	addSongsDialogList.clear();
             	
             	// Populate the ArrayList
@@ -835,6 +834,7 @@ public class MainActivity extends FragmentActivity {
                 	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
                 	addSongsDialogList.add(songName);
             	}
+            	c.close();
             	Collections.sort(addSongsDialogList, new SortIgnoreCase());
             	
             	// Update list view
@@ -905,7 +905,6 @@ public class MainActivity extends FragmentActivity {
     	
     	// Get the list of group names
     	Cursor c = dbAdapter.getSetGroupNames();
-    	startManagingCursor(c);
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount()];
     	final boolean[] checkedGroupNames = new boolean[c.getCount()];
@@ -919,6 +918,7 @@ public class MainActivity extends FragmentActivity {
     		checkedGroupNames[counter] = false;
     		groupNames[counter++] = groupName;
     	}
+    	c.close();
     	
     	// Create the dialog to choose which group to add the song to
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -995,7 +995,6 @@ public class MainActivity extends FragmentActivity {
      */
     private void updateSetSongs(final String setName) {
     	Cursor c = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
-    	startManagingCursor(c);
     	
     	// Clear the previous song lists
     	addSongsDialogList.clear();
@@ -1007,6 +1006,7 @@ public class MainActivity extends FragmentActivity {
     		addSongsDialogList.add(songName);
     		addSongsDialogMap.put(songName, dbAdapter.isSongInSet(songName, setName));
     	}
+    	c.close();
     	Collections.sort(addSongsDialogList, new SortIgnoreCase());
 
     	// Create the alert dialog and set the title
@@ -1044,7 +1044,6 @@ public class MainActivity extends FragmentActivity {
             	
             	// Fill the new songs list
             	Cursor c = dbAdapter.getSongNames(groupName);
-            	startManagingCursor(c);
             	addSongsDialogList.clear();
             	
             	// Populate the ArrayList
@@ -1053,6 +1052,7 @@ public class MainActivity extends FragmentActivity {
                 	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
                 	addSongsDialogList.add(songName);
             	}
+            	c.close();
             	Collections.sort(addSongsDialogList, new SortIgnoreCase());
             	
             	// Update list view
@@ -1187,7 +1187,6 @@ public class MainActivity extends FragmentActivity {
      */
     public void setSetsList() {
     	Cursor c = dbAdapter.getSetNames(currentSetGroup);
-    	startManagingCursor(c);
     	c.moveToFirst();
     	
     	// Clear the ArrayList
@@ -1201,12 +1200,17 @@ public class MainActivity extends FragmentActivity {
         	String[] datesplit = setDate.split("-");
         	setDate = datesplit[1] + "/" + datesplit[2] + "/" + datesplit[0];
     		
-        	// Add the song item
-        	setsList.add(new SetItem(setName, setDate));
+        	// Create a new set item
+        	SetItem tmp = new SetItem(setName, setDate);
+        	tmp.selfPopulateSongsList();
+        	
+        	// Add the set item
+        	setsList.add(tmp);
         	
         	// Move to the next song
         	c.moveToNext();
     	}
+    	c.close();
     	
     	// Sort the array list
     	switch(setsListSortByIndex) {
@@ -1312,61 +1316,238 @@ public class MainActivity extends FragmentActivity {
     }
     
     /**
+     * Emails the set
+     * @param setItem The set to email
+     * @param shareType The type of sharing, (txt, pro, pdf)
+     */
+    private void emailSet(SetItem setItem, MainStrings.ShareType shareType) {
+//		// Create the email intent
+//    	Intent i = new Intent(android.content.Intent.ACTION_SEND);
+//		i.setType("text/Message");
+//		
+//		// Craft the file name
+//		String fileName = songI.getName() + " - " + songI.getAuthor();
+//		if (newSongKey == "")
+//			fileName += " (" + songI.getKey() + ")";
+//		else
+//			fileName += " (" + newSongKey + ")";
+//		
+//		// Add the attachment
+//		switch (shareType) {
+//			case plainText:
+//				// Add the file extension
+//				fileName += ".txt";
+//				
+//				// Create the text file attachment
+//				try {
+//					// Open the file and translate it
+//    				FileInputStream fis = openFileInput(songI.getFile());
+//    				String temp = ChordProParser.ParseSongFile(songI, newSongKey, fis, false, true);
+//    				
+//    				// Write the file
+//    				File att = new File(Environment.getExternalStorageDirectory(), fileName);
+//    				FileOutputStream out = new FileOutputStream(att);
+//    		    	out.write(temp.getBytes());
+//    				
+//    		    	// Close the files
+//    		    	fis.close();
+//    		    	out.close();
+//    				
+//    				// Add the file as an attachment
+//    				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));			
+//    				
+//    			} catch (Exception e) {
+//    				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
+//    			}
+//				
+//				break;
+//			case chordPro:
+//				// Add the file extension
+//				fileName += ".pro";
+//				
+//				try {	        					
+//					// Open the input file
+//    				FileInputStream fis = openFileInput(songI.getFile());
+//    				
+//    				// Open the output file
+//    				File att = new File(Environment.getExternalStorageDirectory(), fileName);
+//    				FileOutputStream out = new FileOutputStream(att);
+//    		    	
+//    				// Copy the file
+//    				byte[] buffer = new byte[1024];
+//    				int read;
+//    				while ((read = fis.read(buffer)) != -1) {
+//    					out.write(buffer, 0, read);
+//    				}
+//    				
+//    				// Close the files
+//    		    	fis.close();
+//    		    	out.close();
+//    		    	
+//    		    	// Add the file as an attachment
+//    				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));
+//    				
+//    			} catch (Exception e) {
+//    				Toast.makeText(getBaseContext(), "Unable to save ChordPro file!", Toast.LENGTH_LONG).show();
+//    			}
+//				
+//				break;
+//			case PDF:
+//				// Add the file extension
+//				fileName += ".pdf";
+//				
+//				// Save the song as a PDF
+//				File att = saveSongAsPdf(songI, newSongKey, fileName);
+//				att.deleteOnExit();
+//				
+//				// Add the file as an attachment
+//				i.putExtra(android.content.Intent.EXTRA_STREAM, Uri.fromFile(att));
+//			default:
+//				break;
+//		}
+//		
+//		// Set the songkey for the email
+//		String tmpkey = "";
+//		if (newSongKey == "")
+//			tmpkey = songI.getKey();
+//		else
+//			tmpkey = newSongKey;
+//		
+//		// Add the subject and body
+//		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songI.getName());
+//		//i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
+//		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
+//				"<h2>SBGSoft Virtual SongBook</h2>" +
+//				"<b>Song Name:</b>&nbsp;&nbsp;" + songI.getName() + "<br/>" +
+//				"<b>Song Key:</b>&nbsp;&nbsp;" + tmpkey + "<br/>" +
+//				"<br/>" +
+//				"The music for this song has been attached to this email as a file." +
+//				"<br/>"));
+//
+//		startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
+    }
+    
+    /**
+     * Saves the set
+     * @param setItem The set to save
+     * @param shareType The type of sharing, (txt, pro, pdf)
+     */
+    private void saveSet(final SetItem setItem, final MainStrings.ShareType shareType) {
+    	// For each song in the set
+    	for (SongItem songItem : setItem.songs) {
+			saveSong(songItem, shareType, songItem.getSetKey(), false);
+    	}
+    	
+    	Toast.makeText(getBaseContext(), "Saved set files to: " + Environment.getExternalStorageDirectory() + "!", Toast.LENGTH_LONG).show();
+    }
+     
+    /**
      * Emails the set with the songs as attachments
-     * @param setI The set item object
+     * @param setItem The set item object
      * @param setName the set name
      */
-    private void emailSet(final SetItem setI, final String setName) {
-		String setDate = setI.getDate();
-		ArrayList<Uri> uris = new ArrayList<Uri>();
+    private void shareSet(final SetItem setItem) {
+    	// Create the options array
+    	final CharSequence[] options;
+    	
+    	if (Build.VERSION.SDK_INT >= 19) {
+	    	options = new CharSequence[] {getString(R.string.cmenu_sets_share_email), 
+	    			getString(R.string.cmenu_sets_share_email_cp),
+	    			getString(R.string.cmenu_sets_share_email_pdf),
+	    			getString(R.string.cmenu_sets_share_save), 
+	    			getString(R.string.cmenu_sets_share_save_cp),
+	    			getString(R.string.cmenu_sets_share_save_pdf)};
+    	} else {
+    		options = new CharSequence[] {getString(R.string.cmenu_sets_share_email), 
+	    			getString(R.string.cmenu_sets_share_email_cp),
+	    			getString(R.string.cmenu_sets_share_save), 
+	    			getString(R.string.cmenu_sets_share_save_cp)};
+    	}
 		
-		// Start the output string
-		StringBuilder sb = new StringBuilder();
-		sb.append("<h2>" + setName + "</h2>");
-		sb.append("<i>" + setDate + "</i><br/><br/>");
-		
-		// Get the set songs
-//		Cursor c2 = dbAdapter.getSetSongs(setName);
-//		startManagingCursor(c2);
-//		while (c2.moveToNext()) {
-		
-		for (SongItem songI : setI.songs) {
-//			String sn = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
-//			String sk = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_KEY));
-			String songKey = dbAdapter.getSongKeyForSet(setI.getName(), songI.getName());
-			
-			try {				
-				// Create the text file attachment
-				FileInputStream fis = openFileInput(songI.getFile());
-				String temp = ChordProParser.ParseSongFile(songI, songKey, fis, false, true);
-				
-				// Write the file
-				File att = new File(Environment.getExternalStorageDirectory(), songI.getName() + "_att.txt");
-				att.deleteOnExit();
-				FileOutputStream out = new FileOutputStream(att);
-		    	out.write(temp.getBytes());
-				out.close(); 
-				
-				// Add the file as an attachment
-				uris.add(Uri.fromFile(att));			
-				
-			} catch (Exception e) {
-				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
-			}
-			
-			sb.append(songI.getName() + " - " + songKey + "<br/>");
-		}
-		
-		// Create the email intent
-		Intent i = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
-		i.setType("text/html");
-		
-		// Add the subject, body and attachments
-		i.putParcelableArrayListExtra(android.content.Intent.EXTRA_STREAM, uris);
-		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + setName);
-		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(sb.toString()));
-		
-		startActivity(Intent.createChooser(i, "Send song email via:"));  
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("Share How?");
+    	alert.setItems(options, new OnClickListener() {
+    		public void onClick (DialogInterface dialog, int whichItem) {	    		
+	    		// Email, plain text
+	    		if (options[whichItem] == getString(R.string.cmenu_sets_share_email)) {
+	    			emailSet(setItem, ShareType.plainText);
+	    		}
+	    		// Email, chordpro
+	    		else if (options[whichItem] == getString(R.string.cmenu_sets_share_email_cp)) {
+	    			emailSet(setItem, ShareType.chordPro);
+	    		}
+	    		// Email, PDF
+	    		else if (options[whichItem] == getString(R.string.cmenu_sets_share_email_pdf)) {
+	    			emailSet(setItem, ShareType.PDF);
+	    		}
+	    		// Save, plain text
+	    		else if (options[whichItem] == getString(R.string.cmenu_sets_share_save)) {
+	    			saveSet(setItem, ShareType.plainText);
+	    		}
+	    		// Save, chordpro
+	    		else if (options[whichItem] == getString(R.string.cmenu_sets_share_save_cp)) {
+	    			saveSet(setItem, ShareType.chordPro);
+	    		}
+	    		// Save, PDF
+	    		else if (options[whichItem] == getString(R.string.cmenu_sets_share_save_pdf)) {
+	    			saveSet(setItem, ShareType.PDF);
+	    		}
+    		}
+    	});
+    	
+    	alert.show();
+    	
+//		String setDate = setItem.getDate();
+//		ArrayList<Uri> uris = new ArrayList<Uri>();
+//		
+//		// Start the output string
+//		StringBuilder sb = new StringBuilder();
+//		sb.append("<h2>" + setName + "</h2>");
+//		sb.append("<i>" + setDate + "</i><br/><br/>");
+//		
+//		// Get the set songs
+////		Cursor c2 = dbAdapter.getSetSongs(setName);
+////		startManagingCursor(c2);
+////		while (c2.moveToNext()) {
+//		
+//		for (SongItem songI : setItem.songs) {
+////			String sn = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+////			String sk = c2.getString(c2.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_KEY));
+//			String songKey = dbAdapter.getSongKeyForSet(setItem.getName(), songI.getName());
+//			
+//			try {				
+//				// Create the text file attachment
+//				FileInputStream fis = openFileInput(songI.getFile());
+//				String temp = ChordProParser.ParseSongFile(songI, songKey, fis, false, true);
+//				
+//				// Write the file
+//				File att = new File(Environment.getExternalStorageDirectory(), songI.getName() + "_att.txt");
+//				att.deleteOnExit();
+//				FileOutputStream out = new FileOutputStream(att);
+//		    	out.write(temp.getBytes());
+//				out.close(); 
+//				
+//				// Add the file as an attachment
+//				uris.add(Uri.fromFile(att));			
+//				
+//			} catch (Exception e) {
+//				Toast.makeText(getBaseContext(), "Unable to create text file attachment!", Toast.LENGTH_LONG).show();
+//			}
+//			
+//			sb.append(songI.getName() + " - " + songKey + "<br/>");
+//		}
+//		
+//		// Create the email intent
+//		Intent i = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
+//		i.setType("text/html");
+//		
+//		// Add the subject, body and attachments
+//		i.putParcelableArrayListExtra(android.content.Intent.EXTRA_STREAM, uris);
+//		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + setName);
+//		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(sb.toString()));
+//		
+//		startActivity(Intent.createChooser(i, "Send song email via:"));  
     }
     
 
@@ -1719,7 +1900,6 @@ public class MainActivity extends FragmentActivity {
     	
     	// Get the list of group names
     	Cursor c = dbAdapter.getSongGroupNames();
-    	startManagingCursor(c);
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount()];
     	final boolean[] checkedGroupNames = new boolean[c.getCount()];
@@ -1733,6 +1913,9 @@ public class MainActivity extends FragmentActivity {
     		checkedGroupNames[counter] = false;
     		groupNames[counter++] = groupName;
     	}
+    	
+    	// Close the cursor
+    	c.close();
     	
     	// Create the dialog to choose which group to add the song to
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -1775,7 +1958,6 @@ public class MainActivity extends FragmentActivity {
     	
     	// Get the list of group names
     	Cursor c = dbAdapter.getSetNames(SetsTab.ALL_SETS_LABEL);
-    	startManagingCursor(c);
     	
     	// Clear the previous song lists
     	addSetsDialogList.clear();
@@ -1787,6 +1969,7 @@ public class MainActivity extends FragmentActivity {
     		addSetsDialogList.add(setName);
     		addSetsDialogMap.put(setName, dbAdapter.isSongInSet(songName, setName));
     	}
+    	c.close();
     	Collections.sort(addSongsDialogList, new SortIgnoreCase());
     	
     	// Create the dialog to choose which group to add the song to
@@ -1824,7 +2007,6 @@ public class MainActivity extends FragmentActivity {
             	
             	// Fill the new songs list
             	Cursor c = dbAdapter.getSetNames(groupName);
-            	startManagingCursor(c);
             	addSetsDialogList.clear();
             	
             	// Populate the ArrayList
@@ -1833,6 +2015,7 @@ public class MainActivity extends FragmentActivity {
                 	String setName = c.getString(c.getColumnIndex(DBStrings.TBLSETS_NAME));
                 	addSetsDialogList.add(setName);
             	}
+            	c.close();
             	Collections.sort(addSetsDialogList, new SortIgnoreCase());
             	
             	// Update list view
@@ -2050,7 +2233,6 @@ public class MainActivity extends FragmentActivity {
     public void setSongsList() {
     	ArrayList<Item> temp = new ArrayList<Item>();
     	Cursor c = dbAdapter.getSongNames(currentSongGroup);
-    	startManagingCursor(c);
     	c.moveToFirst();
     	
     	// Populate the ArrayList
@@ -2067,6 +2249,8 @@ public class MainActivity extends FragmentActivity {
         	// Move to the next song
         	c.moveToNext();
     	}
+    	
+    	c.close();
     	
     	// Sort the array list
     	Collections.sort(temp, new ItemComparableName());
@@ -2220,15 +2404,15 @@ public class MainActivity extends FragmentActivity {
      * Emails the song
      * @param songName The song to email
      */
-    private void emailSong(SongItem songI, MainStrings.ShareType shareType, String newSongKey) {
+    private void emailSong(SongItem songItem, MainStrings.ShareType shareType, String newSongKey) {
 		// Create the email intent
     	Intent i = new Intent(android.content.Intent.ACTION_SEND);
 		i.setType("text/Message");
 		
 		// Craft the file name
-		String fileName = songI.getName() + " - " + songI.getAuthor();
+		String fileName = songItem.getName() + " - " + songItem.getAuthor();
 		if (newSongKey == "")
-			fileName += " (" + songI.getKey() + ")";
+			fileName += " (" + songItem.getKey() + ")";
 		else
 			fileName += " (" + newSongKey + ")";
 		
@@ -2241,8 +2425,8 @@ public class MainActivity extends FragmentActivity {
 				// Create the text file attachment
 				try {
 					// Open the file and translate it
-    				FileInputStream fis = openFileInput(songI.getFile());
-    				String temp = ChordProParser.ParseSongFile(songI, newSongKey, fis, false, true);
+    				FileInputStream fis = openFileInput(songItem.getFile());
+    				String temp = ChordProParser.ParseSongFile(songItem, newSongKey, fis, false, true);
     				
     				// Write the file
     				File att = new File(Environment.getExternalStorageDirectory(), fileName);
@@ -2267,7 +2451,7 @@ public class MainActivity extends FragmentActivity {
 				
 				try {	        					
 					// Open the input file
-    				FileInputStream fis = openFileInput(songI.getFile());
+    				FileInputStream fis = openFileInput(songItem.getFile());
     				
     				// Open the output file
     				File att = new File(Environment.getExternalStorageDirectory(), fileName);
@@ -2297,7 +2481,7 @@ public class MainActivity extends FragmentActivity {
 				fileName += ".pdf";
 				
 				// Save the song as a PDF
-				File att = saveSongAsPdf(songI, newSongKey, fileName);
+				File att = saveSongAsPdf(songItem, newSongKey, fileName, false);
 				att.deleteOnExit();
 				
 				// Add the file as an attachment
@@ -2309,16 +2493,16 @@ public class MainActivity extends FragmentActivity {
 		// Set the songkey for the email
 		String tmpkey = "";
 		if (newSongKey == "")
-			tmpkey = songI.getKey();
+			tmpkey = songItem.getKey();
 		else
 			tmpkey = newSongKey;
 		
 		// Add the subject and body
-		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songI.getName());
+		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songItem.getName());
 		//i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
 		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
 				"<h2>SBGSoft Virtual SongBook</h2>" +
-				"<b>Song Name:</b>&nbsp;&nbsp;" + songI.getName() + "<br/>" +
+				"<b>Song Name:</b>&nbsp;&nbsp;" + songItem.getName() + "<br/>" +
 				"<b>Song Key:</b>&nbsp;&nbsp;" + tmpkey + "<br/>" +
 				"<br/>" +
 				"The music for this song has been attached to this email as a file." +
@@ -2331,11 +2515,11 @@ public class MainActivity extends FragmentActivity {
      * Saves the song
      * @param songName The song to save
      */
-    private void saveSong(final SongItem songI, final MainStrings.ShareType shareType, String newSongKey) {
+    private void saveSong(final SongItem songItem, final MainStrings.ShareType shareType, String newSongKey, boolean showToast) {
 		// Craft the file name
-		String fileName = songI.getName() + " - " + songI.getAuthor();
-		if (newSongKey == "")
-			fileName += " (" + songI.getKey() + ")";
+		String fileName = songItem.getName() + " - " + songItem.getAuthor();
+		if (newSongKey == "" || shareType == ShareType.chordPro)
+			fileName += " (" + songItem.getKey() + ")";
 		else
 			fileName += " (" + newSongKey + ")";
 		
@@ -2347,8 +2531,8 @@ public class MainActivity extends FragmentActivity {
 				
 				try {
 					// Open the file and translate it
-    				FileInputStream fis = openFileInput(songI.getFile());
-    				String temp = ChordProParser.ParseSongFile(songI, newSongKey, fis, false, true);
+    				FileInputStream fis = openFileInput(songItem.getFile());
+    				String temp = ChordProParser.ParseSongFile(songItem, newSongKey, fis, false, true);
     				
     				// Write the file
     				File att = new File(Environment.getExternalStorageDirectory(), fileName);
@@ -2360,10 +2544,12 @@ public class MainActivity extends FragmentActivity {
     		    	out.close();
     				
     			} catch (Exception e) {
-    				Toast.makeText(getBaseContext(), "Unable to save text file!", Toast.LENGTH_LONG).show();
+    				if (showToast)
+    					Toast.makeText(getBaseContext(), "Unable to save text file!", Toast.LENGTH_LONG).show();
     			}
 				
-				Toast.makeText(getBaseContext(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Toast.LENGTH_LONG).show();
+				if (showToast)
+					Toast.makeText(getBaseContext(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Toast.LENGTH_LONG).show();
 				
 				break;
 			case chordPro:
@@ -2372,7 +2558,7 @@ public class MainActivity extends FragmentActivity {
 				
 				try {	        					
 					// Open the input file
-    				FileInputStream fis = openFileInput(songI.getFile());
+    				FileInputStream fis = openFileInput(songItem.getFile());
     				
     				// Open the output file
     				File att = new File(Environment.getExternalStorageDirectory(), fileName);
@@ -2390,10 +2576,12 @@ public class MainActivity extends FragmentActivity {
     		    	out.close();
     				
     			} catch (Exception e) {
-    				Toast.makeText(getBaseContext(), "Unable to save ChordPro file!", Toast.LENGTH_LONG).show();
+    				if (showToast)
+    					Toast.makeText(getBaseContext(), "Unable to save ChordPro file!", Toast.LENGTH_LONG).show();
     			}
 				
-				Toast.makeText(getBaseContext(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Toast.LENGTH_LONG).show();
+				if (showToast)
+					Toast.makeText(getBaseContext(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Toast.LENGTH_LONG).show();
 				
 				break;
 			case PDF:
@@ -2401,7 +2589,7 @@ public class MainActivity extends FragmentActivity {
 				fileName += ".pdf";
 				
 				// Save the songs as a PDF
-				saveSongAsPdf(songI, newSongKey, fileName);
+				saveSongAsPdf(songItem, newSongKey, fileName, showToast);
 				
 			default:
 				break;
@@ -2410,10 +2598,10 @@ public class MainActivity extends FragmentActivity {
         
     /**
      * Shares the song via email or saving it
-     * @param songI The SongItem
+     * @param songItem The SongItem
      * @param songName The song name
      */
-    public void shareSong(final SongItem songI) {    	
+    public void shareSong(final SongItem songItem) {    	
     	// Create the options array
     	final CharSequence[] options;
     	
@@ -2448,9 +2636,9 @@ public class MainActivity extends FragmentActivity {
 	    		// Email, plain text
 	    		if (options[whichItem] == getString(R.string.cmenu_songs_share_email)) {
 	    			// Check for a special key
-    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+    		    	if (MainStrings.keyMap.containsKey(songItem.getKey())) {
     		    		// Set the song key to the associated key
-    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+    		    		songItem.setKey(MainStrings.keyMap.get(songItem.getKey()));
     		    	}
     		    	
     	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
@@ -2465,8 +2653,8 @@ public class MainActivity extends FragmentActivity {
     	        			}
     	        			
     	        			// Check to make sure the song has a proper key
-    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
-    	        	    		emailSong(songI, MainStrings.ShareType.plainText, newSongKey);
+    	        	    	if (MainStrings.songKeys.contains(songItem.getKey()))
+    	        	    		emailSong(songItem, MainStrings.ShareType.plainText, newSongKey);
     	        		}
     	        	});
     	        	
@@ -2474,14 +2662,14 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		// Email, chordpro
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_email_cp)) {
-	    			emailSong(songI, MainStrings.ShareType.chordPro, "");
+	    			emailSong(songItem, MainStrings.ShareType.chordPro, "");
 	    		}
 	    		// Email, PDF
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_email_pdf)) {
 	    			// Check for a special key
-    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+    		    	if (MainStrings.keyMap.containsKey(songItem.getKey())) {
     		    		// Set the song key to the associated key
-    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+    		    		songItem.setKey(MainStrings.keyMap.get(songItem.getKey()));
     		    	}
     		    	
     	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
@@ -2496,8 +2684,8 @@ public class MainActivity extends FragmentActivity {
     	        			}
     	        			
     	        			// Check to make sure the song has a proper key
-    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
-    	        	    		emailSong(songI, MainStrings.ShareType.PDF, newSongKey);
+    	        	    	if (MainStrings.songKeys.contains(songItem.getKey()))
+    	        	    		emailSong(songItem, MainStrings.ShareType.PDF, newSongKey);
     	        		}
     	        	});
     	        	
@@ -2506,9 +2694,9 @@ public class MainActivity extends FragmentActivity {
 	    		// Save, plain text
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save)) {
 	    			// Check for a special key
-    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+    		    	if (MainStrings.keyMap.containsKey(songItem.getKey())) {
     		    		// Set the song key to the associated key
-    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+    		    		songItem.setKey(MainStrings.keyMap.get(songItem.getKey()));
     		    	}
     	    		
     		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
@@ -2523,8 +2711,8 @@ public class MainActivity extends FragmentActivity {
     	        			}
     	        			
     	        			// Check to make sure the song has a proper key
-    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
-    	        	    		saveSong(songI, MainStrings.ShareType.plainText, newSongKey);
+    	        	    	if (MainStrings.songKeys.contains(songItem.getKey()))
+    	        	    		saveSong(songItem, MainStrings.ShareType.plainText, newSongKey, true);
     	        		}
     	        	});
     	        	
@@ -2532,14 +2720,14 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		// Save, chordpro
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save_cp)) {
-	    			saveSong(songI, MainStrings.ShareType.chordPro, "");
+	    			saveSong(songItem, MainStrings.ShareType.chordPro, "", true);
 	    		}
 	    		// Save, PDF
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save_pdf)) {
 	    			// Check for a special key
-    		    	if (MainStrings.keyMap.containsKey(songI.getKey())) {
+    		    	if (MainStrings.keyMap.containsKey(songItem.getKey())) {
     		    		// Set the song key to the associated key
-    		    		songI.setKey(MainStrings.keyMap.get(songI.getKey()));
+    		    		songItem.setKey(MainStrings.keyMap.get(songItem.getKey()));
     		    	}
     	    		
     		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
@@ -2554,8 +2742,8 @@ public class MainActivity extends FragmentActivity {
     	        			}
     	        			
     	        			// Check to make sure the song has a proper key
-    	        	    	if (MainStrings.songKeys.contains(songI.getKey()))
-    	        	    		saveSong(songI, MainStrings.ShareType.PDF, newSongKey);
+    	        	    	if (MainStrings.songKeys.contains(songItem.getKey()))
+    	        	    		saveSong(songItem, MainStrings.ShareType.PDF, newSongKey, true);
     	        		}
     	        	});
     	        	
@@ -2573,7 +2761,7 @@ public class MainActivity extends FragmentActivity {
      * @return The created file
      */
     @TargetApi(19)
-    public File saveSongAsPdf(SongItem songI, String songKey, String fileName) {
+    public File saveSongAsPdf(SongItem songI, String songKey, String fileName, boolean showToast) {
     	int pageWidth = 450;
     	int pageHeight = 700;
     	int padding = 30;
@@ -2622,7 +2810,8 @@ public class MainActivity extends FragmentActivity {
 			FileOutputStream out = new FileOutputStream(att);
 	    	document.writeTo(out);
     	} catch (Exception e) {
-    		Toast.makeText(getApplicationContext(), 
+    		if (showToast)
+    			Toast.makeText(getApplicationContext(), 
         			"Failed to save \"" + songI.getName() + "\" to \"" + Environment.getExternalStorageDirectory() + "/" + fileName,
         			Toast.LENGTH_LONG).show();
     	}
@@ -2631,7 +2820,8 @@ public class MainActivity extends FragmentActivity {
     	document.close();
     	
     	// Alert on success
-    	Toast.makeText(getApplicationContext(), 
+    	if (showToast)
+    		Toast.makeText(getApplicationContext(), 
     			"Saved \"" + songI.getName() + "\" to \"" + Environment.getExternalStorageDirectory() + "/" + fileName,
     			Toast.LENGTH_LONG).show();
     	
@@ -2680,7 +2870,6 @@ public class MainActivity extends FragmentActivity {
     	message.append(MainStrings.EOL);
     	
     	Cursor c = dbAdapter.getSongLastFive(songName);
-    	startManagingCursor(c);
     	c.moveToFirst(); 
     	while(!c.isAfterLast()) {
     		// Get the set name and date
@@ -2693,6 +2882,7 @@ public class MainActivity extends FragmentActivity {
         	message.append(MainStrings.EOL);
         	c.moveToNext();
     	}
+    	c.close();
     	message.append(MainStrings.EOL);
     	
     	// Show total usage
@@ -2706,7 +2896,6 @@ public class MainActivity extends FragmentActivity {
     	message.append("Member of Song Groups: ");
     	
     	c = dbAdapter.getSongGroups(songName);
-    	startManagingCursor(c);
     	if(c.getCount() > 0) {
 	    	c.moveToFirst();
 	    	while(!c.isAfterLast()) {
@@ -2715,6 +2904,7 @@ public class MainActivity extends FragmentActivity {
 	    		message.append("\t" + songGroupName);
 	        	c.moveToNext();
 	    	}
+	    	c.close();
     	} else {
     		message.append(MainStrings.EOL);
     		message.append("\tNo Groups");
@@ -2743,7 +2933,6 @@ public class MainActivity extends FragmentActivity {
      */
     public void setCurrentSetList() {
     	Cursor c = dbAdapter.getCurrentSetSongs();
-    	startManagingCursor(c);
     	c.moveToFirst();
     	
     	// Clear the ArrayList
@@ -2764,6 +2953,7 @@ public class MainActivity extends FragmentActivity {
         	// Move to the next song
         	c.moveToNext();
     	}
+    	c.close();
     }
     
     /**
@@ -2837,7 +3027,6 @@ public class MainActivity extends FragmentActivity {
     public void setSongGroupsList() {
     	// Query the database
     	Cursor c = dbAdapter.getSongGroupNames();
-    	startManagingCursor(c);
     	
     	// Clear the existing groups list
     	songGroupsList.clear();
@@ -2848,6 +3037,7 @@ public class MainActivity extends FragmentActivity {
     		songGroupsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME)));
     		c.moveToNext();
     	}
+    	c.close();
     	
     	// Sort the list alphabetically
     	Collections.sort(songGroupsList, new SortIgnoreCase());
@@ -2941,7 +3131,6 @@ public class MainActivity extends FragmentActivity {
      */
     private void addSongsToGroup(final String groupName) {
     	Cursor c = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
-    	startManagingCursor(c);
     	
     	// Clear the previous song lists
     	addSongsDialogList.clear();
@@ -2952,6 +3141,7 @@ public class MainActivity extends FragmentActivity {
     		addSongsDialogList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)));
     		addSongsDialogMap.put(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME)), false);
     	}
+    	c.close();
     	Collections.sort(addSongsDialogList, new SortIgnoreCase());
     	
     	// Create the alert dialog and set the title
@@ -2989,7 +3179,6 @@ public class MainActivity extends FragmentActivity {
             	
             	// Fill the new songs list
             	Cursor c = dbAdapter.getSongNames(groupName);
-            	startManagingCursor(c);
             	addSongsDialogList.clear();
             	
             	// Populate the ArrayList
@@ -2998,6 +3187,7 @@ public class MainActivity extends FragmentActivity {
                 	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
                 	addSongsDialogList.add(songName);
             	}
+            	c.close();
             	Collections.sort(addSongsDialogList, new SortIgnoreCase());
             	
             	// Update list view
@@ -3043,7 +3233,6 @@ public class MainActivity extends FragmentActivity {
     private void deleteSongGroup() {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSongGroupNames();
-    	startManagingCursor(c);
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount() - 1];
     	int counter = 0;
@@ -3055,6 +3244,7 @@ public class MainActivity extends FragmentActivity {
     	while(c.moveToNext()) {
     		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
     	}
+    	c.close();
     	
     	// Create the dialog to choose which group to delete
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -3136,7 +3326,6 @@ public class MainActivity extends FragmentActivity {
     public void setSetGroupsList() {
     	// Query the database
     	Cursor c = dbAdapter.getSetGroupNames();
-    	startManagingCursor(c);
     	
     	// Clear the existing groups list
     	setGroupsList.clear();
@@ -3147,6 +3336,7 @@ public class MainActivity extends FragmentActivity {
     		setGroupsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME)));
     		c.moveToNext();
     	}
+    	c.close();
     	
     	// Sort the list alphabetically
     	Collections.sort(setGroupsList, new SortIgnoreCase());
@@ -3236,7 +3426,6 @@ public class MainActivity extends FragmentActivity {
     private void deleteSetGroup() {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSetGroupNames();
-    	startManagingCursor(c);
     	
     	final CharSequence[] groupNames = new CharSequence[c.getCount() - 1];
     	int counter = 0;
@@ -3248,6 +3437,7 @@ public class MainActivity extends FragmentActivity {
     	while(c.moveToNext()) {
     		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
     	}
+    	c.close();
     	
     	// Create the dialog to choose which group to delete
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);

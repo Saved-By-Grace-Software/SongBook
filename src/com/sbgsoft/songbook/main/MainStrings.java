@@ -65,7 +65,7 @@ public class MainStrings {
 	public static final int REORDER_SET = 130;
 	public static final int SET_GROUPS_ADD = 140;
 	public static final int SET_GROUPS_DEL = 150;
-	public static final int EMAIL_SET = 160;
+	public static final int SHARE_SET = 160;
 	
 	// Current Set Context Menu Keys
 	public static final int EDIT_SONG_CS = 200;
