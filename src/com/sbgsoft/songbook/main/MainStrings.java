@@ -80,7 +80,7 @@ public class MainStrings {
 	public static final ArrayList<String> setSortBy = new ArrayList<String>(Arrays.asList("Set Date - Recent", "Set Date - Oldest", "Set Title"));
 	
 	// Enums
-	public enum ShareType {
+	public enum SongFileType {
 		plainText,
 		chordPro,
 		PDF
