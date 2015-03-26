@@ -8,10 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.util.SystemUiHider;
@@ -157,6 +153,7 @@ public class Logo extends Activity {
 			if (AUTO_HIDE) {
 				delayedHide(AUTO_HIDE_DELAY_MILLIS);
 			}
+			view.performClick();
 			return false;
 		}
 	};

@@ -54,9 +54,9 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -887,8 +887,9 @@ public class MainActivity extends FragmentActivity {
     	// Show the dialog
     	AlertDialog a = alert.create();
     	a.show();
-    	Display display = getWindowManager().getDefaultDisplay(); 
-    	int height = display.getHeight();
+    	DisplayMetrics metrics = new DisplayMetrics();
+    	getWindowManager().getDefaultDisplay().getMetrics(metrics); 
+    	int height = metrics.heightPixels;
     	height = (int) (height / 1.5);
     	a.getWindow().setLayout(LayoutParams.WRAP_CONTENT, height);
     }
@@ -1104,8 +1105,9 @@ public class MainActivity extends FragmentActivity {
     	// Show the dialog
     	AlertDialog a = alert.create();
     	a.show();
-    	Display display = getWindowManager().getDefaultDisplay(); 
-    	int height = display.getHeight();
+    	DisplayMetrics metrics = new DisplayMetrics();
+    	getWindowManager().getDefaultDisplay().getMetrics(metrics); 
+    	int height = metrics.heightPixels;
     	height = (int) (height / 1.5);
     	a.getWindow().setLayout(LayoutParams.WRAP_CONTENT, height);
     }
@@ -1932,8 +1934,7 @@ public class MainActivity extends FragmentActivity {
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		
-				// Set all selected items to the set	    		
-	    		ArrayList<String> sets = new ArrayList<String>();
+				// Set all selected items to the set	    	
 	    		for(String s : addSetsDialogMap.keySet()) {
 	    			if(addSetsDialogMap.get(s))
 	    				dbAdapter.addSongToSet(s, songName);
@@ -1952,8 +1953,9 @@ public class MainActivity extends FragmentActivity {
     	// Show the dialog
     	AlertDialog a = alert.create();
     	a.show();
-    	Display display = getWindowManager().getDefaultDisplay(); 
-    	int height = display.getHeight();
+    	DisplayMetrics metrics = new DisplayMetrics();
+    	getWindowManager().getDefaultDisplay().getMetrics(metrics); 
+    	int height = metrics.heightPixels;
     	height = (int) (height / 1.5);
     	a.getWindow().setLayout(LayoutParams.WRAP_CONTENT, height);
     }
@@ -3070,8 +3072,9 @@ public class MainActivity extends FragmentActivity {
     	// Show the dialog
     	AlertDialog a = alert.create();
     	a.show();
-    	Display display = getWindowManager().getDefaultDisplay(); 
-    	int height = display.getHeight();
+    	DisplayMetrics metrics = new DisplayMetrics();
+    	getWindowManager().getDefaultDisplay().getMetrics(metrics); 
+    	int height = metrics.heightPixels;
     	height = (int) (height / 1.5);
     	a.getWindow().setLayout(LayoutParams.WRAP_CONTENT, height);
     }
