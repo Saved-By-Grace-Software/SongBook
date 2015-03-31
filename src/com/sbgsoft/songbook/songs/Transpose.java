@@ -52,6 +52,11 @@ public class Transpose {
     	    	}
     		}
     		
+    		// Check for key from keymap
+        	if (MainStrings.keyMap.containsKey(bass)) {
+        		bass = MainStrings.keyMap.get(bass);
+    		}
+    		
     		// Get the bass note index
     		bassIndex = MainStrings.songKeys_transpose.lastIndexOf(bass);
     		
