@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical" >
+  
+	<com.ericharlow.dragndrop.DragNDropListView
+	    android:id="@+id/android:list"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+
+  	</com.ericharlow.dragndrop.DragNDropListView>
+  	
+	<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        style="?android:attr/buttonBarStyle" >
+        
+	    <Button
+            android:id="@+id/set_edit_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onCancelClick"
+            android:text="@string/cancel"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/set_edit_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onSaveClick"
+            android:text="@string/set_edit_save"
+            style="?android:attr/buttonBarButtonStyle" />
+
+    </LinearLayout>
+</RelativeLayout>
+<!-- From: file:/C:/Users/SamIAm/Documents/Workspace/Personal/Songbook/app/src/main/res/layout/dragndroplistview.xml -->

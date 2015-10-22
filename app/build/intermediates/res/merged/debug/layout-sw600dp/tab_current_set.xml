@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tab_current"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="top">    
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:orientation="horizontal" >
+        
+        <TextView android:id="@+id/current_set_tab_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/currentSetTitleTextSize"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/TransparentWhite"
+            android:textStyle="bold"
+            android:text="@string/title_current_set"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:shadowColor="@color/TransparentGrey" 
+			android:shadowDx="3"
+			android:shadowDy="3" 
+			android:shadowRadius="1.5" />
+
+    </RelativeLayout>
+    
+    <TextView 
+        android:layout_width="fill_parent"
+		android:layout_height="3dip"
+		android:background="@color/darkGrey"/>
+    
+    <ListView android:id="@+id/current_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dip"/>
+    
+  	<TextView android:id="@+id/empty_current"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/empty_current"
+        android:textColor="@color/defaultTextColor" />
+
+</LinearLayout><!-- From: file:/C:/Users/SamIAm/Documents/Workspace/Personal/Songbook/app/src/main/res/layout-sw600dp/tab_current_set.xml -->

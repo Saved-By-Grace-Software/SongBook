@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF" >
+    
+    <com.sbgsoft.songbook.views.AutoFitTextView
+        android:id="@+id/song_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="@string/empty_song"
+        android:textColor="#000000"
+        android:typeface="monospace"
+        android:background="#FFFFFF"
+        android:textSize="@dimen/defaultSongTextSize" />
+
+    <ImageButton
+        android:id="@+id/song_up_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/up_arrow"
+        android:onClick="incFontSize"
+        android:src="@android:drawable/arrow_up_float" />
+
+    <TextView
+        android:id="@+id/song_font_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/song_up_button"
+        android:paddingRight="3dp"
+        android:text="@string/font_arrows"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ImageButton
+        android:id="@+id/song_down_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/song_font_text"
+        android:contentDescription="@string/down_arrow"
+        android:onClick="decFontSize"
+        android:src="@android:drawable/arrow_down_float" />
+
+    <Button
+        android:id="@+id/song_transpose_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@android:drawable/btn_default_small"
+        android:text="@string/transpose_button"
+        android:onClick="onTransposeButtonClick" />
+
+</RelativeLayout>
+<!-- From: file:/C:/Users/SamIAm/Documents/Workspace/Personal/Songbook/app/src/main/res/layout/activity_song.xml -->

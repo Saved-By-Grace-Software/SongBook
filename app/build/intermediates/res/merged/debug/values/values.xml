@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/C:/Users/SamIAm/Documents/Workspace/Personal/Songbook/app/src/main/res/values/attrs.xml -->
+    <eat-comment/>
+    <attr format="reference" name="autoScaleTextViewStyle"/>
+    <!-- From: file:/C:/Users/SamIAm/Documents/Workspace/Personal/Songbook/app/src/main/res/values/color.xml -->
+    <eat-comment/>
+    <color name="TranslucentWhite">#40FFFFFF</color>
+    <color name="TransparentGrey">#77000000</color>
+    <color name="TransparentWhite">#7FFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <!-- From: file:/C:/Users/SamIAm/Documents/Workspace/Personal/Songbook/app/src/main/res/values/colors.xml -->
+    <eat-comment/>
+    <color name="black_overlay">#66000000</color>
+    <!-- From: file:/C:/Users/SamIAm/Documents/Workspace/Personal/Songbook/app/src/main/res/values/color.xml -->
+    <eat-comment/>
+    <color name="darkGrey">#FF26303B</color>
+    <color name="defaultTextColor">#ff000040</color>
+    <color name="gray">#ff808080</color>
+    <color name="lightBlack">#FF202020</color>
+    <color name="slateBlue">#FF00376F</color>
+    <color name="slateGrey">#FF2F3C4A</color>
+    <color name="white">#FFFFFFFF</color>
+    <declare-styleable name="AutoScaleTextView"><attr format="dimension" name="minTextSize"/></declare-styleable>
+    <declare-styleable name="ButtonBarContainerTheme"><attr format="reference" name="metaButtonBarStyle"/><attr format="reference" name="metaButtonBarButtonStyle"/></declare-styleable>
+    <!-- From: file:/C:/Users/SamIAm/Documents/Workspace/Personal/Songbook/app/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="currentSetTitleTextSize">24sp</dimen>
+    <dimen name="defaultSongTextSize">12sp</dimen>
+    <dimen name="dragRowTextSize">24sp</dimen>
+    <dimen name="filePathTextSize">18sp</dimen>
+    <dimen name="fileRowTextSize">24sp</dimen>
+    <dimen name="fileSpinnerTextSize">14sp</dimen>
+    <dimen name="listMainTextSize">28sp</dimen>
+    <dimen name="listRowHeaderTextSize">20sp</dimen>
+    <dimen name="listSubTextSize">18sp</dimen>
+    <dimen name="maximumSongTextSize">120sp</dimen>
+    <dimen name="tabSpinnerTextSize">16sp</dimen>
+    <dimen name="tabTitleTextSize">32sp</dimen>
+    <integer name="textSizeIncrement">1</integer>
+    <!-- From: file:/C:/Users/SamIAm/Documents/Workspace/Personal/Songbook/app/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="add_set_date">Set Date:</string>
+    <string name="add_set_name">Set Name (must be unique):</string>
+    <string name="add_song_author">Artist Name*:</string>
+    <string name="add_song_key">Song Key*:</string>
+    <string name="add_song_name">Song Name (must be unique):</string>
+    <string name="add_song_subnote">*These may be left empty </string>
+    <string name="app_name">Virtual SongBook</string>
+    <string name="cancel">Cancel</string>
+    <string name="cmenu_set_group_add">Add Set To Group…</string>
+    <string name="cmenu_set_group_delete">Remove Set From Group</string>
+    <string name="cmenu_sets_delete">Delete Set</string>
+    <string name="cmenu_sets_edit">Edit Set Songs</string>
+    <string name="cmenu_sets_edit_att">Edit Set Attributes</string>
+    <string name="cmenu_sets_remove_song">Remove Song From Set</string>
+    <string name="cmenu_sets_reorder">Reorder Set</string>
+    <string name="cmenu_sets_set_song_key">Change Song Key For Set</string>
+    <string name="cmenu_sets_share">Share Set…</string>
+    <string name="cmenu_sets_share_email">Email Songs as Plain Text</string>
+    <string name="cmenu_sets_share_email_cp">Email Songs as ChordPro</string>
+    <string name="cmenu_sets_share_email_pdf">Email Songs as PDF</string>
+    <string name="cmenu_sets_share_save">Save Songs as Plain Text</string>
+    <string name="cmenu_sets_share_save_cp">Save Songs as ChordPro</string>
+    <string name="cmenu_sets_share_save_pdf">Save Songs as PDF</string>
+    <string name="cmenu_song_add_curr_set">Add Song To Current Set</string>
+    <string name="cmenu_song_add_set">Add Song To Set…</string>
+    <string name="cmenu_song_group_add">Add Song To Group…</string>
+    <string name="cmenu_song_group_delete">Remove Song From Group</string>
+    <string name="cmenu_songs_delete">Delete Song</string>
+    <string name="cmenu_songs_edit">Edit Song</string>
+    <string name="cmenu_songs_edit_att">Edit Song Attributes</string>
+    <string name="cmenu_songs_share">Share Song…</string>
+    <string name="cmenu_songs_share_email">Email as Plain Text</string>
+    <string name="cmenu_songs_share_email_cp">Email as ChordPro</string>
+    <string name="cmenu_songs_share_email_pdf">Email as PDF</string>
+    <string name="cmenu_songs_share_save">Save as Plain Text</string>
+    <string name="cmenu_songs_share_save_cp">Save as ChordPro</string>
+    <string name="cmenu_songs_share_save_pdf">Save as PDF</string>
+    <string name="cmenu_songs_stats">Song Stats</string>
+    <string name="content_description">content_desc</string>
+    <string name="down_arrow">Down Arrow</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="empty_current">This Set is Empty</string>
+    <string name="empty_song">This song is empty, edit it to add lyrics and chords</string>
+    <string name="file_type">File Type:</string>
+    <string name="font_arrows">Font Size</string>
+    <string name="full_app_name">SBGSoft Virtual SongBook</string>
+    <string name="logo_content_description">Truth Gaming Logo</string>
+    <string name="menu_about">About SongBook</string>
+    <string name="menu_backup">Backup…</string>
+    <string name="menu_backup_export">Export</string>
+    <string name="menu_backup_import">Import</string>
+    <string name="menu_set_groups">Set Groups…</string>
+    <string name="menu_set_groups_create">Create Set Group</string>
+    <string name="menu_set_groups_delete">Delete Set Group…</string>
+    <string name="menu_set_groups_delete_all">Delete All Set Groups</string>
+    <string name="menu_sets">Sets…</string>
+    <string name="menu_sets_clear">Delete All Sets</string>
+    <string name="menu_sets_create">Create Set</string>
+    <string name="menu_sets_find">Find Set</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_song_groups">Song Groups…</string>
+    <string name="menu_song_groups_create">Create Song Group</string>
+    <string name="menu_song_groups_delete">Delete Song Group…</string>
+    <string name="menu_song_groups_delete_all">Delete All Song Groups</string>
+    <string name="menu_songs">Songs…</string>
+    <string name="menu_songs_clear">Delete All Songs</string>
+    <string name="menu_songs_create">Create Song</string>
+    <string name="menu_songs_find">Find Song</string>
+    <string name="menu_songs_import">Import Song</string>
+    <string name="no_sets">No Sets Currently Exist For This Group</string>
+    <string name="no_songs">No Songs Currently Exist For This Group</string>
+    <string name="open_file_empty">This Folder is Empty</string>
+    <string name="select_folder">Select Folder</string>
+    <string name="set_edit_save">Save Set</string>
+    <string name="set_group">Set Group:</string>
+    <string name="sets_row_date_text">Date: </string>
+    <string name="song_edit_save">Save Song</string>
+    <string name="song_group">Song Group:</string>
+    <string name="songs_row_author_text">Artist: </string>
+    <string name="songs_row_key_text">Key: </string>
+    <string name="sort_by">Sort By:</string>
+    <string name="title_activity_edit_song">Edit Song</string>
+    <string name="title_activity_logo">Logo</string>
+    <string name="title_activity_open_file">Select A File…</string>
+    <string name="title_activity_open_folder">Select A Folder…</string>
+    <string name="title_activity_set">SetActivity</string>
+    <string name="title_activity_song">SongActivity</string>
+    <string name="title_current_set">Current Set</string>
+    <string name="title_sets">Sets</string>
+    <string name="title_songs">Songs</string>
+    <string name="transpose_button">Transpose</string>
+    <string name="up_arrow">Up Arrow</string>
+    <!-- From: file:/C:/Users/SamIAm/Documents/Workspace/Personal/Songbook/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="AppTheme" parent="android:Theme.Light"/>
+    <style name="ButtonBar">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+    <style name="ButtonBarButton"/>
+    <style name="FullscreenTheme" parent="android:Theme.NoTitleBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="metaButtonBarStyle">@style/ButtonBar</item>
+        <item name="metaButtonBarButtonStyle">@style/ButtonBarButton</item>
+    </style>
+</resources>
