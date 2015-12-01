@@ -411,6 +411,7 @@ public class MainActivity extends FragmentActivity {
     			setName = dbAdapter.getCurrentSetName();
     			final String fsongName = songName;
     			final String fsetName = setName;
+                final int fsongOrder = info.position;
     			
     			alert = new AlertDialog.Builder(this);
 
@@ -420,7 +421,7 @@ public class MainActivity extends FragmentActivity {
     	    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
     		    	public void onClick(DialogInterface dialog, int whichButton) {
     		    		// Remove the song from the set
-    	    			dbAdapter.removeSongFromSet(fsetName, fsongName);
+    	    			dbAdapter.removeSongFromSet(fsetName, fsongName, fsongOrder);
     	    			
     	    			// Refresh the current set list
     	    			fillCurrentSetListView();

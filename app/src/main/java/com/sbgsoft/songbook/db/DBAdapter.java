@@ -158,24 +158,27 @@ public class DBAdapter {
 	 * @return True if success, False if failure
 	 */
 	public boolean reorderSet(String setName, String[] newOrder) {
-		String song = "";
-		int order = 1;
+		String song;
+		int order;
 		
 		try {
-			// Cycle through the new song list
+            // Delete the songs from the sets lookup table
+            mDb.execSQL("DELETE FROM " + DBStrings.SETLOOKUP_TABLE + " WHERE " + DBStrings.TBLSLOOKUP_SET +
+                    " = (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "')");
+
+			// Cycle through the new song list and add them
 			for (int i = 0; i < newOrder.length; i++) {
 				song = newOrder[i];
 				order = i + 1;
-				
-				// Update the order of the songs
-				mDb.execSQL("UPDATE " + DBStrings.SETLOOKUP_TABLE +
-				" SET " + DBStrings.TBLSLOOKUP_ORDER + " = " + order + " WHERE " +
-				DBStrings.TBLSLOOKUP_SET + 
-				" = (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + 
-					" WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "') AND " +
-				DBStrings.TBLSLOOKUP_SONG + 
-				" = (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + 
-					" WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "');");
+
+                if (song != "") {
+                    mDb.execSQL("INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " +
+                            DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ", " + DBStrings.TBLSLOOKUP_ORDER + ") " +
+                            " VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " +
+                            " (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'), " +
+                            " (SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'), " +
+                            " " + order + " );");
+                }
 			}
 		} catch (SQLiteException e) {
 			return false;
@@ -225,25 +228,19 @@ public class DBAdapter {
 	 * @param songName The song to remove
 	 * @return True if success, False if failure
 	 */
-	public boolean removeSongFromSet(String setName, String songName) {
+	public boolean removeSongFromSet(String setName, String songName, int songOrder) {
 		try {
-			String query = "";
-			
-			// Get the order of the song being deleted
-			query = "SELECT " + DBStrings.TBLSLOOKUP_ORDER + " FROM " + DBStrings.SETLOOKUP_TABLE + " " +
-					"WHERE " + DBStrings.TBLSLOOKUP_SET + " = " +
-					" (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "') " + 
-					" AND " + DBStrings.TBLSLOOKUP_SONG + " = " +
-					" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "');";
-			Cursor c = mDb.rawQuery(query, null);
-			c.moveToFirst();
-			int order = c.getInt(c.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_ORDER));
+			String query;
+
+            // Set local order because of 1 based counting
+            int order = songOrder + 1;
 			
 			// Remove the song from the set
 			query = "DELETE FROM " + DBStrings.SETLOOKUP_TABLE + " WHERE " + DBStrings.TBLSLOOKUP_SET + " = " +
 					" (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "') " + 
 					" AND " + DBStrings.TBLSLOOKUP_SONG + " = " +
-					" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "');";
+					" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "') " +
+                    " AND " + DBStrings.TBLSLOOKUP_ORDER + " = " + order;
 			mDb.execSQL(query);
 			
 			// Update the set order
