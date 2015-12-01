@@ -177,7 +177,7 @@ public class SongActivity extends Activity {
         			// Transpose the song
 					try {
 						FileInputStream fis = openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
-						String transposedSongText = ChordProParser.ParseSongFile(mSongItem, MainStrings.songKeys.get(whichItem), fis, true, false);
+						String transposedSongText = ChordProParser.ParseSongFile(getApplicationContext(), mSongItem, MainStrings.songKeys.get(whichItem), fis, true, false);
 	        			song.setText(Html.fromHtml(transposedSongText));
 					} catch (FileNotFoundException e) {
 						Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
