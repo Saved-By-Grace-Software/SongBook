@@ -30,6 +30,7 @@ public class ChordProParser {
 		String line = "", lineFeed = "";
 		boolean inHtml = false, transposeSong = false, addedCapo = false;
 		int skipCounter = 0;
+		int chordColor = context.getResources().getColor(R.color.chordColor);
 		
 		// Set the line feed to use
     	if(winLineFeed)
@@ -246,8 +247,26 @@ public class ChordProParser {
 							
 							// Intro delimeter
 							if (delim.toString().equals("intro") || delim.toString().equals("single")) {
-								// Read to end of the delimeter, until '}'
 								StringBuilder intro = new StringBuilder();
+
+								// If intro, add the intro text
+								if (delim.toString().equals("intro")) {
+									if (useHtml) {
+										// Add beginning of bold
+										intro.append("<b>");
+									}
+
+									// Append the Intro text
+									intro.append("Intro: ");
+
+									if (useHtml) {
+										// Close the bold
+										intro.append("</b>");
+									}
+								}
+
+								// Read to end of the delimeter, until '}'
+
 								stopRead = line.indexOf('}', charLoc);
 								for (int i = charLoc; i < stopRead - 1; i++) {
 									// Go to the next character
@@ -257,7 +276,7 @@ public class ChordProParser {
 									if (lineCharArray[charLoc] == '[') {
 										if (useHtml) {
 											// Add chord html formatting
-											intro.append("<b><font color=\"#006B9F\">");
+											intro.append("<b><font color=\"" + chordColor + "\">");
 										}
 										
 										// Read to the end of the chord
@@ -422,7 +441,7 @@ public class ChordProParser {
 									if (lineCharArray[charLoc] == '[') {
 										if (useHtml) {
 											// Add chord html formatting
-											cc.append("<b><font color=\"#006B9F\">");
+											cc.append("<b><font color=\"" + chordColor + "\">");
 										}
 										
 										// Read to the end of the chord
@@ -499,7 +518,7 @@ public class ChordProParser {
 									if (lineCharArray[charLoc] == '[') {
 										if (useHtml) {
 											// Add chord html formatting
-											lc.append("<b><font color=\"#006B9F\">");
+											lc.append("<b><font color=\"" + chordColor + "\">");
 										}
 										
 										// Read to the end of the chord
@@ -579,7 +598,7 @@ public class ChordProParser {
 					else if (c == '[') {
 						if (useHtml) {
 							// Add chord html formatting
-							chordLine.append("<b><font color=\"#006B9F\">");
+							chordLine.append("<b><font color=\"" + chordColor + "\">");
 						}
 						
 						// Read to the end of the chord
