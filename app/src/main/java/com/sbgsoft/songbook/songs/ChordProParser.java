@@ -1,5 +1,7 @@
 package com.sbgsoft.songbook.songs;
 
+import android.content.Context;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -8,6 +10,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainStrings;
 
@@ -20,7 +23,7 @@ public class ChordProParser {
 	public static final ArrayList<String> validDelimeters = new ArrayList<String>(
 			Arrays.asList("author", "title", "cc", "lc", "capo", "intro", "single", "comment"));
 	
-    public static String ParseSongFile(SongItem songItem, String transposeKey, FileInputStream file, boolean useHtml, boolean winLineFeed) throws IOException {
+    public static String ParseSongFile(Context context, SongItem songItem, String transposeKey, FileInputStream file, boolean useHtml, boolean winLineFeed) throws IOException {
 		StringBuilder parsedOutput = new StringBuilder();
 		StringBuilder chordLine = new StringBuilder();
 		StringBuilder lyricLine = new StringBuilder();
@@ -196,7 +199,9 @@ public class ChordProParser {
 							if (delim.toString().equals("title")) {
 								if (useHtml) {
 									// Add beginning of bold 
-									lyricLine.append("<b>");
+									lyricLine.append("<font color=\"");
+									lyricLine.append(context.getResources().getColor(R.color.titleColor));
+									lyricLine.append("\"><b>");
 								}
 								
 								// Read to end of the delimeter, until '}'
@@ -220,7 +225,7 @@ public class ChordProParser {
 											title.append(" ");
 									} else {
 										if (useHtml || (!useHtml && (!inHtml && lineCharArray[charLoc] != '>'))) 
-											title.append(lineCharArray[charLoc]);
+											title.append(Character.toUpperCase(lineCharArray[charLoc]));
 									}
 								}
 								
@@ -229,7 +234,7 @@ public class ChordProParser {
 								
 								if (useHtml) {
 									// Close the bold
-									lyricLine.append("</b>");
+									lyricLine.append("</b></font>");
 								}
 								
 								// Skip the final '}'

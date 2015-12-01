@@ -2195,7 +2195,7 @@ public class MainActivity extends FragmentActivity {
 				try {
 					FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
 					//song.setText(getSongHtmlText(song.getName(), song.getKey(), fis));
-					song.setText(ChordProParser.ParseSongFile(song, song.getKey(), fis, true, false));
+					song.setText(ChordProParser.ParseSongFile(getApplicationContext(), song, song.getKey(), fis, true, false));
 					
 					// Show the song activity
 	            	SongActivity songA = new SongActivity();
@@ -2375,7 +2375,7 @@ public class MainActivity extends FragmentActivity {
 				try {
 					// Open the file and translate it
     				FileInputStream fis = openFileInput(songItem.getFile());
-    				String temp = ChordProParser.ParseSongFile(songItem, newSongKey, fis, false, true);
+    				String temp = ChordProParser.ParseSongFile(getApplicationContext(), songItem, newSongKey, fis, false, true);
     				
     				// Write the file
     				att = new File(Environment.getExternalStorageDirectory(), fileName);
@@ -2643,7 +2643,7 @@ public class MainActivity extends FragmentActivity {
 	    	
 	    	// Get the fitted text size
 	    	FileInputStream fis = openFileInput(dbAdapter.getSongFile(songItem.getName()));
-	    	String songText = ChordProParser.ParseSongFile(songItem, songKey, fis, true, false);
+	    	String songText = ChordProParser.ParseSongFile(getApplicationContext(), songItem, songKey, fis, true, false);
 	    	
 	    	// Add the song text to the text view
 	    	tv.setText(Html.fromHtml(songText));
@@ -2835,7 +2835,7 @@ public class MainActivity extends FragmentActivity {
             		try {
 	            		FileInputStream fis = openFileInput(dbAdapter.getSongFile(currSong.getName()));
 	            		currSong.setKey(dbAdapter.getSongKey(currSong.getName()));
-	            		currSong.setText(ChordProParser.ParseSongFile(currSong, dbAdapter.getSongKeyForSet(dbAdapter.getCurrentSetName(), currSong.getName()), fis, true, false));
+	            		currSong.setText(ChordProParser.ParseSongFile(getApplicationContext(), currSong, dbAdapter.getSongKeyForSet(dbAdapter.getCurrentSetName(), currSong.getName()), fis, true, false));
 	            		
 	            		setItem.songs.add(currSong);      
             		} catch (FileNotFoundException e) {

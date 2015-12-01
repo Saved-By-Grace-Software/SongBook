@@ -108,7 +108,7 @@ public class SetSongFragment extends Fragment {
         			// Transpose the song
 					try {
 						FileInputStream fis = getActivity().openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
-						String transposedSongText = ChordProParser.ParseSongFile(mSongItem, MainStrings.songKeys.get(whichItem), fis, true, false);
+						String transposedSongText = ChordProParser.ParseSongFile(getActivity().getApplicationContext(), mSongItem, MainStrings.songKeys.get(whichItem), fis, true, false);
 	        			song.setText(Html.fromHtml(transposedSongText));
 					} catch (FileNotFoundException e) {
 						Toast.makeText(getActivity(), "Could not open song file!", Toast.LENGTH_LONG).show();
