@@ -21,14 +21,16 @@ import com.sbgsoft.songbook.main.MainStrings;
  */
 public class ChordProParser {
 	public static final ArrayList<String> validDelimeters = new ArrayList<String>(
-			Arrays.asList("author", "title", "cc", "lc", "capo", "intro", "single", "comment", "sot", "eot"));
+			Arrays.asList("author", "title", "cc", "lc", "capo", "intro",
+                    "single", "comment", "sot", "start_of_tab", "eot", "end_of_tab",
+                    "soc", "start_of_chorus", "eoc", "end_of_chorus"));
 	
     public static String ParseSongFile(Context context, SongItem songItem, String transposeKey, FileInputStream file, boolean useHtml, boolean winLineFeed) throws IOException {
 		StringBuilder parsedOutput = new StringBuilder();
 		StringBuilder chordLine = new StringBuilder();
 		StringBuilder lyricLine = new StringBuilder();
 		String line = "", lineFeed = "";
-		boolean inHtml = false, transposeSong = false, addedCapo = false, inTab = false;
+		boolean inHtml = false, transposeSong = false, addedCapo = false, inTab = false, closingChorus = false;
 		int skipCounter = 0;
 		int chordColor = context.getResources().getColor(R.color.chordColor);
 		
@@ -380,20 +382,58 @@ public class ChordProParser {
 							}
 
                             // Start of Tab delimeter
-                            if (delim.toString().equals("sot")) {
+                            if (delim.toString().equals("sot") || delim.toString().equals("start_of_tab")) {
                                 // Set the in tab boolean
                                 inTab = true;
 
-                                // Nothing else allowed after the comment delimeter
+                                // Nothing else allowed after the sot delimeter
                                 break;
                             }
 
                             // End of Tab delimeter
-                            if (delim.toString().equals("eot")) {
+                            if (delim.toString().equals("eot") || delim.toString().equals("end_of_tab")) {
                                 // Set the in tab boolean
                                 inTab = false;
 
-                                // Nothing else allowed after the comment delimeter
+                                // Nothing else allowed after the eot delimeter
+                                break;
+                            }
+
+                            // Start of Chorus delimeter
+                            if (delim.toString().equals("soc") || delim.toString().equals("start_of_chorus")) {
+                                // Add the chorus title
+                                if (useHtml) {
+                                    lyricLine.append("<font color=\"");
+                                    lyricLine.append(context.getResources().getColor(R.color.titleColor));
+                                    lyricLine.append("\"><b>");
+                                }
+
+                                // Append the Intro text
+                                lyricLine.append("CHORUS");
+
+                                if (useHtml) {
+                                    // Close the formatting
+                                    lyricLine.append("</b></font>");
+
+                                    // Add the italics
+                                    lyricLine.append("<i>");
+                                }
+
+                                // Nothing else allowed after the soc delimeter
+                                break;
+                            }
+
+                            // End of Chorus delimeter
+                            if (delim.toString().equals("eoc") || delim.toString().equals("end_of_chorus")) {
+                                // End the italics
+                                if (useHtml) {
+                                    lyricLine.append("</i>");
+                                }
+
+                                // Set the closing of a chorus boolean
+                                closingChorus = true;
+
+                                // Nothing else allowed after the eoc delimeter
                                 break;
                             }
 						}
@@ -420,11 +460,16 @@ public class ChordProParser {
 				// Completed line, append to output
 				if (lyricLine.length() > 0) {
 					parsedOutput.append(lyricLine);
-					if (useHtml) {
-						parsedOutput.append("<br />");
-					} else {
-						parsedOutput.append(lineFeed);
-					}
+                    if (closingChorus) {
+                        // No line feed when closing chorus, flip the boolean
+                        closingChorus = false;
+                    } else {
+                        if (useHtml) {
+                            parsedOutput.append("<br />");
+                        } else {
+                            parsedOutput.append(lineFeed);
+                        }
+                    }
 				}
 			} 
 			else if (line.length() > 0) {
