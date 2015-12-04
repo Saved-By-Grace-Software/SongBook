@@ -21,14 +21,14 @@ import com.sbgsoft.songbook.main.MainStrings;
  */
 public class ChordProParser {
 	public static final ArrayList<String> validDelimeters = new ArrayList<String>(
-			Arrays.asList("author", "title", "cc", "lc", "capo", "intro", "single", "comment"));
+			Arrays.asList("author", "title", "cc", "lc", "capo", "intro", "single", "comment", "sot", "eot"));
 	
     public static String ParseSongFile(Context context, SongItem songItem, String transposeKey, FileInputStream file, boolean useHtml, boolean winLineFeed) throws IOException {
 		StringBuilder parsedOutput = new StringBuilder();
 		StringBuilder chordLine = new StringBuilder();
 		StringBuilder lyricLine = new StringBuilder();
 		String line = "", lineFeed = "";
-		boolean inHtml = false, transposeSong = false, addedCapo = false;
+		boolean inHtml = false, transposeSong = false, addedCapo = false, inTab = false;
 		int skipCounter = 0;
 		int chordColor = context.getResources().getColor(R.color.chordColor);
 		
@@ -81,7 +81,7 @@ public class ChordProParser {
 			char[] lineCharArray = line.toCharArray();
 						
 			// Check for a delimeter line (other than cc, lc)
-			if (lineCharArray.length > 5 && lineCharArray[0] == '{' && lineCharArray[2] != 'c') {
+			if (lineCharArray.length > 2 && lineCharArray[0] == '{' && lineCharArray[2] != 'c') {
 				
 				// Go through line character by character
 				for (int charLoc = 0; charLoc < lineCharArray.length; charLoc++) {
@@ -92,6 +92,12 @@ public class ChordProParser {
 						// Read until ':'
 						StringBuilder delim = new StringBuilder();
 						int stopRead = line.indexOf(':', charLoc);
+
+                        // If no ':', read until the end of the delimeter
+                        if (stopRead < 0) {
+                            stopRead = line.indexOf('}', charLoc);
+                        }
+
 						for (int i = charLoc; i < stopRead - 1; i++) {
 							// Go to the next character
 							charLoc++;
@@ -100,7 +106,7 @@ public class ChordProParser {
 							delim.append(lineCharArray[charLoc]);
 						}
 						
-						// Skip the ':'
+						// Skip the ':' or '}'
 						charLoc++;
 						
 						// Check for valid delimeter
@@ -245,7 +251,7 @@ public class ChordProParser {
 								continue;
 							}
 							
-							// Intro delimeter
+							// Intro or Single delimeter
 							if (delim.toString().equals("intro") || delim.toString().equals("single")) {
 								StringBuilder intro = new StringBuilder();
 
@@ -372,7 +378,24 @@ public class ChordProParser {
 								// Nothing else allowed after the comment delimeter
 								break;
 							}
-							
+
+                            // Start of Tab delimeter
+                            if (delim.toString().equals("sot")) {
+                                // Set the in tab boolean
+                                inTab = true;
+
+                                // Nothing else allowed after the comment delimeter
+                                break;
+                            }
+
+                            // End of Tab delimeter
+                            if (delim.toString().equals("eot")) {
+                                // Set the in tab boolean
+                                inTab = false;
+
+                                // Nothing else allowed after the comment delimeter
+                                break;
+                            }
 						}
 					}
 					
@@ -576,6 +599,18 @@ public class ChordProParser {
 							}
 						}
 					}
+                    // Check for in a tab
+                    else if (inTab) {
+                        // No formatting in a tab, add the character to the lyric line
+                        if (c == ' ') {
+                            if (useHtml)
+                                lyricLine.append("&nbsp;");
+                            else
+                                lyricLine.append(" ");
+                        } else {
+                            lyricLine.append(c);
+                        }
+                    }
 					// Check for html
 					else if (c == '<') {
 						// Read to the end of the html
