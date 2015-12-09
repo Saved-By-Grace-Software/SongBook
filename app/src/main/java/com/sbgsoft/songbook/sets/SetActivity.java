@@ -12,7 +12,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -36,6 +39,7 @@ public class SetActivity extends FragmentActivity {
 	static ViewPager mViewPager;
 	static PagerAdapter mPagerAdapter;
 	private static int currentSong = 0;
+    GestureDetector gestureDetector;
 	
 	
 	/*****************************************************************************
@@ -52,6 +56,9 @@ public class SetActivity extends FragmentActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_set);
+
+        // Instantiate the gesture listener
+        gestureDetector = new GestureDetector(this, new GestureListener());
         
         // Create page adapter
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
@@ -132,6 +139,13 @@ public class SetActivity extends FragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         //getMenuInflater().inflate(R.menu.activity_set, menu);
         return true;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent e)
+    {
+        super.dispatchTouchEvent(e);
+        return gestureDetector.onTouchEvent(e);
     }
     
     
@@ -247,6 +261,46 @@ public class SetActivity extends FragmentActivity {
         @Override
         public Fragment getItem(int position) {
             return mFragments.get(position);
+        }
+    }
+
+    public class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        private static final int SWIPE_MIN_DISTANCE = 120;
+        private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2,
+                               float velocityX, float velocityY) {
+
+            if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE &&
+                    Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                //From Right to Left
+                Log.d("SONGBOOK", "Right to left swipe");
+                return true;
+            }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE &&
+                    Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                //From Left to Right
+                Log.d("SONGBOOK", "Left to right swipe");
+                return true;
+            }
+
+//            if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE &&
+//                    Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+//                //From Bottom to Top
+//                return true;
+//            }  else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE &&
+//                    Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+//                //From Top to Bottom
+//                return true;
+//            }
+            return false;
+        }
+        @Override
+        public boolean onDown(MotionEvent e) {
+            //always return true since all gestures always begin with onDown and<br>
+            //if this returns false, the framework won't try to pick up onFling for example.
+            return true;
         }
     }
 }
