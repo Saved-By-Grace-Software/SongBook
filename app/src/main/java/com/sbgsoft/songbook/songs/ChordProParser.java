@@ -386,8 +386,8 @@ public class ChordProParser {
                                 // Set the in tab boolean
                                 inTab = true;
 
-                                // Nothing else allowed after the sot delimeter
-                                break;
+                                // Continue to the next character
+                                continue;
                             }
 
                             // End of Tab delimeter
@@ -403,24 +403,56 @@ public class ChordProParser {
                             if (delim.toString().equals("soc") || delim.toString().equals("start_of_chorus")) {
                                 // Add the chorus title
                                 if (useHtml) {
+                                    // Add the italics
+                                    lyricLine.append("<i>");
+
                                     lyricLine.append("<font color=\"");
                                     lyricLine.append(context.getResources().getColor(R.color.titleColor));
                                     lyricLine.append("\"><b>");
                                 }
 
-                                // Append the Intro text
-                                lyricLine.append("CHORUS");
+                                // Read to end of the delimeter, until '}'
+                                StringBuilder title = new StringBuilder();
+                                stopRead = line.indexOf('}', charLoc);
+                                for (int i = charLoc; i < stopRead - 1; i++) {
+                                    // Go to the next character
+                                    charLoc++;
+
+                                    // Check for html
+                                    if (lineCharArray[charLoc] == '<')
+                                        inHtml = true;
+                                    else if (lineCharArray[charLoc] == '>')
+                                        inHtml = false;
+
+                                    // Add that character to the title
+                                    if (lineCharArray[charLoc] == ' ' && !inHtml) {
+                                        if (useHtml)
+                                            title.append("&nbsp;");
+                                        else
+                                            title.append(" ");
+                                    } else {
+                                        if (useHtml || (!useHtml && (!inHtml && lineCharArray[charLoc] != '>')))
+                                            title.append(Character.toUpperCase(lineCharArray[charLoc]));
+                                    }
+                                }
+
+                                // Append the title
+                                if (title.toString() != "") {
+                                    lyricLine.append(title.toString());
+                                } else {
+                                    lyricLine.append("CHORUS");
+                                }
 
                                 if (useHtml) {
                                     // Close the formatting
                                     lyricLine.append("</b></font>");
-
-                                    // Add the italics
-                                    lyricLine.append("<i>");
                                 }
 
-                                // Nothing else allowed after the soc delimeter
-                                break;
+                                // Skip the final '}'
+                                charLoc++;
+
+                                // Continue to the next character
+                                continue;
                             }
 
                             // End of Chorus delimeter
