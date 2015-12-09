@@ -68,7 +68,28 @@ public class SetSongFragment extends Fragment {
         song.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                scaleGestureDetector.onTouchEvent(motionEvent);
+                if(motionEvent.getPointerCount() == 1){
+                    //stuff for 1 pointer
+                }else{ //when 2 pointers are present
+                    switch (motionEvent.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            // Disallow ScrollView to intercept touch events.
+                            view.getParent().requestDisallowInterceptTouchEvent(true);
+                            scaleGestureDetector.onTouchEvent(motionEvent);
+                            break;
+
+                        case MotionEvent.ACTION_MOVE:
+                            // Disallow ScrollView to intercept touch events.
+                            view.getParent().requestDisallowInterceptTouchEvent(true);
+                            scaleGestureDetector.onTouchEvent(motionEvent);
+                            break;
+
+                        case MotionEvent.ACTION_UP:
+                            // Allow ScrollView to intercept touch events.
+                            view.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                    }
+                }
                 return true;
             }
         });

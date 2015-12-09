@@ -6,8 +6,11 @@ import java.io.StringReader;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 public class AutoFitTextView extends TextView {
@@ -17,17 +20,21 @@ public class AutoFitTextView extends TextView {
 	float minimumTextSizePixels = 4.0f;
 	float textDecrement = 1.0f;
 	boolean fit = true;
+    Context mContext;
 	
 	public AutoFitTextView(Context context) {
 		super(context);
+        mContext = context;
 	}
 
 	public AutoFitTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+        mContext = context;
 	}
 
 	public AutoFitTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+        mContext = context;
 	}
 	
 	public float getMinimumTextSizePixels() {
@@ -79,7 +86,13 @@ public class AutoFitTextView extends TextView {
 	}
 	
 	protected void shrinkToFitWidth() {
-		int width = this.getWidth() - this.getPaddingLeft() - this.getPaddingRight();
+        // Get the width to fit it to
+        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+		//int width = this.getWidth() - this.getPaddingLeft() - this.getPaddingRight();
 		
 		// Get the current text size in pixels
 		float currentTextSize = this.getTextSize();
