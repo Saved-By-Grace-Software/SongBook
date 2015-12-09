@@ -141,31 +141,6 @@ public class SetActivity extends FragmentActivity {
      * 
      *****************************************************************************/
     /**
-     * Increases the font size on the text view by 1
-     * @param v
-     */
-    public void incFontSize(View v) {
-    	// Get the current fragment
-    	Fragment f = mPagerAdapter.mFragments.get(currentSong);
-    	
-    	// Increase the font size for the fragment
-    	((SetSongFragment)f).incTextSize();
-    }
-    
-    /**
-     * Decreases the font size on the text view by 1
-     * @param v
-     */
-    public void decFontSize(View v) {
-    	// Get the current fragment
-    	//Fragment f = getSupportFragmentManager().findFragmentById(R.id.set_pager);
-    	Fragment f = mPagerAdapter.mFragments.get(currentSong);
-    	
-    	// Increase the font size for the fragment
-    	((SetSongFragment)f).decTextSize();
-    }
-    
-    /**
      * Transposes the currently viewed song
      * @param v
      */

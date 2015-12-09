@@ -12,8 +12,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -27,7 +30,7 @@ import com.sbgsoft.songbook.views.AutoFitTextView;
 public class SetSongFragment extends Fragment {
 	public AutoFitTextView song;
 	private SongItem mSongItem;
-	private int incSize;
+    ScaleGestureDetector scaleGestureDetector;
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -38,12 +41,12 @@ public class SetSongFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.activity_song, container, false);
 		
-		// Get text increment size
-		incSize = getResources().getInteger(R.integer.textSizeIncrement);
-		
 		// Get the song textview
         song = (AutoFitTextView)view.findViewById(R.id.song_text);
         song.setMovementMethod(new ScrollingMovementMethod());
+
+        // Instantiate the scale class
+        scaleGestureDetector = new ScaleGestureDetector(getActivity(), new simpleOnScaleGestureListener());
         
         // Populate it with the song text
         Bundle extras = getArguments();
@@ -60,28 +63,17 @@ public class SetSongFragment extends Fragment {
                 song.setText(Html.fromHtml(mSongItem.getText()));
             }
         }
+
+        // Add the touch listener
+        song.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                scaleGestureDetector.onTouchEvent(motionEvent);
+                return true;
+            }
+        });
         
 		return view;
-	}
-	
-	/**
-	 * Increases the size of the text in the text view
-	 */
-	public void incTextSize() {
-		// Disable auto-fit to allow user to manually change text size
-		song.setFitTextToBox(false);
-		
-		song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() + incSize);
-	}
-	
-	/**
-	 * Decreases the size of the text in the text view
-	 */
-	public void decTextSize() {
-		// Disable auto-fit to allow user to manually change text size
-		song.setFitTextToBox(false);
-				
-		song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() - incSize);
 	}
 
 	/**
@@ -123,4 +115,32 @@ public class SetSongFragment extends Fragment {
         	alert.show();
     	}
 	}
+
+
+    /*****************************************************************************
+     *
+     * Classes
+     *
+     *****************************************************************************/
+    public class simpleOnScaleGestureListener extends
+            ScaleGestureDetector.SimpleOnScaleGestureListener {
+
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            // Disable auto-fit to allow user to manually change text size
+            song.setFitTextToBox(false);
+
+            // Get the current text size
+            float size = song.getTextSize();
+
+            // Get the scale factor from the touch event
+            float factor = detector.getScaleFactor();
+
+            // Calculate and set the new text size
+            float product = size*factor;
+            song.setTextSize(TypedValue.COMPLEX_UNIT_PX, product);
+
+            return true;
+        }
+    }
 }

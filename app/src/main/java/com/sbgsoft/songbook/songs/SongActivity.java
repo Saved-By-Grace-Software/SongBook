@@ -12,8 +12,11 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -34,8 +37,7 @@ public class SongActivity extends Activity {
      *****************************************************************************/
 	AutoFitTextView song;
 	private SongItem mSongItem;
-	private int incSize;
-
+    ScaleGestureDetector scaleGestureDetector;
 	
 	/*****************************************************************************
      * 
@@ -52,12 +54,12 @@ public class SongActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_song);
         
-        // Get text increment size
-     	incSize = getResources().getInteger(R.integer.textSizeIncrement);
-        
         // Get the song textview
         song = (AutoFitTextView)findViewById(R.id.song_text);
         song.setMovementMethod(new ScrollingMovementMethod());
+
+        // Instantiate the scale class
+        scaleGestureDetector = new ScaleGestureDetector(this, new simpleOnScaleGestureListener());
         
         // Populate it with the song text
         Bundle extras = getIntent().getExtras();
@@ -75,8 +77,17 @@ public class SongActivity extends Activity {
         
         // Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        // Add the touch listener
+        song.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                scaleGestureDetector.onTouchEvent(motionEvent);
+                return true;
+            }
+        });
     }
-    
+
     @Override
     public void onStart() {
     	super.onStart();
@@ -121,28 +132,6 @@ public class SongActivity extends Activity {
      * Song Functions
      * 
      *****************************************************************************/
-    /**
-     * Increases the font size on the text view by 1
-     * @param v
-     */
-    public void incFontSize(View v) {
-    	// Disable auto-fit to allow user to manually change text size
-    	song.setFitTextToBox(false);
-    			
-    	song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() + incSize);
-    }
-    
-    /**
-     * Decreases the font size on the text view by 1
-     * @param v
-     */
-    public void decFontSize(View v) {
-    	// Disable auto-fit to allow user to manually change text size
-    	song.setFitTextToBox(false);
-    			
-    	song.setTextSize(TypedValue.COMPLEX_UNIT_PX, song.getTextSize() - incSize);
-    }
-    
     /**
      * Populates the text view with the song text
      * @param songText The song text to add to the view
@@ -191,5 +180,33 @@ public class SongActivity extends Activity {
         	
         	alert.show();
     	}
+    }
+
+
+    /*****************************************************************************
+     *
+     * Classes
+     *
+     *****************************************************************************/
+    public class simpleOnScaleGestureListener extends
+            ScaleGestureDetector.SimpleOnScaleGestureListener {
+
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            // Disable auto-fit to allow user to manually change text size
+            song.setFitTextToBox(false);
+
+            // Get the current text size
+            float size = song.getTextSize();
+
+            // Get the scale factor from the touch event
+            float factor = detector.getScaleFactor();
+
+            // Calculate and set the new text size
+            float product = size*factor;
+            song.setTextSize(TypedValue.COMPLEX_UNIT_PX, product);
+
+            return true;
+        }
     }
 }
