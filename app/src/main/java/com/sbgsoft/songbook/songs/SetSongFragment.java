@@ -14,6 +14,7 @@ import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -31,6 +32,7 @@ public class SetSongFragment extends Fragment {
 	public AutoFitTextView song;
 	private SongItem mSongItem;
     ScaleGestureDetector scaleGestureDetector;
+    GestureDetector gestureDetector;
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -45,8 +47,9 @@ public class SetSongFragment extends Fragment {
         song = (AutoFitTextView)view.findViewById(R.id.song_text);
         song.setMovementMethod(new ScrollingMovementMethod());
 
-        // Instantiate the scale class
+        // Instantiate the gesture listeners
         scaleGestureDetector = new ScaleGestureDetector(getActivity(), new simpleOnScaleGestureListener());
+        gestureDetector = new GestureDetector(getActivity(), new GestureListener());
         
         // Populate it with the song text
         Bundle extras = getArguments();
@@ -96,6 +99,13 @@ public class SetSongFragment extends Fragment {
         
 		return view;
 	}
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent e)
+    {
+        super.dispatchTouchEvent(e);
+        return gestureDetector.onTouchEvent(e);
+    }
 
 	/**
 	 * Transposes the song
@@ -161,6 +171,46 @@ public class SetSongFragment extends Fragment {
             float product = size*factor;
             song.setTextSize(TypedValue.COMPLEX_UNIT_PX, product);
 
+            return true;
+        }
+    }
+
+    public class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        private static final int SWIPE_MIN_DISTANCE = 120;
+        private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2,
+                               float velocityX, float velocityY) {
+
+            if(e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE &&
+                    Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                //From Right to Left
+                Log.d("SONGBOOK", "Right to left swipe");
+                return true;
+            }  else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE &&
+                    Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                //From Left to Right
+                Log.d("SONGBOOK", "Left to right swipe");
+                return true;
+            }
+
+//            if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE &&
+//                    Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+//                //From Bottom to Top
+//                return true;
+//            }  else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE &&
+//                    Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+//                //From Top to Bottom
+//                return true;
+//            }
+            return false;
+        }
+        @Override
+        public boolean onDown(MotionEvent e) {
+            //always return true since all gestures always begin with onDown and<br>
+            //if this returns false, the framework won't try to pick up onFling for example.
             return true;
         }
     }

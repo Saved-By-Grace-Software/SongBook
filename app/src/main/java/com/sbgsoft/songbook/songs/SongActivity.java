@@ -14,6 +14,7 @@ import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -58,7 +59,7 @@ public class SongActivity extends Activity {
         song = (AutoFitTextView)findViewById(R.id.song_text);
         song.setMovementMethod(new ScrollingMovementMethod());
 
-        // Instantiate the scale class
+        // Instantiate the gesture listeners
         scaleGestureDetector = new ScaleGestureDetector(this, new simpleOnScaleGestureListener());
         
         // Populate it with the song text
