@@ -56,7 +56,6 @@ public class SongActivity extends Activity {
         
         // Get the song textview
         song = (AutoFitTextView)findViewById(R.id.song_text);
-        song.setMovementMethod(new ScrollingMovementMethod());
 
         // Instantiate the scale class
         scaleGestureDetector = new ScaleGestureDetector(this, new simpleOnScaleGestureListener());
