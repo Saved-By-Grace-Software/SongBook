@@ -17,6 +17,7 @@ public class MainStrings {
 	public static final String SET_NAME_KEY = "setName";
 	public static final String FILE_ACTIVITY_KEY = "fileActivityKey";
 	public static final String FILE_ACTIVITY_TYPE_KEY = "fileActivityTypeKey";
+    public static final String IS_SET_KEY = "isSet";
 	
 	// Activity Strings
 	public static final String ACTIVITY_RESPONSE_TYPE = "activityResponseType";

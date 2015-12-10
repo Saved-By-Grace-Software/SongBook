@@ -2202,6 +2202,7 @@ public class MainActivity extends FragmentActivity {
 	            	SongActivity songA = new SongActivity();
 	            	Intent showSong = new Intent(v.getContext(), songA.getClass());
 	            	showSong.putExtra(MainStrings.SONG_ITEM_KEY, (Parcelable)song);
+                    showSong.putExtra(MainStrings.IS_SET_KEY, false);
 	                startActivity(showSong);
 	                
 				} catch (FileNotFoundException e) {
@@ -2848,10 +2849,11 @@ public class MainActivity extends FragmentActivity {
             	}
             	
             	// Show the set activity
-            	SetActivity set = new SetActivity();
+            	SongActivity set = new SongActivity();
             	Intent showSet = new Intent(v.getContext(), set.getClass());
             	showSet.putExtra(MainStrings.CURRENT_SONG_KEY, position);
             	showSet.putExtra(MainStrings.SET_SONGS_KEY, setItem);
+                showSet.putExtra(MainStrings.IS_SET_KEY, true);
                 startActivity(showSet);
             }
     	});
