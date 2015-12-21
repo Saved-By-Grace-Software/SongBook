@@ -37,6 +37,31 @@
 
     </ScrollView>
 
+    <ImageView
+        android:src="@drawable/filled"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/met1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <ImageView
+        android:src="@drawable/mid"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/met2"
+        android:layout_toRightOf="@+id/met1"
+        android:layout_alignParentBottom="true"/>
+
+    <ImageView
+        android:src="@drawable/open"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/met3"
+        android:layout_toRightOf="@+id/met2"
+        android:layout_alignParentBottom="true"/>
+
     <Button
         android:id="@+id/song_transpose_button"
         android:layout_width="wrap_content"
