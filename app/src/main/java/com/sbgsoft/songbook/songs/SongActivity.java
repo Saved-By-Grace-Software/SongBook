@@ -61,8 +61,8 @@ public class SongActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_song);
 
-        // Resize the metronome buttons
-        resizeMetronomeIcons();
+        // Initialize the metronome
+        initializeMetronome();
         
         // Get the song textview
         song = (AutoFitTextView)findViewById(R.id.song_text);
@@ -127,7 +127,12 @@ public class SongActivity extends Activity {
 
         // Start the metronome thread
         if (mMetronome == null) {
-            mMetronome = new Metronome();
+            initializeMetronome();
+            if (mMetronomeThread == null) {
+                mMetronomeThread = new Thread(mMetronome);
+                mMetronomeThread.start();
+            }
+        } else {
             if (mMetronomeThread == null) {
                 mMetronomeThread = new Thread(mMetronome);
                 mMetronomeThread.start();
@@ -151,7 +156,7 @@ public class SongActivity extends Activity {
                 mMetronome.onResume();
             }
         } else {
-            mMetronome = new Metronome();
+            initializeMetronome();
             if (mMetronomeThread == null) {
                 mMetronomeThread = new Thread(mMetronome);
                 mMetronomeThread.start();
@@ -244,9 +249,11 @@ public class SongActivity extends Activity {
     }
 
     /**
-     * Resizes all ImageViews in the metronome bar
+     * Initializes the metronome
      */
-    public void resizeMetronomeIcons() {
+    public void initializeMetronome() {
+        mMetronome = new Metronome();
+
         // Get the height to fit it to
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();

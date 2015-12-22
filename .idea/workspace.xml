@@ -11,7 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b814f9b-14c2-4a07-9dcd-088d3dc0bab9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -66,28 +66,39 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SongActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SongActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="145" column="0" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.36378738">
+              <caret line="254" column="37" selection-start-line="254" selection-start-column="37" selection-end-line="254" selection-end-column="37" />
               <folding>
-                <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
+                <element signature="e#6967#6968#0" expanded="true" />
+                <element signature="e#7002#7003#0" expanded="true" />
+                <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Metronome.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Metronome.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.32225913">
-              <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
               <folding>
-                <element signature="e#312#313#0" expanded="true" />
-                <element signature="e#350#351#0" expanded="true" />
-                <element signature="e#407#408#0" expanded="true" />
-                <element signature="e#460#461#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#422#423#0" expanded="true" />
+                <element signature="e#450#451#0" expanded="true" />
+                <element signature="e#506#507#0" expanded="true" />
+                <element signature="e#540#541#0" expanded="true" />
+                <element signature="e#578#579#0" expanded="true" />
+                <element signature="e#616#617#0" expanded="true" />
+                <element signature="e#673#674#0" expanded="true" />
+                <element signature="e#726#727#0" expanded="true" />
                 <element signature="docComment;method#onPause#0;class#Metronome#0" expanded="false" />
                 <element signature="docComment;method#onResume#0;class#Metronome#0" expanded="false" />
                 <element signature="method#onResume#0;class#Metronome#0" expanded="false" />
@@ -1544,8 +1555,8 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
       </list>
     </option>
   </component>
@@ -1961,7 +1972,13 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
+            <element signature="e#6967#6968#0" expanded="true" />
+            <element signature="e#7002#7003#0" expanded="true" />
+            <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2237,7 +2254,13 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="57" column="61" selection-start-line="57" selection-start-column="61" selection-end-line="57" selection-end-column="61" />
           <folding>
-            <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
+            <element signature="e#6967#6968#0" expanded="true" />
+            <element signature="e#7002#7003#0" expanded="true" />
+            <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2494,7 +2517,13 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="105" column="17" selection-start-line="105" selection-start-column="17" selection-end-line="105" selection-end-column="17" />
           <folding>
-            <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
+            <element signature="e#6967#6968#0" expanded="true" />
+            <element signature="e#7002#7003#0" expanded="true" />
+            <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -4052,28 +4081,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="145" column="0" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
+          <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
           <folding>
-            <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#422#423#0" expanded="true" />
+            <element signature="e#450#451#0" expanded="true" />
+            <element signature="e#506#507#0" expanded="true" />
+            <element signature="e#540#541#0" expanded="true" />
+            <element signature="e#578#579#0" expanded="true" />
+            <element signature="e#616#617#0" expanded="true" />
+            <element signature="e#673#674#0" expanded="true" />
+            <element signature="e#726#727#0" expanded="true" />
+            <element signature="docComment;method#onPause#0;class#Metronome#0" expanded="false" />
+            <element signature="docComment;method#onResume#0;class#Metronome#0" expanded="false" />
+            <element signature="method#onResume#0;class#Metronome#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32225913">
-          <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+        <state vertical-scroll-proportion="0.36378738">
+          <caret line="254" column="37" selection-start-line="254" selection-start-column="37" selection-end-line="254" selection-end-column="37" />
           <folding>
-            <element signature="e#312#313#0" expanded="true" />
-            <element signature="e#350#351#0" expanded="true" />
-            <element signature="e#407#408#0" expanded="true" />
-            <element signature="e#460#461#0" expanded="true" />
-            <element signature="docComment;method#onPause#0;class#Metronome#0" expanded="false" />
-            <element signature="docComment;method#onResume#0;class#Metronome#0" expanded="false" />
-            <element signature="method#onResume#0;class#Metronome#0" expanded="false" />
+            <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
+            <element signature="e#6967#6968#0" expanded="true" />
+            <element signature="e#7002#7003#0" expanded="true" />
+            <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
