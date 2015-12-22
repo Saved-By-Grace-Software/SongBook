@@ -43,6 +43,8 @@ public class SongActivity extends Activity {
 	AutoFitTextView song;
 	private SongItem mSongItem;
     ScaleGestureDetector scaleGestureDetector;
+    private Metronome mMetronome;
+    private Thread mMetronomeThread;
 	
 	/*****************************************************************************
      * 
@@ -122,6 +124,15 @@ public class SongActivity extends Activity {
     	
     	// Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        // Start the metronome thread
+        if (mMetronome == null) {
+            mMetronome = new Metronome();
+            if (mMetronomeThread == null) {
+                mMetronomeThread = new Thread(mMetronome);
+                mMetronomeThread.start();
+            }
+        }
     }
     
     @Override
@@ -130,6 +141,22 @@ public class SongActivity extends Activity {
     	
     	// Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        // Start the metronome thread
+        if (mMetronome != null) {
+            if (mMetronomeThread == null) {
+                mMetronomeThread = new Thread(mMetronome);
+                mMetronomeThread.start();
+            } else {
+                mMetronome.onResume();
+            }
+        } else {
+            mMetronome = new Metronome();
+            if (mMetronomeThread == null) {
+                mMetronomeThread = new Thread(mMetronome);
+                mMetronomeThread.start();
+            }
+        }
     }
     
     @Override 
@@ -138,6 +165,9 @@ public class SongActivity extends Activity {
     	
     	// Keep the screen on
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        if (mMetronome != null)
+            mMetronome.onPause();
     }
     
     @Override
@@ -146,6 +176,9 @@ public class SongActivity extends Activity {
     	
     	// Keep the screen on
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        if (mMetronomeThread != null)
+            mMetronomeThread.interrupt();
     }
 
     @Override
