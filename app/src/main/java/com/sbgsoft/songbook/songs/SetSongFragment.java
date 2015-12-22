@@ -6,19 +6,25 @@ import java.io.IOException;
 import java.util.Locale;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
@@ -30,6 +36,7 @@ import com.sbgsoft.songbook.views.AutoFitTextView;
 public class SetSongFragment extends Fragment {
 	public AutoFitTextView song;
 	private SongItem mSongItem;
+    private View mView;
     ScaleGestureDetector scaleGestureDetector;
 
 	@Override
@@ -39,10 +46,13 @@ public class SetSongFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.activity_song, container, false);
+		mView = inflater.inflate(R.layout.activity_song, container, false);
+
+        // Resize metronome bar icons
+        resizeMetronomeIcons();
 		
 		// Get the song textview
-        song = (AutoFitTextView)view.findViewById(R.id.song_text);
+        song = (AutoFitTextView)mView.findViewById(R.id.song_text);
         song.setMovementMethod(new ScrollingMovementMethod());
 
         // Instantiate the scale class
@@ -94,7 +104,7 @@ public class SetSongFragment extends Fragment {
             }
         });
         
-		return view;
+		return mView;
 	}
 
 	/**
@@ -136,6 +146,31 @@ public class SetSongFragment extends Fragment {
         	alert.show();
     	}
 	}
+
+    /**
+     * Resizes all ImageViews in the metronome bar
+     */
+    public void resizeMetronomeIcons() {
+        // Get the height to fit it to
+        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y;
+        int width = size.x;
+
+        // Get the metronome bar layout
+        LinearLayout metronomeBar = (LinearLayout)mView.findViewById(R.id.metronome_bar);
+        int children = metronomeBar.getChildCount();
+
+        // Resize all icons in the bar
+        for (int i = 0; i < children; i++) {
+            ImageView icon = (ImageView)metronomeBar.getChildAt(i);
+            icon.getLayoutParams().height = (int)(height * 0.1);
+            icon.getLayoutParams().width = (int)(width * 0.12);
+            icon.requestLayout();
+        }
+    }
 
 
     /*****************************************************************************

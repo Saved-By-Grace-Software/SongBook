@@ -7,19 +7,24 @@ import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
@@ -53,6 +58,9 @@ public class SongActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_song);
+
+        // Resize the metronome buttons
+        resizeMetronomeIcons();
         
         // Get the song textview
         song = (AutoFitTextView)findViewById(R.id.song_text);
@@ -200,6 +208,31 @@ public class SongActivity extends Activity {
         	
         	alert.show();
     	}
+    }
+
+    /**
+     * Resizes all ImageViews in the metronome bar
+     */
+    public void resizeMetronomeIcons() {
+        // Get the height to fit it to
+        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int height = size.y;
+        int width = size.x;
+
+        // Get the metronome bar layout
+        LinearLayout metronomeBar = (LinearLayout)findViewById(R.id.metronome_bar);
+        int children = metronomeBar.getChildCount();
+
+        // Resize all icons in the bar
+        for (int i = 0; i < children; i++) {
+            ImageView icon = (ImageView)metronomeBar.getChildAt(i);
+            icon.getLayoutParams().height = (int)(height * 0.1);
+            icon.getLayoutParams().width = (int)(width * 0.12);
+            icon.requestLayout();
+        }
     }
 
 
