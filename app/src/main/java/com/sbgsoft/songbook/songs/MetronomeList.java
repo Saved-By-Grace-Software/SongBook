@@ -14,6 +14,8 @@ public class MetronomeList {
     private MetronomeNode currentNode;
     private Activity mActivity;
     private boolean firstTick;
+    private int imageOn = -1;
+    private int imageOff = -1;
 
     public int size;
 
@@ -42,15 +44,15 @@ public class MetronomeList {
                 public void run() {
                     // Check for first tick
                     if (firstTick) {
-                        currentNode.getData().setVisibility(View.INVISIBLE);
+                        currentNode.getData().setImageResource(imageOn);
                         firstTick = false;
                     } else {
                         // Reset the current node
-                        currentNode.getData().setVisibility(View.VISIBLE);
+                        currentNode.getData().setImageResource(imageOff);
 
                         if (currentNode.hasNext()) {
                             // Tick the next node
-                            currentNode.getNext().getData().setVisibility(View.INVISIBLE);
+                            currentNode.getNext().getData().setImageResource(imageOn);
 
                             // Update current node to the next node
                             currentNode = currentNode.getNext();
@@ -125,6 +127,16 @@ public class MetronomeList {
             ptr = ptr.getNext();
         }
         size-- ;
+    }
+
+    // Sets the on image id
+    public void setImageOn(int _imageOn) {
+        imageOn = _imageOn;
+    }
+
+    // Sets the off image id
+    public void setImageOff(int _imageOff) {
+        imageOff = _imageOff;
     }
 
     /**

@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,6 +15,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
@@ -42,7 +45,6 @@ public class SongActivity extends Activity {
 	private SongItem mSongItem;
     ScaleGestureDetector scaleGestureDetector;
     private Metronome mMetronome;
-    private Thread mMetronomeThread;
 	
 	/*****************************************************************************
      * 
@@ -123,19 +125,11 @@ public class SongActivity extends Activity {
     	// Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        // Start the metronome thread
+        // Start the metronome
         if (mMetronome == null) {
             initializeMetronome();
-            if (mMetronomeThread == null) {
-                mMetronomeThread = new Thread(mMetronome);
-                mMetronomeThread.start();
-            }
-        } else {
-            if (mMetronomeThread == null) {
-                mMetronomeThread = new Thread(mMetronome);
-                mMetronomeThread.start();
-            }
         }
+        mMetronome.start();
     }
     
     @Override
@@ -144,22 +138,6 @@ public class SongActivity extends Activity {
     	
     	// Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
-        // Start the metronome thread
-        if (mMetronome != null) {
-            if (mMetronomeThread == null) {
-                mMetronomeThread = new Thread(mMetronome);
-                mMetronomeThread.start();
-            } else {
-                mMetronome.onResume();
-            }
-        } else {
-            initializeMetronome();
-            if (mMetronomeThread == null) {
-                mMetronomeThread = new Thread(mMetronome);
-                mMetronomeThread.start();
-            }
-        }
     }
     
     @Override 
@@ -169,8 +147,9 @@ public class SongActivity extends Activity {
     	// Keep the screen on
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        // Stop the metronome
         if (mMetronome != null)
-            mMetronome.onPause();
+            mMetronome.stop();
     }
     
     @Override
@@ -180,8 +159,9 @@ public class SongActivity extends Activity {
     	// Keep the screen on
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        if (mMetronomeThread != null)
-            mMetronomeThread.interrupt();
+        // Stop the metronome
+        if (mMetronome != null)
+            mMetronome.stop();
     }
 
     @Override
@@ -196,14 +176,6 @@ public class SongActivity extends Activity {
      * Song Functions
      * 
      *****************************************************************************/
-    /**
-     * Populates the text view with the song text
-     * @param songText The song text to add to the view
-     */
-    public void populateSongText(String songText) {
-    	song.setText(songText);
-    }
-    
     /**
      * Shows the transpose menu
      * @param v
@@ -274,6 +246,10 @@ public class SongActivity extends Activity {
             // Add to the metronome
             mMetronome.mDots.add(icon);
         }
+
+        // Set the on and off images for the metronome
+        mMetronome.setImageOn(R.drawable.filled);
+        mMetronome.setImageOff(R.drawable.open);
     }
 
 

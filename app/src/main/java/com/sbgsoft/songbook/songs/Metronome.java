@@ -4,14 +4,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by SamIAm on 12/22/2015.
  */
-public class Metronome implements Runnable {
+public class Metronome {
     private Object mPauseLock;
     private boolean mPaused;
     private boolean mFinished;
     private int mBeatsPerMinute;
+    private int imageOn = -1;
+    private int imageOff = -1;
+    private int sleepTime;
+    private Timer timer;
 
     public MetronomeList mDots;
 
@@ -27,65 +34,31 @@ public class Metronome implements Runnable {
         mPauseLock = new Object();
         mPaused = false;
         mFinished = false;
-        mBeatsPerMinute = 102;
+        mBeatsPerMinute = 120;
         mDots = new MetronomeList(_activity);
+
+        sleepTime = calculateSleepForBPM(mBeatsPerMinute);
     }
 
-    @Override
-    public void run() {
-        int counter = 1;
-        int sleepTime = calculateSleepForBPM(mBeatsPerMinute);
+    public void start() {
+        // Instantiate the timer
+        timer = new Timer("MetronomeTimer", true);
 
-        while (!mFinished) {
-            // Tick the metronome
-            Log.d("SONGBOOK", "Tick " + counter);
-            if (counter >= 4)
-                counter = 1;
-            else
-                counter++;
-            mDots.tick();
-
-            // Wait between ticks
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                Log.d("SONGBOOK", "Stopping Metronome");
-                mFinished = true;
+        // Create the timer task
+        TimerTask tick = new TimerTask() {
+            @Override
+            public void run() {
+                mDots.tick();
             }
+        };
 
-            // Check for an interrupt
-            if (Thread.interrupted()) {
-                Log.d("SONGBOOK", "Stopping Metronome");
-            }
-
-            // Check for a thread pause
-            synchronized (mPauseLock) {
-                while (mPaused) {
-                    try {
-                        mPauseLock.wait();
-                    } catch (InterruptedException e) { }
-                }
-            }
-        }
+        // Start the task
+        timer.scheduleAtFixedRate(tick, sleepTime, sleepTime);
     }
 
-    /**
-     * Call this on pause.
-     */
-    public void onPause() {
-        synchronized (mPauseLock) {
-            mPaused = true;
-        }
-    }
-
-    /**
-     * Call this on resume.
-     */
-    public void onResume() {
-        synchronized (mPauseLock) {
-            mPaused = false;
-            mPauseLock.notifyAll();
-        }
+    public void stop() {
+        timer.cancel();
+        timer.purge();
     }
 
     private int calculateSleepForBPM(int bpm) {
@@ -96,5 +69,21 @@ public class Metronome implements Runnable {
         ret = (int)(1000 * bps);
 
         return ret;
+    }
+
+    // Sets the on image id
+    public void setImageOn(int _imageOn) {
+        imageOn = _imageOn;
+
+        // Set the on image in the list
+        mDots.setImageOn(imageOn);
+    }
+
+    // Sets the off image id
+    public void setImageOff(int _imageOff) {
+        imageOff = _imageOff;
+
+        // Set the off image in the list
+        mDots.setImageOff(imageOff);
     }
 }
