@@ -1,9 +1,8 @@
 package com.sbgsoft.songbook.songs;
 
+import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
-import android.widget.ImageView;
-
-import java.util.ArrayList;
 
 /**
  * Created by SamIAm on 12/22/2015.
@@ -13,15 +12,8 @@ public class Metronome implements Runnable {
     private boolean mPaused;
     private boolean mFinished;
     private int mBeatsPerMinute;
-    private ArrayList<ImageView> mDots;
 
-    public ArrayList<ImageView> getmDots() {
-        return mDots;
-    }
-
-    public void setmDots(ArrayList<ImageView> mDots) {
-        this.mDots = mDots;
-    }
+    public MetronomeList mDots;
 
     public int getBeatsPerMinute() {
         return mBeatsPerMinute;
@@ -31,11 +23,12 @@ public class Metronome implements Runnable {
         this.mBeatsPerMinute = beatsPerMinute;
     }
 
-    public Metronome() {
+    public Metronome(Activity _activity) {
         mPauseLock = new Object();
         mPaused = false;
         mFinished = false;
         mBeatsPerMinute = 102;
+        mDots = new MetronomeList(_activity);
     }
 
     @Override
@@ -50,6 +43,7 @@ public class Metronome implements Runnable {
                 counter = 1;
             else
                 counter++;
+            mDots.tick();
 
             // Wait between ticks
             try {

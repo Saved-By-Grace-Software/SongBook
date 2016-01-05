@@ -13,8 +13,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
@@ -252,7 +250,7 @@ public class SongActivity extends Activity {
      * Initializes the metronome
      */
     public void initializeMetronome() {
-        mMetronome = new Metronome();
+        mMetronome = new Metronome(this);
 
         // Get the height to fit it to
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
@@ -266,12 +264,15 @@ public class SongActivity extends Activity {
         LinearLayout metronomeBar = (LinearLayout)findViewById(R.id.metronome_bar);
         int children = metronomeBar.getChildCount();
 
-        // Resize all icons in the bar
+        // Resize all icons in the bar and add them to the metronome
         for (int i = 0; i < children; i++) {
             ImageView icon = (ImageView)metronomeBar.getChildAt(i);
             icon.getLayoutParams().height = (int)(height * 0.1);
             icon.getLayoutParams().width = (int)(width * 0.12);
             icon.requestLayout();
+
+            // Add to the metronome
+            mMetronome.mDots.add(icon);
         }
     }
 

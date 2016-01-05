@@ -11,6 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b814f9b-14c2-4a07-9dcd-088d3dc0bab9" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/MetronomeList.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -66,19 +67,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SongActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SongActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.36378738">
-              <caret line="254" column="37" selection-start-line="254" selection-start-column="37" selection-end-line="254" selection-end-column="37" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="252" column="41" selection-start-line="252" selection-start-column="41" selection-end-line="252" selection-end-column="41" />
               <folding>
+                <element signature="docComment;field#song#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;method#onCreate#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
-                <element signature="e#6967#6968#0" expanded="true" />
-                <element signature="e#7002#7003#0" expanded="true" />
+                <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;method#populateSongText#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;method#initializeMetronome#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+                <element signature="class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -88,20 +96,38 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+              <caret line="45" column="24" selection-start-line="45" selection-start-column="24" selection-end-line="45" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#422#423#0" expanded="true" />
-                <element signature="e#450#451#0" expanded="true" />
-                <element signature="e#506#507#0" expanded="true" />
-                <element signature="e#540#541#0" expanded="true" />
-                <element signature="e#578#579#0" expanded="true" />
-                <element signature="e#616#617#0" expanded="true" />
-                <element signature="e#673#674#0" expanded="true" />
-                <element signature="e#726#727#0" expanded="true" />
                 <element signature="docComment;method#onPause#0;class#Metronome#0" expanded="false" />
                 <element signature="docComment;method#onResume#0;class#Metronome#0" expanded="false" />
                 <element signature="method#onResume#0;class#Metronome#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MetronomeList.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/MetronomeList.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.233809">
+              <caret line="84" column="37" selection-start-line="84" selection-start-column="37" selection-end-line="84" selection-end-column="37" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#933#1775#0" expanded="true" />
+                <element signature="e#1774#1775#0" expanded="true" />
+                <element signature="method#removeAtPos#0;class#MetronomeList#0" expanded="false" />
+                <element signature="docComment;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+                <element signature="method#MetronomeNode#0;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+                <element signature="docComment;method#hasNext#0;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+                <element signature="docComment;method#getNext#0;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+                <element signature="docComment;method#setNext#0;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+                <element signature="docComment;method#getData#0;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+                <element signature="e#4516#4517#0" expanded="true" />
+                <element signature="e#4551#4552#0" expanded="true" />
+                <element signature="docComment;method#setData#0;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+                <element signature="e#4714#4715#0" expanded="true" />
+                <element signature="e#4750#4751#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1555,8 +1581,9 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/MetronomeList.java" />
       </list>
     </option>
   </component>
@@ -1618,7 +1645,9 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -1635,6 +1664,10 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -1703,10 +1736,18 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="ProjectPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1906,7 +1947,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -1951,34 +1992,30 @@
           <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="16" />
+      <option name="time" value="20" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="50" column="48" selection-start-line="50" selection-start-column="48" selection-end-line="50" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
+            <element signature="docComment;field#song#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onCreate#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
-            <element signature="e#6967#6968#0" expanded="true" />
-            <element signature="e#7002#7003#0" expanded="true" />
+            <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#populateSongText#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#initializeMetronome#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+            <element signature="class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2254,13 +2291,20 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="57" column="61" selection-start-line="57" selection-start-column="61" selection-end-line="57" selection-end-column="61" />
           <folding>
+            <element signature="docComment;field#song#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onCreate#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
-            <element signature="e#6967#6968#0" expanded="true" />
-            <element signature="e#7002#7003#0" expanded="true" />
+            <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#populateSongText#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#initializeMetronome#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+            <element signature="class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2517,13 +2561,20 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="105" column="17" selection-start-line="105" selection-start-column="17" selection-end-line="105" selection-end-column="17" />
           <folding>
+            <element signature="docComment;field#song#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onCreate#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
-            <element signature="e#6967#6968#0" expanded="true" />
-            <element signature="e#7002#7003#0" expanded="true" />
+            <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#populateSongText#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#initializeMetronome#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+            <element signature="class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3821,10 +3872,79 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/filled.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/AutoFitTextView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22591361">
+          <caret line="87" column="39" selection-start-line="87" selection-start-column="39" selection-end-line="87" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="686" column="8" selection-start-line="686" selection-start-column="8" selection-end-line="686" selection-end-column="8" />
+          <caret line="50" column="48" selection-start-line="50" selection-start-column="48" selection-end-line="50" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="27" selection-start-line="0" selection-start-column="27" selection-end-line="0" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="152" column="24" selection-start-line="152" selection-start-column="24" selection-end-line="152" selection-end-column="24" />
+          <folding>
+            <element signature="docComment;method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="docComment;method#resizeMetronomeIcons#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="252" column="41" selection-start-line="252" selection-start-column="41" selection-end-line="252" selection-end-column="41" />
+          <folding>
+            <element signature="docComment;field#song#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onCreate#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#populateSongText#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#initializeMetronome#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+            <element signature="class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.29900333">
+          <caret line="607" column="29" selection-start-line="607" selection-start-column="29" selection-end-line="607" selection-end-column="29" />
           <folding>
             <element signature="e#5501#5581#0" expanded="false" />
             <element signature="docComment;method#onCreate#0;class#MainActivity#0" expanded="false" />
@@ -4035,66 +4155,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/filled.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/AutoFitTextView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22591361">
-          <caret line="87" column="39" selection-start-line="87" selection-start-column="39" selection-end-line="87" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="50" column="48" selection-start-line="50" selection-start-column="48" selection-end-line="50" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="27" selection-start-line="0" selection-start-column="27" selection-end-line="0" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="152" column="24" selection-start-line="152" selection-start-column="24" selection-end-line="152" selection-end-column="24" />
-          <folding>
-            <element signature="docComment;method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="docComment;method#resizeMetronomeIcons#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="23" column="5" selection-start-line="23" selection-start-column="5" selection-end-line="23" selection-end-column="5" />
+          <caret line="45" column="24" selection-start-line="45" selection-start-column="24" selection-end-line="45" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#422#423#0" expanded="true" />
-            <element signature="e#450#451#0" expanded="true" />
-            <element signature="e#506#507#0" expanded="true" />
-            <element signature="e#540#541#0" expanded="true" />
-            <element signature="e#578#579#0" expanded="true" />
-            <element signature="e#616#617#0" expanded="true" />
-            <element signature="e#673#674#0" expanded="true" />
-            <element signature="e#726#727#0" expanded="true" />
             <element signature="docComment;method#onPause#0;class#Metronome#0" expanded="false" />
             <element signature="docComment;method#onResume#0;class#Metronome#0" expanded="false" />
             <element signature="method#onResume#0;class#Metronome#0" expanded="false" />
@@ -4102,18 +4168,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/MetronomeList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36378738">
-          <caret line="254" column="37" selection-start-line="254" selection-start-column="37" selection-end-line="254" selection-end-column="37" />
+        <state vertical-scroll-proportion="0.233809">
+          <caret line="84" column="37" selection-start-line="84" selection-start-column="37" selection-end-line="84" selection-end-column="37" />
           <folding>
-            <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
-            <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
-            <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
-            <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
-            <element signature="e#6967#6968#0" expanded="true" />
-            <element signature="e#7002#7003#0" expanded="true" />
-            <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#933#1775#0" expanded="true" />
+            <element signature="e#1774#1775#0" expanded="true" />
+            <element signature="method#removeAtPos#0;class#MetronomeList#0" expanded="false" />
+            <element signature="docComment;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+            <element signature="method#MetronomeNode#0;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+            <element signature="docComment;method#hasNext#0;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+            <element signature="docComment;method#getNext#0;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+            <element signature="docComment;method#setNext#0;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+            <element signature="docComment;method#getData#0;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+            <element signature="e#4516#4517#0" expanded="true" />
+            <element signature="e#4551#4552#0" expanded="true" />
+            <element signature="docComment;method#setData#0;class#MetronomeNode#0;class#MetronomeList#0" expanded="false" />
+            <element signature="e#4714#4715#0" expanded="true" />
+            <element signature="e#4750#4751#0" expanded="true" />
           </folding>
         </state>
       </provider>
