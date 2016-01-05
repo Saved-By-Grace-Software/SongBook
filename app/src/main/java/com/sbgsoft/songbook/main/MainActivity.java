@@ -100,7 +100,8 @@ import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
 
 public class MainActivity extends FragmentActivity {
-	
+
+    //region Class Variables
 	// *****************************************************************************
 	// * 
 	// * Class Variables
@@ -145,8 +146,10 @@ public class MainActivity extends FragmentActivity {
 	private ArrayList<String> addSetsDialogList = new ArrayList<String>();
 	
 	private ProgressDialog progressDialog;
-	
-	
+	//endregion
+
+
+    //region Class Functions
 	// *****************************************************************************
     // * 
     // * Class Functions
@@ -728,8 +731,10 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
-    
-    
+    //endregion
+
+
+    //region Set Functions
     // *****************************************************************************
     // * 
     // * Set Functions
@@ -1447,8 +1452,10 @@ public class MainActivity extends FragmentActivity {
     	
     	alert.show();
     }
-    
+    //endregion
 
+
+    //region Song Functions
     // *****************************************************************************
     // * 
     // * Song Functions
@@ -2253,11 +2260,15 @@ public class MainActivity extends FragmentActivity {
     	final EditText songNameET = (EditText)dialoglayout.findViewById(R.id.add_song_name);
     	final EditText authorET = (EditText)dialoglayout.findViewById(R.id.add_song_author);
     	final EditText keyET = (EditText)dialoglayout.findViewById(R.id.add_song_key);
+        final EditText bpmET = (EditText)dialoglayout.findViewById(R.id.add_song_bpm);
     	
     	// Populate the text boxes
     	songNameET.setText(songName);
     	authorET.setText(dbAdapter.getSongAuthor(songName));
     	keyET.setText(dbAdapter.getSongKey(songName));
+        int bpm = dbAdapter.getSongBpm(songName);
+        if (bpm > 0)
+            bpmET.setText(Integer.toString(bpm));
     	
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
@@ -2281,8 +2292,17 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		else
 	    			key = MainStrings.UNKNOWN;
-	    		
-	    		dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key);
+
+                // Check for bpm populated
+                int bpm = -1;
+                try {
+                    bpm = Integer.parseInt(bpmET.getText().toString());
+                } catch (NumberFormatException nfe) { }
+
+                if (bpm != -1)
+	    		    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, bpm);
+                else
+                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key);
 	    		
 	    		// Refresh the song list
 				fillSongsListView();
@@ -2774,8 +2794,10 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
 	}
-    
-    
+    //endregion
+
+
+    //region Current Set Functions
     // *****************************************************************************
     // * 
     // * Current Set Functions
@@ -2867,8 +2889,10 @@ public class MainActivity extends FragmentActivity {
         	title.setText(dbAdapter.getCurrentSetName());
         }
     }
-    
-    
+    //endregion
+
+
+    //region Song Group Functions
     // *****************************************************************************
     // * 
     // * Song Group Functions
@@ -3167,8 +3191,10 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
-        
-    
+    //endregion
+
+
+    //region Set Group Functions
     // *****************************************************************************
     // * 
     // * Set Group Functions
@@ -3362,8 +3388,10 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
-        
-    
+    //endregion
+
+
+    //region Sorting Functions
     // *****************************************************************************
     // * 
     // * Sorting Functions
@@ -3506,8 +3534,10 @@ public class MainActivity extends FragmentActivity {
 		// Refill the sets list
 		fillSetsListView();
     }
-    
-    
+    //endregion
+
+
+    //region Import / Export functions
     // *****************************************************************************
     // * 
     // * Import / Export Functions
@@ -3654,8 +3684,10 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
     }
-    
-    
+    //endregion
+
+
+    //region Classes
     // *****************************************************************************
     // * 
     // * Classes
@@ -4167,5 +4199,6 @@ public class MainActivity extends FragmentActivity {
         	return ret;
         }
     }
+    //endregion
 }
 

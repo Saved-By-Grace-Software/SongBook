@@ -26,7 +26,7 @@ public class DBAdapter {
 	private static final String TAG = "TabAppDBAdapter";
     private final Context mCtx;
     
-    
+    //region Class Functions
     // *****************************************************************************
     // *
     // * Class Functions
@@ -58,8 +58,10 @@ public class DBAdapter {
         mDbHelper.close();
         mDb.close();
     }
+    //endregion
+
     
-    
+    //region Set Functions
     // *****************************************************************************
     // *
     // * Set Functions
@@ -454,8 +456,10 @@ public class DBAdapter {
 		}
 		return true;
 	}
-	
-	
+	//endregion
+
+
+    //region Song Functions
     // *****************************************************************************
     // *
     // * Song Functions
@@ -578,7 +582,13 @@ public class DBAdapter {
 		}
 		return true;
 	}
-	
+
+    /**
+     * Determines if the specified song is in the specified group
+     * @param songName The song name
+     * @param groupName The group name
+     * @return True if in the group, false if not
+     */
 	public boolean isSongInGroup(String songName, String groupName) {
 		boolean ret = false;
 		
@@ -660,6 +670,26 @@ public class DBAdapter {
 			return "";
 		}
 	}
+
+    /**
+     * Gets the song beats per minute
+     * @param songName The song to get the beats per minute for
+     * @return The song beats per minute
+     */
+    public int getSongBpm(String songName) {
+        try {
+            Cursor c = mDb.rawQuery("SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_BPM + " FROM " + DBStrings.SONGS_TABLE +
+                    " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'", null);
+            c.moveToFirst();
+            int ret = c.getInt(c.getColumnIndexOrThrow(DBStrings.TBLSONG_BPM));
+            c.close();
+            return ret;
+        } catch (IndexOutOfBoundsException e) {
+            return -1;
+        } catch (SQLiteException s) {
+            return -1;
+        }
+    }
 	
 	/**
 	 * Updates the song attributes
@@ -682,6 +712,30 @@ public class DBAdapter {
 		}
 		return true;
 	}
+
+    /**
+     * Updates the song attributes
+     * @param origSongName The current name of the song
+     * @param newSongName The updated name of the song
+     * @param author The song author
+     * @param key The song key
+     * @param bpm The song beats per minute
+     * @return
+     */
+    public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, int bpm) {
+        try {
+            String query = "UPDATE " + DBStrings.SONGS_TABLE +
+                    " SET " + DBStrings.TBLSONG_NAME + " = '" + newSongName + "', " +
+                    DBStrings.TBLSONG_AUTHOR + " = '" + author + "', " +
+                    DBStrings.TBLSONG_KEY + " = '" + key + "', " +
+                    DBStrings.TBLSONG_BPM + " = " + bpm +
+                    " WHERE " + DBStrings.TBLSONG_NAME + " = '" + origSongName + "'";
+            mDb.execSQL(query);
+        } catch (SQLException e) {
+            return false;
+        }
+        return true;
+    }
 
 	/**
 	 * Updates the song key for the set
@@ -804,8 +858,10 @@ public class DBAdapter {
 		
 		return mDb.rawQuery(query, null);
 	}
-	
-	
+	//endregion
+
+
+	//region Current Set Functions
 	// *****************************************************************************
     // *
     // * Current Set Functions
@@ -869,8 +925,10 @@ public class DBAdapter {
 			return "";
 		}
 	}
-	
-	
+	//endregion
+
+
+	//region Song Group Functions
 	// *****************************************************************************
     // *
     // * Song Groups Functions
@@ -977,8 +1035,10 @@ public class DBAdapter {
 			return 0;
 		}
 	}
-	
-	
+	//endregion
+
+
+    //region Set Group Functions
 	// *****************************************************************************
     // *
     // * Set Groups Functions
@@ -1085,8 +1145,10 @@ public class DBAdapter {
 			return 0;
 		}
 	}
-	
-	
+	//endregion
+
+
+    //region Import / Export Functions
 	// *****************************************************************************
     // *
     // * Import / Export Functions
@@ -1304,8 +1366,10 @@ public class DBAdapter {
 		} 
 		return true;
 	}
-	
-	
+	//endregion
+
+
+    //region DBHelper Class
 	// *****************************************************************************
     // *
     // * DBHelper Class
@@ -1335,6 +1399,8 @@ public class DBAdapter {
     					DBStrings.TBLSONG_NAME + " text UNIQUE, " + 
     					DBStrings.TBLSONG_AUTHOR + " text, " +
     					DBStrings.TBLSONG_KEY + " text, " +
+                        DBStrings.TBLSONG_BPM + " int, " +
+                        DBStrings.TBLSONG_TIME + " text, " +
     					DBStrings.TBLSONG_FILE + " text); " );
     			
     			// Song Group table
@@ -1410,6 +1476,13 @@ public class DBAdapter {
 	    			// Update current sets to add set order
 	    			addSetOrder(db);
     			}
+
+                // Updates from DB version 2 or lower
+                if (oldVersion <= 4) {
+                    // Add bpm and time signature columns
+                    db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_BPM + " int");
+                    db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_TIME + " text");
+                }
     			
     			db.setTransactionSuccessful(); 
     		}catch(SQLiteException e) {
@@ -1454,4 +1527,5 @@ public class DBAdapter {
         	}
         }
     }
+    //endregion
 }

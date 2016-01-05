@@ -15,6 +15,8 @@ public class SongItem implements Item, Parcelable, Serializable {
 	private String text;
 	private int capo;
 	private String setKey;
+    private int bpm;
+    private String timeSignature;
 	
 	@Override
 	public int describeContents() {
@@ -30,11 +32,15 @@ public class SongItem implements Item, Parcelable, Serializable {
 		out.writeString(text);
 		out.writeInt(capo);
 		out.writeString(setKey);
+        out.writeInt(bpm);
+        out.writeString(timeSignature);
 	}
 	
 	@Override
 	public String toString() {
-		return "SongItem [name=" + name + ", author=" + author + ", key=" + key + ", file=" + file + ", text=" + text + ", capo=" + capo + ", setKey=" + setKey + "]";
+		return "SongItem [name=" + name + ", author=" + author + ", key=" + key +
+                ", file=" + file + ", text=" + text + ", capo=" + capo +
+                ", setKey=" + setKey + ", bpm=" + bpm + ", timeSig=" + timeSignature + "]";
 	}
 	
 	public static final Parcelable.Creator<SongItem> CREATOR = new Creator<SongItem>() {
@@ -47,6 +53,8 @@ public class SongItem implements Item, Parcelable, Serializable {
 			songItem.text = source.readString();
 			songItem.capo = source.readInt();
 			songItem.setKey = source.readString();
+            songItem.bpm = source.readInt();
+            songItem.timeSignature = source.readString();
 			return songItem;
 		}
 		
@@ -67,6 +75,8 @@ public class SongItem implements Item, Parcelable, Serializable {
 		setText("");
 		setCapo(0);
 		setSetKey("");
+        setBpm(0);
+        setTimeSignature("");
 	}
 	
 	public SongItem(String songName, String songAuthor, String songKey, String songFile, String setKey) {
@@ -77,6 +87,8 @@ public class SongItem implements Item, Parcelable, Serializable {
 		setText("");
 		setCapo(0);
 		setSetKey(setKey);
+        setBpm(0);
+        setTimeSignature("");
 	}
 	
 	public SongItem() {
@@ -87,6 +99,8 @@ public class SongItem implements Item, Parcelable, Serializable {
 		setText("");
 		setCapo(0);
 		setSetKey("");
+        setBpm(0);
+        setTimeSignature("");
 	}
 
 	/**
@@ -160,4 +174,20 @@ public class SongItem implements Item, Parcelable, Serializable {
 	public void setSetKey(String setKey) {
 		this.setKey = setKey;
 	}
+
+    public int getBpm() {
+        return bpm;
+    }
+
+    public void setBpm(int bpm) {
+        this.bpm = bpm;
+    }
+
+    public String getTimeSignature() {
+        return timeSignature;
+    }
+
+    public void setTimeSignature(String timeSignature) {
+        this.timeSignature = timeSignature;
+    }
 }

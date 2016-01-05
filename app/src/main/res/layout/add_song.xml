@@ -59,6 +59,46 @@
         	android:textSize="20sp" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="25dp" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_song_bpm"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/add_song_bpm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="phone"
+            android:maxLines="1"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_song_time"
+            android:textSize="20sp"
+            android:paddingLeft="15dp"
+            android:visibility="invisible"/>
+
+        <EditText
+            android:id="@+id/add_song_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textSize="20sp"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
     
     <TextView
         android:layout_width="match_parent"
