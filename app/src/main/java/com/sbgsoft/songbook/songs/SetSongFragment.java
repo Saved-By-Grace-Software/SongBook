@@ -38,6 +38,7 @@ public class SetSongFragment extends Fragment {
 	private SongItem mSongItem;
     private View mView;
     ScaleGestureDetector scaleGestureDetector;
+    private Metronome mMetronome;
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class SetSongFragment extends Fragment {
 		mView = inflater.inflate(R.layout.activity_song, container, false);
 
         // Resize metronome bar icons
-        resizeMetronomeIcons();
+        initializeMetronome();
 		
 		// Get the song textview
         song = (AutoFitTextView)mView.findViewById(R.id.song_text);
@@ -107,6 +108,40 @@ public class SetSongFragment extends Fragment {
 		return mView;
 	}
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Start the metronome
+        if (mMetronome == null) {
+            initializeMetronome();
+        }
+        mMetronome.start();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Stop the metronome
+        if (mMetronome != null)
+            mMetronome.stop();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // Stop the metronome
+        if (mMetronome != null)
+            mMetronome.stop();
+    }
+
 	/**
 	 * Transposes the song
 	 */
@@ -148,9 +183,11 @@ public class SetSongFragment extends Fragment {
 	}
 
     /**
-     * Resizes all ImageViews in the metronome bar
+     * Initializes the metronome
      */
-    public void resizeMetronomeIcons() {
+    public void initializeMetronome() {
+        mMetronome = new Metronome(getActivity());
+
         // Get the height to fit it to
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
@@ -163,13 +200,20 @@ public class SetSongFragment extends Fragment {
         LinearLayout metronomeBar = (LinearLayout)mView.findViewById(R.id.metronome_bar);
         int children = metronomeBar.getChildCount();
 
-        // Resize all icons in the bar
+        // Resize all icons in the bar and add them to the metronome
         for (int i = 0; i < children; i++) {
             ImageView icon = (ImageView)metronomeBar.getChildAt(i);
             icon.getLayoutParams().height = (int)(height * 0.1);
             icon.getLayoutParams().width = (int)(width * 0.12);
             icon.requestLayout();
+
+            // Add to the metronome
+            mMetronome.mDots.add(icon);
         }
+
+        // Set the on and off images for the metronome
+        mMetronome.setImageOn(R.drawable.filled);
+        mMetronome.setImageOff(R.drawable.open);
     }
 
 
