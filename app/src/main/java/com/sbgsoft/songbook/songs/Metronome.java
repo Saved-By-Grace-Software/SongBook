@@ -11,56 +11,56 @@ import java.util.TimerTask;
  * Created by SamIAm on 12/22/2015.
  */
 public class Metronome {
-    private Object mPauseLock;
-    private boolean mPaused;
-    private boolean mFinished;
+
+    //region Private Class Members
     private int mBeatsPerMinute;
     private int imageOn = -1;
     private int imageOff = -1;
     private int sleepTime;
     private Timer timer;
+    //endregion
 
+    //region Public Class Members
     public MetronomeList mDots;
+    //endregion
 
-    public int getBeatsPerMinute() {
-        return mBeatsPerMinute;
-    }
-
-    public void setBeatsPerMinute(int beatsPerMinute) {
-        this.mBeatsPerMinute = beatsPerMinute;
-    }
-
+    //region Constructor
     public Metronome(Activity _activity) {
-        mPauseLock = new Object();
-        mPaused = false;
-        mFinished = false;
-        mBeatsPerMinute = 120;
+        mBeatsPerMinute = 0;
+        sleepTime = 0;
         mDots = new MetronomeList(_activity);
-
-        sleepTime = calculateSleepForBPM(mBeatsPerMinute);
     }
+    //endregion
 
+    //region Public Functions
     public void start() {
-        // Instantiate the timer
-        timer = new Timer("MetronomeTimer", true);
+        // Only start if the sleeptime is set properly
+        if (sleepTime > 0) {
+            // Instantiate the timer
+            timer = new Timer("MetronomeTimer", true);
 
-        // Create the timer task
-        TimerTask tick = new TimerTask() {
-            @Override
-            public void run() {
-                mDots.tick();
-            }
-        };
+            // Create the timer task
+            TimerTask tick = new TimerTask() {
+                @Override
+                public void run() {
+                    mDots.tick();
+                }
+            };
 
-        // Start the task
-        timer.scheduleAtFixedRate(tick, sleepTime, sleepTime);
+            // Start the task
+            timer.scheduleAtFixedRate(tick, sleepTime, sleepTime);
+        }
     }
 
     public void stop() {
-        timer.cancel();
-        timer.purge();
+        if (timer != null) {
+            timer.cancel();
+            timer.purge();
+        }
     }
+    //endregion
 
+    //region Private Functions
     private int calculateSleepForBPM(int bpm) {
         int ret;
 
@@ -70,7 +70,9 @@ public class Metronome {
 
         return ret;
     }
+    //endregion
 
+    //region Getters & Setters
     // Sets the on image id
     public void setImageOn(int _imageOn) {
         imageOn = _imageOn;
@@ -86,4 +88,19 @@ public class Metronome {
         // Set the off image in the list
         mDots.setImageOff(imageOff);
     }
+
+    public int getBeatsPerMinute() {
+        return mBeatsPerMinute;
+    }
+
+    public void setBeatsPerMinute(int beatsPerMinute) {
+        this.mBeatsPerMinute = beatsPerMinute;
+
+        // Calculate the sleep time
+        if (mBeatsPerMinute > 0)
+            sleepTime = calculateSleepForBPM(mBeatsPerMinute);
+        else
+            sleepTime = 0;
+    }
+    //endregion
 }

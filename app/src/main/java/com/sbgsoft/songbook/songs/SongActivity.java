@@ -35,7 +35,8 @@ import com.sbgsoft.songbook.main.MainStrings;
 import com.sbgsoft.songbook.views.AutoFitTextView;
 
 public class SongActivity extends Activity {
-	
+
+    //region Class Variables
 	/*****************************************************************************
      * 
      * Class Variables
@@ -45,7 +46,10 @@ public class SongActivity extends Activity {
 	private SongItem mSongItem;
     ScaleGestureDetector scaleGestureDetector;
     private Metronome mMetronome;
-	
+    //endregion
+
+
+    //region Class Functions
 	/*****************************************************************************
      * 
      * Class Functions
@@ -60,9 +64,6 @@ public class SongActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_song);
-
-        // Initialize the metronome
-        initializeMetronome();
         
         // Get the song textview
         song = (AutoFitTextView)findViewById(R.id.song_text);
@@ -83,6 +84,9 @@ public class SongActivity extends Activity {
             // Set song text
             song.setText(Html.fromHtml(mSongItem.getText()));
         }
+
+        // Initialize the metronome
+        initializeMetronome();
         
         // Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -169,8 +173,10 @@ public class SongActivity extends Activity {
         //getMenuInflater().inflate(R.menu.view_song_menu, menu);
         return true;
     }
-    
-    
+    //endregion
+
+
+    //region Song Functions
     /*****************************************************************************
      * 
      * Song Functions
@@ -222,7 +228,17 @@ public class SongActivity extends Activity {
      * Initializes the metronome
      */
     public void initializeMetronome() {
+        // Create the metronome object
         mMetronome = new Metronome(this);
+
+        // Set the beats per minute
+        if (mSongItem != null)
+            mMetronome.setBeatsPerMinute(mSongItem.getBpm());
+
+        // Determine if we should show the metronome
+        boolean showMetronome = false;
+        if (mMetronome.getBeatsPerMinute() > 0)
+            showMetronome = true;
 
         // Get the height to fit it to
         WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
@@ -239,20 +255,31 @@ public class SongActivity extends Activity {
         // Resize all icons in the bar and add them to the metronome
         for (int i = 0; i < children; i++) {
             ImageView icon = (ImageView)metronomeBar.getChildAt(i);
-            icon.getLayoutParams().height = (int)(height * 0.1);
-            icon.getLayoutParams().width = (int)(width * 0.12);
-            icon.requestLayout();
 
-            // Add to the metronome
-            mMetronome.mDots.add(icon);
+            if (showMetronome) {
+                // Adjust the metronome size
+                icon.getLayoutParams().height = (int)(height * 0.1);
+                icon.getLayoutParams().width = (int)(width * 0.12);
+                icon.requestLayout();
+
+                // Add to the metronome
+                mMetronome.mDots.add(icon);
+            } else {
+                // Hide the icons if we are not showing the metronome
+                icon.setVisibility(View.GONE);
+            }
         }
 
         // Set the on and off images for the metronome
         mMetronome.setImageOn(R.drawable.filled);
         mMetronome.setImageOff(R.drawable.open);
+
+
     }
+    //endregion
 
 
+    //region Classes
     /*****************************************************************************
      *
      * Classes
@@ -279,4 +306,5 @@ public class SongActivity extends Activity {
             return true;
         }
     }
+    //endregion
 }

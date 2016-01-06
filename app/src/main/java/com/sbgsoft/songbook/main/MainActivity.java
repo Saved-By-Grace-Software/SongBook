@@ -2142,14 +2142,19 @@ public class MainActivity extends FragmentActivity {
     	
     	// Populate the ArrayList
     	while (!c.isAfterLast()) {
-    		// Get the strings from the cursor
-        	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
-        	String songAuthor = c.getString(c.getColumnIndex(DBStrings.TBLSONG_AUTHOR));
-        	String songKey = c.getString(c.getColumnIndex(DBStrings.TBLSONG_KEY));
-        	String songFile = c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE));
+            // Create the song item
+            SongItem songItem = new SongItem();
+
+    		// Set the song item values
+        	songItem.setName(c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME)));
+            songItem.setAuthor(c.getString(c.getColumnIndex(DBStrings.TBLSONG_AUTHOR)));
+            songItem.setKey(c.getString(c.getColumnIndex(DBStrings.TBLSONG_KEY)));
+            songItem.setFile(c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE)));
+            songItem.setBpm(c.getInt(c.getColumnIndex(DBStrings.TBLSONG_BPM)));
+            songItem.setTimeSignature(c.getString(c.getColumnIndex(DBStrings.TBLSONG_TIME)));
     		
         	// Add the song item
-        	temp.add(new SongItem(songName, songAuthor, songKey, songFile));
+        	temp.add(songItem);
         	
         	// Move to the next song
         	c.moveToNext();
@@ -2202,7 +2207,6 @@ public class MainActivity extends FragmentActivity {
             	SongItem song = (SongItem)songsList.get(position);
 				try {
 					FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
-					//song.setText(getSongHtmlText(song.getName(), song.getKey(), fis));
 					song.setText(ChordProParser.ParseSongFile(getApplicationContext(), song, song.getKey(), fis, true, false));
 					
 					// Show the song activity

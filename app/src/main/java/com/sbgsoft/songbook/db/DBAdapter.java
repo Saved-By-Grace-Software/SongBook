@@ -494,12 +494,16 @@ public class DBAdapter {
 		// Check if the group is the all songs group
 		if (groupName.equals(SongsTab.ALL_SONGS_LABEL)) {
 			query = "SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
-					DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY +
+					DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + ", " + DBStrings.TBLSONG_BPM + ", " + DBStrings.TBLSONG_TIME +
 					" FROM " + DBStrings.SONGS_TABLE + " ORDER BY " + DBStrings.TBLSONG_NAME;
 		} else {
-			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.SONGS_TABLE + "." + 
-					DBStrings.TBLSONG_NAME + ", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_FILE + ", " +
-					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_KEY +
+			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_NAME + ", " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_FILE + ", " +
+					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + ", " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_KEY + ", " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_BPM + ", " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_TIME +
 					" FROM " + DBStrings.SONGS_TABLE + 
 					" INNER JOIN " + DBStrings.SONGGPLOOKUP_TABLE + " ON " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " = " + 
 					DBStrings.SONGGPLOOKUP_TABLE + "." + DBStrings.TBLSONGGPLOOKUP_SONG +
