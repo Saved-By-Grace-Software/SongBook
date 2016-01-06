@@ -85,8 +85,7 @@
             android:layout_height="wrap_content"
             android:text="@string/add_song_time"
             android:textSize="20sp"
-            android:paddingLeft="15dp"
-            android:visibility="invisible"/>
+            android:paddingLeft="15dp"/>
 
         <EditText
             android:id="@+id/add_song_time"
@@ -95,8 +94,7 @@
             android:layout_weight="1"
             android:inputType="text"
             android:maxLines="1"
-            android:textSize="20sp"
-            android:visibility="invisible"/>
+            android:textSize="20sp"/>
 
     </LinearLayout>
     
