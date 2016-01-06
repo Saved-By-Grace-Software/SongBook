@@ -95,6 +95,7 @@ import com.sbgsoft.songbook.songs.EditSongRawActivity;
 import com.sbgsoft.songbook.songs.SongActivity;
 import com.sbgsoft.songbook.songs.SongGroupArrayAdapter;
 import com.sbgsoft.songbook.songs.SongsTab;
+import com.sbgsoft.songbook.songs.TimeSignature;
 import com.sbgsoft.songbook.views.AutoFitTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
@@ -2265,6 +2266,7 @@ public class MainActivity extends FragmentActivity {
     	final EditText authorET = (EditText)dialoglayout.findViewById(R.id.add_song_author);
     	final EditText keyET = (EditText)dialoglayout.findViewById(R.id.add_song_key);
         final EditText bpmET = (EditText)dialoglayout.findViewById(R.id.add_song_bpm);
+        final EditText timeET = (EditText)dialoglayout.findViewById(R.id.add_song_time);
     	
     	// Populate the text boxes
     	songNameET.setText(songName);
@@ -2273,6 +2275,10 @@ public class MainActivity extends FragmentActivity {
         int bpm = dbAdapter.getSongBpm(songName);
         if (bpm > 0)
             bpmET.setText(Integer.toString(bpm));
+        TimeSignature ts = dbAdapter.getSongTimeSignature(songName);
+        if (ts.noteOneBeat > 0 && ts.beatsPerBar > 0) {
+            timeET.setText(ts.beatsPerBar + "/" + ts.noteOneBeat);
+        }
     	
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
@@ -2303,10 +2309,11 @@ public class MainActivity extends FragmentActivity {
                     bpm = Integer.parseInt(bpmET.getText().toString());
                 } catch (NumberFormatException nfe) { }
 
+                // Update the song in the database
                 if (bpm != -1)
-	    		    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, bpm);
+	    		    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, timeET.getText().toString(), bpm);
                 else
-                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key);
+                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, timeET.getText().toString());
 	    		
 	    		// Refresh the song list
 				fillSongsListView();
