@@ -892,10 +892,14 @@ public class DBAdapter {
 	 */
 	public Cursor getCurrentSetSongs() {
 		try {	
-			String query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.SONGS_TABLE + "." + 
-					DBStrings.TBLSONG_NAME + ", " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_FILE + ", " +
-					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_KEY +
-					" FROM " + DBStrings.SETLOOKUP_TABLE + ", " + DBStrings.CURRSET_TABLE +
+			String query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_NAME + ", " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_FILE + ", " +
+					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + ", " +
+                    DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_KEY + ", " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_BPM + ", " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_TIME +
+                    " FROM " + DBStrings.SETLOOKUP_TABLE + ", " + DBStrings.CURRSET_TABLE +
 					" INNER JOIN " + DBStrings.SONGS_TABLE + " ON " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG + 
 					" = " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID +
 					" INNER JOIN " + DBStrings.SETS_TABLE + " ON " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SET + 

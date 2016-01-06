@@ -273,8 +273,6 @@ public class SongActivity extends Activity {
         // Set the on and off images for the metronome
         mMetronome.setImageOn(R.drawable.filled);
         mMetronome.setImageOff(R.drawable.open);
-
-
     }
     //endregion
 

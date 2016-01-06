@@ -2819,15 +2819,20 @@ public class MainActivity extends FragmentActivity {
     	
     	// Populate the ArrayList
     	while (!c.isAfterLast()) {
-    		// Get the strings from the cursor
-        	String songName = c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME));
-        	String songAuthor = c.getString(c.getColumnIndex(DBStrings.TBLSONG_AUTHOR));
-        	String setKey = c.getString(c.getColumnIndex(DBStrings.TBLSLOOKUP_KEY));
-        	String songFile = c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE));
-        	String songKey = dbAdapter.getSongKey(songName);
-    		
-        	// Add the song item
-        	currSetList.add(new SongItem(songName, songAuthor, songKey, songFile, setKey));
+            // Create the song item
+            SongItem songItem = new SongItem();
+
+            // Set the song item values
+            songItem.setName(c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME)));
+            songItem.setAuthor(c.getString(c.getColumnIndex(DBStrings.TBLSONG_AUTHOR)));
+            songItem.setSetKey(c.getString(c.getColumnIndex(DBStrings.TBLSLOOKUP_KEY)));
+            songItem.setFile(c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE)));
+            songItem.setBpm(c.getInt(c.getColumnIndex(DBStrings.TBLSONG_BPM)));
+            songItem.setTimeSignature(c.getString(c.getColumnIndex(DBStrings.TBLSONG_TIME)));
+            songItem.setKey(dbAdapter.getSongKey(c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME))));
+
+            // Add the song item
+            currSetList.add(songItem);
         	
         	// Move to the next song
         	c.moveToNext();

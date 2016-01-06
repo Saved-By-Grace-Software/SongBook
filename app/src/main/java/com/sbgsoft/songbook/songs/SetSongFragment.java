@@ -48,9 +48,6 @@ public class SetSongFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mView = inflater.inflate(R.layout.activity_song, container, false);
-
-        // Resize metronome bar icons
-        initializeMetronome();
 		
 		// Get the song textview
         song = (AutoFitTextView)mView.findViewById(R.id.song_text);
@@ -74,6 +71,9 @@ public class SetSongFragment extends Fragment {
                 song.setText(Html.fromHtml(mSongItem.getText()));
             }
         }
+
+        // Resize metronome bar icons
+        initializeMetronome();
 
         // Add the touch listener
         song.setOnTouchListener(new View.OnTouchListener() {
@@ -186,7 +186,17 @@ public class SetSongFragment extends Fragment {
      * Initializes the metronome
      */
     public void initializeMetronome() {
+        // Create the metronome object
         mMetronome = new Metronome(getActivity());
+
+        // Set the beats per minute
+        if (mSongItem != null)
+            mMetronome.setBeatsPerMinute(mSongItem.getBpm());
+
+        // Determine if we should show the metronome
+        boolean showMetronome = false;
+        if (mMetronome.getBeatsPerMinute() > 0)
+            showMetronome = true;
 
         // Get the height to fit it to
         WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
@@ -203,12 +213,19 @@ public class SetSongFragment extends Fragment {
         // Resize all icons in the bar and add them to the metronome
         for (int i = 0; i < children; i++) {
             ImageView icon = (ImageView)metronomeBar.getChildAt(i);
-            icon.getLayoutParams().height = (int)(height * 0.1);
-            icon.getLayoutParams().width = (int)(width * 0.12);
-            icon.requestLayout();
 
-            // Add to the metronome
-            mMetronome.mDots.add(icon);
+            if (showMetronome) {
+                // Adjust the metronome size
+                icon.getLayoutParams().height = (int)(height * 0.1);
+                icon.getLayoutParams().width = (int)(width * 0.12);
+                icon.requestLayout();
+
+                // Add to the metronome
+                mMetronome.mDots.add(icon);
+            } else {
+                // Hide the icons if we are not showing the metronome
+                icon.setVisibility(View.GONE);
+            }
         }
 
         // Set the on and off images for the metronome
