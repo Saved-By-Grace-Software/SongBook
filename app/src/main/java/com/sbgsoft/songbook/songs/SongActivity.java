@@ -225,7 +225,7 @@ public class SongActivity extends Activity {
     }
 
     /**
-     * Initializes the metronome
+     * Initializes the metronome object
      */
     public void initializeMetronome() {
         // Create the metronome object
@@ -235,44 +235,9 @@ public class SongActivity extends Activity {
         if (mSongItem != null)
             mMetronome.setBeatsPerMinute(mSongItem.getBpm());
 
-        // Determine if we should show the metronome
-        boolean showMetronome = false;
-        if (mMetronome.getBeatsPerMinute() > 0)
-            showMetronome = true;
-
-        // Get the height to fit it to
-        WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int height = size.y;
-        int width = size.x;
-
-        // Get the metronome bar layout
+        // Initialize the metronome
         LinearLayout metronomeBar = (LinearLayout)findViewById(R.id.metronome_bar);
-        int children = metronomeBar.getChildCount();
-
-        // Resize all icons in the bar and add them to the metronome
-        for (int i = 0; i < children; i++) {
-            ImageView icon = (ImageView)metronomeBar.getChildAt(i);
-
-            if (showMetronome) {
-                // Adjust the metronome size
-                icon.getLayoutParams().height = (int)(height * 0.1);
-                icon.getLayoutParams().width = (int)(width * 0.12);
-                icon.requestLayout();
-
-                // Add to the metronome
-                mMetronome.mDots.add(icon);
-            } else {
-                // Hide the icons if we are not showing the metronome
-                icon.setVisibility(View.GONE);
-            }
-        }
-
-        // Set the on and off images for the metronome
-        mMetronome.setImageOn(R.drawable.filled);
-        mMetronome.setImageOff(R.drawable.open);
+        mMetronome.initialize(metronomeBar);
     }
     //endregion
 

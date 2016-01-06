@@ -9,6 +9,7 @@ import android.widget.ImageView;
  */
 public class MetronomeList {
 
+    //region Private Class Members
     private MetronomeNode start;
     private MetronomeNode end;
     private MetronomeNode currentNode;
@@ -16,9 +17,13 @@ public class MetronomeList {
     private boolean firstTick;
     private int imageOn = -1;
     private int imageOff = -1;
+    //endregion
 
+    //region Public Class Members
     public int size;
+    //endregion
 
+    //region Constructor
     public MetronomeList(Activity _activity) {
         start = null;
         end = null;
@@ -27,7 +32,9 @@ public class MetronomeList {
         mActivity = _activity;
         firstTick = false;
     }
+    //endregion
 
+    //region Public Functions
     // Makes the metronome tick
     public void tick() {
         // Make sure we have nodes to tick
@@ -139,6 +146,40 @@ public class MetronomeList {
         imageOff = _imageOff;
     }
 
+    // Hides all nodes in the list
+    public void hideAllIcons() {
+        MetronomeNode current = start;
+
+        do {
+            // Hide the current node
+            current.getData().setVisibility(View.GONE);
+
+            // Move to the next node
+            current = current.getNext();
+        } while (current != start);
+    }
+
+    // Resets the current node back to the start
+    public void resetToStart() {
+        // Set the current node back to the start
+        currentNode = start;
+
+        // Set the start image on
+        start.getData().setImageResource(imageOn);
+
+        // Loop through the rest of the dots and set them off
+        MetronomeNode curr = start.getNext();
+        while (curr != start) {
+            // Set the image off
+            curr.getData().setImageResource(imageOff);
+
+            // Go to the next icon
+            curr = curr.getNext();
+        }
+    }
+    //endregion
+
+    //region Metronome Node Class
     /**
      * Node class for the Metronome Linked List
      */
@@ -196,6 +237,6 @@ public class MetronomeList {
             data = _data;
         }
     }
-
+    //endregion
 }
 

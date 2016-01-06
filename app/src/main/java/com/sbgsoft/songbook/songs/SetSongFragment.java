@@ -34,12 +34,16 @@ import com.sbgsoft.songbook.main.MainStrings;
 import com.sbgsoft.songbook.views.AutoFitTextView;
 
 public class SetSongFragment extends Fragment {
+
+    //region Class Members
 	public AutoFitTextView song;
 	private SongItem mSongItem;
     private View mView;
     ScaleGestureDetector scaleGestureDetector;
     private Metronome mMetronome;
+    //endregion
 
+    //region Class Functions
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -79,9 +83,9 @@ public class SetSongFragment extends Fragment {
         song.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if(motionEvent.getPointerCount() == 1){
+                if (motionEvent.getPointerCount() == 1) {
                     //stuff for 1 pointer
-                }else{ //when 2 pointers are present
+                } else { //when 2 pointers are present
                     switch (motionEvent.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             // Disallow ScrollView to intercept touch events.
@@ -141,7 +145,9 @@ public class SetSongFragment extends Fragment {
         if (mMetronome != null)
             mMetronome.stop();
     }
+    //endregion
 
+    //region Click Functions
 	/**
 	 * Transposes the song
 	 */
@@ -181,11 +187,14 @@ public class SetSongFragment extends Fragment {
         	alert.show();
     	}
 	}
+    //endregion
 
+    //region Other Functions
     /**
      * Initializes the metronome
      */
     public void initializeMetronome() {
+
         // Create the metronome object
         mMetronome = new Metronome(getActivity());
 
@@ -193,47 +202,13 @@ public class SetSongFragment extends Fragment {
         if (mSongItem != null)
             mMetronome.setBeatsPerMinute(mSongItem.getBpm());
 
-        // Determine if we should show the metronome
-        boolean showMetronome = false;
-        if (mMetronome.getBeatsPerMinute() > 0)
-            showMetronome = true;
-
-        // Get the height to fit it to
-        WindowManager wm = (WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int height = size.y;
-        int width = size.x;
-
-        // Get the metronome bar layout
+        // Initialize the metronome
         LinearLayout metronomeBar = (LinearLayout)mView.findViewById(R.id.metronome_bar);
-        int children = metronomeBar.getChildCount();
-
-        // Resize all icons in the bar and add them to the metronome
-        for (int i = 0; i < children; i++) {
-            ImageView icon = (ImageView)metronomeBar.getChildAt(i);
-
-            if (showMetronome) {
-                // Adjust the metronome size
-                icon.getLayoutParams().height = (int)(height * 0.1);
-                icon.getLayoutParams().width = (int)(width * 0.12);
-                icon.requestLayout();
-
-                // Add to the metronome
-                mMetronome.mDots.add(icon);
-            } else {
-                // Hide the icons if we are not showing the metronome
-                icon.setVisibility(View.GONE);
-            }
-        }
-
-        // Set the on and off images for the metronome
-        mMetronome.setImageOn(R.drawable.filled);
-        mMetronome.setImageOff(R.drawable.open);
+        mMetronome.initialize(metronomeBar);
     }
+    //endregion
 
-
+    //region Classes
     /*****************************************************************************
      *
      * Classes
@@ -260,4 +235,5 @@ public class SetSongFragment extends Fragment {
             return true;
         }
     }
+    //endregion
 }
