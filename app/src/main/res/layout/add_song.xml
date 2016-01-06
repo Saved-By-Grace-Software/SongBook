@@ -87,14 +87,22 @@
             android:textSize="20sp"
             android:paddingLeft="15dp"/>
 
-        <EditText
+        <!--<EditText
             android:id="@+id/add_song_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="text"
             android:maxLines="1"
-            android:textSize="20sp"/>
+            android:textSize="20sp"/>-->
+
+        <Spinner
+            android:id="@+id/add_song_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:entries="@array/time_signatures"/>
 
     </LinearLayout>
     

@@ -2266,7 +2266,7 @@ public class MainActivity extends FragmentActivity {
     	final EditText authorET = (EditText)dialoglayout.findViewById(R.id.add_song_author);
     	final EditText keyET = (EditText)dialoglayout.findViewById(R.id.add_song_key);
         final EditText bpmET = (EditText)dialoglayout.findViewById(R.id.add_song_bpm);
-        final EditText timeET = (EditText)dialoglayout.findViewById(R.id.add_song_time);
+        final Spinner timeSpin = (Spinner)dialoglayout.findViewById(R.id.add_song_time);
     	
     	// Populate the text boxes
     	songNameET.setText(songName);
@@ -2277,7 +2277,9 @@ public class MainActivity extends FragmentActivity {
             bpmET.setText(Integer.toString(bpm));
         TimeSignature ts = dbAdapter.getSongTimeSignature(songName);
         if (ts.noteOneBeat > 0 && ts.beatsPerBar > 0) {
-            timeET.setText(ts.beatsPerBar + "/" + ts.noteOneBeat);
+//            timeET.setText(ts.beatsPerBar + "/" + ts.noteOneBeat);
+        } else {
+            timeSpin.setSelection(3);
         }
     	
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -2311,9 +2313,9 @@ public class MainActivity extends FragmentActivity {
 
                 // Update the song in the database
                 if (bpm != -1)
-	    		    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, timeET.getText().toString(), bpm);
+	    		    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()), bpm);
                 else
-                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, timeET.getText().toString());
+                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()));
 	    		
 	    		// Refresh the song list
 				fillSongsListView();
