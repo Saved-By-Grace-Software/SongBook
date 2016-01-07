@@ -37,8 +37,36 @@ public class MetronomeList {
     //region Public Functions
     // Makes the metronome tick
     public void tick() {
-        // Make sure we have nodes to tick
-        if (size >= 1) {
+        // Special case with only a single dot
+        if (size == 1) {
+            // Initialize currentNode if it isn't already
+            if (currentNode == null) {
+                currentNode = start;
+            }
+
+            // Turn the image on
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    currentNode.getData().setImageResource(imageOn);
+                }
+            });
+
+            // Wait for 100ms
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException ie) { }
+
+            // Turn the image back off
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    currentNode.getData().setImageResource(imageOff);
+                }
+            });
+        }
+        // Multiple dots to tick
+        else if (size > 1) {
 
             // Initialize currentNode if it isn't already
             if (currentNode == null) {
@@ -164,17 +192,23 @@ public class MetronomeList {
         // Set the current node back to the start
         currentNode = start;
 
-        // Set the start image on
-        start.getData().setImageResource(imageOn);
+        // Set the start image to off if we only have one dot
+        if (size == 1) {
+            // Set the start image on
+            start.getData().setImageResource(imageOff);
+        } else {
+            // Set the start image on
+            start.getData().setImageResource(imageOn);
 
-        // Loop through the rest of the dots and set them off
-        MetronomeNode curr = start.getNext();
-        while (curr != start) {
-            // Set the image off
-            curr.getData().setImageResource(imageOff);
+            // Loop through the rest of the dots and set them off
+            MetronomeNode curr = start.getNext();
+            while (curr != null && curr != start) {
+                // Set the image off
+                curr.getData().setImageResource(imageOff);
 
-            // Go to the next icon
-            curr = curr.getNext();
+                // Go to the next icon
+                curr = curr.getNext();
+            }
         }
     }
     //endregion
