@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 
@@ -34,6 +35,7 @@ public class Metronome {
     private int sleepTime;
     private Timer timer;
     private boolean isRunning = false;
+    private boolean inTapTempoMode = false;
     //endregion
 
     //region Public Class Members
@@ -157,8 +159,8 @@ public class Metronome {
 
     // Handles the metronome being touched
     private void touch() {
-        // Check that timer exists
-        if (timer != null) {
+        // Check that timer exists and we are in normal mode
+        if (timer != null && !inTapTempoMode) {
             if (isRunning) {
                 // Timer is running, stop the metronome
                 stop();
@@ -167,6 +169,24 @@ public class Metronome {
                 start();
             }
         }
+
+        // Check for in tap tempo mode
+        if (inTapTempoMode) {
+            Log.d("SONGBOOK", "Tap Tempo TAP");
+        }
+    }
+
+    // Handles the tap tempo mode (when metronome is long-pressed
+    private void tapTempoMode() {
+        // Trigger the tap tempo mode
+        inTapTempoMode = true;
+
+        // Alert the user that tap tempo mode has been entered
+        Toast.makeText(mActivity, "Tap Tempo Mode has been entered!", Toast.LENGTH_LONG).show();
+
+        // Stop and reset the metronome while in tap tempo mode
+        stop();
+        mDots.resetToStart();
     }
     //endregion
 
@@ -215,7 +235,7 @@ public class Metronome {
 
         @Override
         public void onLongPress(MotionEvent event) {
-            Log.d("SONGBOOK", "Long press happened");
+            tapTempoMode();
         }
 
         @Override
