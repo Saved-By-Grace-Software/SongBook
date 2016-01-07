@@ -5,8 +5,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -126,8 +129,7 @@ public class Metronome {
             icon.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View view, MotionEvent motionEvent) {
-                    if (motionEvent.getAction() == MotionEvent.ACTION_DOWN)
-                        touch();
+                    gestureDetector.onTouchEvent(motionEvent);
                     return true;
                 }
             });
@@ -155,7 +157,6 @@ public class Metronome {
 
     // Handles the metronome being touched
     private void touch() {
-        Log.d("SONGBOOK", "Metronome Touched!");
         // Check that timer exists
         if (timer != null) {
             if (isRunning) {
@@ -203,5 +204,28 @@ public class Metronome {
 
         Log.d("SONGBOOK", "Time Signature: " + mTimeSignature.toString());
     }
+    //endregion
+
+    //region Gesture Detector
+    /**
+     * Listens for the long press
+     */
+    GestureDetector.SimpleOnGestureListener simpleOnGestureListener
+            = new GestureDetector.SimpleOnGestureListener(){
+
+        @Override
+        public void onLongPress(MotionEvent event) {
+            Log.d("SONGBOOK", "Long press happened");
+        }
+
+        @Override
+        public boolean onSingleTapUp(MotionEvent event) {
+            touch();
+            return true;
+        }
+    };
+
+    GestureDetector gestureDetector
+            = new GestureDetector(mActivity, simpleOnGestureListener);
     //endregion
 }
