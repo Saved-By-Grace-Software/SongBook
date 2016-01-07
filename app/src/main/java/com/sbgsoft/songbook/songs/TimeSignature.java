@@ -44,4 +44,9 @@ public final class TimeSignature {
             noteOneBeat = 0;
         }
     }
+
+    @Override
+    public String toString() {
+        return beatsPerBar + "/" + noteOneBeat;
+    }
 }
