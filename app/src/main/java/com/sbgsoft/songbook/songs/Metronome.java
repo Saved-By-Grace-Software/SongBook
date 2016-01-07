@@ -1,15 +1,13 @@
 package com.sbgsoft.songbook.songs;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.text.format.Time;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -18,6 +16,7 @@ import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,6 +35,7 @@ public class Metronome {
     private Timer timer;
     private boolean isRunning = false;
     private boolean inTapTempoMode = false;
+    private ArrayList<Long> tempoTaps;
     //endregion
 
     //region Public Class Members
@@ -48,6 +48,7 @@ public class Metronome {
         sleepTime = 0;
         mActivity = _activity;
         mDots = new MetronomeList(mActivity);
+        tempoTaps = new ArrayList<Long>();
     }
     //endregion
 
@@ -142,6 +143,7 @@ public class Metronome {
     //endregion
 
     //region Private Functions
+    // Calculates the sleep time from the given beats per minute
     private int calculateSleepForBPM(int bpm) {
         int ret;
 
@@ -150,6 +152,37 @@ public class Metronome {
         ret = (int)(1000 * bps);
 
         return ret;
+    }
+
+    // Calculates the beats per minute from the sleep time
+    private int calculateBPMForSleep(int sleep) {
+        int ret;
+
+        // Determine bpm from milliseconds
+        ret = 60000 / sleep;
+
+        return ret;
+    }
+
+    // Calculates the beats per minute from the tap tempo array
+    private int calculateBPMFromTapTempoArray() {
+        int bpm = 0;
+
+        // Ensure we have enough data to calculate
+        if (tempoTaps.size() > 1) {
+            // Get the average time gap in the array
+            long avgGap = 0;
+            for (int i = 1; i < tempoTaps.size(); i++) {
+                long diff = tempoTaps.get(i) - tempoTaps.get(i-1);
+                avgGap += diff;
+            }
+            avgGap = (avgGap / tempoTaps.size());
+
+            // Calculate the BPM from the gap time
+            bpm = calculateBPMForSleep((int)avgGap);
+        }
+
+        return bpm;
     }
 
     // Hides all of the metronome dots
@@ -172,21 +205,49 @@ public class Metronome {
 
         // Check for in tap tempo mode
         if (inTapTempoMode) {
-            Log.d("SONGBOOK", "Tap Tempo TAP");
+            // Get the current time in milliseconds
+            long currTime = System.currentTimeMillis();
+            Log.d("SONGBOOK", "Tap Tempo TAP: " + currTime);
+
+            // Append the time to the tap tempo array
+            if (tempoTaps.size() > 10) {
+                // Reached size limit, remove first and then add
+                tempoTaps.remove(0);
+            }
+            tempoTaps.add(currTime);
+
+            // Calculate the bpm from the current list and adjust current bpm
+            if (tempoTaps.size() > 1) {
+                setBeatsPerMinute(calculateBPMFromTapTempoArray());
+                Log.d("SONGBOOK", "New BPM: " + mBeatsPerMinute);
+            }
         }
     }
 
     // Handles the tap tempo mode (when metronome is long-pressed
     private void tapTempoMode() {
-        // Trigger the tap tempo mode
-        inTapTempoMode = true;
+        // Check if we are in tap tempo mode already
+        if (inTapTempoMode) {
+            // Turn off tap tempo mode
+            inTapTempoMode = false;
 
-        // Alert the user that tap tempo mode has been entered
-        Toast.makeText(mActivity, "Tap Tempo Mode has been entered!", Toast.LENGTH_LONG).show();
+            // Alert the user of the new bpm
+            Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute, Toast.LENGTH_LONG).show();
 
-        // Stop and reset the metronome while in tap tempo mode
-        stop();
-        mDots.resetToStart();
+            // Restart the metronome
+            mDots.resetToStart();
+            start();
+        } else {
+            // Turn on tap tempo mode
+            inTapTempoMode = true;
+
+            // Alert the user that tap tempo mode has been entered
+            Toast.makeText(mActivity, "Tap Tempo Mode has been entered!", Toast.LENGTH_LONG).show();
+
+            // Stop and reset the metronome while in tap tempo mode
+            stop();
+            mDots.resetToStart();
+        }
     }
     //endregion
 

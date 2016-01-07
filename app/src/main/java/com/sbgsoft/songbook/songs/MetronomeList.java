@@ -178,13 +178,15 @@ public class MetronomeList {
     public void hideAllIcons() {
         MetronomeNode current = start;
 
-        do {
-            // Hide the current node
-            current.getData().setVisibility(View.GONE);
+        if (current != null) {
+            do {
+                // Hide the current node
+                current.getData().setVisibility(View.GONE);
 
-            // Move to the next node
-            current = current.getNext();
-        } while (current != start);
+                // Move to the next node
+                current = current.getNext();
+            } while (current != start);
+        }
     }
 
     // Resets the current node back to the start
@@ -197,17 +199,19 @@ public class MetronomeList {
             // Set the start image on
             start.getData().setImageResource(imageOff);
         } else {
-            // Set the start image on
-            start.getData().setImageResource(imageOn);
+            if (start != null) {
+                // Set the start image on
+                start.getData().setImageResource(imageOn);
 
-            // Loop through the rest of the dots and set them off
-            MetronomeNode curr = start.getNext();
-            while (curr != null && curr != start) {
-                // Set the image off
-                curr.getData().setImageResource(imageOff);
+                // Loop through the rest of the dots and set them off
+                MetronomeNode curr = start.getNext();
+                while (curr != null && curr != start) {
+                    // Set the image off
+                    curr.getData().setImageResource(imageOff);
 
-                // Go to the next icon
-                curr = curr.getNext();
+                    // Go to the next icon
+                    curr = curr.getNext();
+                }
             }
         }
     }
