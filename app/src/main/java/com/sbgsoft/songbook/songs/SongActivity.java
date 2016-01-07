@@ -4,27 +4,20 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -231,9 +224,11 @@ public class SongActivity extends Activity {
         // Create the metronome object
         mMetronome = new Metronome(this);
 
-        // Set the beats per minute
-        if (mSongItem != null)
+        // Set the beats per minute and time signature
+        if (mSongItem != null) {
             mMetronome.setBeatsPerMinute(mSongItem.getBpm());
+            mMetronome.setmTimeSignature(new TimeSignature(mSongItem.getTimeSignature()));
+        }
 
         // Initialize the metronome
         LinearLayout metronomeBar = (LinearLayout)findViewById(R.id.metronome_bar);

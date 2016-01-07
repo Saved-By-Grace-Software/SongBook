@@ -1,5 +1,6 @@
 package com.sbgsoft.songbook.songs;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
@@ -24,6 +25,7 @@ public class Metronome {
     //region Private Class Members
     private Activity mActivity;
     private int mBeatsPerMinute;
+    private TimeSignature mTimeSignature;
     private int imageOn = -1;
     private int imageOff = -1;
     private int sleepTime;
@@ -102,17 +104,20 @@ public class Metronome {
         int height = size.y;
         int width = size.x;
 
-        // Get the metronome bar layout
-        int children = metronomeBar.getChildCount();
+        // Set the on and off images for the metronome
+        setImageOn(R.drawable.filled);
+        setImageOff(R.drawable.open);
 
-        // Resize all icons in the bar and add them to the metronome
-        for (int i = 0; i < children; i++) {
-            ImageView icon = (ImageView)metronomeBar.getChildAt(i);
+        // Add the dots for the metronome, based on time signature
+        for (int i = 0; i < mTimeSignature.beatsPerBar; i++) {
+            ImageView icon = new ImageView(mActivity);
+            icon.setImageResource(imageOff);
+            icon.setLayoutParams(new LinearLayout.LayoutParams(
+                    (int) (height * 0.08),
+                    (int) (width * 0.1)));
 
-            // Adjust the metronome size
-            icon.getLayoutParams().height = (int)(height * 0.1);
-            icon.getLayoutParams().width = (int)(width * 0.12);
-            icon.requestLayout();
+            metronomeBar.addView(icon);
+
 
             // Add to the metronome list
             mDots.add(icon);
@@ -128,9 +133,7 @@ public class Metronome {
             });
         }
 
-        // Set the on and off images for the metronome
-        setImageOn(R.drawable.filled);
-        setImageOff(R.drawable.open);
+        metronomeBar.requestLayout();
     }
     //endregion
 
@@ -183,11 +186,6 @@ public class Metronome {
         mDots.setImageOff(imageOff);
     }
 
-    // Gets the Metronome's beats per minute
-    public int getBeatsPerMinute() {
-        return mBeatsPerMinute;
-    }
-
     // Sets the Metronome's beats per minute
     public void setBeatsPerMinute(int beatsPerMinute) {
         this.mBeatsPerMinute = beatsPerMinute;
@@ -197,6 +195,13 @@ public class Metronome {
             sleepTime = calculateSleepForBPM(mBeatsPerMinute);
         else
             sleepTime = 0;
+    }
+
+    // Sets the time signature for the metronome
+    public void setmTimeSignature(TimeSignature mTimeSignature) {
+        this.mTimeSignature = mTimeSignature;
+
+        Log.d("SONGBOOK", "Time Signature: " + mTimeSignature.toString());
     }
     //endregion
 }
