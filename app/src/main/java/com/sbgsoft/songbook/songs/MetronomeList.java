@@ -2,6 +2,8 @@ package com.sbgsoft.songbook.songs;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -71,6 +73,8 @@ public class MetronomeList {
                 }
             }
         }
+
+//        Log.d("SONGBOOK", "tick " + SystemClock.uptimeMillis());
     }
 
     // Appends the specified data to the linked list

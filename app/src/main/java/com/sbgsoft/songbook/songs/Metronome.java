@@ -39,6 +39,7 @@ public class Metronome {
     private long previousTimestamp = 0;
     private ArrayList<Integer> tempoTaps;
     private Handler mHandler;
+    private static int ANDROID_DELAY = 10;
     //endregion
 
     //region Public Class Members
@@ -65,6 +66,8 @@ public class Metronome {
         if (sleepTime > 0) {
             // Restart the metronome list to the start
             mDots.resetToStart();
+
+            Log.d("SONGBOOK", "sleep time = " + sleepTime);
 
             // Start the task
             mHandler.removeCallbacks(mCallTick);
@@ -258,7 +261,7 @@ public class Metronome {
             mDots.tick();
 
             long timeElapsed = SystemClock.elapsedRealtime() - startTime;
-            mHandler.postDelayed(this, sleepTime - timeElapsed);
+            mHandler.postDelayed(this, sleepTime - timeElapsed - ANDROID_DELAY);
         }
     };
     //endregion
