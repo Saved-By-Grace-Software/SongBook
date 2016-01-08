@@ -1,6 +1,7 @@
 package com.sbgsoft.songbook.songs;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -30,7 +31,7 @@ public class MetronomeList {
         currentNode = start;
         size = 0;
         mActivity = _activity;
-        firstTick = false;
+        firstTick = true;
     }
     //endregion
 
@@ -39,18 +40,8 @@ public class MetronomeList {
     public void tick() {
         // Special case with only a single dot
         if (size == 1) {
-            // Initialize currentNode if it isn't already
-            if (currentNode == null) {
-                currentNode = start;
-            }
-
             // Turn the image on
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    currentNode.getData().setImageResource(imageOn);
-                }
-            });
+            currentNode.getData().setImageResource(imageOn);
 
             // Wait for 100ms
             try {
@@ -58,43 +49,27 @@ public class MetronomeList {
             } catch (InterruptedException ie) { }
 
             // Turn the image back off
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    currentNode.getData().setImageResource(imageOff);
-                }
-            });
+            currentNode.getData().setImageResource(imageOff);
         }
         // Multiple dots to tick
         else if (size > 1) {
 
-            // Initialize currentNode if it isn't already
-            if (currentNode == null) {
-                currentNode = start;
-                firstTick = true;
-            }
+            // Check for first tick
+            if (firstTick) {
+                currentNode.getData().setImageResource(imageOn);
+                firstTick = false;
+            } else {
+                // Reset the current node
+                currentNode.getData().setImageResource(imageOff);
 
-            mActivity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    // Check for first tick
-                    if (firstTick) {
-                        currentNode.getData().setImageResource(imageOn);
-                        firstTick = false;
-                    } else {
-                        // Reset the current node
-                        currentNode.getData().setImageResource(imageOff);
+                if (currentNode.hasNext()) {
+                    // Tick the next node
+                    currentNode.getNext().getData().setImageResource(imageOn);
 
-                        if (currentNode.hasNext()) {
-                            // Tick the next node
-                            currentNode.getNext().getData().setImageResource(imageOn);
-
-                            // Update current node to the next node
-                            currentNode = currentNode.getNext();
-                        }
-                    }
+                    // Update current node to the next node
+                    currentNode = currentNode.getNext();
                 }
-            });
+            }
         }
     }
 
@@ -109,6 +84,7 @@ public class MetronomeList {
             // Empty list, make the new node the start
             start = temp;
             end = start;
+            currentNode = start;
         } else {
             end.setNext(temp);
             end = temp;

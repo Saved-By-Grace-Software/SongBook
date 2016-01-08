@@ -3,6 +3,8 @@ package com.sbgsoft.songbook.songs;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Display;
@@ -32,11 +34,11 @@ public class Metronome {
     private int imageOn = -1;
     private int imageOff = -1;
     private int sleepTime;
-    private Timer timer;
     private boolean isRunning = false;
     private boolean inTapTempoMode = false;
     private long previousTimestamp = 0;
     private ArrayList<Integer> tempoTaps;
+    private Handler mHandler;
     //endregion
 
     //region Public Class Members
@@ -50,6 +52,7 @@ public class Metronome {
         mActivity = _activity;
         mDots = new MetronomeList(mActivity);
         tempoTaps = new ArrayList<Integer>();
+        mHandler = new Handler();
     }
     //endregion
 
@@ -60,22 +63,12 @@ public class Metronome {
     public void start() {
         // Only start if the sleeptime is set properly
         if (sleepTime > 0) {
-            // Instantiate the timer
-            timer = new Timer("MetronomeTimer", true);
-
             // Restart the metronome list to the start
             mDots.resetToStart();
 
-            // Create the timer task
-            TimerTask tick = new TimerTask() {
-                @Override
-                public void run() {
-                    mDots.tick();
-                }
-            };
-
             // Start the task
-            timer.scheduleAtFixedRate(tick, sleepTime, sleepTime);
+            mHandler.removeCallbacks(mCallTick);
+            mHandler.postDelayed(mCallTick, sleepTime);
 
             // Set the is running trigger
             isRunning = true;
@@ -89,14 +82,11 @@ public class Metronome {
      * Stops the metronome clicking
      */
     public void stop() {
-        if (timer != null) {
-            // Cancel and purge the timer
-            timer.cancel();
-            timer.purge();
+        // Remove handler callbacks
+        mHandler.removeCallbacks(mCallTick);
 
-            // Clear the is running trigger
-            isRunning = false;
-        }
+        // Clear the is running trigger
+        isRunning = false;
     }
 
     /**
@@ -193,7 +183,7 @@ public class Metronome {
     // Handles the metronome being touched
     private void touch() {
         // Check that timer exists and we are in normal mode
-        if (timer != null && !inTapTempoMode) {
+        if (!inTapTempoMode) {
             if (isRunning) {
                 // Timer is running, stop the metronome
                 stop();
@@ -259,6 +249,18 @@ public class Metronome {
             mDots.resetToStart();
         }
     }
+
+    // Runnable task for ticking the metronome
+    private Runnable mCallTick = new Runnable() {
+        public void run() {
+            long startTime = SystemClock.elapsedRealtime();
+
+            mDots.tick();
+
+            long timeElapsed = SystemClock.elapsedRealtime() - startTime;
+            mHandler.postDelayed(this, sleepTime - timeElapsed);
+        }
+    };
     //endregion
 
     //region Getters & Setters
