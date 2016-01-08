@@ -2327,6 +2327,9 @@ public class MainActivity extends FragmentActivity {
 	    		
 	    		// Refresh the song list
 				fillSongsListView();
+
+                // Refresh current set list
+                fillCurrentSetListView();
 				
 				// Close the dialog
 				dialog.dismiss();
