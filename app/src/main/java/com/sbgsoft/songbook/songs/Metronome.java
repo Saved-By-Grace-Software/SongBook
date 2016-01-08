@@ -35,7 +35,8 @@ public class Metronome {
     private Timer timer;
     private boolean isRunning = false;
     private boolean inTapTempoMode = false;
-    private ArrayList<Long> tempoTaps;
+    private long previousTimestamp = 0;
+    private ArrayList<Integer> tempoTaps;
     //endregion
 
     //region Public Class Members
@@ -48,7 +49,7 @@ public class Metronome {
         sleepTime = 0;
         mActivity = _activity;
         mDots = new MetronomeList(mActivity);
-        tempoTaps = new ArrayList<Long>();
+        tempoTaps = new ArrayList<Integer>();
     }
     //endregion
 
@@ -127,16 +128,16 @@ public class Metronome {
 
             // Add to the metronome list
             mDots.add(icon);
-
-            // Add the touch listener for the dot
-            icon.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent motionEvent) {
-                    gestureDetector.onTouchEvent(motionEvent);
-                    return true;
-                }
-            });
         }
+
+        // Add the touch listener for the metronome
+        metronomeBar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                gestureDetector.onTouchEvent(motionEvent);
+                return true;
+            }
+        });
 
         metronomeBar.requestLayout();
     }
@@ -171,15 +172,14 @@ public class Metronome {
         // Ensure we have enough data to calculate
         if (tempoTaps.size() > 1) {
             // Get the average time gap in the array
-            long avgGap = 0;
-            for (int i = 1; i < tempoTaps.size(); i++) {
-                long diff = tempoTaps.get(i) - tempoTaps.get(i-1);
-                avgGap += diff;
+            int avgGap = 0;
+            for (int gap : tempoTaps) {
+                avgGap += gap;
             }
             avgGap = (avgGap / tempoTaps.size());
 
             // Calculate the BPM from the gap time
-            bpm = calculateBPMForSleep((int)avgGap);
+            bpm = calculateBPMForSleep(avgGap);
         }
 
         return bpm;
@@ -207,14 +207,20 @@ public class Metronome {
         if (inTapTempoMode) {
             // Get the current time in milliseconds
             long currTime = System.currentTimeMillis();
-            Log.d("SONGBOOK", "Tap Tempo TAP: " + currTime);
 
-            // Append the time to the tap tempo array
+            // Check to see if we need to roll the array
             if (tempoTaps.size() > 10) {
                 // Reached size limit, remove first and then add
                 tempoTaps.remove(0);
             }
-            tempoTaps.add(currTime);
+
+            // Add the difference to the array
+            if (previousTimestamp > 0) {
+                int diff = (int)(currTime - previousTimestamp);
+                tempoTaps.add(diff);
+                Log.d("SONGBOOK", "   Added Gap: " + diff);
+            }
+            previousTimestamp = currTime;
 
             // Calculate the bpm from the current list and adjust current bpm
             if (tempoTaps.size() > 1) {
@@ -243,6 +249,10 @@ public class Metronome {
 
             // Alert the user that tap tempo mode has been entered
             Toast.makeText(mActivity, "Tap Tempo Mode has been entered!", Toast.LENGTH_LONG).show();
+
+            // Clear the current tap tempo list and previous time stamp
+            tempoTaps.clear();
+            previousTimestamp = 0;
 
             // Stop and reset the metronome while in tap tempo mode
             stop();
