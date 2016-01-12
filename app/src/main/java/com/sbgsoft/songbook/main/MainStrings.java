@@ -85,4 +85,15 @@ public class MainStrings {
 		chordPro,
 		PDF
 	}
+
+    // How Tos
+    public static final ArrayList<String> howToCreateSet = new ArrayList<String>(
+            Arrays.asList(
+                    "Open the menu, select Sets... -> Create Set",
+                    "Give the set a name",
+                    "Select a date for the set and hit OK",
+                    "Here you can select songs for the set but I find it easier to add them later. When you are done selecting songs (if any) click OK",
+                    "Here you can add the set to a group or groups if you want. When you are done selecting the group(s) click OK")
+
+    );
 }

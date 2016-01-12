@@ -53,6 +53,7 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
@@ -277,7 +278,10 @@ public class MainActivity extends FragmentActivity {
 	        case R.id.menu_backup_import:
 	        	selectImportFile();
 	        	return true;
-	        case R.id.menu_about:
+            case R.id.menu_about_howto:
+                showHowTos();
+                return true;
+	        case R.id.menu_about_about:
 	        	showAboutBox();
 	        	return true;
 	        default:
@@ -603,7 +607,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onPause() {
     	super.onPause();
-    	currentTab = mViewPager.getCurrentItem();
+        currentTab = mViewPager.getCurrentItem();
     }
     
     /**
@@ -612,7 +616,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStart() {
     	super.onStart();
-    	mViewPager.setCurrentItem(currentTab);
+        mViewPager.setCurrentItem(currentTab);
     }
     
     /**
@@ -621,7 +625,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onResume() {
     	super.onResume();
-    	mViewPager.setCurrentItem(currentTab);
+        mViewPager.setCurrentItem(currentTab);
     }
     
     /**
@@ -732,6 +736,74 @@ public class MainActivity extends FragmentActivity {
 		});
 
     	alert.show();
+    }
+
+    /**
+     * Shows the how to instructions
+     */
+    public void showHowTos() {
+        // Create the options array
+        final CharSequence[] options = getResources().getStringArray(R.array.how_tos);
+
+        // Create the options dialog
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("How To What?");
+
+        // Set the items
+        alert.setItems(options, new OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichItem) {
+                StringBuilder message = new StringBuilder();
+                StyleSpan bold = new StyleSpan(Typeface.BOLD_ITALIC);
+                int start, counter = 1;
+
+                // Create the instructions dialog
+                AlertDialog.Builder instrAlert = new AlertDialog.Builder(MainActivity.this);
+                instrAlert.setTitle("How To " + options[whichItem]);
+
+                // Build the instructions to show
+                switch(whichItem) {
+                    case 0:     // Create a set
+                        // Build the how to message string
+                        for (String s : MainStrings.howToCreateSet) {
+                            // Add the step number
+                            start = message.length();
+                            message.append("<i>" + counter + ")</i>");
+
+                            // Add the instruction
+                            message.append(s + MainStrings.EOL);
+
+                            // Increment the counter
+                            counter++;
+                        }
+
+                        break;
+                    case 1:     // Add songs to a set
+                        break;
+                    case 2:     // Import a song
+                        break;
+                    case 3:     // Change the order of songs in a set
+                        break;
+                    case 4:     // Change the key a song uses in a set
+                        break;
+                }
+
+                // Add the instructions to the dialog
+                instrAlert.setMessage(Html.fromHtml(message.toString()));
+
+                // Add an OK button
+                instrAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                // Show the instructions
+                instrAlert.show();
+            }
+        });
+
+        // Show the dialog
+        alert.show();
     }
     //endregion
 
@@ -904,7 +976,7 @@ public class MainActivity extends FragmentActivity {
     
     /**
      * Adds the song to a group
-     * @param songName The song to add
+     * @param setName The song to add
      */
     private void addSetToGroup(final String setName) {
     	// Remember the current scroll position
@@ -1400,7 +1472,6 @@ public class MainActivity extends FragmentActivity {
     /**
      * Emails the set with the songs as attachments
      * @param setItem The set item object
-     * @param setName the set name
      */
     private void shareSet(final SetItem setItem) {
     	// Create the options array
