@@ -199,8 +199,10 @@ public class SetSongFragment extends Fragment {
         mMetronome = new Metronome(getActivity());
 
         // Set the beats per minute
-        if (mSongItem != null)
+        if (mSongItem != null) {
             mMetronome.setBeatsPerMinute(mSongItem.getBpm());
+            mMetronome.setmTimeSignature(new TimeSignature(mSongItem.getTimeSignature()));
+        }
 
         // Initialize the metronome
         LinearLayout metronomeBar = (LinearLayout)mView.findViewById(R.id.metronome_bar);

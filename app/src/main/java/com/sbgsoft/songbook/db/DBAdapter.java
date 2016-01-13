@@ -13,6 +13,7 @@ import android.util.Log;
 import com.sbgsoft.songbook.main.MainStrings;
 import com.sbgsoft.songbook.sets.SetsTab;
 import com.sbgsoft.songbook.songs.SongsTab;
+import com.sbgsoft.songbook.songs.TimeSignature;
 
 public class DBAdapter {
 	
@@ -537,9 +538,9 @@ public class DBAdapter {
 	 */
 	public boolean deleteSong(String songName) {
 		try {
-			mDb.execSQL("DELETE from " + DBStrings.SONGGPLOOKUP_TABLE + " WHERE " + DBStrings.TBLSONGGPLOOKUP_SONG + 
-					" = ( SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " +
-					DBStrings.TBLSONG_NAME + " = '" + songName + "')");
+			mDb.execSQL("DELETE from " + DBStrings.SONGGPLOOKUP_TABLE + " WHERE " + DBStrings.TBLSONGGPLOOKUP_SONG +
+                    " = ( SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " +
+                    DBStrings.TBLSONG_NAME + " = '" + songName + "')");
 			mDb.execSQL("DELETE from " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'");
 		} catch (SQLException e) {
 			return false;
@@ -694,6 +695,26 @@ public class DBAdapter {
             return -1;
         }
     }
+
+    /**
+     * Gets the song time signature
+     * @param songName The song to get the time signature for
+     * @return The song time signature
+     */
+    public TimeSignature getSongTimeSignature(String songName) {
+        try {
+            Cursor c = mDb.rawQuery("SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_TIME + " FROM " + DBStrings.SONGS_TABLE +
+                    " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'", null);
+            c.moveToFirst();
+            String ts = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_TIME));
+            c.close();
+            return new TimeSignature(ts);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        } catch (SQLiteException s) {
+            return null;
+        }
+    }
 	
 	/**
 	 * Updates the song attributes
@@ -701,14 +722,16 @@ public class DBAdapter {
 	 * @param newSongName The updated name of the song
 	 * @param author The song author
 	 * @param key The song key
+     * @param timeSignature The song time signature
 	 * @return
 	 */
-	public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key) {
+	public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature) {
 		try {
 			String query = "UPDATE " + DBStrings.SONGS_TABLE + 
 					" SET " + DBStrings.TBLSONG_NAME + " = '" + newSongName + "', " +
 					DBStrings.TBLSONG_AUTHOR + " = '" + author + "', " + 
-					DBStrings.TBLSONG_KEY + " = '" + key + "' " + 
+					DBStrings.TBLSONG_KEY + " = '" + key + "', " +
+                    DBStrings.TBLSONG_TIME + " = '" + timeSignature + "' " +
 					" WHERE " + DBStrings.TBLSONG_NAME + " = '" + origSongName + "'";
 			mDb.execSQL(query);
 		} catch (SQLException e) {
@@ -724,15 +747,17 @@ public class DBAdapter {
      * @param author The song author
      * @param key The song key
      * @param bpm The song beats per minute
+     * @param timeSignature The song time signature
      * @return
      */
-    public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, int bpm) {
+    public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature, int bpm) {
         try {
             String query = "UPDATE " + DBStrings.SONGS_TABLE +
                     " SET " + DBStrings.TBLSONG_NAME + " = '" + newSongName + "', " +
                     DBStrings.TBLSONG_AUTHOR + " = '" + author + "', " +
                     DBStrings.TBLSONG_KEY + " = '" + key + "', " +
-                    DBStrings.TBLSONG_BPM + " = " + bpm +
+                    DBStrings.TBLSONG_BPM + " = " + bpm + ", " +
+                    DBStrings.TBLSONG_TIME + " = '" + timeSignature + "' " +
                     " WHERE " + DBStrings.TBLSONG_NAME + " = '" + origSongName + "'";
             mDb.execSQL(query);
         } catch (SQLException e) {

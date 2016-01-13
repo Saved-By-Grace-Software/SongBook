@@ -38,5 +38,10 @@
             <item android:id="@+id/menu_backup_import" android:title="@string/menu_backup_import"/>
         </menu>
     </item>
-    <item android:id="@+id/menu_about" android:title="@string/menu_about" android:orderInCategory="6" android:menuCategory="container"></item>
+    <item android:id="@+id/menu_about" android:title="@string/menu_about" android:orderInCategory="6" android:menuCategory="container">
+        <menu>
+            <item android:id="@+id/menu_about_howto" android:title="@string/menu_about_howto"/>
+            <item android:id="@+id/menu_about_about" android:title="@string/menu_about_about"/>
+        </menu>
+    </item>
 </menu>

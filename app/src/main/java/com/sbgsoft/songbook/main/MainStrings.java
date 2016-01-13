@@ -85,4 +85,57 @@ public class MainStrings {
 		chordPro,
 		PDF
 	}
+
+    //region How Tos
+    public static final ArrayList<String> howToCreateSet = new ArrayList<String>(
+            Arrays.asList(
+                    "Open the menu, select Sets... -> Create Set",
+                    "Give the set a name",
+                    "Select a date for the set and hit OK",
+                    "Here you can select songs for the set but I find it easier to add them later. When you are done selecting songs (if any) click OK",
+                    "Here you can add the set to a group or groups if you want. When you are done selecting the group(s) click OK")
+
+    );
+    public static final ArrayList<String> howToAddSongToSet = new ArrayList<String>(
+            Arrays.asList(
+                    "Go to the SETS tab by either clicking or swiping",
+                    "Click on the set you want to add songs to, it will take you to the CURRENT SET tab. This tab will show any songs that are in the set",
+                    "Go to the SONGS tab by either clicking or swiping",
+                    "Find the song you want to add and long-press on it",
+                    "Select \"Add Song To Current Set\"",
+                    "Select OK to confirm",
+                    "Repeate steps 4-7 to continue adding songs until you have added all the songs you want")
+
+    );
+    public static final ArrayList<String> howToImportSong = new ArrayList<String>(
+            Arrays.asList(
+                    "Find the song file in ChordPro format and transfer it to your device",
+                    "Open Songbook, open the menu, select Songs... -> Import Song",
+                    "Browse to the location on your device that you stored the song file",
+                    "Type the song name (this name must be unique, if you already have a song with the same name you will need to choose a different name)",
+                    "Type the artist name (this field is not required)",
+                    "Type the song key (this field is not required but transposing will not work correctly without it)",
+                    "Click OK",
+                    "Here you can add the song to a group or groups if you want. When you are done selecting the group(s) click OK",
+                    "The song is now in your list and can be added to a set using the other instructions")
+
+    );
+    public static final ArrayList<String> howToOrderSongs = new ArrayList<String>(
+            Arrays.asList(
+                    "Go to the SETS tab by either clicking or swiping",
+                    "Long-press on the set and select Reorder Set",
+                    "Drag the songs into the correct order using the drag icons to the left of the song names",
+                    "When the songs are in the order you want, click Save Set")
+
+    );
+    public static final ArrayList<String> howToChangeSetKey = new ArrayList<String>(
+            Arrays.asList(
+                    "Go to the SETS tab by either clicking or swiping",
+                    "Click the set you want to change",
+                    "Long-press on the song you want to change the key for",
+                    "Select Change Song Key For Set",
+                    "Select the key you want to transpose to")
+
+    );
+    //endregion
 }

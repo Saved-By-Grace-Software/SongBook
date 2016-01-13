@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -52,6 +53,7 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
@@ -95,6 +97,7 @@ import com.sbgsoft.songbook.songs.EditSongRawActivity;
 import com.sbgsoft.songbook.songs.SongActivity;
 import com.sbgsoft.songbook.songs.SongGroupArrayAdapter;
 import com.sbgsoft.songbook.songs.SongsTab;
+import com.sbgsoft.songbook.songs.TimeSignature;
 import com.sbgsoft.songbook.views.AutoFitTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
@@ -275,7 +278,10 @@ public class MainActivity extends FragmentActivity {
 	        case R.id.menu_backup_import:
 	        	selectImportFile();
 	        	return true;
-	        case R.id.menu_about:
+            case R.id.menu_about_howto:
+                showHowTos();
+                return true;
+	        case R.id.menu_about_about:
 	        	showAboutBox();
 	        	return true;
 	        default:
@@ -601,7 +607,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onPause() {
     	super.onPause();
-    	currentTab = mViewPager.getCurrentItem();
+        currentTab = mViewPager.getCurrentItem();
     }
     
     /**
@@ -610,7 +616,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStart() {
     	super.onStart();
-    	mViewPager.setCurrentItem(currentTab);
+        mViewPager.setCurrentItem(currentTab);
     }
     
     /**
@@ -619,7 +625,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onResume() {
     	super.onResume();
-    	mViewPager.setCurrentItem(currentTab);
+        mViewPager.setCurrentItem(currentTab);
     }
     
     /**
@@ -730,6 +736,97 @@ public class MainActivity extends FragmentActivity {
 		});
 
     	alert.show();
+    }
+
+    /**
+     * Shows the how to instructions
+     */
+    public void showHowTos() {
+        // Create the options array
+        final CharSequence[] options = getResources().getStringArray(R.array.how_tos);
+
+        // Create the options dialog
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle("How To What?");
+
+        // Set the items
+        alert.setItems(options, new OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichItem) {
+                StringBuilder message = new StringBuilder();
+                ArrayList<String> instructions = new ArrayList<String>();
+                int counter = 1;
+
+                // Create the instructions dialog
+                AlertDialog.Builder instrAlert = new AlertDialog.Builder(MainActivity.this);
+                instrAlert.setTitle("How To " + options[whichItem]);
+
+                // Make the text for instructions small
+                message.append("<small>");
+
+                // Build the instructions to show
+                switch(whichItem) {
+                    case 0:     // Create a set
+                        instructions = MainStrings.howToCreateSet;
+                        break;
+                    case 1:     // Add songs to a set
+                        // Add the special note to the message
+                        message.append("<i>*If you don't have a song in your list already you will need to import it</i><br /><br />");
+                        instructions = MainStrings.howToAddSongToSet;
+                        break;
+                    case 2:     // Import a song
+                        instructions = MainStrings.howToImportSong;
+                        break;
+                    case 3:     // Change the order of songs in a set
+                        instructions = MainStrings.howToOrderSongs;
+                        break;
+                    case 4:     // Change the key a song uses in a set
+                        instructions = MainStrings.howToChangeSetKey;
+                        break;
+                }
+
+                // Build the how to message string
+                for (String i : instructions) {
+                    // Add the step number
+                    message.append(counter + ")  ");
+
+                    // Add the instruction
+                    //message.append("<i>" + i + "</i><br /><br />");
+                    message.append(i + "<br /><br />");
+
+                    // Increment the counter
+                    counter++;
+                }
+
+                // Trim the last line breaks and close the small tag
+                message.delete(message.length() - 12, message.length());
+                message.append("</small>");
+
+                // Add the instructions to the dialog
+                instrAlert.setMessage(Html.fromHtml(message.toString()));
+
+                // Add an OK button
+                instrAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                // Add a back button
+                instrAlert.setNeutralButton("Back", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Show the how to options again
+                        showHowTos();
+                    }
+                });
+
+                // Show the instructions
+                instrAlert.show();
+            }
+        });
+
+        // Show the dialog
+        alert.show();
     }
     //endregion
 
@@ -902,7 +999,7 @@ public class MainActivity extends FragmentActivity {
     
     /**
      * Adds the song to a group
-     * @param songName The song to add
+     * @param setName The song to add
      */
     private void addSetToGroup(final String setName) {
     	// Remember the current scroll position
@@ -1398,7 +1495,6 @@ public class MainActivity extends FragmentActivity {
     /**
      * Emails the set with the songs as attachments
      * @param setItem The set item object
-     * @param setName the set name
      */
     private void shareSet(final SetItem setItem) {
     	// Create the options array
@@ -2265,14 +2361,28 @@ public class MainActivity extends FragmentActivity {
     	final EditText authorET = (EditText)dialoglayout.findViewById(R.id.add_song_author);
     	final EditText keyET = (EditText)dialoglayout.findViewById(R.id.add_song_key);
         final EditText bpmET = (EditText)dialoglayout.findViewById(R.id.add_song_bpm);
+        final Spinner timeSpin = (Spinner)dialoglayout.findViewById(R.id.add_song_time);
     	
     	// Populate the text boxes
     	songNameET.setText(songName);
     	authorET.setText(dbAdapter.getSongAuthor(songName));
     	keyET.setText(dbAdapter.getSongKey(songName));
+
+        // Get the beats per minute and populate
         int bpm = dbAdapter.getSongBpm(songName);
         if (bpm > 0)
             bpmET.setText(Integer.toString(bpm));
+
+        // Get the time signature and select the spinner
+        TimeSignature ts = dbAdapter.getSongTimeSignature(songName);
+        if (ts.noteOneBeat > 0 && ts.beatsPerBar > 0) {
+            String[] timeSigs = getResources().getStringArray(R.array.time_signatures);
+            int loc = Arrays.asList(timeSigs).indexOf(ts.toString());
+            if (loc >= 0 && loc < timeSpin.getCount())
+                timeSpin.setSelection(loc);
+        } else {
+            timeSpin.setSelection(3);
+        }
     	
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
@@ -2303,13 +2413,17 @@ public class MainActivity extends FragmentActivity {
                     bpm = Integer.parseInt(bpmET.getText().toString());
                 } catch (NumberFormatException nfe) { }
 
+                // Update the song in the database
                 if (bpm != -1)
-	    		    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, bpm);
+	    		    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()), bpm);
                 else
-                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key);
+                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()));
 	    		
 	    		// Refresh the song list
 				fillSongsListView();
+
+                // Refresh current set list
+                fillCurrentSetListView();
 				
 				// Close the dialog
 				dialog.dismiss();
