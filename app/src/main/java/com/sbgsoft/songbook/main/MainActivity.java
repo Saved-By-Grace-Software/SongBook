@@ -753,39 +753,53 @@ public class MainActivity extends FragmentActivity {
         alert.setItems(options, new OnClickListener() {
             public void onClick(DialogInterface dialog, int whichItem) {
                 StringBuilder message = new StringBuilder();
-                StyleSpan bold = new StyleSpan(Typeface.BOLD_ITALIC);
-                int start, counter = 1;
+                ArrayList<String> instructions = new ArrayList<String>();
+                int counter = 1;
 
                 // Create the instructions dialog
                 AlertDialog.Builder instrAlert = new AlertDialog.Builder(MainActivity.this);
                 instrAlert.setTitle("How To " + options[whichItem]);
 
+                // Make the text for instructions small
+                message.append("<small>");
+
                 // Build the instructions to show
                 switch(whichItem) {
                     case 0:     // Create a set
-                        // Build the how to message string
-                        for (String s : MainStrings.howToCreateSet) {
-                            // Add the step number
-                            start = message.length();
-                            message.append("<i>" + counter + ")</i>");
-
-                            // Add the instruction
-                            message.append(s + MainStrings.EOL);
-
-                            // Increment the counter
-                            counter++;
-                        }
-
+                        instructions = MainStrings.howToCreateSet;
                         break;
                     case 1:     // Add songs to a set
+                        // Add the special note to the message
+                        message.append("<i>*If you don't have a song in your list already you will need to import it</i><br /><br />");
+                        instructions = MainStrings.howToAddSongToSet;
                         break;
                     case 2:     // Import a song
+                        instructions = MainStrings.howToImportSong;
                         break;
                     case 3:     // Change the order of songs in a set
+                        instructions = MainStrings.howToOrderSongs;
                         break;
                     case 4:     // Change the key a song uses in a set
+                        instructions = MainStrings.howToChangeSetKey;
                         break;
                 }
+
+                // Build the how to message string
+                for (String i : instructions) {
+                    // Add the step number
+                    message.append(counter + ")  ");
+
+                    // Add the instruction
+                    //message.append("<i>" + i + "</i><br /><br />");
+                    message.append(i + "<br /><br />");
+
+                    // Increment the counter
+                    counter++;
+                }
+
+                // Trim the last line breaks and close the small tag
+                message.delete(message.length() - 12, message.length());
+                message.append("</small>");
 
                 // Add the instructions to the dialog
                 instrAlert.setMessage(Html.fromHtml(message.toString()));
@@ -794,6 +808,15 @@ public class MainActivity extends FragmentActivity {
                 instrAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                // Add a back button
+                instrAlert.setNeutralButton("Back", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Show the how to options again
+                        showHowTos();
                     }
                 });
 
