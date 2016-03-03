@@ -46,6 +46,11 @@ public class MainStrings {
 			put("F#m", "F#"); put("Gb", "F#"); put("Gbm", "F#"); put("Gm", "G");
 		}
 	};
+
+    // Permission request codes
+    public final static int PERMISSIONS_BACKUP_IMPORT = 10;
+    public final static int PERMISSIONS_BACKUP_EXPORT = 20;
+    public final static int PERMISSIONS_SONG_IMPORT = 30;
 	
 	// Song Context Menu Keys
 	public static final int EDIT_SONG = 1;

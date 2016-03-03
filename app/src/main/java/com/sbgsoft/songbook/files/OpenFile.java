@@ -152,40 +152,38 @@ public class OpenFile extends ListActivity {
     	path = new ArrayList<String>();
     	File f = new File(dirPath);
     	File[] files = f.listFiles();
- 
-    	// Add directories to the list
-    	if(!dirPath.equals("/"))
-    	{
-    		item.add("./");
-    		path.add("/");
-    		item.add("../");
-    		path.add(f.getParent()); 
-    	}
- 
-    	Arrays.sort(files, filecomparator);
- 
-    	// Add files to the list
-    	for(int i=0; i < files.length; i++)
-    	{
-    		File file = files[i];
-    		int temp = file.getAbsolutePath().lastIndexOf(".");
-    		String extension = file.getAbsolutePath().substring(temp + 1);
-    		
-    		if(!file.isHidden() && file.canRead()){
-    			if(file.isDirectory()){
-    				path.add(file.getPath());
-    				item.add(file.getName() + "/");
-    			}else{
-    				// Only show selected file type
-    	    		if (extensions.contains(extension) || allFiles) {
-    	    			path.add(file.getPath());
-    	    			item.add(file.getName());
-    	    		}
-    			}
-    		} 
-    	}
 
-    	setListAdapter(new FileArrayAdapter(this, item)); 
+        // Add directories to the list
+        if (!dirPath.equals("/")) {
+            item.add("./");
+            path.add("/");
+            item.add("../");
+            path.add(f.getParent());
+        }
+
+        Arrays.sort(files, filecomparator);
+
+        // Add files to the list
+        for (int i = 0; i < files.length; i++) {
+            File file = files[i];
+            int temp = file.getAbsolutePath().lastIndexOf(".");
+            String extension = file.getAbsolutePath().substring(temp + 1);
+
+            if (!file.isHidden() && file.canRead()) {
+                if (file.isDirectory()) {
+                    path.add(file.getPath());
+                    item.add(file.getName() + "/");
+                } else {
+                    // Only show selected file type
+                    if (extensions.contains(extension) || allFiles) {
+                        path.add(file.getPath());
+                        item.add(file.getName());
+                    }
+                }
+            }
+        }
+
+        setListAdapter(new FileArrayAdapter(this, item));
     }
     
     /**

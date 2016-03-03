@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
@@ -30,6 +31,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -44,11 +46,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
@@ -252,7 +256,7 @@ public class MainActivity extends FragmentActivity {
 	        	createSong();
 	        	return true;
 	        case R.id.menu_songs_import:
-	        	importSong();
+                permissionRequiredFunction(MainStrings.PERMISSIONS_SONG_IMPORT);
 	        	return true;
 	        case R.id.menu_song_groups_create:
 	        	createSongGroup();
@@ -273,10 +277,10 @@ public class MainActivity extends FragmentActivity {
 	        	deleteAllSetGroups();
 	        	return true;
 	        case R.id.menu_backup_export:
-	        	selectExportFolder();
+                permissionRequiredFunction(MainStrings.PERMISSIONS_BACKUP_EXPORT);
 	        	return true;
 	        case R.id.menu_backup_import:
-	        	selectImportFile();
+                permissionRequiredFunction(MainStrings.PERMISSIONS_BACKUP_IMPORT);
 	        	return true;
             case R.id.menu_about_howto:
                 showHowTos();
@@ -677,7 +681,26 @@ public class MainActivity extends FragmentActivity {
         Window window = getWindow();
         window.setFormat(PixelFormat.RGBA_8888);
     }
-    
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MainStrings.PERMISSIONS_BACKUP_IMPORT:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    executePermReqFunction(requestCode);
+                } else {
+                    // Permission Denied
+                    Toast.makeText(this, "Must have access to External Storage for this function!", Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+    //endregion
+
+    //region Other Functions
     /**
      * Sets the import file path
      * @param path The path to set it to
@@ -764,7 +787,7 @@ public class MainActivity extends FragmentActivity {
                 message.append("<small>");
 
                 // Build the instructions to show
-                switch(whichItem) {
+                switch (whichItem) {
                     case 0:     // Create a set
                         instructions = MainStrings.howToCreateSet;
                         break;
@@ -827,6 +850,45 @@ public class MainActivity extends FragmentActivity {
 
         // Show the dialog
         alert.show();
+    }
+
+    /**
+     * Checks for and requests access to files
+     */
+    public void permissionRequiredFunction (int permissionRequestType) {
+        // Only request runtime permissions on 23 or higher
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                // Request permissions
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        permissionRequestType);
+
+            } else {
+                // We already have permissions, run the function
+                executePermReqFunction(permissionRequestType);
+            }
+        } else {
+            // Below SDK 23, don't need runtime permissions
+            executePermReqFunction(permissionRequestType);
+        }
+    }
+
+    private void executePermReqFunction (int permissionRequestType) {
+        switch (permissionRequestType) {
+            case MainStrings.PERMISSIONS_BACKUP_IMPORT:
+                selectImportFile();
+                break;
+            case MainStrings.PERMISSIONS_BACKUP_EXPORT:
+                selectExportFolder();
+                break;
+            case MainStrings.PERMISSIONS_SONG_IMPORT:
+                importSong();
+                break;
+            default:
+                break;
+        }
     }
     //endregion
 
