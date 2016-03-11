@@ -2910,6 +2910,9 @@ public class MainActivity extends FragmentActivity {
     			
     			// Refresh current set list
     			fillCurrentSetListView();
+
+                // Refresh sets list
+                fillSetsListView();
     		}
     	});
     	
