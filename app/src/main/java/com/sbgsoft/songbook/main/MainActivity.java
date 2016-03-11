@@ -2487,9 +2487,9 @@ public class MainActivity extends FragmentActivity {
 
                 // Update the song in the database
                 if (bpm != -1)
-	    		    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()), bpm);
+	    		    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()), "", bpm);
                 else
-                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()));
+                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()), "");
 	    		
 	    		// Refresh the song list
 				fillSongsListView();

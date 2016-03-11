@@ -23,6 +23,7 @@ public class DBStrings {
 	public static final String TBLSONG_KEY = "songKey";
     public static final String TBLSONG_BPM = "beatsPerMinute";
     public static final String TBLSONG_TIME = "timeSignature";
+    public static final String TBLSONG_LINK = "songLink";
 	
 	// Song Groups Table
 	public static final String SONGGROUPS_TABLE = "tblSongGroups";

@@ -719,7 +719,7 @@ public class DBAdapter {
      * @param timeSignature The song time signature
 	 * @return
 	 */
-	public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature) {
+	public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature, String songLink) {
 		try {
 			String query = "UPDATE " + DBStrings.SONGS_TABLE + 
 					" SET " + DBStrings.TBLSONG_NAME + " = '" + newSongName + "', " +
@@ -744,7 +744,7 @@ public class DBAdapter {
      * @param timeSignature The song time signature
      * @return
      */
-    public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature, int bpm) {
+    public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature, String songLink, int bpm) {
         try {
             String query = "UPDATE " + DBStrings.SONGS_TABLE +
                     " SET " + DBStrings.TBLSONG_NAME + " = '" + newSongName + "', " +
@@ -1428,6 +1428,7 @@ public class DBAdapter {
     					DBStrings.TBLSONG_KEY + " text, " +
                         DBStrings.TBLSONG_BPM + " int, " +
                         DBStrings.TBLSONG_TIME + " text, " +
+                        DBStrings.TBLSONG_LINK + " text, " +
     					DBStrings.TBLSONG_FILE + " text); " );
     			
     			// Song Group table
@@ -1504,11 +1505,17 @@ public class DBAdapter {
 	    			addSetOrder(db);
     			}
 
-                // Updates from DB version 2 or lower
+                // Updates from DB version 4 or lower
                 if (oldVersion <= 4) {
                     // Add bpm and time signature columns
                     db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_BPM + " int");
                     db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_TIME + " text");
+                }
+
+                // Updates from DB version 5 or lower
+                if (oldVersion <= 5) {
+                    // Add link column to the songs table
+                    db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_LINK + " text");
                 }
     			
     			db.setTransactionSuccessful(); 
