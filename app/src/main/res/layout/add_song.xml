@@ -10,7 +10,9 @@
         android:layout_height="wrap_content"
         android:text="@string/add_song_name"
         android:textSize="20sp"
-        android:paddingTop="5dp" />
+        android:paddingTop="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
 
     <EditText
         android:id="@+id/add_song_name"
@@ -18,7 +20,9 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:maxLines="1"
-        android:textSize="20sp" >
+        android:textSize="20sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
         <requestFocus />
     </EditText>
@@ -28,7 +32,9 @@
         android:layout_height="wrap_content"
         android:text="@string/add_song_author"
         android:textSize="20sp"
-        android:paddingTop="25dp" />
+        android:paddingTop="15dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
 
     <EditText
         android:id="@+id/add_song_author"
@@ -36,12 +42,16 @@
         android:layout_height="wrap_content"
         android:inputType="text"
         android:maxLines="1"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="25dp" >
+        android:paddingTop="15dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,13 +67,34 @@
             android:inputType="text"
         	android:maxLines="1"
         	android:textSize="20sp" />
-
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_song_link"
+        android:textSize="20sp"
+        android:paddingTop="15dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
+
+    <EditText
+        android:id="@+id/add_song_link"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="25dp" >
+        android:paddingTop="15dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -87,15 +118,6 @@
             android:textSize="20sp"
             android:paddingLeft="15dp"/>
 
-        <!--<EditText
-            android:id="@+id/add_song_time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textSize="20sp"/>-->
-
         <Spinner
             android:id="@+id/add_song_time"
             android:layout_width="0dp"
@@ -103,7 +125,6 @@
             android:layout_weight="1"
             android:textSize="20sp"
             android:entries="@array/time_signatures"/>
-
     </LinearLayout>
     
     <TextView
@@ -114,6 +135,8 @@
         android:textStyle="italic"
         android:gravity="center"
         android:paddingTop="25dp"
-        android:paddingBottom="5dp" />
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
 
 </LinearLayout>
