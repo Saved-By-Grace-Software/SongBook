@@ -516,26 +516,10 @@ public class MainActivity extends FragmentActivity {
     		case MainStrings.REORDER_SET:
     			// Get the set selected
     			setName = setsList.get(info.position).getName();
-            	
-            	// Get the set songs
-            	Cursor c = dbAdapter.getSetSongs(setName);
-            	String[] setSongs = new String[c.getCount()];
-            	c.moveToFirst();
-            	int songCounter = 0;
-            	
-            	// Loop through each song in the current set and add it to the array
-            	while(!c.isAfterLast()) {
-            		String song = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
-                	setSongs[songCounter++] = song;
-                	c.moveToNext();
-            	}
-            	c.close();
-            	
-            	// Edit the set
-            	i = new Intent(getBaseContext(), DragNDropListActivity.class);
-            	i.putExtra(MainStrings.SET_SONGS_KEY, setSongs);
-            	i.putExtra(MainStrings.SET_NAME_KEY, setName);
-            	startActivityForResult(i, 1);
+
+                // Trigger reordering of the set
+                reorderSet(setName);
+
             	return true;
     		case MainStrings.EDIT_SET:
     			// Get the set selected
@@ -699,6 +683,7 @@ public class MainActivity extends FragmentActivity {
         }
     }
     //endregion
+
 
     //region Other Functions
     /**
@@ -868,7 +853,7 @@ public class MainActivity extends FragmentActivity {
             } else {
                 // We already have permissions, run the function
                 executePermReqFunction(permissionRequestType);
-            }
+            }/**/
         } else {
             // Below SDK 23, don't need runtime permissions
             executePermReqFunction(permissionRequestType);
@@ -1134,24 +1119,24 @@ public class MainActivity extends FragmentActivity {
     	alert.setMessage("Are you sure you want to remove '" + setName + "' from '" + groupName + "'???");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Remove song from the group
-	    		dbAdapter.removeSetFromGroup(setName, groupName);
-	    		
-	    		// Update set list view
-	    		fillSetsListView();
-	        	
-	        	// Set the current tab
-	        	currentTab = 2;
-			}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Remove song from the group
+                dbAdapter.removeSetFromGroup(setName, groupName);
+
+                // Update set list view
+                fillSetsListView();
+
+                // Set the current tab
+                currentTab = 2;
+            }
+        });
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Set the current tab
-	        	currentTab = 2;
-	    	}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Set the current tab
+                currentTab = 2;
+            }
+        });
 
     	alert.show();
     }
@@ -1409,13 +1394,13 @@ public class MainActivity extends FragmentActivity {
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-            	// Get the set to show
-            	String setName = setsList.get(position).getName();
-            	
-            	// Set the current set and show it
-            	dbAdapter.setCurrentSet(setName);
-            	mViewPager.setCurrentItem(0, true);
-            	fillCurrentSetListView();
+                // Get the set to show
+                String setName = setsList.get(position).getName();
+
+                // Set the current set and show it
+                dbAdapter.setCurrentSet(setName);
+                mViewPager.setCurrentItem(0, true);
+                fillCurrentSetListView();
             }
         });
 
@@ -1456,28 +1441,27 @@ public class MainActivity extends FragmentActivity {
 
     	// Set the OK button
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Get the date and set name
-	    		String newSetName = setNameET.getText().toString();
-	    		String setDate = setDateDP.getYear() + "-" + String.format("%02d", (setDateDP.getMonth() + 1)) + "-" + String.format("%02d", setDateDP.getDayOfMonth());
-	    		
-	    		if (newSetName.length() > 0) {
-	    			dbAdapter.updateSetAttributes(setName, newSetName, setDate);
-	    			
-	    			// Refresh set and current set list
-	    			fillSetsListView();
-		        	fillCurrentSetListView();
-	    		}
-	    		else
-	    			Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
-			}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Get the date and set name
+                String newSetName = setNameET.getText().toString();
+                String setDate = setDateDP.getYear() + "-" + String.format("%02d", (setDateDP.getMonth() + 1)) + "-" + String.format("%02d", setDateDP.getDayOfMonth());
+
+                if (newSetName.length() > 0) {
+                    dbAdapter.updateSetAttributes(setName, newSetName, setDate);
+
+                    // Refresh set and current set list
+                    fillSetsListView();
+                    fillCurrentSetListView();
+                } else
+                    Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
+            }
+        });
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    	    // Canceled.
-	    	}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
 
     	alert.show();
     }
@@ -1609,6 +1593,32 @@ public class MainActivity extends FragmentActivity {
     	});
     	
     	alert.show();
+    }
+
+    /**
+     * Calls the reorder activity for the specified set
+     * @param setName The set to reorder
+     */
+    private void reorderSet(String setName) {
+        // Get the set songs
+        Cursor c = dbAdapter.getSetSongs(setName);
+        String[] setSongs = new String[c.getCount()];
+        c.moveToFirst();
+        int songCounter = 0;
+
+        // Loop through each song in the current set and add it to the array
+        while(!c.isAfterLast()) {
+            String song = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+            setSongs[songCounter++] = song;
+            c.moveToNext();
+        }
+        c.close();
+
+        // Edit the set
+        Intent i = new Intent(getBaseContext(), DragNDropListActivity.class);
+        i.putExtra(MainStrings.SET_SONGS_KEY, setSongs);
+        i.putExtra(MainStrings.SET_NAME_KEY, setName);
+        startActivityForResult(i, 1);
     }
     //endregion
 

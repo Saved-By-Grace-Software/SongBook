@@ -161,28 +161,22 @@ public class DBAdapter {
 	 * @return True if success, False if failure
 	 */
 	public boolean reorderSet(String setName, String[] newOrder) {
-		String song;
-		int order;
+		int order = 0;
 		
 		try {
-            // Delete the songs from the sets lookup table
-            mDb.execSQL("DELETE FROM " + DBStrings.SETLOOKUP_TABLE + " WHERE " + DBStrings.TBLSLOOKUP_SET +
-                    " = (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "')");
+            // Loop through the new order and update the order for each item
+            for(String song : newOrder) {
+                // Increment the order
+                order++;
 
-			// Cycle through the new song list and add them
-			for (int i = 0; i < newOrder.length; i++) {
-				song = newOrder[i];
-				order = i + 1;
-
-                if (song != "") {
-                    mDb.execSQL("INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " +
-                            DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ", " + DBStrings.TBLSLOOKUP_ORDER + ") " +
-                            " VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " +
-                            " (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'), " +
-                            " (SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'), " +
-                            " " + order + " );");
-                }
-			}
+                // Execute the update query for this song
+                String query = "UPDATE " + DBStrings.SETLOOKUP_TABLE + " SET " + DBStrings.TBLSLOOKUP_ORDER + " = " + order + " " +
+                        "WHERE " + DBStrings.TBLSLOOKUP_SET + " = " +
+                        "(SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "') " +
+                        "AND " + DBStrings.TBLSLOOKUP_SONG + " = " +
+                        "(SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "') ";
+                mDb.execSQL(query);
+            }
 		} catch (SQLiteException e) {
 			return false;
 		}
