@@ -57,7 +57,6 @@ import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
@@ -927,7 +926,7 @@ public class MainActivity extends FragmentActivity {
      * Selects the songs for the set
      */
     private void selectSetSongs(final String setName, final String setDate) {
-    	Cursor c = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
+    	Cursor c = dbAdapter.getSongs(SongsTab.ALL_SONGS_LABEL);
     	
     	// Clear the previous song lists
     	addSongsDialogList.clear();
@@ -975,7 +974,7 @@ public class MainActivity extends FragmentActivity {
             	String groupName = (String)songGroupSP.getSelectedItem();
             	
             	// Fill the new songs list
-            	Cursor c = dbAdapter.getSongNames(groupName);
+            	Cursor c = dbAdapter.getSongs(groupName);
             	addSongsDialogList.clear();
             	
             	// Populate the ArrayList
@@ -1145,7 +1144,7 @@ public class MainActivity extends FragmentActivity {
      * Updates the songs for the set
      */
     private void updateSetSongs(final String setName) {
-    	Cursor c = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
+    	Cursor c = dbAdapter.getSongs(SongsTab.ALL_SONGS_LABEL);
     	
     	// Clear the previous song lists
     	addSongsDialogList.clear();
@@ -1194,7 +1193,7 @@ public class MainActivity extends FragmentActivity {
             	String groupName = (String)songGroupSP.getSelectedItem();
             	
             	// Fill the new songs list
-            	Cursor c = dbAdapter.getSongNames(groupName);
+            	Cursor c = dbAdapter.getSongs(groupName);
             	addSongsDialogList.clear();
             	
             	// Populate the ArrayList
@@ -2305,7 +2304,7 @@ public class MainActivity extends FragmentActivity {
      */
     public void setSongsList() {
     	ArrayList<Item> temp = new ArrayList<Item>();
-    	Cursor c = dbAdapter.getSongNames(currentSongGroup);
+    	Cursor c = dbAdapter.getSongs(currentSongGroup);
     	c.moveToFirst();
     	
     	// Populate the ArrayList
@@ -2320,7 +2319,8 @@ public class MainActivity extends FragmentActivity {
             songItem.setFile(c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE)));
             songItem.setBpm(c.getInt(c.getColumnIndex(DBStrings.TBLSONG_BPM)));
             songItem.setTimeSignature(c.getString(c.getColumnIndex(DBStrings.TBLSONG_TIME)));
-    		
+            songItem.setSongLink(c.getString(c.getColumnIndex(DBStrings.TBLSONG_LINK)));
+
         	// Add the song item
         	temp.add(songItem);
         	
@@ -3026,6 +3026,7 @@ public class MainActivity extends FragmentActivity {
             songItem.setBpm(c.getInt(c.getColumnIndex(DBStrings.TBLSONG_BPM)));
             songItem.setTimeSignature(c.getString(c.getColumnIndex(DBStrings.TBLSONG_TIME)));
             songItem.setKey(dbAdapter.getSongKey(c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME))));
+            songItem.setSongLink(c.getString(c.getColumnIndex(DBStrings.TBLSONG_LINK)));
 
             // Add the song item
             currSetList.add(songItem);
@@ -3212,7 +3213,7 @@ public class MainActivity extends FragmentActivity {
      * Shows a dialog to select songs to add to the group
      */
     private void addSongsToGroup(final String groupName) {
-    	Cursor c = dbAdapter.getSongNames(SongsTab.ALL_SONGS_LABEL);
+    	Cursor c = dbAdapter.getSongs(SongsTab.ALL_SONGS_LABEL);
     	
     	// Clear the previous song lists
     	addSongsDialogList.clear();
@@ -3260,7 +3261,7 @@ public class MainActivity extends FragmentActivity {
             	String groupName = (String)songGroupSP.getSelectedItem();
             	
             	// Fill the new songs list
-            	Cursor c = dbAdapter.getSongNames(groupName);
+            	Cursor c = dbAdapter.getSongs(groupName);
             	addSongsDialogList.clear();
             	
             	// Populate the ArrayList

@@ -483,13 +483,14 @@ public class DBAdapter {
 	 * Gets all existing song names
 	 * @return Cursor to the query
 	 */	
-	public Cursor getSongNames(String groupName) {
+	public Cursor getSongs(String groupName) {
 		String query = "";
 		
 		// Check if the group is the all songs group
 		if (groupName.equals(SongsTab.ALL_SONGS_LABEL)) {
 			query = "SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
-					DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + ", " + DBStrings.TBLSONG_BPM + ", " + DBStrings.TBLSONG_TIME +
+					DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + ", " + DBStrings.TBLSONG_BPM + ", " +
+                    DBStrings.TBLSONG_LINK + ", " + DBStrings.TBLSONG_TIME +
 					" FROM " + DBStrings.SONGS_TABLE + " ORDER BY " + DBStrings.TBLSONG_NAME;
 		} else {
 			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " +
@@ -498,6 +499,7 @@ public class DBAdapter {
 					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + ", " +
                     DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_KEY + ", " +
                     DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_BPM + ", " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_LINK + ", " +
                     DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_TIME +
 					" FROM " + DBStrings.SONGS_TABLE + 
 					" INNER JOIN " + DBStrings.SONGGPLOOKUP_TABLE + " ON " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " = " + 
@@ -939,6 +941,7 @@ public class DBAdapter {
 					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + ", " +
                     DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_KEY + ", " +
                     DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_BPM + ", " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_LINK + ", " +
                     DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_TIME +
                     " FROM " + DBStrings.SETLOOKUP_TABLE + ", " + DBStrings.CURRSET_TABLE +
 					" INNER JOIN " + DBStrings.SONGS_TABLE + " ON " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG + 
