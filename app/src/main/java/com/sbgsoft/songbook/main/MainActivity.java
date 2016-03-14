@@ -2432,6 +2432,7 @@ public class MainActivity extends FragmentActivity {
     	final EditText songNameET = (EditText)dialoglayout.findViewById(R.id.add_song_name);
     	final EditText authorET = (EditText)dialoglayout.findViewById(R.id.add_song_author);
     	final EditText keyET = (EditText)dialoglayout.findViewById(R.id.add_song_key);
+        final EditText linkET = (EditText)dialoglayout.findViewById(R.id.add_song_link);
         final EditText bpmET = (EditText)dialoglayout.findViewById(R.id.add_song_bpm);
         final Spinner timeSpin = (Spinner)dialoglayout.findViewById(R.id.add_song_time);
     	
@@ -2439,6 +2440,7 @@ public class MainActivity extends FragmentActivity {
     	songNameET.setText(songName);
     	authorET.setText(dbAdapter.getSongAuthor(songName));
     	keyET.setText(dbAdapter.getSongKey(songName));
+        linkET.setText(dbAdapter.getSongLink(songName));
 
         // Get the beats per minute and populate
         int bpm = dbAdapter.getSongBpm(songName);
@@ -2486,10 +2488,15 @@ public class MainActivity extends FragmentActivity {
                 } catch (NumberFormatException nfe) { }
 
                 // Update the song in the database
-                if (bpm != -1)
-	    		    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()), "", bpm);
-                else
-                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(), authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()), "");
+                if (bpm != -1) {
+                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
+                            authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
+                            linkET.getText().toString(), bpm);
+                } else {
+                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
+                            authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
+                            linkET.getText().toString());
+                }
 	    		
 	    		// Refresh the song list
 				fillSongsListView();
