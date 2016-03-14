@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -75,11 +76,12 @@ public class SongActivity extends Activity {
             	mSongItem.setKey(mSongItem.getKey().toUpperCase(Locale.ENGLISH));
             
             // Set song text
+            song.setMovementMethod(LinkMovementMethod.getInstance());
             song.setText(Html.fromHtml(mSongItem.getText()));
         }
 
         // Initialize the metronome
-        initializeMetronome();
+        //initializeMetronome();
         
         // Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -89,7 +91,9 @@ public class SongActivity extends Activity {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getPointerCount() == 1){
-                    //stuff for 1 pointer
+                    // Bypass single touches
+                    view.getParent().requestDisallowInterceptTouchEvent(true);
+                    return false;
                 }else{ //when 2 pointers are present
                     switch (motionEvent.getAction()) {
                         case MotionEvent.ACTION_DOWN:

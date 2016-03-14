@@ -32,7 +32,8 @@
         <activity
             android:name=".songs.SongActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/title_activity_song" />
+            android:label="@string/title_activity_song" >
+        </activity>
         <activity
             android:name=".sets.SetActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

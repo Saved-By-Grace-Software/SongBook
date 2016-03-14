@@ -483,13 +483,14 @@ public class DBAdapter {
 	 * Gets all existing song names
 	 * @return Cursor to the query
 	 */	
-	public Cursor getSongNames(String groupName) {
+	public Cursor getSongs(String groupName) {
 		String query = "";
 		
 		// Check if the group is the all songs group
 		if (groupName.equals(SongsTab.ALL_SONGS_LABEL)) {
 			query = "SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
-					DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + ", " + DBStrings.TBLSONG_BPM + ", " + DBStrings.TBLSONG_TIME +
+					DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + ", " + DBStrings.TBLSONG_BPM + ", " +
+                    DBStrings.TBLSONG_LINK + ", " + DBStrings.TBLSONG_TIME +
 					" FROM " + DBStrings.SONGS_TABLE + " ORDER BY " + DBStrings.TBLSONG_NAME;
 		} else {
 			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " +
@@ -498,6 +499,7 @@ public class DBAdapter {
 					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + ", " +
                     DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_KEY + ", " +
                     DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_BPM + ", " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_LINK + ", " +
                     DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_TIME +
 					" FROM " + DBStrings.SONGS_TABLE + 
 					" INNER JOIN " + DBStrings.SONGGPLOOKUP_TABLE + " ON " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " = " + 
@@ -709,6 +711,26 @@ public class DBAdapter {
             return null;
         }
     }
+
+    /**
+     * Gets the song link
+     * @param songName The song to get the link for
+     * @return The song link
+     */
+    public String getSongLink(String songName) {
+        try {
+            Cursor c = mDb.rawQuery("SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_LINK + " FROM " + DBStrings.SONGS_TABLE +
+                    " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'", null);
+            c.moveToFirst();
+            String ret = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_LINK));
+            c.close();
+            return ret;
+        } catch (IndexOutOfBoundsException e) {
+            return "";
+        } catch (SQLiteException s) {
+            return "";
+        }
+    }
 	
 	/**
 	 * Updates the song attributes
@@ -719,12 +741,13 @@ public class DBAdapter {
      * @param timeSignature The song time signature
 	 * @return
 	 */
-	public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature) {
+	public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature, String songLink) {
 		try {
 			String query = "UPDATE " + DBStrings.SONGS_TABLE + 
 					" SET " + DBStrings.TBLSONG_NAME + " = '" + newSongName + "', " +
 					DBStrings.TBLSONG_AUTHOR + " = '" + author + "', " + 
 					DBStrings.TBLSONG_KEY + " = '" + key + "', " +
+                    DBStrings.TBLSONG_LINK + " = '" + songLink + "', " +
                     DBStrings.TBLSONG_TIME + " = '" + timeSignature + "' " +
 					" WHERE " + DBStrings.TBLSONG_NAME + " = '" + origSongName + "'";
 			mDb.execSQL(query);
@@ -744,13 +767,14 @@ public class DBAdapter {
      * @param timeSignature The song time signature
      * @return
      */
-    public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature, int bpm) {
+    public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature, String songLink, int bpm) {
         try {
             String query = "UPDATE " + DBStrings.SONGS_TABLE +
                     " SET " + DBStrings.TBLSONG_NAME + " = '" + newSongName + "', " +
                     DBStrings.TBLSONG_AUTHOR + " = '" + author + "', " +
                     DBStrings.TBLSONG_KEY + " = '" + key + "', " +
                     DBStrings.TBLSONG_BPM + " = " + bpm + ", " +
+                    DBStrings.TBLSONG_LINK + " = '" + songLink + "', " +
                     DBStrings.TBLSONG_TIME + " = '" + timeSignature + "' " +
                     " WHERE " + DBStrings.TBLSONG_NAME + " = '" + origSongName + "'";
             mDb.execSQL(query);
@@ -917,6 +941,7 @@ public class DBAdapter {
 					DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_AUTHOR + ", " +
                     DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_KEY + ", " +
                     DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_BPM + ", " +
+                    DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_LINK + ", " +
                     DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_TIME +
                     " FROM " + DBStrings.SETLOOKUP_TABLE + ", " + DBStrings.CURRSET_TABLE +
 					" INNER JOIN " + DBStrings.SONGS_TABLE + " ON " + DBStrings.SETLOOKUP_TABLE + "." + DBStrings.TBLSLOOKUP_SONG + 
@@ -1428,6 +1453,7 @@ public class DBAdapter {
     					DBStrings.TBLSONG_KEY + " text, " +
                         DBStrings.TBLSONG_BPM + " int, " +
                         DBStrings.TBLSONG_TIME + " text, " +
+                        DBStrings.TBLSONG_LINK + " text, " +
     					DBStrings.TBLSONG_FILE + " text); " );
     			
     			// Song Group table
@@ -1504,11 +1530,17 @@ public class DBAdapter {
 	    			addSetOrder(db);
     			}
 
-                // Updates from DB version 2 or lower
+                // Updates from DB version 4 or lower
                 if (oldVersion <= 4) {
                     // Add bpm and time signature columns
                     db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_BPM + " int");
                     db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_TIME + " text");
+                }
+
+                // Updates from DB version 5 or lower
+                if (oldVersion <= 6) {
+                    // Add link column to the songs table
+                    db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_LINK + " text");
                 }
     			
     			db.setTransactionSuccessful(); 

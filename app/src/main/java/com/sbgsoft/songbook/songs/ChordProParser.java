@@ -45,29 +45,40 @@ public class ChordProParser {
     		// Transpose the song
     		transposeSong = true;
     	}
-		
+
+        // Add the song title
 		if (useHtml) {
-			// Add HTML tags to output
-			parsedOutput.append("<html><body>");
-			
-			// Add song title
-			parsedOutput.append("<h2>");
-			parsedOutput.append(songItem.getName());
-			parsedOutput.append(" - ");
-			if (transposeSong)
-				parsedOutput.append(transposeKey);
-			else
-				parsedOutput.append(songItem.getKey());
-			parsedOutput.append("</h2>");
-		} else {
-			parsedOutput.append(songItem.getName());
-			parsedOutput.append(" - ");
-			if (transposeSong)
-				parsedOutput.append(transposeKey);
-			else
-				parsedOutput.append(songItem.getKey());
-		}
+            // Add HTML tags to output
+            parsedOutput.append("<html><body>");
+
+            // Add song title header
+            parsedOutput.append("<b><big>");
+        }
+        parsedOutput.append(songItem.getName());
+        parsedOutput.append(" - ");
+        if (transposeSong)
+            parsedOutput.append(transposeKey);
+        else
+            parsedOutput.append(songItem.getKey());
+        if (useHtml) {
+            // Close song title header
+            parsedOutput.append("</big></b><br />");
+        }
 		parsedOutput.append(lineFeed);
+
+        // Add the song link
+        if (songItem.getSongLink() != null && !songItem.getSongLink().isEmpty()) {
+            if (useHtml) {
+                // Add song title header
+                parsedOutput.append("<a href='");
+            }
+            parsedOutput.append(songItem.getSongLink());
+            if (useHtml) {
+                // Close song title header
+                parsedOutput.append("'>" + songItem.getSongLink() + "</a><br />");
+            }
+            parsedOutput.append(lineFeed);
+        }
 				
     	// Begin reading the file
     	DataInputStream in = new DataInputStream(file);
