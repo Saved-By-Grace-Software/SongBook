@@ -905,6 +905,34 @@ public class DBAdapter {
 		
 		return mDb.rawQuery(query, null);
 	}
+
+    /**
+     * Gets the set order for the specified song and set
+     * @param setName The set
+     * @param songName The song
+     * @return An integer with the set order
+     */
+    public int getSetOrderForSong(String setName, String songName) {
+        int ret;
+
+        try {
+            String query = "SELECT " + DBStrings.TBLSLOOKUP_ORDER +
+            " FROM " + DBStrings.SETLOOKUP_TABLE +
+            " WHERE setID = (SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE setName = '" + setName + "')" +
+            " AND songID = (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE songName = '" + songName + "')";
+
+            Cursor c = mDb.rawQuery(query, null);
+            c.moveToFirst();
+            ret = c.getInt(c.getColumnIndexOrThrow(DBStrings.TBLSLOOKUP_ORDER));
+            c.close();
+        } catch (IndexOutOfBoundsException e) {
+            ret = -1;
+        } catch (SQLiteException s) {
+            ret = -1;
+        }
+
+        return ret;
+    }
 	//endregion
 
 
@@ -1355,6 +1383,54 @@ public class DBAdapter {
 		
 		return output.toString();
 	}
+
+    public String exportSetDBData(String setName) {
+        StringBuilder output = new StringBuilder();
+        try {
+            // Add the set to the export file
+            String setDate = getSetDate(setName);
+
+            // Append the insert statement with a line ending
+            output.append("INSERT INTO " + DBStrings.SETS_TABLE + "(" + DBStrings.TBLSETS_NAME + ", " + DBStrings.TBLSETS_DATE +
+                    ") VALUES ('" + setName + "', '" + setDate + "'); ");
+            output.append(MainStrings.EOL);
+
+            // Add songs to the export file
+            Cursor c = getSetSongs(setName);
+
+            while(c.moveToNext()) {
+                // Get the song properties
+                String songName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+                String songFileName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_FILE));
+                String author = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_AUTHOR));
+                String key = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY));
+                String setKey = getSongKeyForSet(setName, songName);
+                int setOrder = getSetOrderForSong(setName, songName);
+
+                // Append the insert statement with a line ending for adding the song
+                output.append("INSERT INTO " + DBStrings.SONGS_TABLE + "(" + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
+                        DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY +
+                        ") VALUES ('" + songName + "', '" + songFileName + "', '" + author + "', '" + key + "'); ");
+                output.append(MainStrings.EOL);
+
+                // Append the insert statement with a line ending for adding the set lookup
+                output.append("INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + DBStrings.TBLSLOOKUP_SONG + ", " +
+                        DBStrings.TBLSLOOKUP_KEY + ", " + DBStrings.TBLSLOOKUP_ORDER + ") " +
+                        " VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " +
+                        " (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'), " +
+                        "'" + setKey + "', " + setOrder + "); ");
+                output.append(MainStrings.EOL);
+            }
+
+            // Close the cursor
+            c.close();
+        }
+        catch (Exception e) {
+            // Error
+        }
+
+        return output.toString();
+    }
 	
 	/**
 	 * Runs the specified sql statement to import data
@@ -1362,19 +1438,17 @@ public class DBAdapter {
 	 * @return True if success, False if failure
 	 */
 	public boolean importDBData(String sqlQuery) {
-		try {
-			mDb.beginTransaction();
-			String queries[] = sqlQuery.split(System.getProperty("line.separator"));
-			for (String query : queries) {
-				mDb.execSQL(query);
-			}
-			mDb.setTransactionSuccessful();
-		} catch (SQLException e) {
-			// Add default values
-			return false;
-		} finally {
-			mDb.endTransaction();
-		}
+        mDb.beginTransaction();
+        String queries[] = sqlQuery.split(System.getProperty("line.separator"));
+        for (String query : queries) {
+            try {
+                mDb.execSQL(query);
+            } catch (SQLException e) {
+                // Failed this query, move to the next
+            }
+        }
+        mDb.setTransactionSuccessful();
+        mDb.endTransaction();
 		return true;
 	}
 	

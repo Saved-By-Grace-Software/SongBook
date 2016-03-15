@@ -152,6 +152,8 @@ public class MainActivity extends FragmentActivity {
 	private ArrayList<String> addSetsDialogList = new ArrayList<String>();
 	
 	private ProgressDialog progressDialog;
+
+    private SetItem setToExport;
 	//endregion
 
 
@@ -248,6 +250,9 @@ public class MainActivity extends FragmentActivity {
 	        	// Delete all sets and refresh the list view
 	        	deleteAllSets();
 	        	return true;
+            case R.id.menu_sets_import:
+                permissionRequiredFunction(MainStrings.PERMISSIONS_SET_IMPORT);
+                return true;
 	        case R.id.menu_songs_clear:
 	        	deleteAllSongs();
 	        	return true;
@@ -632,13 +637,23 @@ public class MainActivity extends FragmentActivity {
         	// If returning from an import database activity
         	else if (activityType.equals(MainStrings.IMPORT_DB_ACTIVITY)) {
         		String filePath = data.getStringExtra(OpenFile.RESULT_PATH);
-        		importAll(filePath);
+        		importFile(filePath, true, "This will erase all data currently in your database.  Do you want to continue?");
         	}
+            // If returning from an import set activity
+            else if (activityType.equals(MainStrings.IMPORT_SET_ACTIVITY)) {
+                String filePath = data.getStringExtra(OpenFile.RESULT_PATH);
+                importFile(filePath, false, "Are you sure you want to import \"" + filePath + "\"");
+            }
         	// If returning from an export database activity
         	else if (activityType.equals(MainStrings.EXPORT_DB_ACTIVITY)) {
         		String folder = data.getStringExtra(OpenFile.RESULT_PATH);
         		exportAll(folder);
         	}
+            // If returning from an export set activity
+            else if (activityType.equals(MainStrings.EXPORT_SET_ACTIVITY)) {
+                String folder = data.getStringExtra(OpenFile.RESULT_PATH);
+                exportSet(folder);
+            }
         	// If returning from the reorder activity
         	else if (activityType.equals(MainStrings.REORDER_ACTIVITY)) {
         		String[] newOrder = data.getStringArrayExtra(MainStrings.SET_SONGS_KEY);
@@ -685,14 +700,6 @@ public class MainActivity extends FragmentActivity {
 
 
     //region Other Functions
-    /**
-     * Sets the import file path
-     * @param path The path to set it to
-     */
-    public void setImportFilePath(String path) {
-    	importFilePath = path;
-    }
-    
     /**
      * Shows the about box with app information
      */
@@ -859,16 +866,26 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    /**
+     * Executes the specified function now that we have permissions
+     * @param permissionRequestType The switch for which function to execute
+     */
     private void executePermReqFunction (int permissionRequestType) {
         switch (permissionRequestType) {
             case MainStrings.PERMISSIONS_BACKUP_IMPORT:
-                selectImportFile();
+                selectImportFile(MainStrings.IMPORT_DB_ACTIVITY);
                 break;
             case MainStrings.PERMISSIONS_BACKUP_EXPORT:
-                selectExportFolder();
+                selectExportFolder(MainStrings.EXPORT_DB_ACTIVITY);
                 break;
             case MainStrings.PERMISSIONS_SONG_IMPORT:
                 importSong();
+                break;
+            case MainStrings.PERMISSIONS_SET_EXPORT:
+                selectExportFolder(MainStrings.EXPORT_SET_ACTIVITY);
+                break;
+            case MainStrings.PERMISSIONS_SET_IMPORT:
+                selectImportFile(MainStrings.IMPORT_SET_ACTIVITY);
                 break;
             default:
                 break;
@@ -1551,12 +1568,14 @@ public class MainActivity extends FragmentActivity {
 	    			getString(R.string.cmenu_sets_share_email_pdf),
 	    			getString(R.string.cmenu_sets_share_save), 
 	    			getString(R.string.cmenu_sets_share_save_cp),
-	    			getString(R.string.cmenu_sets_share_save_pdf)};
+	    			getString(R.string.cmenu_sets_share_save_pdf),
+                    getString(R.string.cmenu_sets_share_export)};
     	} else {
     		options = new CharSequence[] {getString(R.string.cmenu_sets_share_email), 
 	    			getString(R.string.cmenu_sets_share_email_cp),
 	    			getString(R.string.cmenu_sets_share_save), 
-	    			getString(R.string.cmenu_sets_share_save_cp)};
+	    			getString(R.string.cmenu_sets_share_save_cp),
+                    getString(R.string.cmenu_sets_share_export)};
     	}
 		
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -1588,6 +1607,11 @@ public class MainActivity extends FragmentActivity {
 	    		else if (options[whichItem] == getString(R.string.cmenu_sets_share_save_pdf)) {
 	    			saveSet(setItem, SongFileType.PDF);
 	    		}
+                // Export
+                else if (options[whichItem] == getString(R.string.cmenu_sets_share_export)) {
+                    setToExport = setItem;
+                    permissionRequiredFunction(MainStrings.PERMISSIONS_SET_EXPORT);
+                }
     		}
     	});
     	
@@ -3752,10 +3776,10 @@ public class MainActivity extends FragmentActivity {
     /**
      * Selects the folder to export the backup file to
      */
-    private void selectExportFolder() {
+    private void selectExportFolder(String activityKey) {
     	// Create the open file intent
         Intent intent = new Intent(getBaseContext(), OpenFile.class);
-        intent.putExtra(MainStrings.FILE_ACTIVITY_KEY, MainStrings.EXPORT_DB_ACTIVITY);
+        intent.putExtra(MainStrings.FILE_ACTIVITY_KEY, activityKey);
         intent.putExtra(MainStrings.FILE_ACTIVITY_TYPE_KEY, MainStrings.FILE_ACTIVITY_FOLDER);
         
         // Start the activity
@@ -3774,55 +3798,115 @@ public class MainActivity extends FragmentActivity {
     	alert.setMessage("Are you sure you want to export your data to '" + exportZipLocation + "'?");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Create the db backup sql script
-	        	String exportSQLData = dbAdapter.exportDBData();
-	        	
-	        	try {
-	        		// Store the backup script in the app files folder
-	    	    	FileOutputStream out = openFileOutput(MainStrings.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
-	    	    	out.write(exportSQLData.getBytes());
-	    			out.close(); 
-	    			
-	    			// Get a list of all the files in the app files folder
-		        	String[] files = fileList();
-		        	for(int i = 0; i < files.length; i++) {
-		        		files[i] = getFilesDir() + "/" + files[i];
-		        	}
-		        	
-		        	// Zip the files and save to the external storage
-		        	Compress newZip = new Compress(files, exportZipLocation);
-		        	if (newZip.zip())
-		        		Toast.makeText(getBaseContext(), "Your data has been successfully saved to: " + exportZipLocation, Toast.LENGTH_LONG).show();
-		        	else
-		        		Toast.makeText(getBaseContext(), "There was an error backing up your data. Please try again.", Toast.LENGTH_LONG).show();
-		        	
-		        	// Delete the backup script
-		        	deleteFile(MainStrings.EXPORT_SQL_FILE);
-	        	} catch (Exception e) {
-	        		Toast.makeText(getBaseContext(), "Could not write db file!", Toast.LENGTH_LONG).show();
-	        	}
-	        	
-	        	
-			}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Create the db backup sql script
+                String exportSQLData = dbAdapter.exportDBData();
+
+                try {
+                    // Store the backup script in the app files folder
+                    FileOutputStream out = openFileOutput(MainStrings.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
+                    out.write(exportSQLData.getBytes());
+                    out.close();
+
+                    // Get a list of all the files in the app files folder
+                    String[] files = fileList();
+                    for (int i = 0; i < files.length; i++) {
+                        files[i] = getFilesDir() + "/" + files[i];
+                    }
+
+                    // Zip the files and save to the external storage
+                    Compress newZip = new Compress(files, exportZipLocation);
+                    if (newZip.zip())
+                        Toast.makeText(getBaseContext(), "Your data has been successfully saved to: " + exportZipLocation, Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(getBaseContext(), "There was an error backing up your data. Please try again.", Toast.LENGTH_LONG).show();
+
+                    // Delete the backup script
+                    deleteFile(MainStrings.EXPORT_SQL_FILE);
+                } catch (Exception e) {
+                    Toast.makeText(getBaseContext(), "Could not write db file!", Toast.LENGTH_LONG).show();
+                }
+
+
+            }
+        });
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Canceled, do not import
-	    	}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled, do not import
+            }
+        });
 
     	alert.show();
+    }
+
+    /**
+     * Exports the set stored in setToExport
+     * @param folder The folder to export the set to
+     */
+    private void exportSet(String folder) {
+        // Make sure we have a valid set to export
+        if (setToExport != null) {
+            // Set the export location
+            String filename = setToExport.getName() + ".bak";
+            String exportZipLocation = folder + "/" + filename;
+
+            // Create the db backup sql script
+            String exportSQLData = dbAdapter.exportSetDBData(setToExport.getName());
+
+            try {
+                // Store the backup script in the app files folder
+                FileOutputStream out = openFileOutput(MainStrings.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
+                out.write(exportSQLData.getBytes());
+                out.close();
+
+                // Get a list of all the files in the app files folder
+                String[] allFiles = fileList();
+                ArrayList<String> files = new ArrayList<>();
+                for (int i = 0; i < allFiles.length; i++) {
+                    // Only add the songs that are part of this set
+                    for (SongItem s : setToExport.songs) {
+                        String tmp = s.getName();
+                        if (allFiles[i].contains(tmp)) {
+                            // Song is in the set, add it to the list
+                            files.add(getFilesDir() + "/" + allFiles[i]);
+                        }
+                    }
+                }
+
+                // Add the sql file to the list
+                files.add(getFilesDir() + "/" + MainStrings.EXPORT_SQL_FILE);
+
+                // Zip the files and save to the external storage
+                String[] filesToZip = files.toArray(new String[0]);
+                Compress newZip = new Compress(filesToZip, exportZipLocation);
+                if (newZip.zip()) {
+                    // Alert the user the set has been exported
+                    Toast.makeText(this, "\"" + setToExport.getName() + "\" has been exported to " + exportZipLocation, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "There was an error exporting your set. Please try again.", Toast.LENGTH_LONG).show();
+                }
+
+                // Delete the backup script
+                deleteFile(filename);
+            } catch (Exception e) {
+                Toast.makeText(getBaseContext(), "Could not write export file!", Toast.LENGTH_LONG).show();
+            }
+
+
+
+            // Clear the set to export
+            setToExport = null;
+        }
     }
     
     /**
      * Opens the dialog to select the file to import
      */
-    private void selectImportFile() {
+    private void selectImportFile(String activityKey) {
     	// Create the open file intent
         Intent intent = new Intent(getBaseContext(), OpenFile.class);
-        intent.putExtra(MainStrings.FILE_ACTIVITY_KEY, MainStrings.IMPORT_DB_ACTIVITY);
+        intent.putExtra(MainStrings.FILE_ACTIVITY_KEY, activityKey);
         intent.putExtra(MainStrings.FILE_ACTIVITY_TYPE_KEY, MainStrings.FILE_ACTIVITY_FILE);
         
         // Start the activity
@@ -3831,62 +3915,63 @@ public class MainActivity extends FragmentActivity {
     
     /**
      * Imports songbook files and data from the specified file
-     * @param fileName The compressed file to import
+     * @param filePath The compressed file to import
      */
-    private void importAll(final String filePath) {
+    private void importFile(final String filePath, final boolean clearDB, String warningMessage) {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Import");
-    	alert.setMessage("This will erase all data currently in your database.  Do you want to continue?");
+    	alert.setMessage(warningMessage);
     	
     	final ImportDatabase importDBTask = new ImportDatabase();
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {	  
-	    		// Configure progress dialog
-	    		progressDialog = new ProgressDialog(MainActivity.this);
-	    		progressDialog.setMessage("Importing Data. This may take a few minutes." + System.getProperty("line.separator") + "Please wait...");
-	    		progressDialog.setTitle("Please Wait!");
-				progressDialog.setCancelable(true);
-				progressDialog.setCanceledOnTouchOutside(false);
-				progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", (DialogInterface.OnClickListener)null);
-				
-				progressDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-					
-					@Override
-					public void onShow(DialogInterface dialog) {
-						Button b = progressDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
-						b.setOnClickListener(new View.OnClickListener() {
-							
-							@Override
-							public void onClick(View view) {
-								// Update the progress dialog text
-					    		progressDialog.setMessage("Please wait while we stop the import..." + System.getProperty("line.separator") + "This may take a few minutes.");
-					    		
-					    		// Hide the cancel button
-					    		progressDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.INVISIBLE);
-					    		
-					    		// Cancel the import task
-								importDBTask.cancel(true);
-							}
-						});
-					}
-				});
-				
-	    		
-	    		// Show progress dialog
-				progressDialog.show();
-				
-				// Start the import task
-	    		importDBTask.execute(new String[] { filePath });
-			}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Configure progress dialog
+                progressDialog = new ProgressDialog(MainActivity.this);
+                progressDialog.setMessage("Importing Data. This may take a few minutes." + System.getProperty("line.separator") + "Please wait...");
+                progressDialog.setTitle("Please Wait!");
+                progressDialog.setCancelable(true);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", (DialogInterface.OnClickListener) null);
+
+                progressDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        Button b = progressDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                        b.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View view) {
+                                // Update the progress dialog text
+                                progressDialog.setMessage("Please wait while we stop the import..." + System.getProperty("line.separator") + "This may take a few minutes.");
+
+                                // Hide the cancel button
+                                progressDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.INVISIBLE);
+
+                                // Cancel the import task
+                                importDBTask.cancel(true);
+                            }
+                        });
+                    }
+                });
+
+
+                // Show progress dialog
+                progressDialog.show();
+
+                // Start the import task
+                ImportDBParams params = new ImportDBParams(filePath, clearDB);
+                importDBTask.execute(new ImportDBParams[]{params});
+            }
+        });
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Canceled, do not import
-	    	}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled, do not import
+            }
+        });
 
     	alert.show();
     }
@@ -3899,18 +3984,75 @@ public class MainActivity extends FragmentActivity {
     // * Classes
     // * 
     // *****************************************************************************
-    public class ImportDatabase extends AsyncTask<String, Void, String> {    	
+    public class ImportDBParams {
+
+        public ImportDBParams() {
+            filePath = "";
+            clearDB = false;
+            result = "";
+        }
+
+        public ImportDBParams(String _filepath, boolean _clearDB) {
+            filePath = _filepath;
+            clearDB = _clearDB;
+            result = "";
+        }
+
+        public ImportDBParams(String _filepath, boolean _clearDB, String _result) {
+            filePath = _filepath;
+            clearDB = _clearDB;
+            result = _result;
+        }
+
+        public String getFilePath() {
+            return filePath;
+        }
+
+        public void setFilePath(String filePath) {
+            this.filePath = filePath;
+        }
+
+        public String filePath;
+
+        public boolean getClearDB() {
+            return clearDB;
+        }
+
+        public void setClearDB(boolean clearDB) {
+            this.clearDB = clearDB;
+        }
+
+        public boolean clearDB;
+
+        public String getResult() {
+            return result;
+        }
+
+        public void setResult(String result) {
+            this.result = result;
+        }
+
+        public String result;
+    }
+
+    public class ImportDatabase extends AsyncTask<ImportDBParams, Void, ImportDBParams> {
     	@Override
-    	protected String doInBackground(String... filePath) {  
-    		String ret = "";
+    	protected ImportDBParams doInBackground(ImportDBParams... params) {
+            // Setup return
+            ImportDBParams ret = new ImportDBParams();
+    		ret.setResult("");
+
+            // Get the parameters
+            String filePath = params[0].getFilePath();
+            boolean clearDB = params[0].getClearDB();
     		
     		// Decompress the backup file
     		String unzipFolder = "sbg_unzipped";
         	String unzipLocation = Environment.getExternalStorageDirectory() + "/" + unzipFolder + "/"; 
         	 
-        	Decompress d = new Decompress(filePath[0], unzipLocation); 
+        	Decompress d = new Decompress(filePath, unzipLocation);
         	if (!d.unzip()) {
-        		ret = "There was an error decompressing your backup file. Please try again.";
+                ret.setResult("There was an error decompressing your backup file. Please try again.");
         	}
         	else {
             	// Run the sql script to import songs
@@ -3936,11 +4078,13 @@ public class MainActivity extends FragmentActivity {
                 	}
                 	
                 	// Clear the database and files
-            		dbAdapter.clearDB();
-                	String[] files = fileList();
-                	for(int i = 0; i < files.length; i++) {
-                		deleteFile(files[i]);
-                	}
+                    if (clearDB) {
+                        dbAdapter.clearDB();
+                        String[] files = fileList();
+                        for (int i = 0; i < files.length; i++) {
+                            deleteFile(files[i]);
+                        }
+                    }
                 	
                 	// Check for cancel
                 	if (isCancelled()) {
@@ -3948,7 +4092,11 @@ public class MainActivity extends FragmentActivity {
                 	}
         	        
         	        // Execute the SQL file
-        	        dbAdapter.importDBData(sb.toString());
+        	        if (!dbAdapter.importDBData(sb.toString())) {
+                        // Failed to import the database data properly
+                        ret.setResult("Failed to import the database file. Import aborted.");
+                        return ret;
+                    }
         	        
         	        // Check for cancel
                 	if (isCancelled()) {
@@ -3972,16 +4120,17 @@ public class MainActivity extends FragmentActivity {
                 		}
                 		catch (Exception e) {
                 			// If the song file failed, remove the song from the DB
-                			String songName = child.getName();
-                			songName = songName.substring(0, songName.lastIndexOf("."));
-                			dbAdapter.deleteSong(songName);
-                			
-                			if (ret.equals("")) {
-                				ret = "Import complete, some songs failed: " + songName;
-                			} else {
-                				ret += ", " + songName;
-                			}
-                			
+                            if (clearDB) {
+                                String songName = child.getName();
+                                songName = songName.substring(0, songName.lastIndexOf("."));
+                                dbAdapter.deleteSong(songName);
+
+                                if (ret.equals("")) {
+                                    ret.setResult("Import complete, some songs failed: " + songName);
+                                } else {
+                                    ret.setResult(ret.getResult() + ", " + songName );
+                                }
+                            }
                 		}
                 		
                 		// Check for cancel
@@ -3992,12 +4141,13 @@ public class MainActivity extends FragmentActivity {
             	}
             	catch (Exception e) {
             		// Add the default values back into the db
-            		dbAdapter.addDBDefaults();
-            		
-            		ret = "Could not import database file. Import aborted.";
+                    if (clearDB) {
+                        dbAdapter.addDBDefaults();
+                    }
+                    ret.setResult("Could not import database file. Import aborted.");
             	}
             	
-            	// Delete the unzipped files
+            	// Delete the unzipped temp files
             	File dir = new File(Environment.getExternalStorageDirectory(), unzipFolder);
             	if (dir.isDirectory()) {
             		String filesList[] = dir.list();
@@ -4008,15 +4158,15 @@ public class MainActivity extends FragmentActivity {
         	}
         	
         	// Set return value
-        	if (ret.equals("")) {
-        		ret = "Successfully imported your data!";
+        	if (ret.getResult().equals("")) {
+                ret.setResult("Successfully imported your data!");
         	}
         	
         	return ret;
     	}
     	
     	@Override
-    	protected void onPostExecute(String result) {
+    	protected void onPostExecute(ImportDBParams result) {
     		// Refresh all the lists
     		fillSetGroupsSpinner();
     		fillSongGroupsSpinner();
@@ -4030,20 +4180,22 @@ public class MainActivity extends FragmentActivity {
         	progressDialog.dismiss();
         	
         	// Show success message
-        	Toast.makeText(getBaseContext(), result, Toast.LENGTH_LONG).show();
+        	Toast.makeText(getBaseContext(), result.getResult(), Toast.LENGTH_LONG).show();
     	}
     	
     	@Override
-    	protected void onCancelled(String result) {
+    	protected void onCancelled(ImportDBParams result) {
     		// Clear the database and files
-    		dbAdapter.clearDB();
-        	String[] files = fileList();
-        	for(int i = 0; i < files.length; i++) {
-        		deleteFile(files[i]);
-        	}
-        	
-        	// Add the default values back into the db
-    		dbAdapter.addDBDefaults();
+            if (result.getClearDB()) {
+                dbAdapter.clearDB();
+                String[] files = fileList();
+                for (int i = 0; i < files.length; i++) {
+                    deleteFile(files[i]);
+                }
+
+                // Add the default values back into the db
+                dbAdapter.addDBDefaults();
+            }
     		
     		// Refresh all the lists
     		fillSetGroupsSpinner();

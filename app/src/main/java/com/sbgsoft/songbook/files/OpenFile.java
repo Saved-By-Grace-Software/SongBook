@@ -66,7 +66,7 @@ public class OpenFile extends ListActivity {
         currentDir = root;
         
         // Fill the file type spinner
-        if (activityType.equals(MainStrings.IMPORT_DB_ACTIVITY)) {
+        if (activityType.equals(MainStrings.IMPORT_DB_ACTIVITY) || activityType.equals(MainStrings.IMPORT_SET_ACTIVITY)) {
         	fillDBFileTypeSpinner();
         } else {
         	fillSongFileTypeSpinner();

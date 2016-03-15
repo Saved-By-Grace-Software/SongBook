@@ -1,5 +1,7 @@
 package com.sbgsoft.songbook.main;
 
+import com.sbgsoft.songbook.R;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -23,7 +25,9 @@ public class MainStrings {
 	public static final String REORDER_ACTIVITY = "reorderActivity";
 	public static final String IMPORT_SONG_ACTIVITY = "importSongActivity";
 	public static final String IMPORT_DB_ACTIVITY = "importDBActivity";
+    public static final String IMPORT_SET_ACTIVITY = "importSetActivity";
 	public static final String EXPORT_DB_ACTIVITY = "exportDBActivity";
+    public static final String EXPORT_SET_ACTIVITY = "exportSetActivity";
 	public static final String FILE_ACTIVITY_FILE = "fileActivityFile";
 	public static final String FILE_ACTIVITY_FOLDER = "fileActivityFolder";
 
@@ -51,6 +55,8 @@ public class MainStrings {
     public final static int PERMISSIONS_BACKUP_IMPORT = 10;
     public final static int PERMISSIONS_BACKUP_EXPORT = 20;
     public final static int PERMISSIONS_SONG_IMPORT = 30;
+    public final static int PERMISSIONS_SET_EXPORT = 40;
+    public final static int PERMISSIONS_SET_IMPORT = 50;
 	
 	// Song Context Menu Keys
 	public static final int EDIT_SONG = 1;
