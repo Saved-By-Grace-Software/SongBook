@@ -152,6 +152,8 @@ public class MainActivity extends FragmentActivity {
 	private ArrayList<String> addSetsDialogList = new ArrayList<String>();
 	
 	private ProgressDialog progressDialog;
+
+    private SetItem setToExport;
 	//endregion
 
 
@@ -639,6 +641,11 @@ public class MainActivity extends FragmentActivity {
         		String folder = data.getStringExtra(OpenFile.RESULT_PATH);
         		exportAll(folder);
         	}
+            // If returning from an export set activity
+            else if (activityType.equals(MainStrings.EXPORT_SET_ACTIVITY)) {
+                String folder = data.getStringExtra(OpenFile.RESULT_PATH);
+                exportSet(folder);
+            }
         	// If returning from the reorder activity
         	else if (activityType.equals(MainStrings.REORDER_ACTIVITY)) {
         		String[] newOrder = data.getStringArrayExtra(MainStrings.SET_SONGS_KEY);
@@ -865,10 +872,13 @@ public class MainActivity extends FragmentActivity {
                 selectImportFile();
                 break;
             case MainStrings.PERMISSIONS_BACKUP_EXPORT:
-                selectExportFolder();
+                selectExportFolder(MainStrings.EXPORT_DB_ACTIVITY);
                 break;
             case MainStrings.PERMISSIONS_SONG_IMPORT:
                 importSong();
+                break;
+            case MainStrings.PERMISSIONS_SET_EXPORT:
+                selectExportFolder(MainStrings.EXPORT_SET_ACTIVITY);
                 break;
             default:
                 break;
@@ -1551,12 +1561,14 @@ public class MainActivity extends FragmentActivity {
 	    			getString(R.string.cmenu_sets_share_email_pdf),
 	    			getString(R.string.cmenu_sets_share_save), 
 	    			getString(R.string.cmenu_sets_share_save_cp),
-	    			getString(R.string.cmenu_sets_share_save_pdf)};
+	    			getString(R.string.cmenu_sets_share_save_pdf),
+                    getString(R.string.cmenu_sets_share_export)};
     	} else {
     		options = new CharSequence[] {getString(R.string.cmenu_sets_share_email), 
 	    			getString(R.string.cmenu_sets_share_email_cp),
 	    			getString(R.string.cmenu_sets_share_save), 
-	    			getString(R.string.cmenu_sets_share_save_cp)};
+	    			getString(R.string.cmenu_sets_share_save_cp),
+                    getString(R.string.cmenu_sets_share_export)};
     	}
 		
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -1588,6 +1600,11 @@ public class MainActivity extends FragmentActivity {
 	    		else if (options[whichItem] == getString(R.string.cmenu_sets_share_save_pdf)) {
 	    			saveSet(setItem, SongFileType.PDF);
 	    		}
+                // Export
+                else if (options[whichItem] == getString(R.string.cmenu_sets_share_export)) {
+                    setToExport = setItem;
+                    permissionRequiredFunction(MainStrings.PERMISSIONS_SET_EXPORT);
+                }
     		}
     	});
     	
@@ -3752,10 +3769,10 @@ public class MainActivity extends FragmentActivity {
     /**
      * Selects the folder to export the backup file to
      */
-    private void selectExportFolder() {
+    private void selectExportFolder(String activityKey) {
     	// Create the open file intent
         Intent intent = new Intent(getBaseContext(), OpenFile.class);
-        intent.putExtra(MainStrings.FILE_ACTIVITY_KEY, MainStrings.EXPORT_DB_ACTIVITY);
+        intent.putExtra(MainStrings.FILE_ACTIVITY_KEY, activityKey);
         intent.putExtra(MainStrings.FILE_ACTIVITY_TYPE_KEY, MainStrings.FILE_ACTIVITY_FOLDER);
         
         // Start the activity
@@ -3774,46 +3791,93 @@ public class MainActivity extends FragmentActivity {
     	alert.setMessage("Are you sure you want to export your data to '" + exportZipLocation + "'?");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Create the db backup sql script
-	        	String exportSQLData = dbAdapter.exportDBData();
-	        	
-	        	try {
-	        		// Store the backup script in the app files folder
-	    	    	FileOutputStream out = openFileOutput(MainStrings.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
-	    	    	out.write(exportSQLData.getBytes());
-	    			out.close(); 
-	    			
-	    			// Get a list of all the files in the app files folder
-		        	String[] files = fileList();
-		        	for(int i = 0; i < files.length; i++) {
-		        		files[i] = getFilesDir() + "/" + files[i];
-		        	}
-		        	
-		        	// Zip the files and save to the external storage
-		        	Compress newZip = new Compress(files, exportZipLocation);
-		        	if (newZip.zip())
-		        		Toast.makeText(getBaseContext(), "Your data has been successfully saved to: " + exportZipLocation, Toast.LENGTH_LONG).show();
-		        	else
-		        		Toast.makeText(getBaseContext(), "There was an error backing up your data. Please try again.", Toast.LENGTH_LONG).show();
-		        	
-		        	// Delete the backup script
-		        	deleteFile(MainStrings.EXPORT_SQL_FILE);
-	        	} catch (Exception e) {
-	        		Toast.makeText(getBaseContext(), "Could not write db file!", Toast.LENGTH_LONG).show();
-	        	}
-	        	
-	        	
-			}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Create the db backup sql script
+                String exportSQLData = dbAdapter.exportDBData();
+
+                try {
+                    // Store the backup script in the app files folder
+                    FileOutputStream out = openFileOutput(MainStrings.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
+                    out.write(exportSQLData.getBytes());
+                    out.close();
+
+                    // Get a list of all the files in the app files folder
+                    String[] files = fileList();
+                    for (int i = 0; i < files.length; i++) {
+                        files[i] = getFilesDir() + "/" + files[i];
+                    }
+
+                    // Zip the files and save to the external storage
+                    Compress newZip = new Compress(files, exportZipLocation);
+                    if (newZip.zip())
+                        Toast.makeText(getBaseContext(), "Your data has been successfully saved to: " + exportZipLocation, Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(getBaseContext(), "There was an error backing up your data. Please try again.", Toast.LENGTH_LONG).show();
+
+                    // Delete the backup script
+                    deleteFile(MainStrings.EXPORT_SQL_FILE);
+                } catch (Exception e) {
+                    Toast.makeText(getBaseContext(), "Could not write db file!", Toast.LENGTH_LONG).show();
+                }
+
+
+            }
+        });
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Canceled, do not import
-	    	}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled, do not import
+            }
+        });
 
     	alert.show();
+    }
+
+    private void exportSet(String folder) {
+        // Make sure we have a valid set to export
+        if (setToExport != null) {
+            // Set the export location
+            String filename = setToExport.getName() + ".bak";
+            String exportZipLocation = folder + "/" + filename;
+
+            // Create the db backup sql script
+            String exportSQLData = dbAdapter.exportSetDBData(setToExport.getName());
+
+            try {
+                // Store the backup script in the app files folder
+                FileOutputStream out = openFileOutput(filename, Context.MODE_PRIVATE);
+                out.write(exportSQLData.getBytes());
+                out.close();
+
+//                // Get a list of all the files in the app files folder
+//                String[] files = fileList();
+//                for (int i = 0; i < files.length; i++) {
+//                    files[i] = getFilesDir() + "/" + files[i];
+//                }
+
+                // Add the sql file to the zip
+                String[] files = {getFilesDir() + "/" + filename};
+
+                // Zip the files and save to the external storage
+                Compress newZip = new Compress(files, exportZipLocation);
+                if (newZip.zip()) {
+                    // Alert the user the set has been exported
+                    Toast.makeText(this, "\"" + setToExport.getName() + "\" has been exported to " + exportZipLocation, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getBaseContext(), "There was an error exporting your set. Please try again.", Toast.LENGTH_LONG).show();
+                }
+
+                // Delete the backup script
+                deleteFile(filename);
+            } catch (Exception e) {
+                Toast.makeText(getBaseContext(), "Could not write export file!", Toast.LENGTH_LONG).show();
+            }
+
+
+
+            // Clear the set to export
+            setToExport = null;
+        }
     }
     
     /**
