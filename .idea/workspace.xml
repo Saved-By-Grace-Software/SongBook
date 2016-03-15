@@ -22,11 +22,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b814f9b-14c2-4a07-9dcd-088d3dc0bab9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainStrings.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainStrings.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/files/OpenFile.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/files/OpenFile.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Songbook.iws" />
@@ -57,21 +54,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.087030716">
               <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.36006826">
-              <caret line="4145" column="21" selection-start-line="4145" selection-start-column="21" selection-end-line="4145" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="3907" column="57" selection-start-line="3907" selection-start-column="57" selection-end-line="3907" selection-end-column="57" />
               <folding>
                 <element signature="e#3923#3947#0" expanded="false" />
                 <element signature="docComment;method#onCreate#0;class#MainActivity#0" expanded="false" />
@@ -315,8 +312,8 @@
                 <element signature="docComment;method#exportAll#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#exportAll#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#exportSet#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#exportSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#selectImportFile#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#selectImportFile#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#importFile#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#importFile#0;class#MainActivity#0" expanded="false" />
                 <element signature="e#145426#147491#0" expanded="true" />
@@ -327,6 +324,7 @@
                 <element signature="e#147490#147491#0" expanded="true" />
                 <element signature="e#147534#147715#0" expanded="true" />
                 <element signature="e#147714#147715#0" expanded="true" />
+                <element signature="e#147766#147782#0" expanded="false" />
                 <element signature="class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
                 <element signature="e#148548#148549#0" expanded="true" />
                 <element signature="e#148587#148588#0" expanded="true" />
@@ -340,6 +338,8 @@
                 <element signature="e#149001#149002#0" expanded="true" />
                 <element signature="e#149049#149050#0" expanded="true" />
                 <element signature="e#149093#149094#0" expanded="true" />
+                <element signature="class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#doInBackground#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#onPostExecute#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#onCancelled#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;class#TabListener#0;class#MainActivity#0" expanded="false" />
@@ -378,6 +378,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="OpenFile.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/files/OpenFile.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="68" column="118" selection-start-line="68" selection-start-column="118" selection-end-line="68" selection-end-column="118" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="Decompress.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/zip/Decompress.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -402,7 +412,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainStrings.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="27" column="50" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="50" />
+              <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
               <folding>
                 <element signature="e#2150#2158#0" expanded="true" />
               </folding>
@@ -1996,7 +2006,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/MetronomeList.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/files/OpenFile.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/add_song.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/items/SongItem.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBStrings.java" />
@@ -2004,12 +2013,13 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainStrings.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/files/OpenFile.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       </list>
     </option>
   </component>
@@ -2508,7 +2518,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="86" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/files/OpenFile.java</url>
+          <line>177</line>
+          <properties />
+          <option name="timeStamp" value="87" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="88" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2767,8 +2785,8 @@
             <element signature="docComment;method#exportAll#0;class#MainActivity#0" expanded="false" />
             <element signature="method#exportAll#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#exportSet#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#exportSet#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#selectImportFile#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#selectImportFile#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#importFile#0;class#MainActivity#0" expanded="false" />
             <element signature="method#importFile#0;class#MainActivity#0" expanded="false" />
             <element signature="e#145426#147491#0" expanded="true" />
@@ -2779,6 +2797,7 @@
             <element signature="e#147490#147491#0" expanded="true" />
             <element signature="e#147534#147715#0" expanded="true" />
             <element signature="e#147714#147715#0" expanded="true" />
+            <element signature="e#147766#147782#0" expanded="false" />
             <element signature="class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
             <element signature="e#148548#148549#0" expanded="true" />
             <element signature="e#148587#148588#0" expanded="true" />
@@ -2792,6 +2811,8 @@
             <element signature="e#149001#149002#0" expanded="true" />
             <element signature="e#149049#149050#0" expanded="true" />
             <element signature="e#149093#149094#0" expanded="true" />
+            <element signature="class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#doInBackground#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onPostExecute#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onCancelled#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;class#TabListener#0;class#MainActivity#0" expanded="false" />
@@ -3098,8 +3119,8 @@
             <element signature="docComment;method#exportAll#0;class#MainActivity#0" expanded="false" />
             <element signature="method#exportAll#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#exportSet#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#exportSet#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#selectImportFile#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#selectImportFile#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#importFile#0;class#MainActivity#0" expanded="false" />
             <element signature="method#importFile#0;class#MainActivity#0" expanded="false" />
             <element signature="e#145426#147491#0" expanded="true" />
@@ -3110,6 +3131,7 @@
             <element signature="e#147490#147491#0" expanded="true" />
             <element signature="e#147534#147715#0" expanded="true" />
             <element signature="e#147714#147715#0" expanded="true" />
+            <element signature="e#147766#147782#0" expanded="false" />
             <element signature="class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
             <element signature="e#148548#148549#0" expanded="true" />
             <element signature="e#148587#148588#0" expanded="true" />
@@ -3123,6 +3145,8 @@
             <element signature="e#149001#149002#0" expanded="true" />
             <element signature="e#149049#149050#0" expanded="true" />
             <element signature="e#149093#149094#0" expanded="true" />
+            <element signature="class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#doInBackground#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onPostExecute#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onCancelled#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;class#TabListener#0;class#MainActivity#0" expanded="false" />
@@ -3422,8 +3446,8 @@
             <element signature="docComment;method#exportAll#0;class#MainActivity#0" expanded="false" />
             <element signature="method#exportAll#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#exportSet#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#exportSet#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#selectImportFile#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#selectImportFile#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#importFile#0;class#MainActivity#0" expanded="false" />
             <element signature="method#importFile#0;class#MainActivity#0" expanded="false" />
             <element signature="e#145426#147491#0" expanded="true" />
@@ -3434,6 +3458,7 @@
             <element signature="e#147490#147491#0" expanded="true" />
             <element signature="e#147534#147715#0" expanded="true" />
             <element signature="e#147714#147715#0" expanded="true" />
+            <element signature="e#147766#147782#0" expanded="false" />
             <element signature="class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
             <element signature="e#148548#148549#0" expanded="true" />
             <element signature="e#148587#148588#0" expanded="true" />
@@ -3447,6 +3472,8 @@
             <element signature="e#149001#149002#0" expanded="true" />
             <element signature="e#149049#149050#0" expanded="true" />
             <element signature="e#149093#149094#0" expanded="true" />
+            <element signature="class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#doInBackground#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onPostExecute#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onCancelled#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;class#TabListener#0;class#MainActivity#0" expanded="false" />
@@ -3646,13 +3673,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/files/OpenFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="163" column="0" selection-start-line="163" selection-start-column="0" selection-end-line="163" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_song.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3687,14 +3707,6 @@
       </provider>
       <provider editor-type-id="android-designer">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/ChordProParser.java">
@@ -3934,7 +3946,7 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainStrings.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="27" column="50" selection-start-line="27" selection-start-column="31" selection-end-line="27" selection-end-column="50" />
+          <caret line="30" column="31" selection-start-line="30" selection-start-column="31" selection-end-line="30" selection-end-column="31" />
           <folding>
             <element signature="e#2150#2158#0" expanded="true" />
           </folding>
@@ -3943,8 +3955,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.36006826">
-          <caret line="4145" column="21" selection-start-line="4145" selection-start-column="21" selection-end-line="4145" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3907" column="57" selection-start-line="3907" selection-start-column="57" selection-end-line="3907" selection-end-column="57" />
           <folding>
             <element signature="e#3923#3947#0" expanded="false" />
             <element signature="docComment;method#onCreate#0;class#MainActivity#0" expanded="false" />
@@ -4188,8 +4200,8 @@
             <element signature="docComment;method#exportAll#0;class#MainActivity#0" expanded="false" />
             <element signature="method#exportAll#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#exportSet#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#exportSet#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#selectImportFile#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#selectImportFile#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#importFile#0;class#MainActivity#0" expanded="false" />
             <element signature="method#importFile#0;class#MainActivity#0" expanded="false" />
             <element signature="e#145426#147491#0" expanded="true" />
@@ -4200,6 +4212,7 @@
             <element signature="e#147490#147491#0" expanded="true" />
             <element signature="e#147534#147715#0" expanded="true" />
             <element signature="e#147714#147715#0" expanded="true" />
+            <element signature="e#147766#147782#0" expanded="false" />
             <element signature="class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
             <element signature="e#148548#148549#0" expanded="true" />
             <element signature="e#148587#148588#0" expanded="true" />
@@ -4213,6 +4226,8 @@
             <element signature="e#149001#149002#0" expanded="true" />
             <element signature="e#149049#149050#0" expanded="true" />
             <element signature="e#149093#149094#0" expanded="true" />
+            <element signature="class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#doInBackground#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onPostExecute#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onCancelled#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;class#TabListener#0;class#MainActivity#0" expanded="false" />
@@ -4247,6 +4262,22 @@
             <element signature="method#compare#0;class#SetItemComparableDateReverse#0;class#MainActivity#0" expanded="false" />
             <marker date="1458072558137" expanded="true" signature="142694:143344" placeholder="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/files/OpenFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="68" column="118" selection-start-line="68" selection-start-column="118" selection-end-line="68" selection-end-column="118" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.087030716">
+          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
