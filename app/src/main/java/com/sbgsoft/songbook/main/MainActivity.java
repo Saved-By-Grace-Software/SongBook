@@ -1691,18 +1691,14 @@ public class MainActivity extends FragmentActivity {
 	    			songKey = keyET.getText().toString().substring(0, 1).toUpperCase(Locale.US) + keyET.getText().toString().substring(1).trim();
 	    		else if (keyET.getText().length() > 0)
 	    			songKey = keyET.getText().toString().toUpperCase(Locale.US).trim();
-	    		
+
 	    		// Check for a correct key
-	    		if (songKey.length() > 0) {
-		        	if (!MainStrings.keyMap.containsKey(songKey) && !MainStrings.songKeys.contains(songKey)) {
-		        		Toast.makeText(getBaseContext(), "That is not a valid key!" + 
-		        				MainStrings.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
-		        		return;
-		        	}
-	    		}
-	    		else
-	    			songKey = MainStrings.UNKNOWN;
-	    		
+                if (!isValidKey(songKey)) {
+                    Toast.makeText(getBaseContext(), "That is not a valid key!" +
+                            MainStrings.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
 	    		// Create the song
 	    		if (songName.length() > 0) {
 	    			String songFile = songName + ".txt";
@@ -1728,12 +1724,12 @@ public class MainActivity extends FragmentActivity {
 				    				   out.write(buf, 0, len);
 				    				}
 				    				in.close();
-				    				out.close(); 
+				    				out.close();
 		    					}
 		    				} catch (Exception e) {
 		    					// Delete the song since the file could not be imported
 		    					dbAdapter.deleteSong(songName);
-		    					
+
 		    					// Alert that the song failed
 		    					Toast.makeText(getApplicationContext(), "Could not import file, Song deleted.", Toast.LENGTH_LONG).show();
 		    				}
@@ -1748,16 +1744,16 @@ public class MainActivity extends FragmentActivity {
 		    				} catch (IOException e) {
 		    					// Delete the song since the file could not be imported
 		    					dbAdapter.deleteSong(songName);
-		    					
+
 		    					// Alert that the song failed
 		    					Toast.makeText(getApplicationContext(), "Could not create song file, Song deleted.", Toast.LENGTH_LONG).show();
 		    				}
-		    				
+
 		    			}
-		    			
+
 		    			// Set the current tab
 			        	currentTab = 3;
-			        	
+
 			        	// Add the song to a group
 			        	addSongToGroup(songName);
 		    		}
@@ -1810,26 +1806,26 @@ public class MainActivity extends FragmentActivity {
 
     	alert.setTitle("Add Song to Group");
     	alert.setMultiChoiceItems(groupNames, checkedGroupNames, new DialogInterface.OnMultiChoiceClickListener() {
-			
-			public void onClick(DialogInterface dialog, int which, boolean checked) {
-				checkedGroupNames[which] = checked;
-			}
-		});
+
+            public void onClick(DialogInterface dialog, int which, boolean checked) {
+                checkedGroupNames[which] = checked;
+            }
+        });
     	
     	alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// Add the song to the selected groups
-				for (int i = 0; i < groupNames.length; i++) {
-					if(!groupNames[i].equals("No Group") && checkedGroupNames[i])
-						dbAdapter.addSongToGroup(songName, groupNames[i].toString());
-				}
-				
-				// Refresh song list
-    			fillSongGroupsSpinner();
-			}
-		});
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Add the song to the selected groups
+                for (int i = 0; i < groupNames.length; i++) {
+                    if (!groupNames[i].equals("No Group") && checkedGroupNames[i])
+                        dbAdapter.addSongToGroup(songName, groupNames[i].toString());
+                }
+
+                // Refresh song list
+                fillSongGroupsSpinner();
+            }
+        });
 
     	alert.show();
     }
@@ -2187,23 +2183,23 @@ public class MainActivity extends FragmentActivity {
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-            	// Get the song to show
-            	SongItem song = (SongItem)songsList.get(position);
-				try {
-					FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
-					song.setText(ChordProParser.ParseSongFile(getApplicationContext(), song, song.getKey(), fis, true, false));
-					
-					// Show the song activity
-	            	SongActivity songA = new SongActivity();
-	            	Intent showSong = new Intent(v.getContext(), songA.getClass());
-	            	showSong.putExtra(MainStrings.SONG_ITEM_KEY, (Parcelable)song);
-	                startActivity(showSong);
-	                
-				} catch (FileNotFoundException e) {
-					Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
-				} catch (IOException e) {
-					Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
-				}
+                // Get the song to show
+                SongItem song = (SongItem) songsList.get(position);
+                try {
+                    FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
+                    song.setText(ChordProParser.ParseSongFile(getApplicationContext(), song, song.getKey(), fis, true, false));
+
+                    // Show the song activity
+                    SongActivity songA = new SongActivity();
+                    Intent showSong = new Intent(v.getContext(), songA.getClass());
+                    showSong.putExtra(MainStrings.SONG_ITEM_KEY, (Parcelable) song);
+                    startActivity(showSong);
+
+                } catch (FileNotFoundException e) {
+                    Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+                }
             }
         });
         
@@ -2285,17 +2281,11 @@ public class MainActivity extends FragmentActivity {
 	    			key = key.toUpperCase(Locale.US).trim();
 	    		
 	    		// Check for a correct key
-	    		if (key.length() > 0) {
-		        	if (!MainStrings.keyMap.containsKey(key) && !MainStrings.songKeys.contains(key)) {
-		        		Toast toast = Toast.makeText(getBaseContext(), "That is not a valid key!" + 
-		        				MainStrings.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG);
-		        		toast.setGravity(Gravity.CENTER, 0, 0);
-		        		toast.show();
-		        		return;
-		        	}
-	    		}
-	    		else
-	    			key = MainStrings.UNKNOWN;
+                if (!isValidKey(key)) {
+                    Toast.makeText(getBaseContext(), "That is not a valid key!" +
+                            MainStrings.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 // Check for bpm populated
                 int bpm = -1;
@@ -2810,6 +2800,22 @@ public class MainActivity extends FragmentActivity {
 
     	alert.show();
 	}
+
+    /**
+     * Determines if the specified key is valid
+     * @param songKey The key
+     * @return True if valid, false if invalid
+     */
+    private boolean isValidKey(String songKey) {
+        boolean ret = true;
+
+        // Check for a correct key
+        if (songKey.isEmpty() || (!MainStrings.keyMap.containsKey(songKey) && !MainStrings.songKeys.contains(songKey))) {
+            ret = false;
+        }
+
+        return ret;
+    }
     //endregion
 
 
