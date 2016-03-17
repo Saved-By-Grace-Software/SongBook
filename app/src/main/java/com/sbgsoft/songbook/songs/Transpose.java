@@ -95,7 +95,7 @@ public class Transpose {
      * @return The capo number
      */
     public static int getCapo(String songKey, String transposeKey, int currentCapo) {
-    	int newCapo = 0;
+    	int newCapo;
     	
     	// Get the song key and transpose key locations
     	int songKeyLoc = MainStrings.songKeys_transpose.lastIndexOf(songKey);
@@ -127,13 +127,16 @@ public class Transpose {
      */
     private static int lastIndexOf(String indexKey, int startAt) {
     	int index = 0;
-    	
-    	for (ListIterator<String> it = MainStrings.songKeys_transpose.listIterator(startAt); it.hasPrevious();) {
-    		index = it.previousIndex();
-    		if (it.previous().equals(indexKey)) {
-    			break;
-    		}
-    	}
+
+        // Make sure we are starting within the list
+        if (startAt < MainStrings.songKeys_transpose.size() && startAt > 0) {
+            for (ListIterator<String> it = MainStrings.songKeys_transpose.listIterator(startAt); it.hasPrevious(); ) {
+                index = it.previousIndex();
+                if (it.previous().equals(indexKey)) {
+                    break;
+                }
+            }
+        }
     	
     	return index;
     }

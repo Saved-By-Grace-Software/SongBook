@@ -61,12 +61,11 @@ public class TextFileImporter {
             // Process the intro line
             else if (line.toLowerCase(Locale.US).contains("intro")) {
                 sb.append("{intro:");
-                boolean chordStart = false;
+                boolean chordStart = true;
                 boolean inChord = false;
 
                 // Start after the "Intro:" section
                 int start = line.toLowerCase(Locale.US).indexOf("intro:") + 6;
-                chordStart = true;
 
                 // Escape the chords from the line
                 for (int i = start; i < line.length(); i++) {
@@ -102,6 +101,24 @@ public class TextFileImporter {
                     sb.append("]");
 
                 // End the intro tag
+                sb.append("}");
+            }
+            // Process the capo line
+            else if (line.toLowerCase(Locale.US).contains("capo")) {
+                // Add the beginning of the capo tag
+                sb.append("{capo:");
+
+                Pattern pattern = Pattern.compile("(\\d)");
+                Matcher matcher = pattern.matcher(line.toLowerCase(Locale.US));
+                if(matcher.find()){
+                    // Add the capo number
+                    sb.append(matcher.group());
+                } else {
+                    // Add capo 0
+                    sb.append("0");
+                }
+
+                // End the capo tag
                 sb.append("}");
             }
             else if (!startedSong && line.length() > 0) {
