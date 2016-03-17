@@ -219,6 +219,7 @@ public class TextFileImporter {
                                         // Append an open bracket and the chord
                                         sb.append("[");
                                         sb.append(c);
+                                        chordOffset++;
 
                                         // Cycle forward through the chord characters
                                         for (int j = i + 1; j < chords.length(); j++) {
@@ -230,11 +231,17 @@ public class TextFileImporter {
                                             }
                                             // If the next character is a new chord, start new chord
                                             else if (c >= 65 && c <= 71 && chords.charAt(j - 1) != 47) {
-                                                sb.append("][");
+                                                sb.append("] [");
                                             }
                                             sb.append(c);
+                                            chordOffset++;
                                         }
-                                        sb.append("]");
+                                        sb.append("] ");
+                                    }
+
+                                    // If it is a space, append the space
+                                    else if (c == 32) {
+                                        sb.append(" ");
                                     }
                                 }
                             }
