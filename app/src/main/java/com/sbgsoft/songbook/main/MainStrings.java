@@ -120,12 +120,12 @@ public class MainStrings {
     );
     public static final ArrayList<String> howToImportSong = new ArrayList<String>(
             Arrays.asList(
-                    "Find the song file in ChordPro format and transfer it to your device",
+                    "Find the song file in ChordPro of Text format and transfer it to your device",
                     "Open Songbook, open the menu, select Songs... -> Import Song",
                     "Browse to the location on your device that you stored the song file",
                     "Type the song name (this name must be unique, if you already have a song with the same name you will need to choose a different name)",
                     "Type the artist name (this field is not required)",
-                    "Type the song key (this field is not required but transposing will not work correctly without it)",
+                    "Type the song key",
                     "Click OK",
                     "Here you can add the song to a group or groups if you want. When you are done selecting the group(s) click OK",
                     "The song is now in your list and can be added to a set using the other instructions")
