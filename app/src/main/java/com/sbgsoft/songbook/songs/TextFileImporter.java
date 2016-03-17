@@ -13,6 +13,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by SamIAm on 3/17/2016.
@@ -62,15 +64,15 @@ public class TextFileImporter {
                 boolean chordStart = false;
                 boolean inChord = false;
 
+                // Start after the "Intro:" section
+                int start = line.toLowerCase(Locale.US).indexOf("intro:") + 6;
+                chordStart = true;
+
                 // Escape the chords from the line
-                for (int i = 0; i < line.length(); i++) {
+                for (int i = start; i < line.length(); i++) {
                     char c = line.charAt(i);
 
-                    if (c == ':') {
-                        sb.append(c);
-                        chordStart = true;
-                    }
-                    else if (chordStart && !inChord) {
+                    if (chordStart && !inChord) {
                         if (c >= 65 && c <= 71) {
                             sb.append("[");
                             inChord = true;
@@ -131,10 +133,7 @@ public class TextFileImporter {
                             int len = 0;
 
                             // Set the length for the for loop
-                            //if (lyrics.length() > chords.length())
-                                len = lyrics.length();
-                            //else
-                                //len = chords.length();
+                            len = lyrics.length();
 
                             // Cycle through the characters in the lines
                             for (int i = 0; i < len; i++) {
