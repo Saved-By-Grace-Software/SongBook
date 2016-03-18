@@ -14,12 +14,12 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
 
-        <HorizontalScrollView
-            android:id="@+id/hscroll_view"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:fadeScrollbars="true"
-            android:fillViewport="true" >
+        <!--<HorizontalScrollView-->
+            <!--android:id="@+id/hscroll_view"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:fadeScrollbars="true"-->
+            <!--android:fillViewport="true" >-->
     
             <com.sbgsoft.songbook.views.AutoFitTextView
                 android:id="@+id/song_text"
@@ -34,7 +34,7 @@
                 android:textSize="@dimen/defaultSongTextSize"
                 android:autoLink="web" />
 
-        </HorizontalScrollView>
+        <!--</HorizontalScrollView>-->
 
     </ScrollView>
 
