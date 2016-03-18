@@ -83,33 +83,42 @@ public class SetSongFragment extends Fragment {
         song.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                if (motionEvent.getPointerCount() == 1) {
-                    // Bypass single touches
-                    view.getParent().requestDisallowInterceptTouchEvent(true);
-                    return false;
-                } else { //when 2 pointers are present
-                    switch (motionEvent.getAction()) {
-                        case MotionEvent.ACTION_DOWN:
-                            // Disallow ScrollView to intercept touch events.
-                            view.getParent().requestDisallowInterceptTouchEvent(true);
-                            scaleGestureDetector.onTouchEvent(motionEvent);
-                            break;
-
-                        case MotionEvent.ACTION_MOVE:
-                            // Disallow ScrollView to intercept touch events.
-                            view.getParent().requestDisallowInterceptTouchEvent(true);
-                            scaleGestureDetector.onTouchEvent(motionEvent);
-                            break;
-
-                        case MotionEvent.ACTION_UP:
-                            // Allow ScrollView to intercept touch events.
-                            view.getParent().requestDisallowInterceptTouchEvent(false);
-                            break;
-                    }
-                }
+                scaleGestureDetector.onTouchEvent(motionEvent);
                 return true;
             }
         });
+
+//        // Add the touch listener
+//        song.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//                if (motionEvent.getPointerCount() == 1) {
+//                    // Bypass single touches
+//                    view.getParent().requestDisallowInterceptTouchEvent(true);
+//                    return false;
+//                } else { //when 2 pointers are present
+//                    switch (motionEvent.getAction()) {
+//                        case MotionEvent.ACTION_DOWN:
+//                            // Disallow ScrollView to intercept touch events.
+//                            view.getParent().requestDisallowInterceptTouchEvent(true);
+//                            scaleGestureDetector.onTouchEvent(motionEvent);
+//                            break;
+//
+//                        case MotionEvent.ACTION_MOVE:
+//                            // Disallow ScrollView to intercept touch events.
+//                            view.getParent().requestDisallowInterceptTouchEvent(true);
+//                            scaleGestureDetector.onTouchEvent(motionEvent);
+//                            break;
+//
+//                        case MotionEvent.ACTION_UP:
+//                            // Allow ScrollView to intercept touch events.
+//                            view.getParent().requestDisallowInterceptTouchEvent(false);
+//                            break;
+//                    }
+//                }
+//                return true;
+//            }
+//        });
         
 		return mView;
 	}

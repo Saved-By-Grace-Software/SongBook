@@ -92,7 +92,7 @@ public class SongActivity extends Activity {
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getPointerCount() == 1){
                     // Bypass single touches
-                    view.getParent().requestDisallowInterceptTouchEvent(true);
+                    view.getParent().requestDisallowInterceptTouchEvent(false);
                     return false;
                 }else{ //when 2 pointers are present
                     switch (motionEvent.getAction()) {
