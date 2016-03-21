@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Handler;
-import android.os.SystemClock;
-import android.text.format.Time;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -19,8 +17,8 @@ import android.widget.Toast;
 import com.sbgsoft.songbook.R;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by SamIAm on 12/22/2015.
@@ -70,8 +68,11 @@ public class Metronome {
             Log.d("SONGBOOK", "sleep time = " + sleepTime);
 
             // Start the task
-            mHandler.removeCallbacks(mCallTick);
-            mHandler.postDelayed(mCallTick, sleepTime);
+            //mHandler.removeCallbacks(mCallTick);
+            //mHandler.postDelayed(mCallTick, sleepTime);
+
+            ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+            exec.scheduleAtFixedRate(new MetronomeTimer(mDots), 0, sleepTime, TimeUnit.MILLISECONDS);
 
             // Set the is running trigger
             isRunning = true;
@@ -256,12 +257,12 @@ public class Metronome {
     // Runnable task for ticking the metronome
     private Runnable mCallTick = new Runnable() {
         public void run() {
-            long startTime = SystemClock.elapsedRealtime();
+            //long startTime = SystemClock.elapsedRealtime();
 
             mDots.tick();
 
-            long timeElapsed = SystemClock.elapsedRealtime() - startTime;
-            mHandler.postDelayed(this, sleepTime - timeElapsed - ANDROID_DELAY);
+            //long timeElapsed = SystemClock.elapsedRealtime() - startTime;
+            //mHandler.postDelayed(this, sleepTime - timeElapsed - ANDROID_DELAY);
         }
     };
     //endregion
@@ -324,4 +325,18 @@ public class Metronome {
     GestureDetector gestureDetector
             = new GestureDetector(mActivity, simpleOnGestureListener);
     //endregion
+}
+
+class MetronomeTimer implements Runnable {
+    private MetronomeList mDots;
+
+    public MetronomeTimer(MetronomeList _dots) {
+        mDots = _dots;
+    }
+
+    @Override
+    public void run() {
+        //mDots.tick();
+        Log.d("SONGBOOK", "tick");
+    }
 }

@@ -81,7 +81,7 @@ public class SongActivity extends Activity {
         }
 
         // Initialize the metronome
-        //initializeMetronome();
+        initializeMetronome();
         
         // Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
