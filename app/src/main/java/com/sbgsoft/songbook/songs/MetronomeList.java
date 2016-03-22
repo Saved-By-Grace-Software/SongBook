@@ -58,23 +58,33 @@ public class MetronomeList {
 
             // Check for first tick
             if (firstTick) {
-                currentNode.getData().setImageResource(imageOn);
+                mActivity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        currentNode.getData().setImageResource(imageOn);
+                    }
+                });
                 firstTick = false;
             } else {
                 // Reset the current node
-                currentNode.getData().setImageResource(imageOff);
+                mActivity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        currentNode.getData().setImageResource(imageOff);
+                    }
+                });
 
                 if (currentNode.hasNext()) {
                     // Tick the next node
-                    currentNode.getNext().getData().setImageResource(imageOn);
+                    mActivity.runOnUiThread(new Runnable() {
+                        public void run() {
+                            currentNode.getNext().getData().setImageResource(imageOn);
+                        }
+                    });
 
                     // Update current node to the next node
                     currentNode = currentNode.getNext();
                 }
             }
         }
-
-//        Log.d("SONGBOOK", "tick " + SystemClock.uptimeMillis());
     }
 
     // Appends the specified data to the linked list

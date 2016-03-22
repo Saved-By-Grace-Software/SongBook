@@ -36,8 +36,7 @@ public class Metronome {
     private boolean inTapTempoMode = false;
     private long previousTimestamp = 0;
     private ArrayList<Integer> tempoTaps;
-    private Handler mHandler;
-    private static int ANDROID_DELAY = 10;
+    private ScheduledThreadPoolExecutor exec;
     //endregion
 
     //region Public Class Members
@@ -50,8 +49,7 @@ public class Metronome {
         sleepTime = 0;
         mActivity = _activity;
         mDots = new MetronomeList(mActivity);
-        tempoTaps = new ArrayList<Integer>();
-        mHandler = new Handler();
+        tempoTaps = new ArrayList<>();
     }
     //endregion
 
@@ -68,10 +66,7 @@ public class Metronome {
             Log.d("SONGBOOK", "sleep time = " + sleepTime);
 
             // Start the task
-            //mHandler.removeCallbacks(mCallTick);
-            //mHandler.postDelayed(mCallTick, sleepTime);
-
-            ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+            exec = new ScheduledThreadPoolExecutor(1);
             exec.scheduleAtFixedRate(new MetronomeTimer(mDots), 0, sleepTime, TimeUnit.MILLISECONDS);
 
             // Set the is running trigger
@@ -87,7 +82,7 @@ public class Metronome {
      */
     public void stop() {
         // Remove handler callbacks
-        mHandler.removeCallbacks(mCallTick);
+        exec.shutdown();
 
         // Clear the is running trigger
         isRunning = false;
@@ -253,18 +248,6 @@ public class Metronome {
             mDots.resetToStart();
         }
     }
-
-    // Runnable task for ticking the metronome
-    private Runnable mCallTick = new Runnable() {
-        public void run() {
-            //long startTime = SystemClock.elapsedRealtime();
-
-            mDots.tick();
-
-            //long timeElapsed = SystemClock.elapsedRealtime() - startTime;
-            //mHandler.postDelayed(this, sleepTime - timeElapsed - ANDROID_DELAY);
-        }
-    };
     //endregion
 
     //region Getters & Setters
@@ -336,7 +319,7 @@ class MetronomeTimer implements Runnable {
 
     @Override
     public void run() {
-        //mDots.tick();
-        Log.d("SONGBOOK", "tick");
+        //Log.d("SONGBOOK", "tick");
+        mDots.tick();
     }
 }
