@@ -23,9 +23,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0b814f9b-14c2-4a07-9dcd-088d3dc0bab9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/MetronomeList.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/MetronomeList.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_set_song.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_set_song.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/test/java/MetronomeTest.java" afterPath="$PROJECT_DIR$/app/src/test/java/MetronomeTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Songbook.iws" />
@@ -116,39 +114,44 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Metronome.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Metronome.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="111" column="29" selection-start-line="111" selection-start-column="29" selection-end-line="111" selection-end-column="29" />
+            <state vertical-scroll-proportion="-2.4522185">
+              <caret line="42" column="53" selection-start-line="42" selection-start-column="53" selection-end-line="42" selection-end-column="53" />
               <folding>
                 <element signature="docComment;class#Metronome#0" expanded="false" />
+                <element signature="e#1404#1425#0" expanded="false" />
+                <element signature="method#Metronome#0;class#Metronome#0" expanded="false" />
+                <element signature="method#Metronome#1;class#Metronome#0" expanded="false" />
+                <element signature="method#Metronome#2;class#Metronome#0" expanded="false" />
+                <element signature="e#2355#2380#0" expanded="false" />
                 <element signature="docComment;method#start#0;class#Metronome#0" expanded="false" />
+                <element signature="method#start#0;class#Metronome#0" expanded="false" />
                 <element signature="docComment;method#stop#0;class#Metronome#0" expanded="false" />
+                <element signature="method#stop#0;class#Metronome#0" expanded="false" />
                 <element signature="docComment;method#initialize#0;class#Metronome#0" expanded="false" />
                 <element signature="method#initialize#0;class#Metronome#0" expanded="false" />
-                <element signature="e#4481#4716#0" expanded="true" />
-                <element signature="e#4715#4716#0" expanded="true" />
+                <element signature="e#4570#4805#0" expanded="true" />
+                <element signature="e#4804#4805#0" expanded="true" />
                 <element signature="method#calculateTickDelayFromBPM#0;class#Metronome#0" expanded="false" />
-                <element signature="method#calculateBPMForSleep#0;class#Metronome#0" expanded="false" />
-                <element signature="method#calculateBPMFromTapTempoArray#0;class#Metronome#0" expanded="false" />
-                <element signature="method#touch#0;class#Metronome#0" expanded="false" />
-                <element signature="method#tapTempoMode#0;class#Metronome#0" expanded="false" />
-                <element signature="e#9003#9029#0" expanded="false" />
+                <element signature="e#7450#7451#0" expanded="true" />
+                <element signature="e#7486#7487#0" expanded="true" />
+                <element signature="e#10127#10153#0" expanded="false" />
                 <element signature="method#setImageOn#0;class#Metronome#0" expanded="false" />
                 <element signature="method#setImageOff#0;class#Metronome#0" expanded="false" />
                 <element signature="method#setBeatsPerMinute#0;class#Metronome#0" expanded="false" />
-                <element signature="e#9948#9973#0" expanded="false" />
-                <element signature="method#onSingleTapUp#0;class#10110:10401" expanded="false" />
+                <element signature="e#11072#11097#0" expanded="false" />
+                <element signature="method#onSingleTapUp#0;class#11234:11525" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MetronomeList.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MetronomeList.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/MetronomeList.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5068259">
+            <state vertical-scroll-proportion="0.0">
               <caret line="184" column="37" selection-start-line="184" selection-start-column="37" selection-end-line="184" selection-end-column="37" />
               <folding>
                 <element signature="e#607#636#0" expanded="false" />
@@ -158,6 +161,7 @@
                 <element signature="e#3816#3817#0" expanded="true" />
                 <element signature="e#3896#3897#0" expanded="true" />
                 <element signature="e#3932#3933#0" expanded="true" />
+                <element signature="method#hideAllIcons#0;class#MetronomeList#0" expanded="false" />
                 <element signature="e#5043#5231#0" expanded="true" />
                 <element signature="e#5230#5231#0" expanded="true" />
                 <element signature="e#5376#5565#0" expanded="true" />
@@ -173,7 +177,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/test/java/MetronomeTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="43" column="32" selection-start-line="43" selection-start-column="32" selection-end-line="43" selection-end-column="32" />
+              <caret line="85" column="33" selection-start-line="85" selection-start-column="33" selection-end-line="85" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1868,15 +1872,15 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainStrings.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/TimeSignature.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/StaticVars.java" />
-        <option value="$PROJECT_DIR$/app/src/test/java/MetronomeTest.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_set_song.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/MetronomeList.java" />
+        <option value="$PROJECT_DIR$/app/src/test/java/MetronomeTest.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
       </list>
     </option>
   </component>
@@ -2579,7 +2583,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32984003" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34611288" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34611288" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928848" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2656,7 +2660,7 @@
           <option name="timeStamp" value="98" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="108" />
+      <option name="time" value="109" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -3470,16 +3474,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/test/java/MetronomeTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="43" column="32" selection-start-line="43" selection-start-column="32" selection-end-line="43" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_set_song.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -3499,36 +3493,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
+    <entry file="file://$PROJECT_DIR$/app/src/test/java/MetronomeTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="111" column="29" selection-start-line="111" selection-start-column="29" selection-end-line="111" selection-end-column="29" />
+          <caret line="85" column="33" selection-start-line="85" selection-start-column="33" selection-end-line="85" selection-end-column="33" />
           <folding>
-            <element signature="docComment;class#Metronome#0" expanded="false" />
-            <element signature="docComment;method#start#0;class#Metronome#0" expanded="false" />
-            <element signature="docComment;method#stop#0;class#Metronome#0" expanded="false" />
-            <element signature="docComment;method#initialize#0;class#Metronome#0" expanded="false" />
-            <element signature="method#initialize#0;class#Metronome#0" expanded="false" />
-            <element signature="e#4481#4716#0" expanded="true" />
-            <element signature="e#4715#4716#0" expanded="true" />
-            <element signature="method#calculateTickDelayFromBPM#0;class#Metronome#0" expanded="false" />
-            <element signature="method#calculateBPMForSleep#0;class#Metronome#0" expanded="false" />
-            <element signature="method#calculateBPMFromTapTempoArray#0;class#Metronome#0" expanded="false" />
-            <element signature="method#touch#0;class#Metronome#0" expanded="false" />
-            <element signature="method#tapTempoMode#0;class#Metronome#0" expanded="false" />
-            <element signature="e#9003#9029#0" expanded="false" />
-            <element signature="method#setImageOn#0;class#Metronome#0" expanded="false" />
-            <element signature="method#setImageOff#0;class#Metronome#0" expanded="false" />
-            <element signature="method#setBeatsPerMinute#0;class#Metronome#0" expanded="false" />
-            <element signature="e#9948#9973#0" expanded="false" />
-            <element signature="method#onSingleTapUp#0;class#10110:10401" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/MetronomeList.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5068259">
+        <state vertical-scroll-proportion="0.0">
           <caret line="184" column="37" selection-start-line="184" selection-start-column="37" selection-end-line="184" selection-end-column="37" />
           <folding>
             <element signature="e#607#636#0" expanded="false" />
@@ -3538,12 +3515,45 @@
             <element signature="e#3816#3817#0" expanded="true" />
             <element signature="e#3896#3897#0" expanded="true" />
             <element signature="e#3932#3933#0" expanded="true" />
+            <element signature="method#hideAllIcons#0;class#MetronomeList#0" expanded="false" />
             <element signature="e#5043#5231#0" expanded="true" />
             <element signature="e#5230#5231#0" expanded="true" />
             <element signature="e#5376#5565#0" expanded="true" />
             <element signature="e#5564#5565#0" expanded="true" />
             <element signature="e#6379#6380#0" expanded="true" />
             <element signature="e#6414#6415#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.4522185">
+          <caret line="42" column="53" selection-start-line="42" selection-start-column="53" selection-end-line="42" selection-end-column="53" />
+          <folding>
+            <element signature="docComment;class#Metronome#0" expanded="false" />
+            <element signature="e#1404#1425#0" expanded="false" />
+            <element signature="method#Metronome#0;class#Metronome#0" expanded="false" />
+            <element signature="method#Metronome#1;class#Metronome#0" expanded="false" />
+            <element signature="method#Metronome#2;class#Metronome#0" expanded="false" />
+            <element signature="e#2355#2380#0" expanded="false" />
+            <element signature="docComment;method#start#0;class#Metronome#0" expanded="false" />
+            <element signature="method#start#0;class#Metronome#0" expanded="false" />
+            <element signature="docComment;method#stop#0;class#Metronome#0" expanded="false" />
+            <element signature="method#stop#0;class#Metronome#0" expanded="false" />
+            <element signature="docComment;method#initialize#0;class#Metronome#0" expanded="false" />
+            <element signature="method#initialize#0;class#Metronome#0" expanded="false" />
+            <element signature="e#4570#4805#0" expanded="true" />
+            <element signature="e#4804#4805#0" expanded="true" />
+            <element signature="method#calculateTickDelayFromBPM#0;class#Metronome#0" expanded="false" />
+            <element signature="e#7450#7451#0" expanded="true" />
+            <element signature="e#7486#7487#0" expanded="true" />
+            <element signature="e#10127#10153#0" expanded="false" />
+            <element signature="method#setImageOn#0;class#Metronome#0" expanded="false" />
+            <element signature="method#setImageOff#0;class#Metronome#0" expanded="false" />
+            <element signature="method#setBeatsPerMinute#0;class#Metronome#0" expanded="false" />
+            <element signature="e#11072#11097#0" expanded="false" />
+            <element signature="method#onSingleTapUp#0;class#11234:11525" expanded="false" />
           </folding>
         </state>
       </provider>

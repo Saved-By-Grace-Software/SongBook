@@ -38,7 +38,9 @@ public class Metronome {
     private long previousTimestamp = 0;
     private ArrayList<Integer> tempoTaps;
     private ScheduledThreadPoolExecutor exec;
+    private int currentClick = 0;
     private static int startDelay = 0;
+    private static int maxTapTempoTapsToRemember = 12;
     //endregion
 
     //region Public Class Members
@@ -165,13 +167,14 @@ public class Metronome {
 
         if (tSig != null) {
             // Determine sleep time in milliseconds for major beats
-            delTime = (60 / (float) bpm) * 1000;
+            delTime = 60000 / (float) bpm;
 
             // If we are in compound time, calculate for ticks
             switch (tSig.noteOneBeat) {
                 case 8:
-                    // Divide by 3 for the tick time
-                    delTime = delTime / 3;
+                    // Divide by 3 for the tick time if top number is multiple of 3
+                    if (tSig.beatsPerBar % 3 == 0)
+                        delTime = delTime / 3;
                     break;
                 case 4:
                 default:
@@ -187,11 +190,30 @@ public class Metronome {
     }
 
     // Calculates the beats per minute from the sleep time
-    public int calculateBPMForSleep(int sleep) {
-        int ret;
+    public int calculateBPMFromTickDelay(int _tickDelay, TimeSignature tSig) {
+        int ret = -1;
+        float bpm = -1;
 
-        // Determine bpm from milliseconds
-        ret = 60000 / sleep;
+        if (tSig != null) {
+            // Determine our time signature
+            switch (tSig.noteOneBeat) {
+                case 4:
+                    // Determine bpm from milliseconds
+                    bpm = 60000 / (float) _tickDelay;
+                    break;
+                case 8:
+                    // Determine bpm from milliseconds
+                    if (tSig.beatsPerBar % 3 == 0)
+                        bpm = 60000 / ((float) _tickDelay * 3);
+                    break;
+                default:
+                    break;
+            }
+
+            // Convert the calculation to an integer
+            if (bpm > 0)
+                ret = Math.round(bpm);
+        }
 
         return ret;
     }
@@ -211,8 +233,10 @@ public class Metronome {
             }
             avgGap = (avgGap / tempoTaps.size());
 
+            //Log.d("SONGBOOK", "AvgGap = " + avgGap);
+
             // Calculate the BPM from the gap time
-            bpm = calculateBPMForSleep(avgGap);
+            bpm = calculateBPMFromTickDelay(avgGap, mTimeSignature);
         }
 
         return bpm;
@@ -242,7 +266,7 @@ public class Metronome {
             long currTime = System.currentTimeMillis();
 
             // Check to see if we need to roll the array
-            if (tempoTaps.size() > 10) {
+            if (tempoTaps.size() > maxTapTempoTapsToRemember) {
                 // Reached size limit, remove first and then add
                 tempoTaps.remove(0);
             }
@@ -251,14 +275,15 @@ public class Metronome {
             if (previousTimestamp > 0) {
                 int diff = (int)(currTime - previousTimestamp);
                 tempoTaps.add(diff);
-                Log.d("SONGBOOK", "   Added Gap: " + diff);
+                //Log.d("SONGBOOK", "   Added Gap: " + diff);
             }
             previousTimestamp = currTime;
 
-            // Calculate the bpm from the current list and adjust current bpm
-            if (tempoTaps.size() > 1) {
-                setBeatsPerMinute(calculateBPMFromTapTempoArray());
-                Log.d("SONGBOOK", "New BPM: " + mBeatsPerMinute);
+            // Determine if we should show the new tempo
+            currentClick++;
+            if (currentClick % 5 == 0) {
+                // Show the current tempo every 5 clicks
+                Toast.makeText(mActivity, "Tempo: " + calculateBPMFromTapTempoArray(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -269,6 +294,9 @@ public class Metronome {
         if (inTapTempoMode) {
             // Turn off tap tempo mode
             inTapTempoMode = false;
+
+            // Calculate the new tempo
+            mBeatsPerMinute = calculateBPMFromTapTempoArray();
 
             // Alert the user of the new bpm
             Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute, Toast.LENGTH_LONG).show();
@@ -286,6 +314,7 @@ public class Metronome {
             // Clear the current tap tempo list and previous time stamp
             tempoTaps.clear();
             previousTimestamp = 0;
+            currentClick = 0;
 
             // Stop and reset the metronome while in tap tempo mode
             stop();
