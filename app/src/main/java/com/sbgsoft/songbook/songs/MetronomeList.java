@@ -43,55 +43,39 @@ public class MetronomeList {
     public void tick() {
         // Special case with only a single dot
         if (size == 1) {
-            // Turn the image on
-            mActivity.runOnUiThread(new Runnable() {
-                public void run() {
-                    currentNode.getData().setImageDrawable(imageOn);
-                }
-            });
+            // Tick the current node
+            tickNode(currentNode);
 
             // Wait for 100ms
             try {
                 Thread.sleep(150);
             } catch (InterruptedException ie) { }
 
-            // Turn the image back off
-            mActivity.runOnUiThread(new Runnable() {
-                public void run() {
-                    currentNode.getData().setImageDrawable(imageOff);
-                }
-            });
+            // Untick the current node
+            untickNode(currentNode);
         }
         // Multiple dots to tick
         else if (size > 1) {
 
             // Check for first tick
             if (firstTick) {
-                mActivity.runOnUiThread(new Runnable() {
-                    public void run() {
-                        currentNode.getData().setImageDrawable(imageOn);
-                    }
-                });
+                // Make sure we are at the start
+                currentNode = start;
+
+                // Tick the first node
+                tickNode(currentNode);
+
+                // Reset first tick
                 firstTick = false;
             } else {
-                // Reset the current node
-                mActivity.runOnUiThread(new Runnable() {
-                    public void run() {
-                        currentNode.getData().setImageDrawable(imageOff);
-                    }
-                });
+                // Untick the current node
+                untickNode(currentNode);
 
-                if (currentNode.hasNext()) {
-                    // Tick the next node
-                    mActivity.runOnUiThread(new Runnable() {
-                        public void run() {
-                            currentNode.getNext().getData().setImageDrawable(imageOn);
-                        }
-                    });
+                // Move to the next node
+                currentNode = currentNode.getNext();
 
-                    // Update current node to the next node
-                    currentNode = currentNode.getNext();
-                }
+                // Tick the current node
+                tickNode(currentNode);
             }
         }
     }
@@ -190,40 +174,44 @@ public class MetronomeList {
 
     // Resets the current node back to the start
     public void resetToStart() {
-        // Set the current node back to the start
-        currentNode = start;
+        if (start != null) {
+            // Set the current node back to the start
+            currentNode = start;
 
-        // Set the start image to off if we only have one dot
-        if (size == 1) {
-            // Set the start image on
+            // Reset first tick
+            firstTick = true;
+            untickNode(start);
+
+            // Untick all of the dots
+            MetronomeNode curr = start.getNext();
+            while (curr != null && curr != start) {
+                untickNode(curr);
+                curr = curr.getNext();
+            }
+        }
+    }
+    //endregion
+
+    //region Private Functions
+    private void tickNode(final MetronomeNode node) {
+        if (mActivity != null) {
             mActivity.runOnUiThread(new Runnable() {
                 public void run() {
-                    start.getData().setImageDrawable(imageOff);
+                    if (node != null)
+                        node.getData().setImageDrawable(imageOn);
                 }
             });
-        } else {
-            if (start != null) {
-                // Set the start image on
-                mActivity.runOnUiThread(new Runnable() {
-                    public void run() {
-                        start.getData().setImageDrawable(imageOn);
-                    }
-                });
+        }
+    }
 
-                // Loop through the rest of the dots and set them off
-                mActivity.runOnUiThread(new Runnable() {
-                    public void run() {
-                        MetronomeNode curr = start.getNext();
-                        while (curr != null && curr != start) {
-                            // Set the image off
-                            curr.getData().setImageDrawable(imageOff);
-
-                            // Go to the next icon
-                            curr = curr.getNext();
-                        }
-                    }
-                });
-            }
+    private void untickNode(final MetronomeNode node) {
+        if (mActivity != null) {
+            mActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    if (node != null)
+                        node.getData().setImageDrawable(imageOff);
+                }
+            });
         }
     }
     //endregion

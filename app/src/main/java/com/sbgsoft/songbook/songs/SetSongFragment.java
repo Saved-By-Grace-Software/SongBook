@@ -71,7 +71,7 @@ public class SetSongFragment extends Fragment {
         }
 
         // Resize metronome bar icons
-        //initializeMetronome();
+        initializeMetronome();
 
         // Add the touch listener
         song.setOnTouchListener(new View.OnTouchListener() {

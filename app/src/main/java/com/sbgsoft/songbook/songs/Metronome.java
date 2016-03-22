@@ -38,6 +38,7 @@ public class Metronome {
     private long previousTimestamp = 0;
     private ArrayList<Integer> tempoTaps;
     private ScheduledThreadPoolExecutor exec;
+    private static int startDelay = 0;
     //endregion
 
     //region Public Class Members
@@ -87,11 +88,9 @@ public class Metronome {
             // Restart the metronome list to the start
             mDots.resetToStart();
 
-            Log.d("SONGBOOK", "sleep time = " + tickDelay);
-
             // Start the task
             exec = new ScheduledThreadPoolExecutor(1);
-            exec.scheduleAtFixedRate(new MetronomeTimer(mDots), 0, tickDelay, TimeUnit.MILLISECONDS);
+            exec.scheduleAtFixedRate(new MetronomeTimer(mDots), startDelay, tickDelay, TimeUnit.MILLISECONDS);
 
             // Set the is running trigger
             isRunning = true;
@@ -105,9 +104,12 @@ public class Metronome {
      * Stops the metronome clicking
      */
     public void stop() {
-        // Remove handler callbacks
+        // Stop the thread execution
         if (exec != null && !exec.isShutdown())
             exec.shutdown();
+
+        // Reset the dots
+        mDots.resetToStart();
 
         // Clear the is running trigger
         isRunning = false;
