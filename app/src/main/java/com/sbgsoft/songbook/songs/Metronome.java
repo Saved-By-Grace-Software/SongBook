@@ -102,6 +102,18 @@ public class Metronome {
         }
     }
 
+    public void start(int _startDelay) {
+        // Set the new start delay
+        int tmp = startDelay;
+        startDelay = _startDelay;
+
+        // Start the metronome
+        start();
+
+        // Reset the start delay so subsequent starts are not delayed
+        startDelay = tmp;
+    }
+
     /**
      * Stops the metronome clicking
      */
@@ -296,7 +308,7 @@ public class Metronome {
             inTapTempoMode = false;
 
             // Calculate the new tempo
-            mBeatsPerMinute = calculateBPMFromTapTempoArray();
+            setBeatsPerMinute(calculateBPMFromTapTempoArray());
 
             // Alert the user of the new bpm
             Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute, Toast.LENGTH_LONG).show();

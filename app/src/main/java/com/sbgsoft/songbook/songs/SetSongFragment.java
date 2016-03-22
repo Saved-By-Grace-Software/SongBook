@@ -112,11 +112,11 @@ public class SetSongFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        // Start the metronome
+        // Start the metronome with an initial 2 second delay
         if (mMetronome == null) {
             initializeMetronome();
         }
-        mMetronome.start();
+        mMetronome.start(2000);
     }
 
     @Override

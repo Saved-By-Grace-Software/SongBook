@@ -126,11 +126,11 @@ public class SongActivity extends Activity {
     	// Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        // Start the metronome
+        // Start the metronome with an initial 2 second delay
         if (mMetronome == null) {
             initializeMetronome();
         }
-        mMetronome.start();
+        mMetronome.start(2000);
     }
     
     @Override
