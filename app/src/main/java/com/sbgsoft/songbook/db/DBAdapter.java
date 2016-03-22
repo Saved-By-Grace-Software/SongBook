@@ -731,31 +731,6 @@ public class DBAdapter {
             return "";
         }
     }
-	
-	/**
-	 * Updates the song attributes
-	 * @param origSongName The current name of the song
-	 * @param newSongName The updated name of the song
-	 * @param author The song author
-	 * @param key The song key
-     * @param timeSignature The song time signature
-	 * @return
-	 */
-	public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature, String songLink) {
-		try {
-			String query = "UPDATE " + DBStrings.SONGS_TABLE + 
-					" SET " + DBStrings.TBLSONG_NAME + " = '" + newSongName + "', " +
-					DBStrings.TBLSONG_AUTHOR + " = '" + author + "', " + 
-					DBStrings.TBLSONG_KEY + " = '" + key + "', " +
-                    DBStrings.TBLSONG_LINK + " = '" + songLink + "', " +
-                    DBStrings.TBLSONG_TIME + " = '" + timeSignature + "' " +
-					" WHERE " + DBStrings.TBLSONG_NAME + " = '" + origSongName + "'";
-			mDb.execSQL(query);
-		} catch (SQLException e) {
-			return false;
-		}
-		return true;
-	}
 
     /**
      * Updates the song attributes

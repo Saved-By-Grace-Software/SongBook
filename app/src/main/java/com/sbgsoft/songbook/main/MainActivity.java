@@ -2286,21 +2286,15 @@ public class MainActivity extends FragmentActivity {
                 }
 
                 // Check for bpm populated
-                int bpm = -1;
+                int bpm = 0;
                 try {
                     bpm = Integer.parseInt(bpmET.getText().toString());
-                } catch (NumberFormatException nfe) { }
+                } catch (NumberFormatException nfe) {  }
 
                 // Update the song in the database
-                if (bpm != -1) {
-                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
-                            authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
-                            linkET.getText().toString(), bpm);
-                } else {
-                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
-                            authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
-                            linkET.getText().toString());
-                }
+                dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
+                    authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
+                    linkET.getText().toString(), bpm);
 	    		
 	    		// Refresh the song list
 				fillSongsListView();
