@@ -3,7 +3,9 @@ package com.sbgsoft.songbook.songs;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -29,8 +31,10 @@ public class Metronome {
     private Activity mActivity;
     private int mBeatsPerMinute;
     private TimeSignature mTimeSignature;
-    private int imageOn = -1;
-    private int imageOff = -1;
+//    private int imageOn = -1;
+//    private int imageOff = -1;
+    private Drawable imageOn;
+    private Drawable imageOff;
     private int sleepTime;
     private boolean isRunning = false;
     private boolean inTapTempoMode = false;
@@ -101,13 +105,13 @@ public class Metronome {
         int width = size.x;
 
         // Set the on and off images for the metronome
-        setImageOn(R.drawable.filled);
-        setImageOff(R.drawable.open);
+        setImageOn(ContextCompat.getDrawable(mActivity, R.drawable.filled));
+        setImageOff(ContextCompat.getDrawable(mActivity, R.drawable.open));
 
         // Add the dots for the metronome, based on time signature
         for (int i = 0; i < mTimeSignature.beatsPerBar; i++) {
             ImageView icon = new ImageView(mActivity);
-            icon.setImageResource(imageOff);
+            icon.setImageDrawable(imageOff);
             icon.setLayoutParams(new LinearLayout.LayoutParams(
                     (int) (height * 0.08),
                     (int) (width * 0.1)));
@@ -252,7 +256,7 @@ public class Metronome {
 
     //region Getters & Setters
     // Sets the on image id
-    public void setImageOn(int _imageOn) {
+    public void setImageOn(Drawable _imageOn) {
         imageOn = _imageOn;
 
         // Set the on image in the list
@@ -260,7 +264,7 @@ public class Metronome {
     }
 
     // Sets the off image id
-    public void setImageOff(int _imageOff) {
+    public void setImageOff(Drawable _imageOff) {
         imageOff = _imageOff;
 
         // Set the off image in the list

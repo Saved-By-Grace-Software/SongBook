@@ -1,6 +1,7 @@
 package com.sbgsoft.songbook.songs;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
@@ -18,8 +19,8 @@ public class MetronomeList {
     private MetronomeNode currentNode;
     private Activity mActivity;
     private boolean firstTick;
-    private int imageOn = -1;
-    private int imageOff = -1;
+    private Drawable imageOn;
+    private Drawable imageOff;
     //endregion
 
     //region Public Class Members
@@ -43,7 +44,11 @@ public class MetronomeList {
         // Special case with only a single dot
         if (size == 1) {
             // Turn the image on
-            currentNode.getData().setImageResource(imageOn);
+            mActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    currentNode.getData().setImageDrawable(imageOn);
+                }
+            });
 
             // Wait for 100ms
             try {
@@ -51,7 +56,11 @@ public class MetronomeList {
             } catch (InterruptedException ie) { }
 
             // Turn the image back off
-            currentNode.getData().setImageResource(imageOff);
+            mActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    currentNode.getData().setImageDrawable(imageOff);
+                }
+            });
         }
         // Multiple dots to tick
         else if (size > 1) {
@@ -60,7 +69,7 @@ public class MetronomeList {
             if (firstTick) {
                 mActivity.runOnUiThread(new Runnable() {
                     public void run() {
-                        currentNode.getData().setImageResource(imageOn);
+                        currentNode.getData().setImageDrawable(imageOn);
                     }
                 });
                 firstTick = false;
@@ -68,7 +77,7 @@ public class MetronomeList {
                 // Reset the current node
                 mActivity.runOnUiThread(new Runnable() {
                     public void run() {
-                        currentNode.getData().setImageResource(imageOff);
+                        currentNode.getData().setImageDrawable(imageOff);
                     }
                 });
 
@@ -76,7 +85,7 @@ public class MetronomeList {
                     // Tick the next node
                     mActivity.runOnUiThread(new Runnable() {
                         public void run() {
-                            currentNode.getNext().getData().setImageResource(imageOn);
+                            currentNode.getNext().getData().setImageDrawable(imageOn);
                         }
                     });
 
@@ -155,12 +164,12 @@ public class MetronomeList {
     }
 
     // Sets the on image id
-    public void setImageOn(int _imageOn) {
+    public void setImageOn(Drawable _imageOn) {
         imageOn = _imageOn;
     }
 
     // Sets the off image id
-    public void setImageOff(int _imageOff) {
+    public void setImageOff(Drawable _imageOff) {
         imageOff = _imageOff;
     }
 
@@ -187,21 +196,33 @@ public class MetronomeList {
         // Set the start image to off if we only have one dot
         if (size == 1) {
             // Set the start image on
-            start.getData().setImageResource(imageOff);
+            mActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    start.getData().setImageDrawable(imageOff);
+                }
+            });
         } else {
             if (start != null) {
                 // Set the start image on
-                start.getData().setImageResource(imageOn);
+                mActivity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        start.getData().setImageDrawable(imageOn);
+                    }
+                });
 
                 // Loop through the rest of the dots and set them off
-                MetronomeNode curr = start.getNext();
-                while (curr != null && curr != start) {
-                    // Set the image off
-                    curr.getData().setImageResource(imageOff);
+                mActivity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        MetronomeNode curr = start.getNext();
+                        while (curr != null && curr != start) {
+                            // Set the image off
+                            curr.getData().setImageDrawable(imageOff);
 
-                    // Go to the next icon
-                    curr = curr.getNext();
-                }
+                            // Go to the next icon
+                            curr = curr.getNext();
+                        }
+                    }
+                });
             }
         }
     }
