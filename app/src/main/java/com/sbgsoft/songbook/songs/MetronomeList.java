@@ -2,9 +2,6 @@ package com.sbgsoft.songbook.songs;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -21,6 +18,7 @@ public class MetronomeList {
     private boolean firstTick;
     private Drawable imageOn;
     private Drawable imageOff;
+    private Drawable imageTempoMode;
     //endregion
 
     //region Public Class Members
@@ -157,6 +155,10 @@ public class MetronomeList {
         imageOff = _imageOff;
     }
 
+    public void setImageTempoMode(Drawable _imageTempoMode) {
+        imageTempoMode = _imageTempoMode;
+    }
+
     // Hides all nodes in the list
     public void hideAllIcons() {
         MetronomeNode current = start;
@@ -180,14 +182,28 @@ public class MetronomeList {
 
             // Reset first tick
             firstTick = true;
-            untickNode(start);
 
             // Untick all of the dots
-            MetronomeNode curr = start.getNext();
-            while (curr != null && curr != start) {
+            MetronomeNode curr = start;
+            do {
                 untickNode(curr);
                 curr = curr.getNext();
-            }
+            } while (curr != null && curr != start);
+        }
+    }
+
+    // Sets all of the dots into tap tempo mode
+    public void setDotsToTapTempo() {
+        if (start != null) {
+            // Set the current node back to the start
+            currentNode = start;
+
+            // Set all of the dots to tap tempo
+            MetronomeNode curr = start;
+            do {
+                tempoModeNode(curr);
+                curr = curr.getNext();
+            } while (curr != null && curr != start);
         }
     }
     //endregion
@@ -210,6 +226,17 @@ public class MetronomeList {
                 public void run() {
                     if (node != null)
                         node.getData().setImageDrawable(imageOff);
+                }
+            });
+        }
+    }
+
+    private void tempoModeNode(final MetronomeNode node) {
+        if (mActivity != null) {
+            mActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    if (node != null)
+                        node.getData().setImageDrawable(imageTempoMode);
                 }
             });
         }

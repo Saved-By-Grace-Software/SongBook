@@ -32,6 +32,7 @@ public class Metronome {
     private TimeSignature mTimeSignature;
     private Drawable imageOn;
     private Drawable imageOff;
+    private Drawable imageTempoMode;
     private int tickDelay;
     private boolean isRunning = false;
     private boolean inTapTempoMode = false;
@@ -144,6 +145,7 @@ public class Metronome {
         // Set the on and off images for the metronome
         setImageOn(ContextCompat.getDrawable(mActivity, R.drawable.filled));
         setImageOff(ContextCompat.getDrawable(mActivity, R.drawable.open));
+        setImageTempoMode(ContextCompat.getDrawable(mActivity, R.drawable.mid));
 
         // Add the dots for the metronome, based on time signature
         for (int i = 0; i < mTimeSignature.beatsPerBar; i++) {
@@ -330,13 +332,13 @@ public class Metronome {
 
             // Stop and reset the metronome while in tap tempo mode
             stop();
-            mDots.resetToStart();
+            mDots.setDotsToTapTempo();
         }
     }
     //endregion
 
     //region Getters & Setters
-    // Sets the on image id
+    // Sets the on image
     public void setImageOn(Drawable _imageOn) {
         imageOn = _imageOn;
 
@@ -344,12 +346,20 @@ public class Metronome {
         mDots.setImageOn(imageOn);
     }
 
-    // Sets the off image id
+    // Sets the off image
     public void setImageOff(Drawable _imageOff) {
         imageOff = _imageOff;
 
         // Set the off image in the list
         mDots.setImageOff(imageOff);
+    }
+
+    // Sets the tempo mode image
+    public void setImageTempoMode(Drawable _imageTempoMode) {
+        imageTempoMode = _imageTempoMode;
+
+        // Set the off image in the list
+        mDots.setImageTempoMode(imageTempoMode);
     }
 
     // Sets the Metronome's beats per minute
