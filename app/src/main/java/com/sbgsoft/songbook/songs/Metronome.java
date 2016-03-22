@@ -323,7 +323,7 @@ public class Metronome {
             inTapTempoMode = true;
 
             // Alert the user that tap tempo mode has been entered
-            Toast.makeText(mActivity, "Tap Tempo Mode has been entered!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, "Tap Tempo Mode has been entered!", Toast.LENGTH_SHORT).show();
 
             // Clear the current tap tempo list and previous time stamp
             tempoTaps.clear();
