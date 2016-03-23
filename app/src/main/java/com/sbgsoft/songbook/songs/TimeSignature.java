@@ -1,5 +1,7 @@
 package com.sbgsoft.songbook.songs;
 
+import com.sbgsoft.songbook.main.StaticVars;
+
 /**
  * Created by SamIAm on 1/6/2016.
  */

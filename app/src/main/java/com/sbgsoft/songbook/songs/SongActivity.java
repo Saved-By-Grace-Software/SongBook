@@ -25,7 +25,7 @@ import android.widget.Toast;
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
-import com.sbgsoft.songbook.main.MainStrings;
+import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.views.AutoFitTextView;
 
 public class SongActivity extends Activity {
@@ -68,7 +68,7 @@ public class SongActivity extends Activity {
         // Populate it with the song text
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-        	mSongItem = extras.getParcelable(MainStrings.SONG_ITEM_KEY);
+        	mSongItem = extras.getParcelable(StaticVars.SONG_ITEM_KEY);
         	
             if (mSongItem.getKey().length() > 1)
             	mSongItem.setKey(mSongItem.getKey().substring(0, 1).toUpperCase(Locale.ENGLISH) + mSongItem.getKey().substring(1).trim());
@@ -81,7 +81,7 @@ public class SongActivity extends Activity {
         }
 
         // Initialize the metronome
-        //initializeMetronome();
+        initializeMetronome();
         
         // Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -126,11 +126,11 @@ public class SongActivity extends Activity {
     	// Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        // Start the metronome
+        // Start the metronome with an initial 2 second delay
         if (mMetronome == null) {
             initializeMetronome();
         }
-        mMetronome.start();
+        mMetronome.start(2000);
     }
     
     @Override
@@ -186,13 +186,13 @@ public class SongActivity extends Activity {
     public void onTransposeButtonClick(View v) {
     	
     	// Check for a special key
-    	if (MainStrings.keyMap.containsKey(mSongItem.getKey())) {
+    	if (StaticVars.keyMap.containsKey(mSongItem.getKey())) {
     		// Set the song key to the associated key
-    		mSongItem.setKey(MainStrings.keyMap.get(mSongItem.getKey()));
+    		mSongItem.setKey(StaticVars.keyMap.get(mSongItem.getKey()));
     	}
     	
     	// Check to make sure the song has a proper key
-    	if (!MainStrings.songKeys.contains(mSongItem.getKey())) {
+    	if (!StaticVars.songKeys.contains(mSongItem.getKey())) {
     		Toast.makeText(getBaseContext(), 
     				"You cannot transpose a song without an legit assigned key. Please edit the song attributes, edit the key, and try again.", Toast.LENGTH_LONG).show();
     	}
@@ -200,12 +200,12 @@ public class SongActivity extends Activity {
     		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         	alert.setTitle("Transpose to Which Key?");
-        	alert.setItems(MainStrings.songKeys.toArray(new CharSequence[MainStrings.songKeys.size()]), new OnClickListener() {
+        	alert.setItems(StaticVars.songKeys.toArray(new CharSequence[StaticVars.songKeys.size()]), new OnClickListener() {
         		public void onClick (DialogInterface dialog, int whichItem) {
         			// Transpose the song
 					try {
 						FileInputStream fis = openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
-						String transposedSongText = ChordProParser.ParseSongFile(getApplicationContext(), mSongItem, MainStrings.songKeys.get(whichItem), fis, true, false);
+						String transposedSongText = ChordProParser.ParseSongFile(getApplicationContext(), mSongItem, StaticVars.songKeys.get(whichItem), fis, true, false);
 	        			song.setText(Html.fromHtml(transposedSongText));
 					} catch (FileNotFoundException e) {
 						Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
@@ -226,12 +226,9 @@ public class SongActivity extends Activity {
      */
     public void initializeMetronome() {
         // Create the metronome object
-        mMetronome = new Metronome(this);
-
-        // Set the beats per minute and time signature
         if (mSongItem != null) {
-            mMetronome.setBeatsPerMinute(mSongItem.getBpm());
-            mMetronome.setmTimeSignature(new TimeSignature(mSongItem.getTimeSignature()));
+            // Create the metronome object
+            mMetronome = new Metronome(this, mSongItem.getBpm(), new TimeSignature(mSongItem.getTimeSignature()));
         }
 
         // Initialize the metronome

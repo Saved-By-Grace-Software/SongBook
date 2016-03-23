@@ -17,7 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
-import com.sbgsoft.songbook.main.MainStrings;
+import com.sbgsoft.songbook.main.StaticVars;
 
 public class EditSongTextActivity extends Activity {
 	private String songFile = "";
@@ -30,9 +30,9 @@ public class EditSongTextActivity extends Activity {
         // Get the song name from the bundle
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            songFile = extras.getString(MainStrings.SONG_FILE_KEY);
-            String songText = extras.getString(MainStrings.SONG_TEXT_KEY);
-            String songName = extras.getString(MainStrings.SONG_NAME_KEY);
+            songFile = extras.getString(StaticVars.SONG_FILE_KEY);
+            String songText = extras.getString(StaticVars.SONG_TEXT_KEY);
+            String songName = extras.getString(StaticVars.SONG_NAME_KEY);
             
             // Set activity title
             setTitle("Edit Song - " + songName);
@@ -91,7 +91,7 @@ public class EditSongTextActivity extends Activity {
 	        	// Check for only white spaces
 	        	if(line.trim().length() <= 0) {
 	        		// Add system line break
-	            	sb.append(MainStrings.EOL);
+	            	sb.append(StaticVars.EOL);
 	            	
 	            	// Read the next line and continue
 	            	line = br.readLine();
@@ -99,7 +99,7 @@ public class EditSongTextActivity extends Activity {
 	        	}
 	        	
 	        	// Check for song part tags
-	        	if(MainStrings.songParts.contains(line.split("[^A-Za-z\\-]")[0].toLowerCase(Locale.US))) {
+	        	if(StaticVars.songParts.contains(line.split("[^A-Za-z\\-]")[0].toLowerCase(Locale.US))) {
 	        		sb.append("{title:");
 	        		sb.append(line);
 	            	sb.append("}");
@@ -170,8 +170,8 @@ public class EditSongTextActivity extends Activity {
 		            		if (chords.length() == 0 && lyrics.length() == 0) {
 		            			startedSong = false;
 		            		}
-		            		else if (chords.length() == 0 && (MainStrings.songParts.contains(lyrics.split("\\W+")[0].toLowerCase(Locale.US)))) {
-		            			sb.append(MainStrings.EOL);
+		            		else if (chords.length() == 0 && (StaticVars.songParts.contains(lyrics.split("\\W+")[0].toLowerCase(Locale.US)))) {
+		            			sb.append(StaticVars.EOL);
 		            			sb.append("{title:");
 		                		sb.append(lyrics);
 		                    	sb.append("}");
@@ -262,7 +262,7 @@ public class EditSongTextActivity extends Activity {
 	        	}
 	        	
 	        	// Add system line break
-	        	sb.append(MainStrings.EOL);
+	        	sb.append(StaticVars.EOL);
 	        	
 	        	// Read the next line
 	        	line = br.readLine();

@@ -1,9 +1,7 @@
 package com.sbgsoft.songbook.songs;
 
 import android.app.Activity;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.util.Log;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,8 +16,9 @@ public class MetronomeList {
     private MetronomeNode currentNode;
     private Activity mActivity;
     private boolean firstTick;
-    private int imageOn = -1;
-    private int imageOff = -1;
+    private Drawable imageOn;
+    private Drawable imageOff;
+    private Drawable imageTempoMode;
     //endregion
 
     //region Public Class Members
@@ -42,39 +41,41 @@ public class MetronomeList {
     public void tick() {
         // Special case with only a single dot
         if (size == 1) {
-            // Turn the image on
-            currentNode.getData().setImageResource(imageOn);
+            // Tick the current node
+            tickNode(currentNode);
 
             // Wait for 100ms
             try {
                 Thread.sleep(150);
             } catch (InterruptedException ie) { }
 
-            // Turn the image back off
-            currentNode.getData().setImageResource(imageOff);
+            // Untick the current node
+            untickNode(currentNode);
         }
         // Multiple dots to tick
         else if (size > 1) {
 
             // Check for first tick
             if (firstTick) {
-                currentNode.getData().setImageResource(imageOn);
+                // Make sure we are at the start
+                currentNode = start;
+
+                // Tick the first node
+                tickNode(currentNode);
+
+                // Reset first tick
                 firstTick = false;
             } else {
-                // Reset the current node
-                currentNode.getData().setImageResource(imageOff);
+                // Untick the current node
+                untickNode(currentNode);
 
-                if (currentNode.hasNext()) {
-                    // Tick the next node
-                    currentNode.getNext().getData().setImageResource(imageOn);
+                // Move to the next node
+                currentNode = currentNode.getNext();
 
-                    // Update current node to the next node
-                    currentNode = currentNode.getNext();
-                }
+                // Tick the current node
+                tickNode(currentNode);
             }
         }
-
-//        Log.d("SONGBOOK", "tick " + SystemClock.uptimeMillis());
     }
 
     // Appends the specified data to the linked list
@@ -145,13 +146,17 @@ public class MetronomeList {
     }
 
     // Sets the on image id
-    public void setImageOn(int _imageOn) {
+    public void setImageOn(Drawable _imageOn) {
         imageOn = _imageOn;
     }
 
     // Sets the off image id
-    public void setImageOff(int _imageOff) {
+    public void setImageOff(Drawable _imageOff) {
         imageOff = _imageOff;
+    }
+
+    public void setImageTempoMode(Drawable _imageTempoMode) {
+        imageTempoMode = _imageTempoMode;
     }
 
     // Hides all nodes in the list
@@ -171,28 +176,69 @@ public class MetronomeList {
 
     // Resets the current node back to the start
     public void resetToStart() {
-        // Set the current node back to the start
-        currentNode = start;
+        if (start != null) {
+            // Set the current node back to the start
+            currentNode = start;
 
-        // Set the start image to off if we only have one dot
-        if (size == 1) {
-            // Set the start image on
-            start.getData().setImageResource(imageOff);
-        } else {
-            if (start != null) {
-                // Set the start image on
-                start.getData().setImageResource(imageOn);
+            // Reset first tick
+            firstTick = true;
 
-                // Loop through the rest of the dots and set them off
-                MetronomeNode curr = start.getNext();
-                while (curr != null && curr != start) {
-                    // Set the image off
-                    curr.getData().setImageResource(imageOff);
+            // Untick all of the dots
+            MetronomeNode curr = start;
+            do {
+                untickNode(curr);
+                curr = curr.getNext();
+            } while (curr != null && curr != start);
+        }
+    }
 
-                    // Go to the next icon
-                    curr = curr.getNext();
+    // Sets all of the dots into tap tempo mode
+    public void setDotsToTapTempo() {
+        if (start != null) {
+            // Set the current node back to the start
+            currentNode = start;
+
+            // Set all of the dots to tap tempo
+            MetronomeNode curr = start;
+            do {
+                tempoModeNode(curr);
+                curr = curr.getNext();
+            } while (curr != null && curr != start);
+        }
+    }
+    //endregion
+
+    //region Private Functions
+    private void tickNode(final MetronomeNode node) {
+        if (mActivity != null) {
+            mActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    if (node != null)
+                        node.getData().setImageDrawable(imageOn);
                 }
-            }
+            });
+        }
+    }
+
+    private void untickNode(final MetronomeNode node) {
+        if (mActivity != null) {
+            mActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    if (node != null)
+                        node.getData().setImageDrawable(imageOff);
+                }
+            });
+        }
+    }
+
+    private void tempoModeNode(final MetronomeNode node) {
+        if (mActivity != null) {
+            mActivity.runOnUiThread(new Runnable() {
+                public void run() {
+                    if (node != null)
+                        node.getData().setImageDrawable(imageTempoMode);
+                }
+            });
         }
     }
     //endregion

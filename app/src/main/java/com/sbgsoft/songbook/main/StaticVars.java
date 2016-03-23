@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class MainStrings {
+public class StaticVars {
 
 	// Keys
 	public static final String SONG_ITEM_KEY = "songItem";
@@ -90,12 +90,13 @@ public class MainStrings {
 	public static final ArrayList<String> songSortBy = new ArrayList<String>(Arrays.asList("Song Title", "Song Author", "Song Key"));
 	public static final ArrayList<String> setSortBy = new ArrayList<String>(Arrays.asList("Set Date - Recent", "Set Date - Oldest", "Set Title"));
 	
-	// Enums
+	//region Enums
 	public enum SongFileType {
 		plainText,
 		chordPro,
 		PDF
 	}
+    //endregion
 
     //region How Tos
     public static final ArrayList<String> howToCreateSet = new ArrayList<String>(

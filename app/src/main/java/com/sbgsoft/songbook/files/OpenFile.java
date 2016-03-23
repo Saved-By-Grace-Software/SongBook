@@ -20,7 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.sbgsoft.songbook.R;
-import com.sbgsoft.songbook.main.MainStrings;
+import com.sbgsoft.songbook.main.StaticVars;
 
 public class OpenFile extends ListActivity {
 	public static final String RESULT_PATH = "filePath";
@@ -43,14 +43,14 @@ public class OpenFile extends ListActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
         	// Get the activity type
-        	activityType = extras.getString(MainStrings.FILE_ACTIVITY_KEY);
+        	activityType = extras.getString(StaticVars.FILE_ACTIVITY_KEY);
         	
         	// Get the file type
-        	fileType = extras.getString(MainStrings.FILE_ACTIVITY_TYPE_KEY);
+        	fileType = extras.getString(StaticVars.FILE_ACTIVITY_TYPE_KEY);
         }
         
         // Change buttons and title for folder type
-        if (fileType.equals(MainStrings.FILE_ACTIVITY_FOLDER)) {
+        if (fileType.equals(StaticVars.FILE_ACTIVITY_FOLDER)) {
         	// Remove the file type views
         	findViewById(R.id.file_type_spinner).setVisibility(View.GONE);
         	
@@ -66,7 +66,7 @@ public class OpenFile extends ListActivity {
         currentDir = root;
         
         // Fill the file type spinner
-        if (activityType.equals(MainStrings.IMPORT_DB_ACTIVITY) || activityType.equals(MainStrings.IMPORT_SET_ACTIVITY)) {
+        if (activityType.equals(StaticVars.IMPORT_DB_ACTIVITY) || activityType.equals(StaticVars.IMPORT_SET_ACTIVITY)) {
         	fillDBFileTypeSpinner();
         } else {
         	fillSongFileTypeSpinner();
@@ -235,7 +235,7 @@ public class OpenFile extends ListActivity {
 	    	
 	    	alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 		    	public void onClick(DialogInterface dialog, int whichButton) {
-		    		getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, activityType);
+		    		getIntent().putExtra(StaticVars.ACTIVITY_RESPONSE_TYPE, activityType);
 					getIntent().putExtra(RESULT_PATH, file.getAbsolutePath());
 					setResult(RESULT_OK, getIntent());
 					finish();
@@ -257,7 +257,7 @@ public class OpenFile extends ListActivity {
 	 * @param v
 	 */
 	public void onCancelClick(View v) {
-		getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, activityType);
+		getIntent().putExtra(StaticVars.ACTIVITY_RESPONSE_TYPE, activityType);
 		setResult(RESULT_CANCELED, getIntent());
 		finish();
 	}
@@ -267,7 +267,7 @@ public class OpenFile extends ListActivity {
 	 * @param v
 	 */
 	public void onSelectFolderClick(View v) {
-		getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, activityType);
+		getIntent().putExtra(StaticVars.ACTIVITY_RESPONSE_TYPE, activityType);
 		getIntent().putExtra(RESULT_PATH, currentDir);
 		setResult(RESULT_OK, getIntent());
 		finish();

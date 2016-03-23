@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.main.MainActivity;
-import com.sbgsoft.songbook.main.MainStrings;
+import com.sbgsoft.songbook.main.StaticVars;
 
 public class EditSongRawActivity extends Activity {
 	private String songName = "";
@@ -32,8 +32,8 @@ public class EditSongRawActivity extends Activity {
         // Get the song name from the bundle
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            songName = extras.getString(MainStrings.SONG_NAME_KEY);
-            songFile = extras.getString(MainStrings.SONG_FILE_KEY);
+            songName = extras.getString(StaticVars.SONG_NAME_KEY);
+            songFile = extras.getString(StaticVars.SONG_FILE_KEY);
         }
         
         // Fill the edit text with the song file

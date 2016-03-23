@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.SongItem;
-import com.sbgsoft.songbook.main.MainStrings;
+import com.sbgsoft.songbook.main.StaticVars;
 
 
 /**
@@ -38,7 +38,7 @@ public class ChordProParser {
     	if(winLineFeed)
     		lineFeed = "\r\n";
     	else
-    		lineFeed = MainStrings.EOL;
+    		lineFeed = StaticVars.EOL;
     	
 		// Check to see if the song needs to be transposed
 		if(transposeKey != "" && !songItem.getKey().equals(transposeKey)) {

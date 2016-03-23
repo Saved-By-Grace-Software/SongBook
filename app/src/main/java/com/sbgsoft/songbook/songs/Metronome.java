@@ -3,9 +3,8 @@ package com.sbgsoft.songbook.songs;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.text.format.Time;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -19,8 +18,8 @@ import android.widget.Toast;
 import com.sbgsoft.songbook.R;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by SamIAm on 12/22/2015.
@@ -31,29 +30,54 @@ public class Metronome {
     private Activity mActivity;
     private int mBeatsPerMinute;
     private TimeSignature mTimeSignature;
-    private int imageOn = -1;
-    private int imageOff = -1;
-    private int sleepTime;
+    private Drawable imageOn;
+    private Drawable imageOff;
+    private Drawable imageTempoMode;
+    private int tickDelay;
     private boolean isRunning = false;
     private boolean inTapTempoMode = false;
     private long previousTimestamp = 0;
     private ArrayList<Integer> tempoTaps;
-    private Handler mHandler;
-    private static int ANDROID_DELAY = 10;
+    private ScheduledThreadPoolExecutor exec;
+    private int currentClick = 0;
+    private static int startDelay = 0;
+    private static int maxTapTempoTapsToRemember = 12;
     //endregion
 
     //region Public Class Members
     public MetronomeList mDots;
     //endregion
 
-    //region Constructor
+    //region Constructors
+    public Metronome() {
+        mBeatsPerMinute = 0;
+        tickDelay = 0;
+        mActivity = null;
+        mDots = new MetronomeList(mActivity);
+        tempoTaps = new ArrayList<>();
+    }
+
     public Metronome(Activity _activity) {
         mBeatsPerMinute = 0;
-        sleepTime = 0;
+        tickDelay = 0;
         mActivity = _activity;
         mDots = new MetronomeList(mActivity);
-        tempoTaps = new ArrayList<Integer>();
-        mHandler = new Handler();
+        tempoTaps = new ArrayList<>();
+    }
+
+    public Metronome(Activity _activity, int _beatsPerMinute, TimeSignature _timeSignature) {
+        mTimeSignature = _timeSignature;
+        mBeatsPerMinute = _beatsPerMinute;
+
+        // Calculate the sleep time
+        if (mBeatsPerMinute > 0)
+            tickDelay = calculateTickDelayFromBPM(mBeatsPerMinute, mTimeSignature);
+        else
+            tickDelay = 0;
+
+        mActivity = _activity;
+        mDots = new MetronomeList(mActivity);
+        tempoTaps = new ArrayList<>();
     }
     //endregion
 
@@ -63,15 +87,13 @@ public class Metronome {
      */
     public void start() {
         // Only start if the sleeptime is set properly
-        if (sleepTime > 0) {
+        if (tickDelay > 0) {
             // Restart the metronome list to the start
             mDots.resetToStart();
 
-            Log.d("SONGBOOK", "sleep time = " + sleepTime);
-
             // Start the task
-            mHandler.removeCallbacks(mCallTick);
-            mHandler.postDelayed(mCallTick, sleepTime);
+            exec = new ScheduledThreadPoolExecutor(1);
+            exec.scheduleAtFixedRate(new MetronomeTimer(mDots), startDelay, tickDelay, TimeUnit.MILLISECONDS);
 
             // Set the is running trigger
             isRunning = true;
@@ -81,12 +103,28 @@ public class Metronome {
         }
     }
 
+    public void start(int _startDelay) {
+        // Set the new start delay
+        int tmp = startDelay;
+        startDelay = _startDelay;
+
+        // Start the metronome
+        start();
+
+        // Reset the start delay so subsequent starts are not delayed
+        startDelay = tmp;
+    }
+
     /**
      * Stops the metronome clicking
      */
     public void stop() {
-        // Remove handler callbacks
-        mHandler.removeCallbacks(mCallTick);
+        // Stop the thread execution
+        if (exec != null && !exec.isShutdown())
+            exec.shutdown();
+
+        // Reset the dots
+        mDots.resetToStart();
 
         // Clear the is running trigger
         isRunning = false;
@@ -105,13 +143,14 @@ public class Metronome {
         int width = size.x;
 
         // Set the on and off images for the metronome
-        setImageOn(R.drawable.filled);
-        setImageOff(R.drawable.open);
+        setImageOn(ContextCompat.getDrawable(mActivity, R.drawable.filled));
+        setImageOff(ContextCompat.getDrawable(mActivity, R.drawable.open));
+        setImageTempoMode(ContextCompat.getDrawable(mActivity, R.drawable.mid));
 
         // Add the dots for the metronome, based on time signature
         for (int i = 0; i < mTimeSignature.beatsPerBar; i++) {
             ImageView icon = new ImageView(mActivity);
-            icon.setImageResource(imageOff);
+            icon.setImageDrawable(imageOff);
             icon.setLayoutParams(new LinearLayout.LayoutParams(
                     (int) (height * 0.08),
                     (int) (width * 0.1)));
@@ -134,30 +173,67 @@ public class Metronome {
 
         metronomeBar.requestLayout();
     }
-    //endregion
 
-    //region Private Functions
     // Calculates the sleep time from the given beats per minute
-    private int calculateSleepForBPM(int bpm) {
-        int ret;
+    public int calculateTickDelayFromBPM(int bpm, TimeSignature tSig) {
+        int ret = -1;
+        float delTime;
 
-        // Determine sleep time in milliseconds
-        float bps = 60 / (float)bpm;
-        ret = (int)(1000 * bps);
+        if (tSig != null) {
+            // Determine sleep time in milliseconds for major beats
+            delTime = 60000 / (float) bpm;
+
+            // If we are in compound time, calculate for ticks
+            switch (tSig.noteOneBeat) {
+                case 8:
+                    // Divide by 3 for the tick time if top number is multiple of 3
+                    if (tSig.beatsPerBar % 3 == 0)
+                        delTime = delTime / 3;
+                    break;
+                case 4:
+                default:
+                    break;
+            }
+
+            // Convert the calculation to an integer
+            if (delTime > 0)
+                ret = Math.round(delTime);
+        }
 
         return ret;
     }
 
     // Calculates the beats per minute from the sleep time
-    private int calculateBPMForSleep(int sleep) {
-        int ret;
+    public int calculateBPMFromTickDelay(int _tickDelay, TimeSignature tSig) {
+        int ret = -1;
+        float bpm = -1;
 
-        // Determine bpm from milliseconds
-        ret = 60000 / sleep;
+        if (tSig != null) {
+            // Determine our time signature
+            switch (tSig.noteOneBeat) {
+                case 4:
+                    // Determine bpm from milliseconds
+                    bpm = 60000 / (float) _tickDelay;
+                    break;
+                case 8:
+                    // Determine bpm from milliseconds
+                    if (tSig.beatsPerBar % 3 == 0)
+                        bpm = 60000 / ((float) _tickDelay * 3);
+                    break;
+                default:
+                    break;
+            }
+
+            // Convert the calculation to an integer
+            if (bpm > 0)
+                ret = Math.round(bpm);
+        }
 
         return ret;
     }
+    //endregion
 
+    //region Private Functions
     // Calculates the beats per minute from the tap tempo array
     private int calculateBPMFromTapTempoArray() {
         int bpm = 0;
@@ -171,8 +247,10 @@ public class Metronome {
             }
             avgGap = (avgGap / tempoTaps.size());
 
+            //Log.d("SONGBOOK", "AvgGap = " + avgGap);
+
             // Calculate the BPM from the gap time
-            bpm = calculateBPMForSleep(avgGap);
+            bpm = calculateBPMFromTickDelay(avgGap, mTimeSignature);
         }
 
         return bpm;
@@ -202,7 +280,7 @@ public class Metronome {
             long currTime = System.currentTimeMillis();
 
             // Check to see if we need to roll the array
-            if (tempoTaps.size() > 10) {
+            if (tempoTaps.size() > maxTapTempoTapsToRemember) {
                 // Reached size limit, remove first and then add
                 tempoTaps.remove(0);
             }
@@ -211,14 +289,15 @@ public class Metronome {
             if (previousTimestamp > 0) {
                 int diff = (int)(currTime - previousTimestamp);
                 tempoTaps.add(diff);
-                Log.d("SONGBOOK", "   Added Gap: " + diff);
+                //Log.d("SONGBOOK", "   Added Gap: " + diff);
             }
             previousTimestamp = currTime;
 
-            // Calculate the bpm from the current list and adjust current bpm
-            if (tempoTaps.size() > 1) {
-                setBeatsPerMinute(calculateBPMFromTapTempoArray());
-                Log.d("SONGBOOK", "New BPM: " + mBeatsPerMinute);
+            // Determine if we should show the new tempo
+            currentClick++;
+            if (currentClick % 5 == 0) {
+                // Show the current tempo every 5 clicks
+                Toast.makeText(mActivity, "Tempo: " + calculateBPMFromTapTempoArray(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -229,6 +308,9 @@ public class Metronome {
         if (inTapTempoMode) {
             // Turn off tap tempo mode
             inTapTempoMode = false;
+
+            // Calculate the new tempo
+            setBeatsPerMinute(calculateBPMFromTapTempoArray());
 
             // Alert the user of the new bpm
             Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute, Toast.LENGTH_LONG).show();
@@ -241,46 +323,43 @@ public class Metronome {
             inTapTempoMode = true;
 
             // Alert the user that tap tempo mode has been entered
-            Toast.makeText(mActivity, "Tap Tempo Mode has been entered!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mActivity, "Tap Tempo Mode has been entered!", Toast.LENGTH_SHORT).show();
 
             // Clear the current tap tempo list and previous time stamp
             tempoTaps.clear();
             previousTimestamp = 0;
+            currentClick = 0;
 
             // Stop and reset the metronome while in tap tempo mode
             stop();
-            mDots.resetToStart();
+            mDots.setDotsToTapTempo();
         }
     }
-
-    // Runnable task for ticking the metronome
-    private Runnable mCallTick = new Runnable() {
-        public void run() {
-            long startTime = SystemClock.elapsedRealtime();
-
-            mDots.tick();
-
-            long timeElapsed = SystemClock.elapsedRealtime() - startTime;
-            mHandler.postDelayed(this, sleepTime - timeElapsed - ANDROID_DELAY);
-        }
-    };
     //endregion
 
     //region Getters & Setters
-    // Sets the on image id
-    public void setImageOn(int _imageOn) {
+    // Sets the on image
+    public void setImageOn(Drawable _imageOn) {
         imageOn = _imageOn;
 
         // Set the on image in the list
         mDots.setImageOn(imageOn);
     }
 
-    // Sets the off image id
-    public void setImageOff(int _imageOff) {
+    // Sets the off image
+    public void setImageOff(Drawable _imageOff) {
         imageOff = _imageOff;
 
         // Set the off image in the list
         mDots.setImageOff(imageOff);
+    }
+
+    // Sets the tempo mode image
+    public void setImageTempoMode(Drawable _imageTempoMode) {
+        imageTempoMode = _imageTempoMode;
+
+        // Set the off image in the list
+        mDots.setImageTempoMode(imageTempoMode);
     }
 
     // Sets the Metronome's beats per minute
@@ -289,16 +368,14 @@ public class Metronome {
 
         // Calculate the sleep time
         if (mBeatsPerMinute > 0)
-            sleepTime = calculateSleepForBPM(mBeatsPerMinute);
+            tickDelay = calculateTickDelayFromBPM(mBeatsPerMinute, mTimeSignature);
         else
-            sleepTime = 0;
+            tickDelay = 0;
     }
 
     // Sets the time signature for the metronome
-    public void setmTimeSignature(TimeSignature mTimeSignature) {
+    public void setTimeSignature(TimeSignature mTimeSignature) {
         this.mTimeSignature = mTimeSignature;
-
-        Log.d("SONGBOOK", "Time Signature: " + mTimeSignature.toString());
     }
     //endregion
 
@@ -324,4 +401,18 @@ public class Metronome {
     GestureDetector gestureDetector
             = new GestureDetector(mActivity, simpleOnGestureListener);
     //endregion
+}
+
+class MetronomeTimer implements Runnable {
+    private MetronomeList mDots;
+
+    public MetronomeTimer(MetronomeList _dots) {
+        mDots = _dots;
+    }
+
+    @Override
+    public void run() {
+        //Log.d("SONGBOOK", "tick");
+        mDots.tick();
+    }
 }

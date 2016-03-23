@@ -2,7 +2,7 @@ package com.sbgsoft.songbook.songs;
 
 import java.util.ListIterator;
 
-import com.sbgsoft.songbook.main.MainStrings;
+import com.sbgsoft.songbook.main.StaticVars;
 
 public class Transpose {
     /**
@@ -27,18 +27,18 @@ public class Transpose {
     		root = originalChord;
     	
     	// Check for key from keymap
-    	if (MainStrings.keyMap.containsKey(root)) {
-			root = MainStrings.keyMap.get(root);
+    	if (StaticVars.keyMap.containsKey(root)) {
+			root = StaticVars.keyMap.get(root);
 		}
     	
     	// Get the root note index
-    	rootIndex = MainStrings.songKeys_transpose.lastIndexOf(root);
+    	rootIndex = StaticVars.songKeys_transpose.lastIndexOf(root);
     	
     	// Get the index difference
     	diff = getCapo(songKey, transposeKey, 0);
     	
     	// Set the new root note
-    	newRoot = MainStrings.songKeys_transpose.get(rootIndex - diff);
+    	newRoot = StaticVars.songKeys_transpose.get(rootIndex - diff);
     	
     	// Check for a bass note
     	if (originalChord.contains("/")) {
@@ -53,15 +53,15 @@ public class Transpose {
     		}
     		
     		// Check for key from keymap
-        	if (MainStrings.keyMap.containsKey(bass)) {
-        		bass = MainStrings.keyMap.get(bass);
+        	if (StaticVars.keyMap.containsKey(bass)) {
+        		bass = StaticVars.keyMap.get(bass);
     		}
     		
     		// Get the bass note index
-    		bassIndex = MainStrings.songKeys_transpose.lastIndexOf(bass);
+    		bassIndex = StaticVars.songKeys_transpose.lastIndexOf(bass);
     		
     		// Set the new bass note
-        	newBass = MainStrings.songKeys_transpose.get(bassIndex - diff);
+        	newBass = StaticVars.songKeys_transpose.get(bassIndex - diff);
     		
     		// Create the new chord
     		// Replace the root note
@@ -98,7 +98,7 @@ public class Transpose {
     	int newCapo;
     	
     	// Get the song key and transpose key locations
-    	int songKeyLoc = MainStrings.songKeys_transpose.lastIndexOf(songKey);
+    	int songKeyLoc = StaticVars.songKeys_transpose.lastIndexOf(songKey);
     	int tranKeyLoc = lastIndexOf(transposeKey, songKeyLoc);
     	
     	//If the current capo is not 0 then change the song key location
@@ -129,8 +129,8 @@ public class Transpose {
     	int index = 0;
 
         // Make sure we are starting within the list
-        if (startAt < MainStrings.songKeys_transpose.size() && startAt > 0) {
-            for (ListIterator<String> it = MainStrings.songKeys_transpose.listIterator(startAt); it.hasPrevious(); ) {
+        if (startAt < StaticVars.songKeys_transpose.size() && startAt > 0) {
+            for (ListIterator<String> it = StaticVars.songKeys_transpose.listIterator(startAt); it.hasPrevious(); ) {
                 index = it.previousIndex();
                 if (it.previous().equals(indexKey)) {
                     break;

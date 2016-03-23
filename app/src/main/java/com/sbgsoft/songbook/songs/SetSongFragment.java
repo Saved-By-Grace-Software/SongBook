@@ -6,31 +6,25 @@ import java.io.IOException;
 import java.util.Locale;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
-import com.sbgsoft.songbook.main.MainStrings;
+import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.views.AutoFitTextView;
 
 public class SetSongFragment extends Fragment {
@@ -63,7 +57,7 @@ public class SetSongFragment extends Fragment {
         // Populate it with the song text
         Bundle extras = getArguments();
         if (extras != null) {
-        	mSongItem = extras.getParcelable(MainStrings.SONG_ITEM_KEY);
+        	mSongItem = extras.getParcelable(StaticVars.SONG_ITEM_KEY);
             
         	if (mSongItem.getKey().length() > 1)
             	mSongItem.setKey(mSongItem.getKey().substring(0, 1).toUpperCase(Locale.ENGLISH) + mSongItem.getKey().substring(1).trim());
@@ -77,7 +71,7 @@ public class SetSongFragment extends Fragment {
         }
 
         // Resize metronome bar icons
-        //initializeMetronome();
+        initializeMetronome();
 
         // Add the touch listener
         song.setOnTouchListener(new View.OnTouchListener() {
@@ -118,11 +112,11 @@ public class SetSongFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        // Start the metronome
+        // Start the metronome with an initial 2 second delay
         if (mMetronome == null) {
             initializeMetronome();
         }
-        mMetronome.start();
+        mMetronome.start(2000);
     }
 
     @Override
@@ -155,13 +149,13 @@ public class SetSongFragment extends Fragment {
 	 */
 	public void onTransposeButtonClick() {
 		// Check for a special key
-    	if (MainStrings.keyMap.containsKey(mSongItem.getKey())) {
+    	if (StaticVars.keyMap.containsKey(mSongItem.getKey())) {
     		// Set the song key to the associated key
-    		mSongItem.setKey(MainStrings.keyMap.get(mSongItem.getKey()));
+    		mSongItem.setKey(StaticVars.keyMap.get(mSongItem.getKey()));
     	}
     	
     	// Check to make sure the song has a proper key
-    	if (!MainStrings.songKeys.contains(mSongItem.getKey())) {
+    	if (!StaticVars.songKeys.contains(mSongItem.getKey())) {
     		Toast.makeText(getActivity(), 
     				"You cannot transpose a song without an legit assigned key. Please edit the song attributes, edit the key, and try again.", Toast.LENGTH_LONG).show();
     	}
@@ -169,12 +163,12 @@ public class SetSongFragment extends Fragment {
     		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
         	alert.setTitle("Transpose to Which Key?");
-        	alert.setItems(MainStrings.songKeys.toArray(new CharSequence[MainStrings.songKeys.size()]), new OnClickListener() {
+        	alert.setItems(StaticVars.songKeys.toArray(new CharSequence[StaticVars.songKeys.size()]), new OnClickListener() {
         		public void onClick (DialogInterface dialog, int whichItem) {
         			// Transpose the song
 					try {
 						FileInputStream fis = getActivity().openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
-						String transposedSongText = ChordProParser.ParseSongFile(getActivity().getApplicationContext(), mSongItem, MainStrings.songKeys.get(whichItem), fis, true, false);
+						String transposedSongText = ChordProParser.ParseSongFile(getActivity().getApplicationContext(), mSongItem, StaticVars.songKeys.get(whichItem), fis, true, false);
 	        			song.setText(Html.fromHtml(transposedSongText));
 					} catch (FileNotFoundException e) {
 						Toast.makeText(getActivity(), "Could not open song file!", Toast.LENGTH_LONG).show();
@@ -196,14 +190,10 @@ public class SetSongFragment extends Fragment {
      * Initializes the metronome
      */
     public void initializeMetronome() {
-
         // Create the metronome object
-        mMetronome = new Metronome(getActivity());
-
-        // Set the beats per minute
         if (mSongItem != null) {
-            mMetronome.setBeatsPerMinute(mSongItem.getBpm());
-            mMetronome.setmTimeSignature(new TimeSignature(mSongItem.getTimeSignature()));
+            // Create the metronome object
+            mMetronome = new Metronome(getActivity(), mSongItem.getBpm(), new TimeSignature(mSongItem.getTimeSignature()));
         }
 
         // Initialize the metronome

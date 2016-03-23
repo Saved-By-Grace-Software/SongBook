@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -62,7 +61,6 @@ import android.text.style.StyleSpan;
 import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -90,7 +88,7 @@ import com.sbgsoft.songbook.items.ItemArrayAdapter;
 import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SetItem;
 import com.sbgsoft.songbook.items.SongItem;
-import com.sbgsoft.songbook.main.MainStrings.SongFileType;
+import com.sbgsoft.songbook.main.StaticVars.SongFileType;
 import com.sbgsoft.songbook.sets.CurrentSetTab;
 import com.sbgsoft.songbook.sets.SetActivity;
 import com.sbgsoft.songbook.sets.SetGroupArrayAdapter;
@@ -252,7 +250,7 @@ public class MainActivity extends FragmentActivity {
 	        	deleteAllSets();
 	        	return true;
             case R.id.menu_sets_import:
-                permissionRequiredFunction(MainStrings.PERMISSIONS_SET_IMPORT);
+                permissionRequiredFunction(StaticVars.PERMISSIONS_SET_IMPORT);
                 return true;
 	        case R.id.menu_songs_clear:
 	        	deleteAllSongs();
@@ -261,7 +259,7 @@ public class MainActivity extends FragmentActivity {
 	        	createSong();
 	        	return true;
 	        case R.id.menu_songs_import:
-                permissionRequiredFunction(MainStrings.PERMISSIONS_SONG_IMPORT);
+                permissionRequiredFunction(StaticVars.PERMISSIONS_SONG_IMPORT);
 	        	return true;
 	        case R.id.menu_song_groups_create:
 	        	createSongGroup();
@@ -282,10 +280,10 @@ public class MainActivity extends FragmentActivity {
 	        	deleteAllSetGroups();
 	        	return true;
 	        case R.id.menu_backup_export:
-                permissionRequiredFunction(MainStrings.PERMISSIONS_BACKUP_EXPORT);
+                permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_EXPORT);
 	        	return true;
 	        case R.id.menu_backup_import:
-                permissionRequiredFunction(MainStrings.PERMISSIONS_BACKUP_IMPORT);
+                permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_IMPORT);
 	        	return true;
             case R.id.menu_about_howto:
                 showHowTos();
@@ -306,36 +304,36 @@ public class MainActivity extends FragmentActivity {
     	// Songs context menu
     	if (v.getId() == R.id.songs_list) {
     		menu.setHeaderTitle("Song Menu");
-    		menu.add(Menu.NONE, MainStrings.EDIT_SONG, MainStrings.EDIT_SONG, R.string.cmenu_songs_edit);
-    		menu.add(Menu.NONE, MainStrings.EDIT_SONG_ATT, MainStrings.EDIT_SONG_ATT, R.string.cmenu_songs_edit_att);
-    		menu.add(Menu.NONE, MainStrings.DELETE_SONG, MainStrings.DELETE_SONG, R.string.cmenu_songs_delete);
-    		menu.add(Menu.NONE, MainStrings.ADD_SONG_SET, MainStrings.ADD_SONG_SET, R.string.cmenu_song_add_set);
-    		menu.add(Menu.NONE, MainStrings.ADD_SONG_CURR_SET, MainStrings.ADD_SONG_CURR_SET, R.string.cmenu_song_add_curr_set);
-    		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_ADD, MainStrings.SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
-    		menu.add(Menu.NONE, MainStrings.SONG_GROUPS_DEL, MainStrings.SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
-    		menu.add(Menu.NONE, MainStrings.SHARE_SONG, MainStrings.SHARE_SONG, R.string.cmenu_songs_share);
-    		menu.add(Menu.NONE, MainStrings.SONG_STATS, MainStrings.SONG_STATS, R.string.cmenu_songs_stats);
+    		menu.add(Menu.NONE, StaticVars.EDIT_SONG, StaticVars.EDIT_SONG, R.string.cmenu_songs_edit);
+    		menu.add(Menu.NONE, StaticVars.EDIT_SONG_ATT, StaticVars.EDIT_SONG_ATT, R.string.cmenu_songs_edit_att);
+    		menu.add(Menu.NONE, StaticVars.DELETE_SONG, StaticVars.DELETE_SONG, R.string.cmenu_songs_delete);
+    		menu.add(Menu.NONE, StaticVars.ADD_SONG_SET, StaticVars.ADD_SONG_SET, R.string.cmenu_song_add_set);
+    		menu.add(Menu.NONE, StaticVars.ADD_SONG_CURR_SET, StaticVars.ADD_SONG_CURR_SET, R.string.cmenu_song_add_curr_set);
+    		menu.add(Menu.NONE, StaticVars.SONG_GROUPS_ADD, StaticVars.SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
+    		menu.add(Menu.NONE, StaticVars.SONG_GROUPS_DEL, StaticVars.SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
+    		menu.add(Menu.NONE, StaticVars.SHARE_SONG, StaticVars.SHARE_SONG, R.string.cmenu_songs_share);
+    		menu.add(Menu.NONE, StaticVars.SONG_STATS, StaticVars.SONG_STATS, R.string.cmenu_songs_stats);
     	}
     	// Sets context menu
     	else if (v.getId() == R.id.sets_list) {
     		menu.setHeaderTitle("Sets Menu");
-    		menu.add(Menu.NONE, MainStrings.DELETE_SET, MainStrings.DELETE_SET, R.string.cmenu_sets_delete);
-    		menu.add(Menu.NONE, MainStrings.EDIT_SET, MainStrings.EDIT_SET, R.string.cmenu_sets_edit);
-    		menu.add(Menu.NONE, MainStrings.EDIT_SET_ATT, MainStrings.EDIT_SET_ATT, R.string.cmenu_sets_edit_att);
-    		menu.add(Menu.NONE, MainStrings.REORDER_SET, MainStrings.REORDER_SET, R.string.cmenu_sets_reorder);
-    		menu.add(Menu.NONE, MainStrings.SET_GROUPS_ADD, MainStrings.SET_GROUPS_ADD, R.string.cmenu_set_group_add);
-    		menu.add(Menu.NONE, MainStrings.SET_GROUPS_DEL, MainStrings.SET_GROUPS_DEL, R.string.cmenu_set_group_delete);
-    		menu.add(Menu.NONE, MainStrings.SHARE_SET, MainStrings.SHARE_SET, R.string.cmenu_sets_share);
+    		menu.add(Menu.NONE, StaticVars.DELETE_SET, StaticVars.DELETE_SET, R.string.cmenu_sets_delete);
+    		menu.add(Menu.NONE, StaticVars.EDIT_SET, StaticVars.EDIT_SET, R.string.cmenu_sets_edit);
+    		menu.add(Menu.NONE, StaticVars.EDIT_SET_ATT, StaticVars.EDIT_SET_ATT, R.string.cmenu_sets_edit_att);
+    		menu.add(Menu.NONE, StaticVars.REORDER_SET, StaticVars.REORDER_SET, R.string.cmenu_sets_reorder);
+    		menu.add(Menu.NONE, StaticVars.SET_GROUPS_ADD, StaticVars.SET_GROUPS_ADD, R.string.cmenu_set_group_add);
+    		menu.add(Menu.NONE, StaticVars.SET_GROUPS_DEL, StaticVars.SET_GROUPS_DEL, R.string.cmenu_set_group_delete);
+    		menu.add(Menu.NONE, StaticVars.SHARE_SET, StaticVars.SHARE_SET, R.string.cmenu_sets_share);
     	}
     	// Current Set context menu
     	else if (v.getId() == R.id.current_list) {
     		menu.setHeaderTitle("Current Set Menu");
-    		menu.add(Menu.NONE, MainStrings.EDIT_SONG_CS, MainStrings.EDIT_SONG_CS, R.string.cmenu_songs_edit);
-    		menu.add(Menu.NONE, MainStrings.EDIT_SONG_ATT_CS, MainStrings.EDIT_SONG_ATT_CS, R.string.cmenu_songs_edit_att);
-    		menu.add(Menu.NONE, MainStrings.SET_SONG_KEY_CS, MainStrings.SET_SONG_KEY_CS, R.string.cmenu_sets_set_song_key);
-    		menu.add(Menu.NONE, MainStrings.SHARE_SONG_CS, MainStrings.SHARE_SONG_CS, R.string.cmenu_songs_share);
-    		menu.add(Menu.NONE, MainStrings.REMOVE_SONG_FROM_SET, MainStrings.REMOVE_SONG_FROM_SET, R.string.cmenu_sets_remove_song);
-    		menu.add(Menu.NONE, MainStrings.SONG_STATS_CS, MainStrings.SONG_STATS_CS, R.string.cmenu_songs_stats);
+    		menu.add(Menu.NONE, StaticVars.EDIT_SONG_CS, StaticVars.EDIT_SONG_CS, R.string.cmenu_songs_edit);
+    		menu.add(Menu.NONE, StaticVars.EDIT_SONG_ATT_CS, StaticVars.EDIT_SONG_ATT_CS, R.string.cmenu_songs_edit_att);
+    		menu.add(Menu.NONE, StaticVars.SET_SONG_KEY_CS, StaticVars.SET_SONG_KEY_CS, R.string.cmenu_sets_set_song_key);
+    		menu.add(Menu.NONE, StaticVars.SHARE_SONG_CS, StaticVars.SHARE_SONG_CS, R.string.cmenu_songs_share);
+    		menu.add(Menu.NONE, StaticVars.REMOVE_SONG_FROM_SET, StaticVars.REMOVE_SONG_FROM_SET, R.string.cmenu_sets_remove_song);
+    		menu.add(Menu.NONE, StaticVars.SONG_STATS_CS, StaticVars.SONG_STATS_CS, R.string.cmenu_songs_stats);
     	}
     }
     
@@ -352,39 +350,39 @@ public class MainActivity extends FragmentActivity {
     	AlertDialog.Builder alert;
     	
     	switch (item.getItemId()) {
-    		case MainStrings.DELETE_SONG:
+    		case StaticVars.DELETE_SONG:
     			// Get the song name and delete it
 				songName = songsList.get(info.position).getName();
                 deleteSong(songName);
             	
                 return true;
-    		case MainStrings.EDIT_SONG:
+    		case StaticVars.EDIT_SONG:
     			// Get the song name
     			final String editSongName = songsList.get(info.position).getName();
     			final String editSongFile = ((SongItem)songsList.get(info.position)).getSongFile();
     			
     			// Create the edit activity intent
             	i = new Intent(getBaseContext(), EditSongRawActivity.class);
-                i.putExtra(MainStrings.SONG_NAME_KEY, editSongName);
-                i.putExtra(MainStrings.SONG_FILE_KEY, editSongFile);
+                i.putExtra(StaticVars.SONG_NAME_KEY, editSongName);
+                i.putExtra(StaticVars.SONG_FILE_KEY, editSongFile);
                 
                 // Start the activity
                 startActivity(i);
                 return true;
-    		case MainStrings.EDIT_SONG_CS:
+    		case StaticVars.EDIT_SONG_CS:
     			// Get the song name
     			final String editSongCSName = currSetList.get(info.position).getName();
     			final String editSongCSFile = ((SongItem)currSetList.get(info.position)).getSongFile();
     		
     			// Create the edit activity intent
             	i = new Intent(getBaseContext(), EditSongRawActivity.class);
-                i.putExtra(MainStrings.SONG_NAME_KEY, editSongCSName);
-                i.putExtra(MainStrings.SONG_FILE_KEY, editSongCSFile);
+                i.putExtra(StaticVars.SONG_NAME_KEY, editSongCSName);
+                i.putExtra(StaticVars.SONG_FILE_KEY, editSongCSFile);
                 
                 // Start the activity
                 startActivity(i);
                 return true;
-    		case MainStrings.EDIT_SONG_ATT:
+    		case StaticVars.EDIT_SONG_ATT:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
                     
@@ -392,7 +390,7 @@ public class MainActivity extends FragmentActivity {
     			editSongAtt(songName);
     			
                 return true;
-    		case MainStrings.EDIT_SONG_ATT_CS:
+    		case StaticVars.EDIT_SONG_ATT_CS:
     			// Get the song name
     			songName = currSetList.get(info.position).getName();
                     
@@ -400,7 +398,7 @@ public class MainActivity extends FragmentActivity {
     			editSongAtt(songName);
     			
                 return true;
-    		case MainStrings.SHARE_SONG:
+    		case StaticVars.SHARE_SONG:
     			// Get the song name
     			songI = (SongItem)songsList.get(info.position);
     			
@@ -408,7 +406,7 @@ public class MainActivity extends FragmentActivity {
     			shareSong(songI);
     			
     			return true;
-    		case MainStrings.SHARE_SONG_CS:
+    		case StaticVars.SHARE_SONG_CS:
     			// Get the song name
     			songI = (SongItem)currSetList.get(info.position);
     			
@@ -416,14 +414,14 @@ public class MainActivity extends FragmentActivity {
     			shareSong(songI);
     			
     			return true;
-    		case MainStrings.SET_SONG_KEY_CS:
+    		case StaticVars.SET_SONG_KEY_CS:
     			songI = (SongItem)currSetList.get(info.position);
     			setName = dbAdapter.getCurrentSetName();
     			
     			setSongKeyForSet(setName, songI);
     			
     			return true;
-    		case MainStrings.REMOVE_SONG_FROM_SET:
+    		case StaticVars.REMOVE_SONG_FROM_SET:
     			// Get the set name and song name
     			songName = currSetList.get(info.position).getName();
     			setName = dbAdapter.getCurrentSetName();
@@ -455,7 +453,7 @@ public class MainActivity extends FragmentActivity {
     	    	alert.show();
     	    	
     			return true;
-    		case MainStrings.ADD_SONG_SET:
+    		case StaticVars.ADD_SONG_SET:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
     			
@@ -463,7 +461,7 @@ public class MainActivity extends FragmentActivity {
     			addSongToSet(songName);
     			
     			return true;
-    		case MainStrings.ADD_SONG_CURR_SET:
+    		case StaticVars.ADD_SONG_CURR_SET:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
     			
@@ -471,7 +469,7 @@ public class MainActivity extends FragmentActivity {
     			addSongToCurrentSet(songName);
     			
     			return true;
-    		case MainStrings.SONG_STATS:
+    		case StaticVars.SONG_STATS:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
     			
@@ -479,7 +477,7 @@ public class MainActivity extends FragmentActivity {
     			showSongStats(songName);
     			
     			return true;
-    		case MainStrings.SONG_STATS_CS:
+    		case StaticVars.SONG_STATS_CS:
     			// Get the song name
     			songName = currSetList.get(info.position).getName();
     			
@@ -487,7 +485,7 @@ public class MainActivity extends FragmentActivity {
     			showSongStats(songName);
     			
     			return true;
-    		case MainStrings.SONG_GROUPS_ADD:
+    		case StaticVars.SONG_GROUPS_ADD:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
     			
@@ -495,7 +493,7 @@ public class MainActivity extends FragmentActivity {
     			addSongToGroup(songName);
     			
     			return true;
-    		case MainStrings.SONG_GROUPS_DEL:
+    		case StaticVars.SONG_GROUPS_DEL:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
     			
@@ -511,14 +509,14 @@ public class MainActivity extends FragmentActivity {
     				Toast.makeText(getBaseContext(), "Cannot remove song from " + SongsTab.ALL_SONGS_LABEL + " group", Toast.LENGTH_LONG).show();
     			
     			return true;
-    		case MainStrings.DELETE_SET:
+    		case StaticVars.DELETE_SET:
     			// Get the set selected
             	setName = setsList.get(info.position).getName();
             	
             	// Delete the set
                 deleteSet(setName);
                 return true;
-    		case MainStrings.REORDER_SET:
+    		case StaticVars.REORDER_SET:
     			// Get the set selected
     			setName = setsList.get(info.position).getName();
 
@@ -526,14 +524,14 @@ public class MainActivity extends FragmentActivity {
                 reorderSet(setName);
 
             	return true;
-    		case MainStrings.EDIT_SET:
+    		case StaticVars.EDIT_SET:
     			// Get the set selected
     			setName = setsList.get(info.position).getName();
             	
             	// Show the dialog to edit songs
             	updateSetSongs(setName);
             	return true;
-    		case MainStrings.EDIT_SET_ATT:
+    		case StaticVars.EDIT_SET_ATT:
     			// Get the set selected
     			setName = setsList.get(info.position).getName();
             	
@@ -541,14 +539,14 @@ public class MainActivity extends FragmentActivity {
             	editSetAtt(setName);
             	
             	return true;
-    		case MainStrings.SHARE_SET:
+    		case StaticVars.SHARE_SET:
     			// Get the song name
     			setI = (SetItem)setsList.get(info.position);
     			
     			// Email the song
     			shareSet(setI);
     			return true;
-    		case MainStrings.SET_GROUPS_ADD:
+    		case StaticVars.SET_GROUPS_ADD:
     			// Get the song name
     			setName = setsList.get(info.position).getName();
     			
@@ -556,7 +554,7 @@ public class MainActivity extends FragmentActivity {
     			addSetToGroup(setName);
     			
     			return true;
-    		case MainStrings.SET_GROUPS_DEL:
+    		case StaticVars.SET_GROUPS_DEL:
     			// Get the song name
     			setName = setsList.get(info.position).getName();
     			
@@ -628,37 +626,37 @@ public class MainActivity extends FragmentActivity {
         int resultCode, final Intent data) {
 
         if (resultCode == Activity.RESULT_OK) {
-        	String activityType = data.getStringExtra(MainStrings.ACTIVITY_RESPONSE_TYPE);
+        	String activityType = data.getStringExtra(StaticVars.ACTIVITY_RESPONSE_TYPE);
         	
         	// If returning from an import song activity
-        	if (activityType.equals(MainStrings.IMPORT_SONG_ACTIVITY)) {
+        	if (activityType.equals(StaticVars.IMPORT_SONG_ACTIVITY)) {
 	            importFilePath = data.getStringExtra(OpenFile.RESULT_PATH);
 	            createSong();
         	}
         	// If returning from an import database activity
-        	else if (activityType.equals(MainStrings.IMPORT_DB_ACTIVITY)) {
+        	else if (activityType.equals(StaticVars.IMPORT_DB_ACTIVITY)) {
         		String filePath = data.getStringExtra(OpenFile.RESULT_PATH);
         		importFile(filePath, true, "This will erase all data currently in your database.  Do you want to continue?");
         	}
             // If returning from an import set activity
-            else if (activityType.equals(MainStrings.IMPORT_SET_ACTIVITY)) {
+            else if (activityType.equals(StaticVars.IMPORT_SET_ACTIVITY)) {
                 String filePath = data.getStringExtra(OpenFile.RESULT_PATH);
                 importFile(filePath, false, "Are you sure you want to import \"" + filePath + "\"");
             }
         	// If returning from an export database activity
-        	else if (activityType.equals(MainStrings.EXPORT_DB_ACTIVITY)) {
+        	else if (activityType.equals(StaticVars.EXPORT_DB_ACTIVITY)) {
         		String folder = data.getStringExtra(OpenFile.RESULT_PATH);
         		exportAll(folder);
         	}
             // If returning from an export set activity
-            else if (activityType.equals(MainStrings.EXPORT_SET_ACTIVITY)) {
+            else if (activityType.equals(StaticVars.EXPORT_SET_ACTIVITY)) {
                 String folder = data.getStringExtra(OpenFile.RESULT_PATH);
                 exportSet(folder);
             }
         	// If returning from the reorder activity
-        	else if (activityType.equals(MainStrings.REORDER_ACTIVITY)) {
-        		String[] newOrder = data.getStringArrayExtra(MainStrings.SET_SONGS_KEY);
-        		String setName = data.getStringExtra(MainStrings.SET_NAME_KEY);
+        	else if (activityType.equals(StaticVars.REORDER_ACTIVITY)) {
+        		String[] newOrder = data.getStringArrayExtra(StaticVars.SET_SONGS_KEY);
+        		String setName = data.getStringExtra(StaticVars.SET_NAME_KEY);
         		
         		if(!dbAdapter.reorderSet(setName, newOrder)) {
         			Toast.makeText(getApplicationContext(), "Could not update set order!", Toast.LENGTH_LONG).show();
@@ -684,7 +682,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
-            case MainStrings.PERMISSIONS_BACKUP_IMPORT:
+            case StaticVars.PERMISSIONS_BACKUP_IMPORT:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
                     executePermReqFunction(requestCode);
@@ -717,24 +715,24 @@ public class MainActivity extends FragmentActivity {
     	try {
 			message.append(getString(R.string.full_app_name) + " v" + 
 					getPackageManager().getPackageInfo(getPackageName(), 0).versionName +
-					MainStrings.EOL);
+					StaticVars.EOL);
 		} catch (NameNotFoundException e) {
-			message.append(getString(R.string.full_app_name) + MainStrings.EOL);
+			message.append(getString(R.string.full_app_name) + StaticVars.EOL);
 		}
-    	message.append("Database Version " + DBStrings.DATABASE_VERSION + MainStrings.EOL);
-    	message.append(MainStrings.EOL);
-    	message.append("Truth Gaming & Saved By Grace Software" + MainStrings.EOL);
-    	message.append("Pittsburgh, PA" + MainStrings.EOL);
-    	message.append("http://truthgaming.net" + MainStrings.EOL);
-    	message.append(MainStrings.EOL);
+    	message.append("Database Version " + DBStrings.DATABASE_VERSION + StaticVars.EOL);
+    	message.append(StaticVars.EOL);
+    	message.append("Truth Gaming & Saved By Grace Software" + StaticVars.EOL);
+    	message.append("Pittsburgh, PA" + StaticVars.EOL);
+    	message.append("http://truthgaming.net" + StaticVars.EOL);
+    	message.append(StaticVars.EOL);
     	message.append("Virtual SongBook is designed to allow you to carry all of your guitar music with you wherever " + 
     			"you go on your Android phone or tablet. It also allows you to create sets of songs for performances, gigs " +
-    			"or worship. If you have any problems or questions please send us an email.  God Bless!!" + MainStrings.EOL);
-    	message.append(MainStrings.EOL);
+    			"or worship. If you have any problems or questions please send us an email.  God Bless!!" + StaticVars.EOL);
+    	message.append(StaticVars.EOL);
     	start = message.length();
     	message.append("\"For by grace you have been saved through faith. And this is not your own doing; it is the gift of God, " +
     			"not a result of works so that no one may boast." +
-    			MainStrings.EOL + "-Ephesians 2:8-9");
+    			StaticVars.EOL + "-Ephesians 2:8-9");
     	end = message.length();
     	italics = new StyleSpan(Typeface.ITALIC);
     	smallFont = new RelativeSizeSpan(0.75f);
@@ -781,21 +779,21 @@ public class MainActivity extends FragmentActivity {
                 // Build the instructions to show
                 switch (whichItem) {
                     case 0:     // Create a set
-                        instructions = MainStrings.howToCreateSet;
+                        instructions = StaticVars.howToCreateSet;
                         break;
                     case 1:     // Add songs to a set
                         // Add the special note to the message
                         message.append("<i>*If you don't have a song in your list already you will need to import it</i><br /><br />");
-                        instructions = MainStrings.howToAddSongToSet;
+                        instructions = StaticVars.howToAddSongToSet;
                         break;
                     case 2:     // Import a song
-                        instructions = MainStrings.howToImportSong;
+                        instructions = StaticVars.howToImportSong;
                         break;
                     case 3:     // Change the order of songs in a set
-                        instructions = MainStrings.howToOrderSongs;
+                        instructions = StaticVars.howToOrderSongs;
                         break;
                     case 4:     // Change the key a song uses in a set
-                        instructions = MainStrings.howToChangeSetKey;
+                        instructions = StaticVars.howToChangeSetKey;
                         break;
                 }
 
@@ -873,20 +871,20 @@ public class MainActivity extends FragmentActivity {
      */
     private void executePermReqFunction (int permissionRequestType) {
         switch (permissionRequestType) {
-            case MainStrings.PERMISSIONS_BACKUP_IMPORT:
-                selectImportFile(MainStrings.IMPORT_DB_ACTIVITY);
+            case StaticVars.PERMISSIONS_BACKUP_IMPORT:
+                selectImportFile(StaticVars.IMPORT_DB_ACTIVITY);
                 break;
-            case MainStrings.PERMISSIONS_BACKUP_EXPORT:
-                selectExportFolder(MainStrings.EXPORT_DB_ACTIVITY);
+            case StaticVars.PERMISSIONS_BACKUP_EXPORT:
+                selectExportFolder(StaticVars.EXPORT_DB_ACTIVITY);
                 break;
-            case MainStrings.PERMISSIONS_SONG_IMPORT:
+            case StaticVars.PERMISSIONS_SONG_IMPORT:
                 importSong();
                 break;
-            case MainStrings.PERMISSIONS_SET_EXPORT:
-                selectExportFolder(MainStrings.EXPORT_SET_ACTIVITY);
+            case StaticVars.PERMISSIONS_SET_EXPORT:
+                selectExportFolder(StaticVars.EXPORT_SET_ACTIVITY);
                 break;
-            case MainStrings.PERMISSIONS_SET_IMPORT:
-                selectImportFile(MainStrings.IMPORT_SET_ACTIVITY);
+            case StaticVars.PERMISSIONS_SET_IMPORT:
+                selectImportFile(StaticVars.IMPORT_SET_ACTIVITY);
                 break;
             default:
                 break;
@@ -1488,7 +1486,7 @@ public class MainActivity extends FragmentActivity {
      * @param setItem The set to email
      * @param songFileType The type of sharing, (txt, pro, pdf)
      */
-    private void emailSet(SetItem setItem, MainStrings.SongFileType songFileType) {
+    private void emailSet(SetItem setItem, StaticVars.SongFileType songFileType) {
 		String setDate = setItem.getDate();
 		ArrayList<Uri> uris = new ArrayList<Uri>();
 		
@@ -1546,7 +1544,7 @@ public class MainActivity extends FragmentActivity {
      * @param setItem The set to save
      * @param songFileType The type of sharing, (txt, pro, pdf)
      */
-    private void saveSet(final SetItem setItem, final MainStrings.SongFileType songFileType) {
+    private void saveSet(final SetItem setItem, final StaticVars.SongFileType songFileType) {
     	// For each song in the set
     	for (SongItem songItem : setItem.songs) {
 			saveSong(songItem, songFileType, songItem.getSetKey(), false);
@@ -1611,7 +1609,7 @@ public class MainActivity extends FragmentActivity {
                 // Export
                 else if (options[whichItem] == getString(R.string.cmenu_sets_share_export)) {
                     setToExport = setItem;
-                    permissionRequiredFunction(MainStrings.PERMISSIONS_SET_EXPORT);
+                    permissionRequiredFunction(StaticVars.PERMISSIONS_SET_EXPORT);
                 }
     		}
     	});
@@ -1640,8 +1638,8 @@ public class MainActivity extends FragmentActivity {
 
         // Edit the set
         Intent i = new Intent(getBaseContext(), DragNDropListActivity.class);
-        i.putExtra(MainStrings.SET_SONGS_KEY, setSongs);
-        i.putExtra(MainStrings.SET_NAME_KEY, setName);
+        i.putExtra(StaticVars.SET_SONGS_KEY, setSongs);
+        i.putExtra(StaticVars.SET_NAME_KEY, setName);
         startActivityForResult(i, 1);
     }
     //endregion
@@ -1683,7 +1681,7 @@ public class MainActivity extends FragmentActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		// Get the user inputs
 	    		String songName = songNameET.getText().toString();
-	    		String songAuthor = MainStrings.UNKNOWN;
+	    		String songAuthor = StaticVars.UNKNOWN;
 	    		String songKey = "";
 	    		if (authorET.getText().length() > 0)
 	    			songAuthor = authorET.getText().toString().trim();
@@ -1695,7 +1693,7 @@ public class MainActivity extends FragmentActivity {
 	    		// Check for a correct key
                 if (!isValidKey(songKey)) {
                     Toast.makeText(getBaseContext(), "That is not a valid key!" +
-                            MainStrings.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
+                            StaticVars.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -2028,7 +2026,7 @@ public class MainActivity extends FragmentActivity {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Delete All?!");
-    	alert.setMessage("Are you sure you want to delete ALL songs???" + MainStrings.EOL +
+    	alert.setMessage("Are you sure you want to delete ALL songs???" + StaticVars.EOL +
     			"This will delete all sets as well...");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -2192,7 +2190,7 @@ public class MainActivity extends FragmentActivity {
                     // Show the song activity
                     SongActivity songA = new SongActivity();
                     Intent showSong = new Intent(v.getContext(), songA.getClass());
-                    showSong.putExtra(MainStrings.SONG_ITEM_KEY, (Parcelable) song);
+                    showSong.putExtra(StaticVars.SONG_ITEM_KEY, (Parcelable) song);
                     startActivity(showSong);
 
                 } catch (FileNotFoundException e) {
@@ -2217,8 +2215,8 @@ public class MainActivity extends FragmentActivity {
     private void importSong() {
         // Create the open file intent
         Intent intent = new Intent(getBaseContext(), OpenFile.class);
-        intent.putExtra(MainStrings.FILE_ACTIVITY_KEY, MainStrings.IMPORT_SONG_ACTIVITY);
-        intent.putExtra(MainStrings.FILE_ACTIVITY_TYPE_KEY, MainStrings.FILE_ACTIVITY_FILE);
+        intent.putExtra(StaticVars.FILE_ACTIVITY_KEY, StaticVars.IMPORT_SONG_ACTIVITY);
+        intent.putExtra(StaticVars.FILE_ACTIVITY_TYPE_KEY, StaticVars.FILE_ACTIVITY_FILE);
         
         // Start the activity
         startActivityForResult(intent, 1);
@@ -2283,26 +2281,20 @@ public class MainActivity extends FragmentActivity {
 	    		// Check for a correct key
                 if (!isValidKey(key)) {
                     Toast.makeText(getBaseContext(), "That is not a valid key!" +
-                            MainStrings.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
+                            StaticVars.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 // Check for bpm populated
-                int bpm = -1;
+                int bpm = 0;
                 try {
                     bpm = Integer.parseInt(bpmET.getText().toString());
-                } catch (NumberFormatException nfe) { }
+                } catch (NumberFormatException nfe) {  }
 
                 // Update the song in the database
-                if (bpm != -1) {
-                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
-                            authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
-                            linkET.getText().toString(), bpm);
-                } else {
-                    dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
-                            authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
-                            linkET.getText().toString());
-                }
+                dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
+                    authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
+                    linkET.getText().toString(), bpm);
 	    		
 	    		// Refresh the song list
 				fillSongsListView();
@@ -2325,7 +2317,7 @@ public class MainActivity extends FragmentActivity {
      * Emails the song
      * @param songName The song to email
      */
-    private void emailSong(SongItem songItem, MainStrings.SongFileType songFileType, String newSongKey) {
+    private void emailSong(SongItem songItem, StaticVars.SongFileType songFileType, String newSongKey) {
 		// Create the email intent
     	Intent i = new Intent(android.content.Intent.ACTION_SEND);
 		i.setType("text/Message");
@@ -2380,7 +2372,7 @@ public class MainActivity extends FragmentActivity {
      * Saves the song
      * @param songName The song to save
      */
-    private File saveSong(final SongItem songItem, final MainStrings.SongFileType songFileType, String newSongKey, boolean showToast) {
+    private File saveSong(final SongItem songItem, final StaticVars.SongFileType songFileType, String newSongKey, boolean showToast) {
 		// Craft the file name
 		String fileName = songItem.getName() + " - " + songItem.getAuthor();
 		if (newSongKey == "" || songFileType == SongFileType.chordPro)
@@ -2497,17 +2489,17 @@ public class MainActivity extends FragmentActivity {
     			dialog.dismiss();
     			
     			// Create the key array
-	    		CharSequence[] keys = MainStrings.songKeys.toArray(new CharSequence[MainStrings.songKeys.size() + 1]);
-	    		keys[MainStrings.songKeys.size()] = "Original Key";
+	    		CharSequence[] keys = StaticVars.songKeys.toArray(new CharSequence[StaticVars.songKeys.size() + 1]);
+	    		keys[StaticVars.songKeys.size()] = "Original Key";
 	    	
 	    		AlertDialog.Builder keysAlert;
 	    		
 	    		// Email, plain text
 	    		if (options[whichItem] == getString(R.string.cmenu_songs_share_email)) {
 	    			// Check for a special key
-    		    	if (MainStrings.keyMap.containsKey(songItem.getKey())) {
+    		    	if (StaticVars.keyMap.containsKey(songItem.getKey())) {
     		    		// Set the song key to the associated key
-    		    		songItem.setKey(MainStrings.keyMap.get(songItem.getKey()));
+    		    		songItem.setKey(StaticVars.keyMap.get(songItem.getKey()));
     		    	}
     		    	
     	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
@@ -2517,13 +2509,13 @@ public class MainActivity extends FragmentActivity {
     	        		public void onClick (DialogInterface dialog, int whichItem) {
     	        			// Set the new song key
     	        			String newSongKey = "";
-    	        			if (whichItem < MainStrings.songKeys.size()) {
-    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+    	        			if (whichItem < StaticVars.songKeys.size()) {
+    	        				newSongKey = StaticVars.songKeys.get(whichItem);
     	        			}
     	        			
     	        			// Check to make sure the song has a proper key
-    	        	    	if (MainStrings.songKeys.contains(songItem.getKey()))
-    	        	    		emailSong(songItem, MainStrings.SongFileType.plainText, newSongKey);
+    	        	    	if (StaticVars.songKeys.contains(songItem.getKey()))
+    	        	    		emailSong(songItem, StaticVars.SongFileType.plainText, newSongKey);
     	        		}
     	        	});
     	        	
@@ -2531,14 +2523,14 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		// Email, chordpro
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_email_cp)) {
-	    			emailSong(songItem, MainStrings.SongFileType.chordPro, "");
+	    			emailSong(songItem, StaticVars.SongFileType.chordPro, "");
 	    		}
 	    		// Email, PDF
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_email_pdf)) {
 	    			// Check for a special key
-    		    	if (MainStrings.keyMap.containsKey(songItem.getKey())) {
+    		    	if (StaticVars.keyMap.containsKey(songItem.getKey())) {
     		    		// Set the song key to the associated key
-    		    		songItem.setKey(MainStrings.keyMap.get(songItem.getKey()));
+    		    		songItem.setKey(StaticVars.keyMap.get(songItem.getKey()));
     		    	}
     		    	
     	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
@@ -2548,13 +2540,13 @@ public class MainActivity extends FragmentActivity {
     	        		public void onClick (DialogInterface dialog, int whichItem) {
     	        			// Set the new song key
     	        			String newSongKey = "";
-    	        			if (whichItem < MainStrings.songKeys.size()) {
-    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+    	        			if (whichItem < StaticVars.songKeys.size()) {
+    	        				newSongKey = StaticVars.songKeys.get(whichItem);
     	        			}
     	        			
     	        			// Check to make sure the song has a proper key
-    	        	    	if (MainStrings.songKeys.contains(songItem.getKey()))
-    	        	    		emailSong(songItem, MainStrings.SongFileType.PDF, newSongKey);
+    	        	    	if (StaticVars.songKeys.contains(songItem.getKey()))
+    	        	    		emailSong(songItem, StaticVars.SongFileType.PDF, newSongKey);
     	        		}
     	        	});
     	        	
@@ -2563,9 +2555,9 @@ public class MainActivity extends FragmentActivity {
 	    		// Save, plain text
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save)) {
 	    			// Check for a special key
-    		    	if (MainStrings.keyMap.containsKey(songItem.getKey())) {
+    		    	if (StaticVars.keyMap.containsKey(songItem.getKey())) {
     		    		// Set the song key to the associated key
-    		    		songItem.setKey(MainStrings.keyMap.get(songItem.getKey()));
+    		    		songItem.setKey(StaticVars.keyMap.get(songItem.getKey()));
     		    	}
     	    		
     		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
@@ -2575,13 +2567,13 @@ public class MainActivity extends FragmentActivity {
     	        		public void onClick (DialogInterface dialog, int whichItem) {
     	        			// Set the new song key
     	        			String newSongKey = "";
-    	        			if (whichItem < MainStrings.songKeys.size()) {
-    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+    	        			if (whichItem < StaticVars.songKeys.size()) {
+    	        				newSongKey = StaticVars.songKeys.get(whichItem);
     	        			}
     	        			
     	        			// Check to make sure the song has a proper key
-    	        	    	if (MainStrings.songKeys.contains(songItem.getKey()))
-    	        	    		saveSong(songItem, MainStrings.SongFileType.plainText, newSongKey, true);
+    	        	    	if (StaticVars.songKeys.contains(songItem.getKey()))
+    	        	    		saveSong(songItem, StaticVars.SongFileType.plainText, newSongKey, true);
     	        		}
     	        	});
     	        	
@@ -2589,14 +2581,14 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		// Save, chordpro
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save_cp)) {
-	    			saveSong(songItem, MainStrings.SongFileType.chordPro, "", true);
+	    			saveSong(songItem, StaticVars.SongFileType.chordPro, "", true);
 	    		}
 	    		// Save, PDF
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save_pdf)) {
 	    			// Check for a special key
-    		    	if (MainStrings.keyMap.containsKey(songItem.getKey())) {
+    		    	if (StaticVars.keyMap.containsKey(songItem.getKey())) {
     		    		// Set the song key to the associated key
-    		    		songItem.setKey(MainStrings.keyMap.get(songItem.getKey()));
+    		    		songItem.setKey(StaticVars.keyMap.get(songItem.getKey()));
     		    	}
     	    		
     		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
@@ -2606,13 +2598,13 @@ public class MainActivity extends FragmentActivity {
     	        		public void onClick (DialogInterface dialog, int whichItem) {
     	        			// Set the new song key
     	        			String newSongKey = "";
-    	        			if (whichItem < MainStrings.songKeys.size()) {
-    	        				newSongKey = MainStrings.songKeys.get(whichItem);
+    	        			if (whichItem < StaticVars.songKeys.size()) {
+    	        				newSongKey = StaticVars.songKeys.get(whichItem);
     	        			}
     	        			
     	        			// Check to make sure the song has a proper key
-    	        	    	if (MainStrings.songKeys.contains(songItem.getKey()))
-    	        	    		saveSong(songItem, MainStrings.SongFileType.PDF, newSongKey, true);
+    	        	    	if (StaticVars.songKeys.contains(songItem.getKey()))
+    	        	    		saveSong(songItem, StaticVars.SongFileType.PDF, newSongKey, true);
     	        		}
     	        	});
     	        	
@@ -2709,8 +2701,8 @@ public class MainActivity extends FragmentActivity {
      */
     private void setSongKeyForSet(final String setName, final SongItem songI) {
     	// Create the key array
-		CharSequence[] keys = MainStrings.songKeys.toArray(new CharSequence[MainStrings.songKeys.size() + 1]);
-		keys[MainStrings.songKeys.size()] = "Original Key";
+		CharSequence[] keys = StaticVars.songKeys.toArray(new CharSequence[StaticVars.songKeys.size() + 1]);
+		keys[StaticVars.songKeys.size()] = "Original Key";
 		
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -2718,8 +2710,8 @@ public class MainActivity extends FragmentActivity {
     	alert.setItems(keys, new OnClickListener() {
     		public void onClick (DialogInterface dialog, int whichItem) {
     			// Set the new song key for the set
-    			if (whichItem < MainStrings.songKeys.size())
-    				dbAdapter.setSongKeyForSet(setName, songI.getName(), MainStrings.songKeys.get(whichItem));
+    			if (whichItem < StaticVars.songKeys.size())
+    				dbAdapter.setSongKeyForSet(setName, songI.getName(), StaticVars.songKeys.get(whichItem));
     			
     			// Refresh current set list
     			fillCurrentSetListView();
@@ -2746,7 +2738,7 @@ public class MainActivity extends FragmentActivity {
     	
     	// Show last 5 uses
     	message.append("Last 5 Uses: ");
-    	message.append(MainStrings.EOL);
+    	message.append(StaticVars.EOL);
     	
     	Cursor c = dbAdapter.getSongLastFive(songName);
     	c.moveToFirst(); 
@@ -2758,18 +2750,18 @@ public class MainActivity extends FragmentActivity {
     		setDate = datesplit[1] + "/" + datesplit[2] + "/" + datesplit[0];
     		
     		message.append("\t" + setName + ", " + setDate);
-        	message.append(MainStrings.EOL);
+        	message.append(StaticVars.EOL);
         	c.moveToNext();
     	}
     	c.close();
-    	message.append(MainStrings.EOL);
+    	message.append(StaticVars.EOL);
     	
     	// Show total usage
     	message.append("Total Usage in Sets: ");
     	float percent = dbAdapter.getSongTotalUsage(songName);
     	message.append(String.format("%.2f", percent) + "%");
-    	message.append(MainStrings.EOL);
-    	message.append(MainStrings.EOL);
+    	message.append(StaticVars.EOL);
+    	message.append(StaticVars.EOL);
     	
     	// Show group membership
     	message.append("Member of Song Groups: ");
@@ -2779,13 +2771,13 @@ public class MainActivity extends FragmentActivity {
 	    	c.moveToFirst();
 	    	while(!c.isAfterLast()) {
 	    		String songGroupName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
-	    		message.append(MainStrings.EOL);
+	    		message.append(StaticVars.EOL);
 	    		message.append("\t" + songGroupName);
 	        	c.moveToNext();
 	    	}
 	    	c.close();
     	} else {
-    		message.append(MainStrings.EOL);
+    		message.append(StaticVars.EOL);
     		message.append("\tNo Groups");
     	}
     	
@@ -2810,7 +2802,7 @@ public class MainActivity extends FragmentActivity {
         boolean ret = true;
 
         // Check for a correct key
-        if (songKey.isEmpty() || (!MainStrings.keyMap.containsKey(songKey) && !MainStrings.songKeys.contains(songKey))) {
+        if (songKey.isEmpty() || (!StaticVars.keyMap.containsKey(songKey) && !StaticVars.songKeys.contains(songKey))) {
             ret = false;
         }
 
@@ -2900,8 +2892,8 @@ public class MainActivity extends FragmentActivity {
             	// Show the set activity
             	SetActivity set = new SetActivity();
             	Intent showSet = new Intent(v.getContext(), set.getClass());
-            	showSet.putExtra(MainStrings.CURRENT_SONG_KEY, position);
-            	showSet.putExtra(MainStrings.SET_SONGS_KEY, setItem);
+            	showSet.putExtra(StaticVars.CURRENT_SONG_KEY, position);
+            	showSet.putExtra(StaticVars.SET_SONGS_KEY, setItem);
                 startActivity(showSet);
             }
     	});
@@ -3430,7 +3422,7 @@ public class MainActivity extends FragmentActivity {
      */
     public void fillSetSortSpinner() {
     	// Create the spinner adapter
-    	setSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, MainStrings.setSortBy);
+    	setSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, StaticVars.setSortBy);
     	setSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
     	final Spinner sortSpinner = (Spinner) findViewById(R.id.set_sort_spinner);
     	
@@ -3455,7 +3447,7 @@ public class MainActivity extends FragmentActivity {
      */
     public void fillSongSortSpinner() {
     	// Create the spinner adapter
-    	songSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, MainStrings.songSortBy);
+    	songSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, StaticVars.songSortBy);
     	songSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
     	final Spinner sortSpinner = (Spinner) findViewById(R.id.song_sort_spinner);
     	
@@ -3577,8 +3569,8 @@ public class MainActivity extends FragmentActivity {
     private void selectExportFolder(String activityKey) {
     	// Create the open file intent
         Intent intent = new Intent(getBaseContext(), OpenFile.class);
-        intent.putExtra(MainStrings.FILE_ACTIVITY_KEY, activityKey);
-        intent.putExtra(MainStrings.FILE_ACTIVITY_TYPE_KEY, MainStrings.FILE_ACTIVITY_FOLDER);
+        intent.putExtra(StaticVars.FILE_ACTIVITY_KEY, activityKey);
+        intent.putExtra(StaticVars.FILE_ACTIVITY_TYPE_KEY, StaticVars.FILE_ACTIVITY_FOLDER);
         
         // Start the activity
         startActivityForResult(intent, 1);
@@ -3588,7 +3580,7 @@ public class MainActivity extends FragmentActivity {
      * Exports all songbook files and db
      */
     private void exportAll(String folder) {
-    	final String exportZipLocation = folder + "/" + MainStrings.EXPORT_ZIP_FILE;
+    	final String exportZipLocation = folder + "/" + StaticVars.EXPORT_ZIP_FILE;
     	
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -3602,7 +3594,7 @@ public class MainActivity extends FragmentActivity {
 
                 try {
                     // Store the backup script in the app files folder
-                    FileOutputStream out = openFileOutput(MainStrings.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
+                    FileOutputStream out = openFileOutput(StaticVars.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
                     out.write(exportSQLData.getBytes());
                     out.close();
 
@@ -3620,7 +3612,7 @@ public class MainActivity extends FragmentActivity {
                         Toast.makeText(getBaseContext(), "There was an error backing up your data. Please try again.", Toast.LENGTH_LONG).show();
 
                     // Delete the backup script
-                    deleteFile(MainStrings.EXPORT_SQL_FILE);
+                    deleteFile(StaticVars.EXPORT_SQL_FILE);
                 } catch (Exception e) {
                     Toast.makeText(getBaseContext(), "Could not write db file!", Toast.LENGTH_LONG).show();
                 }
@@ -3654,7 +3646,7 @@ public class MainActivity extends FragmentActivity {
 
             try {
                 // Store the backup script in the app files folder
-                FileOutputStream out = openFileOutput(MainStrings.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
+                FileOutputStream out = openFileOutput(StaticVars.EXPORT_SQL_FILE, Context.MODE_PRIVATE);
                 out.write(exportSQLData.getBytes());
                 out.close();
 
@@ -3673,7 +3665,7 @@ public class MainActivity extends FragmentActivity {
                 }
 
                 // Add the sql file to the list
-                files.add(getFilesDir() + "/" + MainStrings.EXPORT_SQL_FILE);
+                files.add(getFilesDir() + "/" + StaticVars.EXPORT_SQL_FILE);
 
                 // Zip the files and save to the external storage
                 String[] filesToZip = files.toArray(new String[0]);
@@ -3704,8 +3696,8 @@ public class MainActivity extends FragmentActivity {
     private void selectImportFile(String activityKey) {
     	// Create the open file intent
         Intent intent = new Intent(getBaseContext(), OpenFile.class);
-        intent.putExtra(MainStrings.FILE_ACTIVITY_KEY, activityKey);
-        intent.putExtra(MainStrings.FILE_ACTIVITY_TYPE_KEY, MainStrings.FILE_ACTIVITY_FILE);
+        intent.putExtra(StaticVars.FILE_ACTIVITY_KEY, activityKey);
+        intent.putExtra(StaticVars.FILE_ACTIVITY_TYPE_KEY, StaticVars.FILE_ACTIVITY_FILE);
         
         // Start the activity
         startActivityForResult(intent, 1);
@@ -3856,7 +3848,7 @@ public class MainActivity extends FragmentActivity {
             	// Run the sql script to import songs
             	try {
             		// Open and read the export file
-        	    	InputStream fis = new FileInputStream(unzipLocation + "/" + MainStrings.EXPORT_SQL_FILE);
+        	    	InputStream fis = new FileInputStream(unzipLocation + "/" + StaticVars.EXPORT_SQL_FILE);
         	    	DataInputStream din = new DataInputStream(fis);
         	    	BufferedReader br = new BufferedReader(new InputStreamReader(din));
         	    	StringBuilder sb = new StringBuilder();
@@ -3864,7 +3856,7 @@ public class MainActivity extends FragmentActivity {
         	        
         	        // Cycle through each line in the sql file and add it to the string builder
         	        while(line != null) {
-        	        	sb.append(line + MainStrings.EOL);
+        	        	sb.append(line + StaticVars.EOL);
         	        	line = br.readLine();
         	        }
         	        
@@ -4155,23 +4147,23 @@ public class MainActivity extends FragmentActivity {
         	String key2 = ((SongItem)o2).getKey();
         	
         	// Translate any special keys
-        	if (MainStrings.keyMap.containsKey(key1))
-        		key1 = MainStrings.keyMap.get(key1);
-        	if (MainStrings.keyMap.containsKey(key2))
-        		key2 = MainStrings.keyMap.get(key2);
+        	if (StaticVars.keyMap.containsKey(key1))
+        		key1 = StaticVars.keyMap.get(key1);
+        	if (StaticVars.keyMap.containsKey(key2))
+        		key2 = StaticVars.keyMap.get(key2);
         	
         	// Do a special compare for 'unknown'
-        	if (key1.equals(MainStrings.UNKNOWN) && key2.equals(MainStrings.UNKNOWN))
+        	if (key1.equals(StaticVars.UNKNOWN) && key2.equals(StaticVars.UNKNOWN))
         		return 0;
-        	else if (key1.equals(MainStrings.UNKNOWN) && !key2.equals(MainStrings.UNKNOWN))
+        	else if (key1.equals(StaticVars.UNKNOWN) && !key2.equals(StaticVars.UNKNOWN))
         		return 1;
-        	else if (!key1.equals(MainStrings.UNKNOWN) && key2.equals(MainStrings.UNKNOWN))
+        	else if (!key1.equals(StaticVars.UNKNOWN) && key2.equals(StaticVars.UNKNOWN))
         		return -1;
         	
         	// Compare the keys
-        	if (MainStrings.songKeys.indexOf(key1) > MainStrings.songKeys.indexOf(key2))
+        	if (StaticVars.songKeys.indexOf(key1) > StaticVars.songKeys.indexOf(key2))
         		return 1;
-        	else if (MainStrings.songKeys.indexOf(key1) == MainStrings.songKeys.indexOf(key2))
+        	else if (StaticVars.songKeys.indexOf(key1) == StaticVars.songKeys.indexOf(key2))
         		return 0;
         	else
         		return -1;

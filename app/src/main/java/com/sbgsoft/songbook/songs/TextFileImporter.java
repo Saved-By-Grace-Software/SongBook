@@ -2,7 +2,7 @@ package com.sbgsoft.songbook.songs;
 
 import android.content.Context;
 
-import com.sbgsoft.songbook.main.MainStrings;
+import com.sbgsoft.songbook.main.StaticVars;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -37,14 +37,14 @@ public class TextFileImporter {
 
         // Add author to song
         sb.append("{author:" + songAuthor + "}");
-        sb.append(MainStrings.EOL);
+        sb.append(StaticVars.EOL);
 
         // Read each line of the file
         while (line != null) {
             // Check for only white spaces
             if(line.trim().length() <= 0) {
                 // Add system line break
-                sb.append(MainStrings.EOL);
+                sb.append(StaticVars.EOL);
 
                 // Read the next line and continue
                 line = br.readLine();
@@ -52,7 +52,7 @@ public class TextFileImporter {
             }
 
             // Check for song part tags
-            if(MainStrings.songParts.contains(line.split("[^A-Za-z\\-]")[0].toLowerCase(Locale.US))) {
+            if(StaticVars.songParts.contains(line.split("[^A-Za-z\\-]")[0].toLowerCase(Locale.US))) {
                 sb.append("{title:");
                 sb.append(line);
                 sb.append("}");
@@ -140,8 +140,8 @@ public class TextFileImporter {
                         if (chords.length() == 0 && lyrics.length() == 0) {
                             startedSong = false;
                         }
-                        else if (chords.length() == 0 && (MainStrings.songParts.contains(lyrics.split("\\W+")[0].toLowerCase(Locale.US)))) {
-                            sb.append(MainStrings.EOL);
+                        else if (chords.length() == 0 && (StaticVars.songParts.contains(lyrics.split("\\W+")[0].toLowerCase(Locale.US)))) {
+                            sb.append(StaticVars.EOL);
                             sb.append("{title:");
                             sb.append(lyrics);
                             sb.append("}");
@@ -275,7 +275,7 @@ public class TextFileImporter {
             }
 
             // Add system line break
-            sb.append(MainStrings.EOL);
+            sb.append(StaticVars.EOL);
 
             // Read the next line
             line = br.readLine();

@@ -26,7 +26,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.sbgsoft.songbook.R;
-import com.sbgsoft.songbook.main.MainStrings;
+import com.sbgsoft.songbook.main.StaticVars;
 
 public class DragNDropListActivity extends ListActivity {
 	//private static String[] mListContent={"Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7"};
@@ -43,8 +43,8 @@ public class DragNDropListActivity extends ListActivity {
         // Get songs and add them to the page adapter
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String[] songs = extras.getStringArray(MainStrings.SET_SONGS_KEY);
-            setName = extras.getString(MainStrings.SET_NAME_KEY);
+            String[] songs = extras.getStringArray(StaticVars.SET_SONGS_KEY);
+            setName = extras.getString(StaticVars.SET_NAME_KEY);
             mListContent = songs;
         }
         
@@ -75,9 +75,9 @@ public class DragNDropListActivity extends ListActivity {
     	}
     	
     	// Send the new order back to the main activity
-    	getIntent().putExtra(MainStrings.ACTIVITY_RESPONSE_TYPE, MainStrings.REORDER_ACTIVITY);
-    	getIntent().putExtra(MainStrings.SET_SONGS_KEY, newOrder);
-    	getIntent().putExtra(MainStrings.SET_NAME_KEY, setName);
+    	getIntent().putExtra(StaticVars.ACTIVITY_RESPONSE_TYPE, StaticVars.REORDER_ACTIVITY);
+    	getIntent().putExtra(StaticVars.SET_SONGS_KEY, newOrder);
+    	getIntent().putExtra(StaticVars.SET_NAME_KEY, setName);
 		setResult(RESULT_OK, getIntent());    	
     	
     	// Finish the activity
