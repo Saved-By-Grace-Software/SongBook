@@ -193,7 +193,7 @@ public class SetSongFragment extends Fragment {
         // Create the metronome object
         if (mSongItem != null) {
             // Create the metronome object
-            mMetronome = new Metronome(getActivity(), mSongItem.getBpm(), new TimeSignature(mSongItem.getTimeSignature()));
+            mMetronome = new Metronome(getActivity(), mSongItem.getBpm(), new TimeSignature(mSongItem.getTimeSignature()), mSongItem.getName());
         }
 
         // Initialize the metronome
