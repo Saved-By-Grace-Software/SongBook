@@ -693,6 +693,25 @@ public class DBAdapter {
     }
 
     /**
+     * Sets the song beats per minute
+     * @param songName The song to set the beats per minute for
+     * @param bpm The new bpm to set
+     * @return True if success, false if failure
+     */
+    public boolean setSongBpm(String songName, int bpm) {
+        try {
+            String query = "UPDATE " + DBStrings.SONGS_TABLE +
+                    " SET " +
+                    DBStrings.TBLSONG_BPM + " = " + bpm + " " +
+                    " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'";
+            mDb.execSQL(query);
+        } catch (SQLException e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Gets the song time signature
      * @param songName The song to get the time signature for
      * @return The song time signature

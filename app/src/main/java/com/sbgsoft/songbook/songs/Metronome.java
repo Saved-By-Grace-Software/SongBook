@@ -1,6 +1,8 @@
 package com.sbgsoft.songbook.songs;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
@@ -13,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.main.CustomAlertDialogBuilder;
+import com.sbgsoft.songbook.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -45,6 +49,7 @@ public class Metronome {
     private ScheduledThreadPoolExecutor exec;
     private static int startDelay = 0;
     private static int maxTapTempoTapsToRemember = 12;
+    private String mCurrentSongName;
     //endregion
 
     //region Public Class Members
@@ -68,9 +73,10 @@ public class Metronome {
         tempoTaps = new ArrayList<>();
     }
 
-    public Metronome(Activity _activity, int _beatsPerMinute, TimeSignature _timeSignature) {
+    public Metronome(Activity _activity, int _beatsPerMinute, TimeSignature _timeSignature, String _currentSongName) {
         mTimeSignature = _timeSignature;
         mBeatsPerMinute = _beatsPerMinute;
+        mCurrentSongName = _currentSongName;
 
         // Calculate the sleep time
         if (mBeatsPerMinute > 0)
@@ -343,15 +349,15 @@ public class Metronome {
                 // Calculate the new tempo
                 setBeatsPerMinute(calculateBPMFromTapTempoArray());
 
-                // Alert the user of the new bpm
-                Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute, Toast.LENGTH_LONG).show();
-
                 // Restart the metronome
                 mDots.resetToStart();
                 start();
 
                 // Close the dialog
                 dialog.dismiss();
+
+                // Check to set as default
+                setTempoAsSongDefaultDialog();
             }
         });
 
@@ -393,6 +399,7 @@ public class Metronome {
         return ret;
     }
 
+    // Click handler for a tap tempo click
     private void tapTempoClick(TextView tempoText) {
         // Get the current time in milliseconds
         long currTime = System.currentTimeMillis();
@@ -414,6 +421,42 @@ public class Metronome {
         // Set the tempo text
         int tmp = calculateBPMFromTapTempoArray();
         tempoText.setText(String.format("%02d", tmp));
+    }
+
+    private void setTempoAsSongDefaultDialog() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(mActivity);
+
+        alert.setTitle("Set As Default?");
+        alert.setMessage("Do you want to set this tempo as the song default tempo?");
+
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                if (mCurrentSongName != null && !mCurrentSongName.isEmpty()) {
+                    // Set the new bpm as default
+                    boolean ret = MainActivity.dbAdapter.setSongBpm(mCurrentSongName, mBeatsPerMinute);
+
+                    if (ret) {
+                        // Alert the user of the new bpm
+                        Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute + "\nSet as song default", Toast.LENGTH_LONG).show();
+                    } else {
+                        // Alert the user of the new bpm
+                        Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute + "\nFailed to set tempo as default!", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    // Alert the user of the new bpm
+                    Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute + "\nFailed to set tempo as default!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Alert the user of the new bpm
+                Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        alert.show();
     }
     //endregion
 
