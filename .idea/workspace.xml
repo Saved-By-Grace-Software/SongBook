@@ -22,10 +22,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b814f9b-14c2-4a07-9dcd-088d3dc0bab9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/add_song.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/add_song.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Songbook.iws" />
@@ -56,11 +54,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="0.042662118">
               <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="add_song.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_song.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-8.206897">
+              <caret line="101" column="46" selection-start-line="101" selection-start-column="46" selection-end-line="101" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -109,10 +120,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SongActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SongActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.66410536">
+            <state vertical-scroll-proportion="0.0">
               <caret line="230" column="133" selection-start-line="230" selection-start-column="133" selection-end-line="230" selection-end-column="133" />
               <folding>
                 <element signature="e#974#998#0" expanded="false" />
@@ -1994,7 +2005,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/TextFileImporter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/AddSongDialogListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/add_song.xml" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainStrings.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/TimeSignature.java" />
@@ -2003,7 +2013,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_set_song.xml" />
         <option value="$PROJECT_DIR$/app/src/test/java/MetronomeTest.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/MetronomeList.java" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/box_outline.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/tap_tempo.xml" />
@@ -2011,6 +2020,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/add_song.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       </list>
     </option>
   </component>
@@ -2150,6 +2161,62 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2604,7 +2671,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34611288" sideWeight="0.5019305" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32984003" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34611288" sideWeight="0.4980695" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34611288" sideWeight="0.4980695" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928848" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -2928,17 +2995,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_song.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6409336">
-          <caret line="104" column="17" selection-start-line="104" selection-start-column="17" selection-end-line="104" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.49317408">
@@ -3032,14 +3088,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.40663177">
           <caret line="46" column="35" selection-start-line="46" selection-start-column="35" selection-end-line="46" selection-end-column="35" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
           <folding />
         </state>
       </provider>
@@ -3488,7 +3536,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66410536">
+        <state vertical-scroll-proportion="0.0">
           <caret line="230" column="133" selection-start-line="230" selection-start-column="133" selection-end-line="230" selection-end-column="133" />
           <folding>
             <element signature="e#974#998#0" expanded="false" />
@@ -3506,6 +3554,25 @@
             <element signature="class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_song.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.206897">
+          <caret line="101" column="46" selection-start-line="101" selection-start-column="46" selection-end-line="101" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.042662118">
+          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>
