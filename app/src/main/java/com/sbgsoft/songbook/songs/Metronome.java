@@ -2,20 +2,24 @@ package com.sbgsoft.songbook.songs;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.main.CustomAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -39,7 +43,6 @@ public class Metronome {
     private long previousTimestamp = 0;
     private ArrayList<Integer> tempoTaps;
     private ScheduledThreadPoolExecutor exec;
-    private int currentClick = 0;
     private static int startDelay = 0;
     private static int maxTapTempoTapsToRemember = 12;
     //endregion
@@ -273,67 +276,144 @@ public class Metronome {
                 start();
             }
         }
-
-        // Check for in tap tempo mode
-        if (inTapTempoMode) {
-            // Get the current time in milliseconds
-            long currTime = System.currentTimeMillis();
-
-            // Check to see if we need to roll the array
-            if (tempoTaps.size() > maxTapTempoTapsToRemember) {
-                // Reached size limit, remove first and then add
-                tempoTaps.remove(0);
-            }
-
-            // Add the difference to the array
-            if (previousTimestamp > 0) {
-                int diff = (int)(currTime - previousTimestamp);
-                tempoTaps.add(diff);
-                //Log.d("SONGBOOK", "   Added Gap: " + diff);
-            }
-            previousTimestamp = currTime;
-
-            // Determine if we should show the new tempo
-            currentClick++;
-            if (currentClick % 5 == 0) {
-                // Show the current tempo every 5 clicks
-                Toast.makeText(mActivity, "Tempo: " + calculateBPMFromTapTempoArray(), Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     // Handles the tap tempo mode (when metronome is long-pressed
-    private void tapTempoMode() {
+    private void enterTapTempoMode() {
         // Check if we are in tap tempo mode already
-        if (inTapTempoMode) {
-            // Turn off tap tempo mode
-            inTapTempoMode = false;
-
-            // Calculate the new tempo
-            setBeatsPerMinute(calculateBPMFromTapTempoArray());
-
-            // Alert the user of the new bpm
-            Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute, Toast.LENGTH_LONG).show();
-
-            // Restart the metronome
-            mDots.resetToStart();
-            start();
-        } else {
+        if (!inTapTempoMode) {
             // Turn on tap tempo mode
             inTapTempoMode = true;
-
-            // Alert the user that tap tempo mode has been entered
-            Toast.makeText(mActivity, "Tap Tempo Mode has been entered!", Toast.LENGTH_SHORT).show();
 
             // Clear the current tap tempo list and previous time stamp
             tempoTaps.clear();
             previousTimestamp = 0;
-            currentClick = 0;
 
             // Stop and reset the metronome while in tap tempo mode
             stop();
             mDots.setDotsToTapTempo();
+
+            // Show the tap tempo pad
+            showTapTempoPad();
         }
+    }
+
+    // Shows the tap tempo dialog
+    private void showTapTempoPad() {
+        CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(mActivity);
+
+        // Get the dialog view to gather user input
+        LayoutInflater inflater = mActivity.getLayoutInflater();
+        final View dialoglayout = inflater.inflate(R.layout.tap_tempo, (ViewGroup) mActivity.findViewById(R.id.tap_tempo_root));
+
+        // Set the height of the tap box
+        int height = getTapBoxHeight();
+        if (height > 0) {
+            View tapBox = dialoglayout.findViewById(R.id.tap_box);
+            ViewGroup.LayoutParams params = tapBox.getLayoutParams();
+            params.height = height;
+            tapBox.setLayoutParams(params);
+        }
+
+        // Set the click listener for the tap box
+        View tapBox = dialoglayout.findViewById(R.id.tap_box);
+        tapBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Find the tempo display
+                TextView tempoText = (TextView)dialoglayout.findViewById(R.id.tempo_text);
+
+                // Process the click
+                tapTempoClick(tempoText);
+            }
+        });
+
+        // Set the dialog layout
+        alert.setView(dialoglayout);
+
+        // Add the dialog title
+        alert.setTitle("Tap Here...");
+
+        // Set tempo button
+        alert.setPositiveButton("Set Tempo", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Turn off tap tempo mode
+                inTapTempoMode = false;
+
+                // Calculate the new tempo
+                setBeatsPerMinute(calculateBPMFromTapTempoArray());
+
+                // Alert the user of the new bpm
+                Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute, Toast.LENGTH_LONG).show();
+
+                // Restart the metronome
+                mDots.resetToStart();
+                start();
+
+                // Close the dialog
+                dialog.dismiss();
+            }
+        });
+
+        // Cancel button
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Turn off tap tempo mode
+                inTapTempoMode = false;
+
+                // Restart the metronome
+                mDots.resetToStart();
+                start();
+
+                // Close the dialog
+                dialog.dismiss();
+            }
+        });
+
+
+        alert.setCanceledOnTouchOutside(true);
+
+        alert.show();
+    }
+
+    /**
+     * Gets the height for the tap tempo box
+     * @return The height to set the tap tempo box
+     */
+    private int getTapBoxHeight() {
+        int ret;
+
+        // Get the height to fit it to
+        WindowManager wm = (WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        ret = size.y / 4;
+
+        return ret;
+    }
+
+    private void tapTempoClick(TextView tempoText) {
+        // Get the current time in milliseconds
+        long currTime = System.currentTimeMillis();
+
+        // Check to see if we need to roll the array
+        if (tempoTaps.size() > maxTapTempoTapsToRemember) {
+            // Reached size limit, remove first and then add
+            tempoTaps.remove(0);
+        }
+
+        // Add the difference to the array
+        if (previousTimestamp > 0) {
+            int diff = (int)(currTime - previousTimestamp);
+            tempoTaps.add(diff);
+            //Log.d("SONGBOOK", "   Added Gap: " + diff);
+        }
+        previousTimestamp = currTime;
+
+        // Set the tempo text
+        int tmp = calculateBPMFromTapTempoArray();
+        tempoText.setText(String.format("%02d", tmp));
     }
     //endregion
 
@@ -388,7 +468,7 @@ public class Metronome {
 
         @Override
         public void onLongPress(MotionEvent event) {
-            tapTempoMode();
+            enterTapTempoMode();
         }
 
         @Override
