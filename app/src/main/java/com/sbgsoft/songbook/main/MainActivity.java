@@ -795,6 +795,9 @@ public class MainActivity extends FragmentActivity {
                     case 4:     // Change the key a song uses in a set
                         instructions = StaticVars.howToChangeSetKey;
                         break;
+                    case 5:     // Use the metronome
+                        instructions = StaticVars.howToUseMetronome;
+                        break;
                 }
 
                 // Build the how to message string
