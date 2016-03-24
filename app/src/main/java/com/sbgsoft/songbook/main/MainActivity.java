@@ -1095,27 +1095,27 @@ public class MainActivity extends FragmentActivity {
     	alert.setTitle("Add Set to Group");
     	
     	alert.setMultiChoiceItems(groupNames, checkedGroupNames, new DialogInterface.OnMultiChoiceClickListener() {
-			
-			public void onClick(DialogInterface dialog, int which, boolean checked) {
-				checkedGroupNames[which] = checked;
-			}
-		});
+
+            public void onClick(DialogInterface dialog, int which, boolean checked) {
+                checkedGroupNames[which] = checked;
+            }
+        });
     	
     	alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				// Add the song to the selected groups
-				for (int i = 0; i < groupNames.length; i++) {
-					if(!groupNames[i].equals("No Group") && checkedGroupNames[i])
-						dbAdapter.addSetToGroup(setName, groupNames[i].toString());
-				}
-				
-				// Refresh song list
-				fillSetsListView();
-				fillSetGroupsSpinner();
-			}
-		});
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Add the song to the selected groups
+                for (int i = 0; i < groupNames.length; i++) {
+                    if (!groupNames[i].equals("No Group") && checkedGroupNames[i])
+                        dbAdapter.addSetToGroup(setName, groupNames[i].toString());
+                }
+
+                // Refresh song list
+                fillSetsListView();
+                fillSetGroupsSpinner();
+            }
+        });
 
     	alert.show();
     }
@@ -1343,11 +1343,11 @@ public class MainActivity extends FragmentActivity {
     	});
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Set the current tab
-	        	currentTab = 2;
-	    	}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Set the current tab
+                currentTab = 2;
+            }
+        });
 
     	alert.show();
     }
@@ -1523,11 +1523,29 @@ public class MainActivity extends FragmentActivity {
 				default:
 					break;
 			}
-			
+
+            // Add song and key
 			if (songItem.getSetKey() == "") 
-				sb.append(songItem.getName() + " - " + songItem.getKey() + "<br/>");
+				sb.append("<b>" + songItem.getName() + "</b> - " + songItem.getKey() + "<br/>");
 			else
-				sb.append(songItem.getName() + " - " + songItem.getSetKey() + "<br/>");
+				sb.append("<b>" + songItem.getName() + "</b> - " + songItem.getSetKey() + "<br/>");
+
+            // Add song link if it exists
+            if (songItem.getSongLink() != null && !songItem.getSongLink().isEmpty()) {
+                sb.append("&nbsp;&nbsp;&nbsp;&nbsp;");
+                sb.append("<a href=\"" + songItem.getSongLink() + "\">");
+                sb.append(songItem.getSongLink());
+                sb.append("</a><br/>");
+            }
+
+            // Add bpm and time signature if it exists
+            if (songItem.getBpm() > 0) {
+                sb.append("&nbsp;&nbsp;&nbsp;&nbsp;");
+                sb.append(songItem.getBpm() + " BPM <i>in</i> " + songItem.getTimeSignature() + "<br/>");
+            }
+
+            // Add a line break between songs
+            sb.append("<br/>");
 		}
 		
 		// Create the email intent
@@ -2299,10 +2317,9 @@ public class MainActivity extends FragmentActivity {
                     authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
                     linkET.getText().toString(), bpm);
 	    		
-	    		// Refresh the song list
+	    		// Refresh lists
 				fillSongsListView();
-
-                // Refresh current set list
+                fillSetsListView();
                 fillCurrentSetListView();
 				
 				// Close the dialog

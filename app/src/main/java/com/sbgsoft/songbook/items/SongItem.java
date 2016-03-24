@@ -96,6 +96,19 @@ public class SongItem implements Item, Parcelable, Serializable {
         setTimeSignature("");
         setSongLink("");
 	}
+
+    public SongItem(String songName, String songAuthor, String songKey, String songFile, String setKey, int songBpm, String songTime, String songLink) {
+        name = songName;
+        author = songAuthor;
+        key = songKey;
+        file = songFile;
+        setText("");
+        setCapo(0);
+        setSetKey(setKey);
+        setBpm(songBpm);
+        setTimeSignature(songTime);
+        setSongLink(songLink);
+    }
 	
 	public SongItem() {
 		setName("");

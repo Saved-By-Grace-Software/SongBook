@@ -95,9 +95,12 @@ public class SetItem implements Item, Parcelable {
         	String setKey = c.getString(c.getColumnIndex(DBStrings.TBLSONG_KEY));
         	String songFile = c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE));
         	String songKey = MainActivity.dbAdapter.getSongKey(songName);
-    		
+            String songLink = c.getString(c.getColumnIndex(DBStrings.TBLSONG_LINK));
+            int songBpm = c.getInt(c.getColumnIndex(DBStrings.TBLSONG_BPM));
+            String songTime = c.getString(c.getColumnIndex(DBStrings.TBLSONG_TIME));
+
         	// Add the song item
-        	songs.add(new SongItem(songName, songAuthor, songKey, songFile, setKey));
+        	songs.add(new SongItem(songName, songAuthor, songKey, songFile, setKey, songBpm, songTime, songLink));
         	
         	// Move to the next song
         	c.moveToNext();
