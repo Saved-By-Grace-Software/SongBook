@@ -61,30 +61,30 @@ public class StaticVars {
 	// Song Context Menu Keys
 	public static final int EDIT_SONG = 1;
 	public static final int EDIT_SONG_ATT = 2;
-	public static final int DELETE_SONG = 3;
-	public static final int ADD_SONG_SET = 4;
-	public static final int ADD_SONG_CURR_SET = 5;
-	public static final int SONG_GROUPS_ADD = 6;
-	public static final int SONG_GROUPS_DEL = 7;
+	public static final int ADD_SONG_SET = 3;
+	public static final int ADD_SONG_CURR_SET = 4;
+	public static final int SONG_GROUPS_ADD = 5;
+	public static final int SONG_GROUPS_DEL = 6;
+    public static final int SONG_STATS = 7;
 	public static final int SHARE_SONG = 8;
-	public static final int SONG_STATS = 9;
+    public static final int DELETE_SONG = 9;
 	
 	// Set Context Menu Keys
-	public static final int DELETE_SET = 100;
-	public static final int EDIT_SET = 110;
-	public static final int EDIT_SET_ATT = 120;
-	public static final int REORDER_SET = 130;
-	public static final int SET_GROUPS_ADD = 140;
-	public static final int SET_GROUPS_DEL = 150;
-	public static final int SHARE_SET = 160;
+	public static final int EDIT_SET = 100;
+	public static final int EDIT_SET_ATT = 110;
+	public static final int REORDER_SET = 120;
+	public static final int SET_GROUPS_ADD = 130;
+	public static final int SET_GROUPS_DEL = 140;
+	public static final int SHARE_SET = 150;
+    public static final int DELETE_SET = 160;
 	
 	// Current Set Context Menu Keys
 	public static final int EDIT_SONG_CS = 200;
 	public static final int EDIT_SONG_ATT_CS = 210;
 	public static final int SET_SONG_KEY_CS = 220;
-	public static final int SHARE_SONG_CS = 230;
-	public static final int REMOVE_SONG_FROM_SET = 240;
-	public static final int SONG_STATS_CS = 250;
+    public static final int SONG_STATS_CS = 230;
+	public static final int SHARE_SONG_CS = 240;
+	public static final int REMOVE_SONG_FROM_SET = 250;
 	
 	// Sort Arrays
 	public static final ArrayList<String> songSortBy = new ArrayList<String>(Arrays.asList("Song Title", "Song Author", "Song Key"));
