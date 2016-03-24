@@ -2314,8 +2314,8 @@ public class MainActivity extends FragmentActivity {
 
                 // Update the song in the database
                 dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
-                    authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
-                    linkET.getText().toString(), bpm);
+                        authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
+                        linkET.getText().toString(), bpm);
 	    		
 	    		// Refresh lists
 				fillSongsListView();
@@ -2368,22 +2368,41 @@ public class MainActivity extends FragmentActivity {
 		}
 		
 		// Set the songkey for the email
-		String tmpkey = "";
+		String tmpkey;
 		if (newSongKey == "")
 			tmpkey = songItem.getKey();
 		else
 			tmpkey = newSongKey;
+
+        // Build the email string
+        StringBuilder sb = new StringBuilder();
+        sb.append("<h2>SBGSoft Virtual SongBook</h2>");
+        sb.append("<b>Song Name:</b>&nbsp;&nbsp;" + songItem.getName() + "<br/>");
+        sb.append("<b>Song Key:</b>&nbsp;&nbsp;" + tmpkey + "<br/>");
+
+        if ((songItem.getSongLink() != null && !songItem.getSongLink().isEmpty() || songItem.getBpm() > 0))
+            sb.append("<b>Song Details:</b><br/>");
+
+        if (songItem.getSongLink() != null && !songItem.getSongLink().isEmpty()) {
+            sb.append("&nbsp;&nbsp;&nbsp;&nbsp;");
+            sb.append("<a href=\"" + songItem.getSongLink() + "\">");
+            sb.append(songItem.getSongLink());
+            sb.append("</a><br/>");
+        }
+
+        if (songItem.getBpm() > 0) {
+            sb.append("&nbsp;&nbsp;&nbsp;&nbsp;");
+            sb.append(songItem.getBpm() + " BPM <i>in</i> " + songItem.getTimeSignature() + "<br/>");
+        }
+
+        sb.append("<br/>");
+        sb.append("The music for this song has been attached to this email as a file.");
+        sb.append("<br/>");
 		
 		// Add the subject and body
 		i.putExtra(android.content.Intent.EXTRA_SUBJECT, "SBGSoft Virtual SongBook - " + songItem.getName());
 		//i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
-		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(
-				"<h2>SBGSoft Virtual SongBook</h2>" +
-				"<b>Song Name:</b>&nbsp;&nbsp;" + songItem.getName() + "<br/>" +
-				"<b>Song Key:</b>&nbsp;&nbsp;" + tmpkey + "<br/>" +
-				"<br/>" +
-				"The music for this song has been attached to this email as a file." +
-				"<br/>"));
+		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(sb.toString()));
 
 		startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
     }
