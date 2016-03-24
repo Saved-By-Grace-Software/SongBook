@@ -1251,12 +1251,29 @@ public class DBAdapter {
 				String songFileName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_FILE));
 				String author = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_AUTHOR));
 				String key = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_KEY));
-				
-				// Append the insert statement with a line ending
-				output.append("INSERT INTO " + DBStrings.SONGS_TABLE + "(" + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
-						DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + 
-						") VALUES ('" + songName + "', '" + songFileName + "', '" + author + "', '" + key + "'); ");
-				output.append(StaticVars.EOL);
+                String songLink = getSongLink(songName);
+                int songBpm = getSongBpm(songName);
+                TimeSignature songTime = getSongTimeSignature(songName);
+
+                // Append the insert statement with a line ending for adding the song
+                output.append("INSERT INTO " + DBStrings.SONGS_TABLE +
+                        "(" +
+                        DBStrings.TBLSONG_NAME + ", " +
+                        DBStrings.TBLSONG_FILE + ", " +
+                        DBStrings.TBLSONG_AUTHOR + ", " +
+                        DBStrings.TBLSONG_LINK + ", " +
+                        DBStrings.TBLSONG_BPM + ", " +
+                        DBStrings.TBLSONG_TIME + ", " +
+                        DBStrings.TBLSONG_KEY +
+                        ") VALUES (" +
+                        "'" + songName + "', " +
+                        "'" + songFileName + "', " +
+                        "'" + author + "', " +
+                        "'" + songLink + "', " +
+                        "" + songBpm + ", " +
+                        "'" + songTime.toString() + "', " +
+                        "'" + key + "'); ");
+                output.append(StaticVars.EOL);
 			}
 			
 			// Add sets to the export file
