@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -171,10 +173,15 @@ public class Metronome {
             mDots.add(icon);
         }
 
+//        // Make the metronome bar taller for more room in touching
+//        metronomeBar.setLayoutParams(new RelativeLayout.LayoutParams(
+//                (int)(height * 0.25), width));
+
         // Add the touch listener for the metronome
         metronomeBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
+                gestureDetector.setIsLongpressEnabled(true);
                 gestureDetector.onTouchEvent(motionEvent);
                 return true;
             }
@@ -509,14 +516,23 @@ public class Metronome {
     GestureDetector.SimpleOnGestureListener simpleOnGestureListener
             = new GestureDetector.SimpleOnGestureListener(){
 
-        @Override
-        public void onLongPress(MotionEvent event) {
-            enterTapTempoMode();
-        }
+//        @Override
+//        public void onLongPress(MotionEvent event) {
+//            Log.d("SONGBOOK", "Long-press");
+//            enterTapTempoMode();
+//        }
 
         @Override
         public boolean onSingleTapUp(MotionEvent event) {
+//            Log.d("SONGBOOK", "Single tap up");
             touch();
+            return true;
+        }
+
+        @Override
+        public boolean onDoubleTap(MotionEvent event) {
+//            Log.d("SONGBOOK", "Double tap");
+            enterTapTempoMode();
             return true;
         }
     };
