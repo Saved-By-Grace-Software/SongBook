@@ -2,7 +2,6 @@ package com.sbgsoft.songbook.songs;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
@@ -16,10 +15,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -172,10 +169,6 @@ public class Metronome {
             // Add to the metronome list
             mDots.add(icon);
         }
-
-//        // Make the metronome bar taller for more room in touching
-//        metronomeBar.setLayoutParams(new RelativeLayout.LayoutParams(
-//                (int)(height * 0.25), width));
 
         // Add the touch listener for the metronome
         metronomeBar.setOnTouchListener(new View.OnTouchListener() {

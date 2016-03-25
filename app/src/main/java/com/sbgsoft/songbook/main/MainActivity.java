@@ -77,6 +77,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.ericharlow.dragndrop.DragNDropListActivity;
 import com.sbgsoft.songbook.R;
@@ -2342,7 +2343,7 @@ public class MainActivity extends FragmentActivity {
     	Intent i = new Intent(android.content.Intent.ACTION_SEND);
 		i.setType("text/Message");
 		
-		File att = null;
+		File att;
 		
 		// Add the attachment
 		switch (songFileType) {
@@ -2404,7 +2405,7 @@ public class MainActivity extends FragmentActivity {
 		//i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml("<h2>" + songName + "</h2>" + getSongText(songI.getSongFile())));
 		i.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(sb.toString()));
 
-		startActivity(Intent.createChooser(i, "Send Song Email Via:"));  
+		startActivity(Intent.createChooser(i, "Send Song Email Via:"));
     }
     
     /**
