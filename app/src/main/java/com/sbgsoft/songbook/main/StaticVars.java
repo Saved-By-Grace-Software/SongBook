@@ -152,8 +152,8 @@ public class StaticVars {
     public static final ArrayList<String> howToUseMetronome = new ArrayList<String>(
             Arrays.asList(
                     "The song must have a BPM set for the metronome to be displayed",
-                    "Click on the metronome to start/stop it",
-                    "Long-press on the metronome to enter Tap Tempo mode",
+                    "Tap on the metronome to start/stop it",
+                    "Double-Tap on the metronome to enter Tap Tempo mode",
                     "In Tap Tempo - tap the tempo of the song in the box",
                     "In Tap Tempo - click Set Tempo when you are at the desired tempo",
                     "In Tap Tempo - select Yes to permanently set that tempo for the song")
