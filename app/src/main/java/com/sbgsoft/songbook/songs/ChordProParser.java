@@ -66,6 +66,10 @@ public class ChordProParser {
         }
 		parsedOutput.append(lineFeed);
 
+        /********** TEMP ****************/
+        parsedOutput.append("test<br/>");
+        /********** TEMP ****************/
+
         // Add the song link
         if (songItem.getSongLink() != null && !songItem.getSongLink().isEmpty()) {
             if (useHtml) {

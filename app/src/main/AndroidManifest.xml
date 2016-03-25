@@ -33,6 +33,11 @@
             android:name=".songs.SongActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_song" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="com.sbgsoft.songbook" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".sets.SetActivity"

@@ -9,9 +9,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -20,10 +28,12 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.SongItem;
+import com.sbgsoft.songbook.main.ChordClickableSpan;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.views.AutoFitTextView;
@@ -77,7 +87,9 @@ public class SongActivity extends Activity {
             
             // Set song text
             song.setMovementMethod(LinkMovementMethod.getInstance());
-            song.setText(Html.fromHtml(mSongItem.getText()));
+            SpannableString spannable = SpannableString.valueOf(Html.fromHtml(mSongItem.getText()));
+            applySpan(spannable, "test", new ChordClickableSpan());
+            song.setText(spannable, TextView.BufferType.SPANNABLE);
         }
 
         // Initialize the metronome
@@ -173,6 +185,20 @@ public class SongActivity extends Activity {
     //endregion
 
 
+    private static void applySpan(SpannableString spannable, String target, ClickableSpan span) {
+        final String spannableString = spannable.toString();
+        final int start = spannableString.indexOf(target);
+        final int end = start + target.length();
+        spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
+        spannable.setSpan(boldSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#006B9F"));
+        spannable.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+
     //region Song Functions
     /*****************************************************************************
      * 
@@ -184,16 +210,16 @@ public class SongActivity extends Activity {
      * @param v
      */
     public void onTransposeButtonClick(View v) {
-    	
+
     	// Check for a special key
     	if (StaticVars.keyMap.containsKey(mSongItem.getKey())) {
     		// Set the song key to the associated key
     		mSongItem.setKey(StaticVars.keyMap.get(mSongItem.getKey()));
     	}
-    	
+
     	// Check to make sure the song has a proper key
     	if (!StaticVars.songKeys.contains(mSongItem.getKey())) {
-    		Toast.makeText(getBaseContext(), 
+    		Toast.makeText(getBaseContext(),
     				"You cannot transpose a song without an legit assigned key. Please edit the song attributes, edit the key, and try again.", Toast.LENGTH_LONG).show();
     	}
     	else {
@@ -216,7 +242,7 @@ public class SongActivity extends Activity {
 					}
         		}
         	});
-        	
+
         	alert.show();
     	}
     }
