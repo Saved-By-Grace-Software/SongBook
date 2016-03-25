@@ -50,6 +50,8 @@ public class StaticVars {
 			put("F#m", "F#"); put("Gb", "F#"); put("Gbm", "F#"); put("Gm", "G");
 		}
 	};
+    public static final String chordMarkupStart = "<span class=\"chord\">";
+    public static final String chordMarkupEnd = "</span>";
 
     // Permission request codes
     public final static int PERMISSIONS_BACKUP_IMPORT = 10;

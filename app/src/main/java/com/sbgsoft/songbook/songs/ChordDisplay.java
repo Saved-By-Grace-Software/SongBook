@@ -4,6 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +18,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.main.ChordClickableSpan;
 import com.sbgsoft.songbook.main.CustomAlertDialogBuilder;
+import com.sbgsoft.songbook.main.StaticVars;
 
 /**
  * Created by SamIAm on 3/25/2016.
@@ -29,6 +37,10 @@ public class ChordDisplay {
     //endregion
 
     //region Public Functions
+    /**
+     * Shows the specified chord diagram
+     * @param chordName The chord to display
+     */
     public void showChord(String chordName) {
         CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(mActivity);
 
@@ -78,24 +90,36 @@ public class ChordDisplay {
 
         alert.show();
     }
-    //endregion
 
-    //region Private Functions
     /**
-     * Gets the height for the chord display box
-     * @return The height to set the chord display box
+     * Makes all of the chords clickable to show their diagrams
+     * @param spannable The spannable song text
      */
-    private int getChordBoxHeight() {
-        int ret;
-
-        // Get the height to fit it to
-        WindowManager wm = (WindowManager) mActivity.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        ret = size.y / 4;
-
-        return ret;
+    public void applySpan(SpannableString spannable) {
+//        // Get a string to search
+//        final String spannableString = spannable.toString();
+//
+//        // Find the start chord markup
+//        int start = spannableString.indexOf(StaticVars.chordMarkupStart);
+//        start += StaticVars.chordMarkupStart.length();
+//
+//        // Find the end of the chord markup
+//        int end = start + spannableString.indexOf(StaticVars.chordMarkupEnd, start);
+//
+//        // Get the chord text
+//        String chordText = spannableString.substring(start, end);
+//
+//        // Add the clickable span
+//        ChordClickableSpan span = new ChordClickableSpan(this, chordText);
+//        spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//
+//        // Make it bold
+//        StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
+//        spannable.setSpan(boldSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//
+//        // Set the color
+//        ForegroundColorSpan colorSpan = new ForegroundColorSpan(mActivity.getResources().getColor(R.color.chordColor));
+//        spannable.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
     //endregion
 }

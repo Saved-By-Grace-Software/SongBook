@@ -85,10 +85,15 @@ public class SongActivity extends Activity {
             else
             	mSongItem.setKey(mSongItem.getKey().toUpperCase(Locale.ENGLISH));
             
-            // Set song text
+            // Get song text
             song.setMovementMethod(LinkMovementMethod.getInstance());
             SpannableString spannable = SpannableString.valueOf(Html.fromHtml(mSongItem.getText()));
-            applySpan(spannable, "test", new ChordClickableSpan());
+
+            // Set spans for the chords
+            ChordDisplay disp = new ChordDisplay(this);
+            disp.applySpan(spannable);
+
+            // Set the text in the textview
             song.setText(spannable, TextView.BufferType.SPANNABLE);
         }
 
@@ -133,9 +138,9 @@ public class SongActivity extends Activity {
 
     @Override
     public void onStart() {
-    	super.onStart();
-    	
-    	// Keep the screen on
+        super.onStart();
+
+        // Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         // Start the metronome with an initial 2 second delay
@@ -147,9 +152,9 @@ public class SongActivity extends Activity {
     
     @Override
     public void onResume() {
-    	super.onResume();
-    	
-    	// Keep the screen on
+        super.onResume();
+
+        // Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
     
@@ -183,20 +188,6 @@ public class SongActivity extends Activity {
         return true;
     }
     //endregion
-
-
-    private static void applySpan(SpannableString spannable, String target, ClickableSpan span) {
-        final String spannableString = spannable.toString();
-        final int start = spannableString.indexOf(target);
-        final int end = start + target.length();
-        spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
-        spannable.setSpan(boldSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#006B9F"));
-        spannable.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-    }
 
 
     //region Song Functions

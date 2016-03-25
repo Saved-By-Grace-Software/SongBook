@@ -13,14 +13,18 @@ import com.sbgsoft.songbook.songs.ChordDisplay;
  * Created by SamIAm on 3/25/2016.
  */
 public class ChordClickableSpan extends ClickableSpan {
-    public ChordClickableSpan() {
+    private ChordDisplay mDisplay;
+    private String mChord;
+
+    public ChordClickableSpan(ChordDisplay _display, String _chord) {
         super();
+        mDisplay = _display;
+        mChord = _chord;
     }
 
     public void onClick(View tv) {
         Log.d("SONGBOOK", "clicked");
-        ChordDisplay disp = new ChordDisplay((Activity)tv.getContext());
-        disp.showChord("C/E");
+        mDisplay.showChord(mChord);
     }
 
     public void updateDrawState(TextPaint ds) {// override updateDrawState
