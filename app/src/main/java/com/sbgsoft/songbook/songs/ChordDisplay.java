@@ -96,30 +96,37 @@ public class ChordDisplay {
      * @param spannable The spannable song text
      */
     public void applySpan(SpannableString spannable) {
-//        // Get a string to search
-//        final String spannableString = spannable.toString();
-//
-//        // Find the start chord markup
-//        int start = spannableString.indexOf(StaticVars.chordMarkupStart);
-//        start += StaticVars.chordMarkupStart.length();
-//
-//        // Find the end of the chord markup
-//        int end = start + spannableString.indexOf(StaticVars.chordMarkupEnd, start);
-//
-//        // Get the chord text
-//        String chordText = spannableString.substring(start, end);
-//
-//        // Add the clickable span
-//        ChordClickableSpan span = new ChordClickableSpan(this, chordText);
-//        spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//
-//        // Make it bold
-//        StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
-//        spannable.setSpan(boldSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//
-//        // Set the color
-//        ForegroundColorSpan colorSpan = new ForegroundColorSpan(mActivity.getResources().getColor(R.color.chordColor));
-//        spannable.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        // Get a string to search
+        final String spannableString = spannable.toString();
+
+        // TODO: Try some sort of regex?
+        spannableString.matches("^[A-G][\\s#bmad1-9/suA-G]*[^h-ln-rtv-zH-Z]");
+
+        // Find the start chord markup
+        int start = spannableString.indexOf(StaticVars.chordMarkupStart);
+
+        // Make sure we have found a chord
+        if (start > 0) {
+            start += StaticVars.chordMarkupStart.length();
+
+            // Find the end of the chord markup
+            int end = start + spannableString.indexOf(StaticVars.chordMarkupEnd, start);
+
+            // Get the chord text
+            String chordText = spannableString.substring(start, end);
+
+            // Add the clickable span
+            ChordClickableSpan span = new ChordClickableSpan(this, chordText);
+            spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            // Make it bold
+            StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
+            spannable.setSpan(boldSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            // Set the color
+            ForegroundColorSpan colorSpan = new ForegroundColorSpan(mActivity.getResources().getColor(R.color.chordColor));
+            spannable.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
     }
     //endregion
 }

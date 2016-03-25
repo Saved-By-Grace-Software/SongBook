@@ -23,7 +23,6 @@ public class ChordClickableSpan extends ClickableSpan {
     }
 
     public void onClick(View tv) {
-        Log.d("SONGBOOK", "clicked");
         mDisplay.showChord(mChord);
     }
 
