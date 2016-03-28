@@ -52,6 +52,7 @@ public class StaticVars {
 	};
     public static final String chordMarkupStart = "|";
     public static final String chordMarkupEnd = "|";
+    public static final String chordMarkupRegex = "\\|[\\w/#]+\\|";
 
     // Permission request codes
     public final static int PERMISSIONS_BACKUP_IMPORT = 10;

@@ -66,10 +66,6 @@ public class ChordProParser {
         }
 		parsedOutput.append(lineFeed);
 
-        /********** TEMP ****************/
-        parsedOutput.append("wheeeee..." + StaticVars.chordMarkupStart + "test" + StaticVars.chordMarkupEnd + "wheee....<br/>");
-        /********** TEMP ****************/
-
         // Add the song link
         if (songItem.getSongLink() != null && !songItem.getSongLink().isEmpty()) {
             if (useHtml) {
@@ -299,7 +295,8 @@ public class ChordProParser {
 									if (lineCharArray[charLoc] == '[') {
 										if (useHtml) {
 											// Add chord html formatting
-											intro.append("<b><font color=\"" + chordColor + "\">");
+											//intro.append("<b><font color=\"" + chordColor + "\">");
+                                            intro.append(StaticVars.chordMarkupStart);
 										}
 										
 										// Read to the end of the chord
@@ -326,7 +323,8 @@ public class ChordProParser {
 										
 										if (useHtml) {
 											// Close chord html formatting
-											intro.append("</font></b>");
+											//intro.append("</font></b>");
+                                            intro.append(StaticVars.chordMarkupEnd);
 										}
 									}
 									else {
@@ -556,7 +554,8 @@ public class ChordProParser {
 									if (lineCharArray[charLoc] == '[') {
 										if (useHtml) {
 											// Add chord html formatting
-											cc.append("<b><font color=\"" + chordColor + "\">");
+											//cc.append("<b><font color=\"" + chordColor + "\">");
+                                            cc.append(StaticVars.chordMarkupStart);
 										}
 										
 										// Read to the end of the chord
@@ -586,7 +585,8 @@ public class ChordProParser {
 										
 										if (useHtml) {
 											// Close chord html formatting
-											cc.append("</font></b>");
+											//cc.append("</font></b>");
+                                            cc.append(StaticVars.chordMarkupEnd);
 										}
 									}
 									else {
@@ -633,7 +633,8 @@ public class ChordProParser {
 									if (lineCharArray[charLoc] == '[') {
 										if (useHtml) {
 											// Add chord html formatting
-											lc.append("<b><font color=\"" + chordColor + "\">");
+											//lc.append("<b><font color=\"" + chordColor + "\">");
+                                            lc.append(StaticVars.chordMarkupStart);
 										}
 										
 										// Read to the end of the chord
@@ -660,7 +661,8 @@ public class ChordProParser {
 										
 										if (useHtml) {
 											// Close chord html formatting
-											lc.append("</font></b>");
+											//lc.append("</font></b>");
+                                            lc.append(StaticVars.chordMarkupEnd);
 										}
 									}
 									else {
@@ -725,7 +727,8 @@ public class ChordProParser {
 					else if (c == '[') {
 						if (useHtml) {
 							// Add chord html formatting
-							chordLine.append("<b><font color=\"" + chordColor + "\">");
+							//chordLine.append("<b><font color=\"" + chordColor + "\">");
+                            chordLine.append(StaticVars.chordMarkupStart);
 						}
 						
 						// Read to the end of the chord
@@ -753,7 +756,8 @@ public class ChordProParser {
 						
 						if (useHtml) {
 							// Close chord html formatting
-							chordLine.append("</font></b>");
+							//chordLine.append("</font></b>");
+                            chordLine.append(StaticVars.chordMarkupEnd);
 						}
 					}
 					else {

@@ -9,17 +9,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -33,7 +26,6 @@ import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.SongItem;
-import com.sbgsoft.songbook.main.ChordClickableSpan;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.views.AutoFitTextView;
@@ -85,16 +77,12 @@ public class SongActivity extends Activity {
             else
             	mSongItem.setKey(mSongItem.getKey().toUpperCase(Locale.ENGLISH));
             
-            // Get song text
+            // Set links to be clickable
             song.setMovementMethod(LinkMovementMethod.getInstance());
-            SpannableString spannable = SpannableString.valueOf(Html.fromHtml(mSongItem.getText()));
 
-            // Set spans for the chords
+            // Set spans for the chords and add to the textview
             ChordDisplay disp = new ChordDisplay(this);
-            disp.applySpan(spannable);
-
-            // Set the text in the textview
-            song.setText(spannable, TextView.BufferType.SPANNABLE);
+            song.setText(disp.setChordClickableText(mSongItem.getText()), TextView.BufferType.SPANNABLE);
         }
 
         // Initialize the metronome

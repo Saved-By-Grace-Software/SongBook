@@ -3,10 +3,14 @@ package com.sbgsoft.songbook.songs;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
+import android.text.Html;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
@@ -21,6 +25,9 @@ import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.main.ChordClickableSpan;
 import com.sbgsoft.songbook.main.CustomAlertDialogBuilder;
 import com.sbgsoft.songbook.main.StaticVars;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by SamIAm on 3/25/2016.
@@ -93,40 +100,52 @@ public class ChordDisplay {
 
     /**
      * Makes all of the chords clickable to show their diagrams
-     * @param spannable The spannable song text
+     * @param songText The song text
      */
-    public void applySpan(SpannableString spannable) {
-        // Get a string to search
-        final String spannableString = spannable.toString();
+    public CharSequence setChordClickableText(String songText) {
+        SpannableStringBuilder spannable =
+                new SpannableStringBuilder(SpannableString.valueOf(Html.fromHtml(songText)));
 
-        // TODO: Try some sort of regex?
-        spannableString.matches("^[A-G][\\s#bmad1-9/suA-G]*[^h-ln-rtv-zH-Z]");
+        // Build the regex to find the chords
+        Pattern p = Pattern.compile(StaticVars.chordMarkupRegex);
+        Matcher m = p.matcher(spannable);
 
-        // Find the start chord markup
-        int start = spannableString.indexOf(StaticVars.chordMarkupStart);
+        // Find the matches and make them clickable
+        while(m.find()) {
+            int start = m.start();
+            int end = m.end();
 
-        // Make sure we have found a chord
-        if (start > 0) {
-            start += StaticVars.chordMarkupStart.length();
+            // Make sure we have found a chord
+            if (start > 0 && end > 0) {
+                // Get the chord text
+                //String chordText = m.group().substring(1, m.group().length() - 1);
+                String chordText = spannable.subSequence(start + 1, end - 1).toString();
 
-            // Find the end of the chord markup
-            int end = start + spannableString.indexOf(StaticVars.chordMarkupEnd, start);
+                // Add the clickable span
+                ChordClickableSpan span = new ChordClickableSpan(this, chordText);
+                spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            // Get the chord text
-            String chordText = spannableString.substring(start, end);
+                // Make it bold
+                StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
+                spannable.setSpan(boldSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-            // Add the clickable span
-            ChordClickableSpan span = new ChordClickableSpan(this, chordText);
-            spannable.setSpan(span, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-            // Make it bold
-            StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
-            spannable.setSpan(boldSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-            // Set the color
-            ForegroundColorSpan colorSpan = new ForegroundColorSpan(mActivity.getResources().getColor(R.color.chordColor));
-            spannable.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                // Set the color
+                ForegroundColorSpan colorSpan = new ForegroundColorSpan(mActivity.getResources().getColor(R.color.chordColor));
+                spannable.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
         }
+
+        // Remove the pipe characters
+        int loc = 0;
+        while (loc < spannable.length()) {
+            if (spannable.charAt(loc) == '|') {
+                spannable.delete(loc, loc + 1);
+            } else {
+                loc++;
+            }
+        }
+
+        return spannable;
     }
     //endregion
 }

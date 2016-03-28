@@ -5,12 +5,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Locale;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
@@ -66,7 +69,9 @@ public class SetSongFragment extends Fragment {
             
             // Populate the song text
             if (mSongItem.getText() != "") {
-                song.setText(Html.fromHtml(mSongItem.getText()));
+                // Set spans for the chords and add to the textview
+                ChordDisplay disp = new ChordDisplay((Activity)mView.getContext());
+                song.setText(disp.setChordClickableText(mSongItem.getText()), TextView.BufferType.SPANNABLE);
             }
         }
 
