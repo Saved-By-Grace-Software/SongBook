@@ -63,6 +63,20 @@ public class ChordDisplay {
             // Create the string representation of the chord
             String chord = "chord_" + chordName.toLowerCase();
 
+            // Replace any sharps as # is not valid for file names
+            if (chord.contains("#")) {
+                chord = chord.replaceAll("#", "sp");
+            }
+
+            // Common naming changes
+            if (chord.contains("maj")) {
+                chord = chord.replaceAll("maj", "");
+            } else if (chord.contains("sus2")) {
+                chord = chord.replaceAll("sus2", "2");
+            } else if (chord.contains("min")) {
+                chord = chord.replaceAll("min", "m");
+            }
+
             // Attempt to find the id for the chord
             int resID = mActivity.getResources().getIdentifier(chord, "drawable", mActivity.getPackageName());
 
@@ -72,7 +86,7 @@ public class ChordDisplay {
                 chordBox.setImageResource(resID);
 
                 // Set title as chord chart
-                alert.setTitle("Chord Chart");
+                alert.setTitle("'" + chordName + "' Chord Chart");
             } else {
                 // No chord chart found, set title as cannot find chord
                 alert.setTitle("'" + chordName + "' Chord Not Available");

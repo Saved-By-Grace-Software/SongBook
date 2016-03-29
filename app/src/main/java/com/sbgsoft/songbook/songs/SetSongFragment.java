@@ -38,6 +38,7 @@ public class SetSongFragment extends Fragment {
     private View mView;
     ScaleGestureDetector scaleGestureDetector;
     private Metronome mMetronome;
+    ChordDisplay disp;
     //endregion
 
     //region Class Functions
@@ -70,7 +71,7 @@ public class SetSongFragment extends Fragment {
             // Populate the song text
             if (mSongItem.getText() != "") {
                 // Set spans for the chords and add to the textview
-                ChordDisplay disp = new ChordDisplay((Activity)mView.getContext());
+                disp = new ChordDisplay((Activity)mView.getContext());
                 song.setText(disp.setChordClickableText(mSongItem.getText()), TextView.BufferType.SPANNABLE);
             }
         }
@@ -174,7 +175,12 @@ public class SetSongFragment extends Fragment {
 					try {
 						FileInputStream fis = getActivity().openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
 						String transposedSongText = ChordProParser.ParseSongFile(getActivity().getApplicationContext(), mSongItem, StaticVars.songKeys.get(whichItem), fis, true, false);
-	        			song.setText(Html.fromHtml(transposedSongText));
+
+                        if (disp != null) {
+                            song.setText(disp.setChordClickableText(transposedSongText), TextView.BufferType.SPANNABLE);
+                        } else {
+                            song.setText(Html.fromHtml(transposedSongText));
+                        }
 					} catch (FileNotFoundException e) {
 						Toast.makeText(getActivity(), "Could not open song file!", Toast.LENGTH_LONG).show();
 						return;

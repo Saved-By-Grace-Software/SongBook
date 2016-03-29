@@ -42,6 +42,7 @@ public class SongActivity extends Activity {
 	private SongItem mSongItem;
     ScaleGestureDetector scaleGestureDetector;
     private Metronome mMetronome;
+    ChordDisplay disp;
     //endregion
 
 
@@ -81,7 +82,7 @@ public class SongActivity extends Activity {
             song.setMovementMethod(LinkMovementMethod.getInstance());
 
             // Set spans for the chords and add to the textview
-            ChordDisplay disp = new ChordDisplay(this);
+            disp = new ChordDisplay(this);
             song.setText(disp.setChordClickableText(mSongItem.getText()), TextView.BufferType.SPANNABLE);
         }
 
@@ -206,21 +207,26 @@ public class SongActivity extends Activity {
 
         	alert.setTitle("Transpose to Which Key?");
         	alert.setItems(StaticVars.songKeys.toArray(new CharSequence[StaticVars.songKeys.size()]), new OnClickListener() {
-        		public void onClick (DialogInterface dialog, int whichItem) {
-        			// Transpose the song
-					try {
-						FileInputStream fis = openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
-						String transposedSongText = ChordProParser.ParseSongFile(getApplicationContext(), mSongItem, StaticVars.songKeys.get(whichItem), fis, true, false);
-	        			song.setText(Html.fromHtml(transposedSongText));
-					} catch (FileNotFoundException e) {
-						Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
-						return;
-					} catch (IOException e) {
-						Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
-						return;
-					}
-        		}
-        	});
+                public void onClick(DialogInterface dialog, int whichItem) {
+                    // Transpose the song
+                    try {
+                        FileInputStream fis = openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
+                        String transposedSongText = ChordProParser.ParseSongFile(getApplicationContext(), mSongItem, StaticVars.songKeys.get(whichItem), fis, true, false);
+
+                        if (disp != null) {
+                            song.setText(disp.setChordClickableText(transposedSongText), TextView.BufferType.SPANNABLE);
+                        } else {
+                            song.setText(Html.fromHtml(transposedSongText));
+                        }
+                    } catch (FileNotFoundException e) {
+                        Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+                        return;
+                    } catch (IOException e) {
+                        Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+            });
 
         	alert.show();
     	}
