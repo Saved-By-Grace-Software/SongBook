@@ -94,6 +94,7 @@ import com.sbgsoft.songbook.sets.CurrentSetTab;
 import com.sbgsoft.songbook.sets.SetActivity;
 import com.sbgsoft.songbook.sets.SetGroupArrayAdapter;
 import com.sbgsoft.songbook.sets.SetsTab;
+import com.sbgsoft.songbook.songs.ChordDisplay;
 import com.sbgsoft.songbook.songs.ChordProParser;
 import com.sbgsoft.songbook.songs.EditSongRawActivity;
 import com.sbgsoft.songbook.songs.SongActivity;
@@ -2702,7 +2703,8 @@ public class MainActivity extends FragmentActivity {
 	    	String songText = ChordProParser.ParseSongFile(getApplicationContext(), songItem, songKey, fis, true, false);
 	    	
 	    	// Add the song text to the text view
-	    	tv.setText(Html.fromHtml(songText));
+            ChordDisplay disp = new ChordDisplay(this);
+            tv.setText(disp.setChordClickableText(songText), TextView.BufferType.SPANNABLE);
 	    	
 	    	// Force the text to shrink
 	    	tv.shrinkToFit();
