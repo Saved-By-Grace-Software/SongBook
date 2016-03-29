@@ -75,6 +75,8 @@ public class ChordDisplay {
                 chord = chord.replaceAll("sus2", "2");
             } else if (chord.contains("min")) {
                 chord = chord.replaceAll("min", "m");
+            } else if (chord.contains("sus4")) {
+                chord = chord.replaceAll("sus4", "sus");
             }
 
             // Attempt to find the id for the chord
