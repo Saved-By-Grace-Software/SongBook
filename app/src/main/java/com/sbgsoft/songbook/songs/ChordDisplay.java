@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,15 +69,28 @@ public class ChordDisplay {
                 chord = chord.replaceAll("#", "sp");
             }
 
+            // Replace any slashes as / is not valid for file names
+            if (chord.contains("/")) {
+                chord = chord.replaceAll("/", "_");
+            }
+
             // Common naming changes
             if (chord.contains("maj")) {
                 chord = chord.replaceAll("maj", "");
-            } else if (chord.contains("sus2")) {
+            }
+            if (chord.contains("sus2")) {
                 chord = chord.replaceAll("sus2", "2");
-            } else if (chord.contains("min")) {
+            }
+            if (chord.contains("min")) {
                 chord = chord.replaceAll("min", "m");
-            } else if (chord.contains("sus4")) {
+            }
+            if (chord.contains("sus4")) {
                 chord = chord.replaceAll("sus4", "sus");
+            }
+            if (chord.contains("dom7")) {
+                chord = chord.replaceAll("dom", "");
+            } else if (chord.contains("dom")) {
+                chord = chord.replaceAll("dom", "7");
             }
 
             // Attempt to find the id for the chord
