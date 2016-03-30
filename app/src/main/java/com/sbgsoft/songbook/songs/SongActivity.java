@@ -11,7 +11,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -192,9 +191,9 @@ public class SongActivity extends Activity {
     public void onTransposeButtonClick(View v) {
 
     	// Check for a special key
-    	if (StaticVars.keyMap.containsKey(mSongItem.getKey())) {
+    	if (StaticVars.songKeyMap.containsKey(mSongItem.getKey())) {
     		// Set the song key to the associated key
-    		mSongItem.setKey(StaticVars.keyMap.get(mSongItem.getKey()));
+    		mSongItem.setKey(StaticVars.songKeyMap.get(mSongItem.getKey()));
     	}
 
     	// Check to make sure the song has a proper key

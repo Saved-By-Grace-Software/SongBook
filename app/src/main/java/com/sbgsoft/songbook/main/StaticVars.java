@@ -41,7 +41,7 @@ public class StaticVars {
 	public static final ArrayList<String> songKeys = new ArrayList<String>(Arrays.asList("G#", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G"));
 	public static final ArrayList<String> songKeys_transpose = new ArrayList<String>(
 			Arrays.asList("C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B", "C"));
-	public static final HashMap<String, String> keyMap = new HashMap<String, String>() {
+	public static final HashMap<String, String> songKeyMap = new HashMap<String, String>() {
 		private static final long serialVersionUID = 94512194672735973L;
 		{
 			put("Abm", "G#"); put("Ab", "G#"); put("Am", "A"); put("Bbm", "Bb"); put("A#", "Bb");
@@ -50,6 +50,16 @@ public class StaticVars {
 			put("F#m", "F#"); put("Gb", "F#"); put("Gbm", "F#"); put("Gm", "G");
 		}
 	};
+    public static final HashMap<String, String> chordKeyMap = new HashMap<String, String>() {
+        private static final long serialVersionUID = 94512194672735973L;
+        {
+            put("Ab", "G#"); put("Abm", "G#m");
+            put("A#", "Bb"); put("A#m", "Bbm");
+            put("Db", "C#"); put("Dbm", "C#m");
+            put("D#", "Eb"); put("D#m", "Ebm");
+            put("Gb", "F#"); put("Gbm", "F#m");
+        }
+    };
     public static final String chordMarkupStart = "|";
     public static final String chordMarkupEnd = "|";
     public static final String chordMarkupRegex = "\\|[\\w/#]+\\|";

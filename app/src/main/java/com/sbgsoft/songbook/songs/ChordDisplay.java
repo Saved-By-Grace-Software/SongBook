@@ -1,25 +1,17 @@
 package com.sbgsoft.songbook.songs;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.Typeface;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.sbgsoft.songbook.R;
@@ -61,6 +53,21 @@ public class ChordDisplay {
 
         // Find the image corresponding to the chord name
         if (!chordName.isEmpty()) {
+            // Translate any special keys
+            if (!chordName.contains("/")) {
+                if (StaticVars.chordKeyMap.containsKey(chordName))
+                    chordName = StaticVars.chordKeyMap.get(chordName);
+            } else {
+                String[] tmp = chordName.split("/");
+                if (tmp.length > 1) {
+                    if (StaticVars.chordKeyMap.containsKey(tmp[0]))
+                        tmp[0] = StaticVars.chordKeyMap.get(tmp[0]);
+                    if (StaticVars.chordKeyMap.containsKey(tmp[1]))
+                        tmp[1] = StaticVars.chordKeyMap.get(tmp[1]);
+                }
+                chordName = tmp[0] + "/" + tmp[1];
+            }
+
             // Create the string representation of the chord
             String chord = "chord_" + chordName.toLowerCase();
 

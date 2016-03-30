@@ -27,8 +27,8 @@ public class Transpose {
     		root = originalChord;
     	
     	// Check for key from keymap
-    	if (StaticVars.keyMap.containsKey(root)) {
-			root = StaticVars.keyMap.get(root);
+    	if (StaticVars.songKeyMap.containsKey(root)) {
+			root = StaticVars.songKeyMap.get(root);
 		}
     	
     	// Get the root note index
@@ -53,8 +53,8 @@ public class Transpose {
     		}
     		
     		// Check for key from keymap
-        	if (StaticVars.keyMap.containsKey(bass)) {
-        		bass = StaticVars.keyMap.get(bass);
+        	if (StaticVars.songKeyMap.containsKey(bass)) {
+        		bass = StaticVars.songKeyMap.get(bass);
     		}
     		
     		// Get the bass note index

@@ -12,7 +12,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -155,9 +154,9 @@ public class SetSongFragment extends Fragment {
 	 */
 	public void onTransposeButtonClick() {
 		// Check for a special key
-    	if (StaticVars.keyMap.containsKey(mSongItem.getKey())) {
+    	if (StaticVars.songKeyMap.containsKey(mSongItem.getKey())) {
     		// Set the song key to the associated key
-    		mSongItem.setKey(StaticVars.keyMap.get(mSongItem.getKey()));
+    		mSongItem.setKey(StaticVars.songKeyMap.get(mSongItem.getKey()));
     	}
     	
     	// Check to make sure the song has a proper key

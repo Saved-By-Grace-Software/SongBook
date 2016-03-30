@@ -77,7 +77,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Log;
 
 import com.ericharlow.dragndrop.DragNDropListActivity;
 import com.sbgsoft.songbook.R;
@@ -2538,9 +2537,9 @@ public class MainActivity extends FragmentActivity {
 	    		// Email, plain text
 	    		if (options[whichItem] == getString(R.string.cmenu_songs_share_email)) {
 	    			// Check for a special key
-    		    	if (StaticVars.keyMap.containsKey(songItem.getKey())) {
+    		    	if (StaticVars.songKeyMap.containsKey(songItem.getKey())) {
     		    		// Set the song key to the associated key
-    		    		songItem.setKey(StaticVars.keyMap.get(songItem.getKey()));
+    		    		songItem.setKey(StaticVars.songKeyMap.get(songItem.getKey()));
     		    	}
     		    	
     	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
@@ -2569,9 +2568,9 @@ public class MainActivity extends FragmentActivity {
 	    		// Email, PDF
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_email_pdf)) {
 	    			// Check for a special key
-    		    	if (StaticVars.keyMap.containsKey(songItem.getKey())) {
+    		    	if (StaticVars.songKeyMap.containsKey(songItem.getKey())) {
     		    		// Set the song key to the associated key
-    		    		songItem.setKey(StaticVars.keyMap.get(songItem.getKey()));
+    		    		songItem.setKey(StaticVars.songKeyMap.get(songItem.getKey()));
     		    	}
     		    	
     	    		keysAlert = new AlertDialog.Builder(MainActivity.this);
@@ -2596,9 +2595,9 @@ public class MainActivity extends FragmentActivity {
 	    		// Save, plain text
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save)) {
 	    			// Check for a special key
-    		    	if (StaticVars.keyMap.containsKey(songItem.getKey())) {
+    		    	if (StaticVars.songKeyMap.containsKey(songItem.getKey())) {
     		    		// Set the song key to the associated key
-    		    		songItem.setKey(StaticVars.keyMap.get(songItem.getKey()));
+    		    		songItem.setKey(StaticVars.songKeyMap.get(songItem.getKey()));
     		    	}
     	    		
     		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
@@ -2627,9 +2626,9 @@ public class MainActivity extends FragmentActivity {
 	    		// Save, PDF
 	    		else if (options[whichItem] == getString(R.string.cmenu_songs_share_save_pdf)) {
 	    			// Check for a special key
-    		    	if (StaticVars.keyMap.containsKey(songItem.getKey())) {
+    		    	if (StaticVars.songKeyMap.containsKey(songItem.getKey())) {
     		    		// Set the song key to the associated key
-    		    		songItem.setKey(StaticVars.keyMap.get(songItem.getKey()));
+    		    		songItem.setKey(StaticVars.songKeyMap.get(songItem.getKey()));
     		    	}
     	    		
     		    	keysAlert = new AlertDialog.Builder(MainActivity.this);
@@ -2844,7 +2843,7 @@ public class MainActivity extends FragmentActivity {
         boolean ret = true;
 
         // Check for a correct key
-        if (songKey.isEmpty() || (!StaticVars.keyMap.containsKey(songKey) && !StaticVars.songKeys.contains(songKey))) {
+        if (songKey.isEmpty() || (!StaticVars.songKeyMap.containsKey(songKey) && !StaticVars.songKeys.contains(songKey))) {
             ret = false;
         }
 
@@ -4189,10 +4188,10 @@ public class MainActivity extends FragmentActivity {
         	String key2 = ((SongItem)o2).getKey();
         	
         	// Translate any special keys
-        	if (StaticVars.keyMap.containsKey(key1))
-        		key1 = StaticVars.keyMap.get(key1);
-        	if (StaticVars.keyMap.containsKey(key2))
-        		key2 = StaticVars.keyMap.get(key2);
+        	if (StaticVars.songKeyMap.containsKey(key1))
+        		key1 = StaticVars.songKeyMap.get(key1);
+        	if (StaticVars.songKeyMap.containsKey(key2))
+        		key2 = StaticVars.songKeyMap.get(key2);
         	
         	// Do a special compare for 'unknown'
         	if (key1.equals(StaticVars.UNKNOWN) && key2.equals(StaticVars.UNKNOWN))
