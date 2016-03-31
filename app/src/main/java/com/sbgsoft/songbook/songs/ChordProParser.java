@@ -832,6 +832,9 @@ public class ChordProParser {
         // Close the input stream and reader
     	in.close();
     	br.close();
+
+        // Test workaround
+        parsedOutput.append(StaticVars.chordClickHackFix);
 		
 		return parsedOutput.toString();
 	}

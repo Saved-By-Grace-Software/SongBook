@@ -8,6 +8,7 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -172,15 +173,20 @@ public class ChordDisplay {
             }
         }
 
-        // Remove the pipe characters
+        // Remove the chord delimeters
         int loc = 0;
         while (loc < spannable.length()) {
-            if (spannable.charAt(loc) == '|') {
+            if (spannable.charAt(loc) == StaticVars.chordMarkupStart.charAt(0) ||
+                    spannable.charAt(loc) == StaticVars.chordMarkupEnd.charAt(0)) {
                 spannable.delete(loc, loc + 1);
             } else {
                 loc++;
             }
         }
+
+        // Hide the hack
+        int st = spannable.toString().indexOf(StaticVars.chordClickHackFix);
+        spannable.setSpan(new RelativeSizeSpan(0.0f), st, st + StaticVars.chordClickHackFix.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         return spannable;
     }
