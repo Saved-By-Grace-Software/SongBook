@@ -1,11 +1,8 @@
 package com.sbgsoft.songbook.main;
 
-import android.app.Activity;
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.sbgsoft.songbook.songs.ChordDisplay;
 

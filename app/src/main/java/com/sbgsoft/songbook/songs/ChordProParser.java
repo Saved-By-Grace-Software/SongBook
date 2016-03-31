@@ -29,10 +29,9 @@ public class ChordProParser {
 		StringBuilder parsedOutput = new StringBuilder();
 		StringBuilder chordLine = new StringBuilder();
 		StringBuilder lyricLine = new StringBuilder();
-		String line = "", lineFeed = "";
-		boolean inHtml = false, transposeSong = false, addedCapo = false, inTab = false, closingChorus = false;
-		int skipCounter = 0;
-		int chordColor = context.getResources().getColor(R.color.chordColor);
+		String line, lineFeed;
+		boolean inHtml, transposeSong = false, addedCapo = false, inTab = false, closingChorus = false;
+		int skipCounter;
 		
 		// Set the line feed to use
     	if(winLineFeed)
@@ -67,14 +66,14 @@ public class ChordProParser {
 		parsedOutput.append(lineFeed);
 
         // Add the song link
-        if (songItem.getSongLink() != null && !songItem.getSongLink().isEmpty()) {
+        if (songItem.getSongLink() != null && !songItem.getSongLink().isEmpty() && !songItem.getSongLink().equals("null")) {
             if (useHtml) {
-                // Add song title header
+                // Add song link
                 parsedOutput.append("<a href='");
             }
             parsedOutput.append(songItem.getSongLink());
             if (useHtml) {
-                // Close song title header
+                // Close song link
                 parsedOutput.append("'>" + songItem.getSongLink() + "</a><br />");
             }
             parsedOutput.append(lineFeed);
@@ -295,7 +294,6 @@ public class ChordProParser {
 									if (lineCharArray[charLoc] == '[') {
 										if (useHtml) {
 											// Add chord html formatting
-											//intro.append("<b><font color=\"" + chordColor + "\">");
                                             intro.append(StaticVars.chordMarkupStart);
 										}
 										
@@ -323,7 +321,6 @@ public class ChordProParser {
 										
 										if (useHtml) {
 											// Close chord html formatting
-											//intro.append("</font></b>");
                                             intro.append(StaticVars.chordMarkupEnd);
 										}
 									}
@@ -554,7 +551,6 @@ public class ChordProParser {
 									if (lineCharArray[charLoc] == '[') {
 										if (useHtml) {
 											// Add chord html formatting
-											//cc.append("<b><font color=\"" + chordColor + "\">");
                                             cc.append(StaticVars.chordMarkupStart);
 										}
 										
@@ -585,7 +581,6 @@ public class ChordProParser {
 										
 										if (useHtml) {
 											// Close chord html formatting
-											//cc.append("</font></b>");
                                             cc.append(StaticVars.chordMarkupEnd);
 										}
 									}
@@ -633,7 +628,6 @@ public class ChordProParser {
 									if (lineCharArray[charLoc] == '[') {
 										if (useHtml) {
 											// Add chord html formatting
-											//lc.append("<b><font color=\"" + chordColor + "\">");
                                             lc.append(StaticVars.chordMarkupStart);
 										}
 										
@@ -661,7 +655,6 @@ public class ChordProParser {
 										
 										if (useHtml) {
 											// Close chord html formatting
-											//lc.append("</font></b>");
                                             lc.append(StaticVars.chordMarkupEnd);
 										}
 									}
@@ -727,7 +720,6 @@ public class ChordProParser {
 					else if (c == '[') {
 						if (useHtml) {
 							// Add chord html formatting
-							//chordLine.append("<b><font color=\"" + chordColor + "\">");
                             chordLine.append(StaticVars.chordMarkupStart);
 						}
 						
@@ -756,7 +748,6 @@ public class ChordProParser {
 						
 						if (useHtml) {
 							// Close chord html formatting
-							//chordLine.append("</font></b>");
                             chordLine.append(StaticVars.chordMarkupEnd);
 						}
 					}

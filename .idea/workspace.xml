@@ -22,6 +22,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b814f9b-14c2-4a07-9dcd-088d3dc0bab9" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/ChordClickableSpan.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/ChordClickableSpan.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/ChordProParser.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/ChordProParser.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Songbook.iws" />
@@ -78,7 +80,6 @@
             <state vertical-scroll-proportion="0.0">
               <caret line="4191" column="55" selection-start-line="4191" selection-start-column="55" selection-end-line="4191" selection-end-column="55" />
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="e#3965#3989#0" expanded="false" />
                 <element signature="docComment;method#onCreate#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#onCreate#0;class#MainActivity#0" expanded="false" />
@@ -264,6 +265,18 @@
                 <element signature="method#ImportDBParams#0;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#ImportDBParams#1;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#ImportDBParams#2;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
+                <element signature="e#143036#143037#0" expanded="false" />
+                <element signature="e#143075#143076#0" expanded="false" />
+                <element signature="e#143127#143128#0" expanded="false" />
+                <element signature="e#143175#143176#0" expanded="false" />
+                <element signature="e#143247#143248#0" expanded="false" />
+                <element signature="e#143285#143286#0" expanded="false" />
+                <element signature="e#143336#143337#0" expanded="false" />
+                <element signature="e#143382#143383#0" expanded="false" />
+                <element signature="e#143452#143453#0" expanded="false" />
+                <element signature="e#143489#143490#0" expanded="false" />
+                <element signature="e#143537#143538#0" expanded="false" />
+                <element signature="e#143581#143582#0" expanded="false" />
                 <element signature="class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#doInBackground#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#onPostExecute#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
@@ -280,7 +293,13 @@
                 <element signature="method#onTabUnselected#1;class#TabListener#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;class#PagerAdapter#0;class#MainActivity#0" expanded="false" />
                 <element signature="class#PagerAdapter#0;class#MainActivity#0" expanded="false" />
+                <element signature="e#152855#152856#0" expanded="false" />
+                <element signature="e#152893#152894#0" expanded="false" />
                 <element signature="method#addFragment#0;class#PagerAdapter#0;class#MainActivity#0" expanded="false" />
+                <element signature="e#153082#153083#0" expanded="false" />
+                <element signature="e#153130#153131#0" expanded="false" />
+                <element signature="e#153197#153198#0" expanded="false" />
+                <element signature="e#153252#153253#0" expanded="false" />
                 <element signature="docComment;class#SortIgnoreCase#0;class#MainActivity#0" expanded="false" />
                 <element signature="class#SortIgnoreCase#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#compare#0;class#SortIgnoreCase#0;class#MainActivity#0" expanded="false" />
@@ -306,21 +325,8 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/ChordProParser.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="759" column="70" selection-start-line="759" selection-start-column="70" selection-end-line="759" selection-end-column="70" />
+              <caret line="68" column="120" selection-start-line="68" selection-start-column="120" selection-end-line="68" selection-end-column="120" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ChordDisplay.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/ChordDisplay.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.53583616">
-              <caret line="100" column="13" selection-start-line="100" selection-start-column="13" selection-end-line="100" selection-end-column="13" />
-              <folding>
-                <element signature="docComment;method#showChord#0;class#ChordDisplay#0" expanded="false" />
-                <element signature="method#setChordClickableText#0;class#ChordDisplay#0" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -329,12 +335,30 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="181" column="25" selection-start-line="181" selection-start-column="25" selection-end-line="181" selection-end-column="25" />
+              <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
               <folding>
                 <element signature="method#onStart#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#onPause#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#onStop#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="docComment;method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="docComment;method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ChordDisplay.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/ChordDisplay.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.33105803">
+              <caret line="142" column="0" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
+              <folding>
+                <element signature="docComment;method#showChord#0;class#ChordDisplay#0" expanded="false" />
+                <element signature="method#showChord#0;class#ChordDisplay#0" expanded="false" />
+                <element signature="e#4520#4728#0" expanded="true" />
+                <element signature="e#4727#4728#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1802,13 +1826,13 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MyClickableSpan.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/ChordClickableSpan.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/ChordProParser.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/StaticVars.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/ChordDisplay.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/ChordClickableSpan.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/ChordProParser.java" />
       </list>
     </option>
   </component>
@@ -1949,6 +1973,162 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="songs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2198,7 +2378,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="55" y="-8" width="1873" height="1096" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2216,7 +2396,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14009929" sideWeight="0.6840391" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14009929" sideWeight="0.6840391" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296582" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -2277,7 +2457,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="125" />
+      <option name="time" value="130" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2291,6 +2471,9 @@
             <element signature="method#onPause#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#onStop#0;class#SetSongFragment#0" expanded="false" />
             <element signature="docComment;method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="docComment;method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2610,17 +2793,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/ChordClickableSpan.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59385663">
-          <caret line="24" column="34" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#652#653#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/color.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.43515357">
@@ -2643,25 +2815,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5477816">
-          <caret line="216" column="120" selection-start-line="216" selection-start-column="28" selection-end-line="216" selection-end-column="120" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetsTab.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.11604095">
           <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/ChordProParser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="759" column="70" selection-start-line="759" selection-start-column="70" selection-end-line="759" selection-end-column="70" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2670,7 +2827,6 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="4191" column="55" selection-start-line="4191" selection-start-column="55" selection-end-line="4191" selection-end-column="55" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#3965#3989#0" expanded="false" />
             <element signature="docComment;method#onCreate#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onCreate#0;class#MainActivity#0" expanded="false" />
@@ -2856,6 +3012,18 @@
             <element signature="method#ImportDBParams#0;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
             <element signature="method#ImportDBParams#1;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
             <element signature="method#ImportDBParams#2;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#143036#143037#0" expanded="false" />
+            <element signature="e#143075#143076#0" expanded="false" />
+            <element signature="e#143127#143128#0" expanded="false" />
+            <element signature="e#143175#143176#0" expanded="false" />
+            <element signature="e#143247#143248#0" expanded="false" />
+            <element signature="e#143285#143286#0" expanded="false" />
+            <element signature="e#143336#143337#0" expanded="false" />
+            <element signature="e#143382#143383#0" expanded="false" />
+            <element signature="e#143452#143453#0" expanded="false" />
+            <element signature="e#143489#143490#0" expanded="false" />
+            <element signature="e#143537#143538#0" expanded="false" />
+            <element signature="e#143581#143582#0" expanded="false" />
             <element signature="class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="method#doInBackground#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onPostExecute#0;class#ImportDatabase#0;class#MainActivity#0" expanded="false" />
@@ -2872,7 +3040,13 @@
             <element signature="method#onTabUnselected#1;class#TabListener#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;class#PagerAdapter#0;class#MainActivity#0" expanded="false" />
             <element signature="class#PagerAdapter#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#152855#152856#0" expanded="false" />
+            <element signature="e#152893#152894#0" expanded="false" />
             <element signature="method#addFragment#0;class#PagerAdapter#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#153082#153083#0" expanded="false" />
+            <element signature="e#153130#153131#0" expanded="false" />
+            <element signature="e#153197#153198#0" expanded="false" />
+            <element signature="e#153252#153253#0" expanded="false" />
             <element signature="docComment;class#SortIgnoreCase#0;class#MainActivity#0" expanded="false" />
             <element signature="class#SortIgnoreCase#0;class#MainActivity#0" expanded="false" />
             <element signature="method#compare#0;class#SortIgnoreCase#0;class#MainActivity#0" expanded="false" />
@@ -2901,26 +3075,68 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.54888505">
+          <caret line="216" column="32" selection-start-line="216" selection-start-column="28" selection-end-line="216" selection-end-column="32" />
+          <folding>
+            <element signature="docComment;field#song#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onCreate#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
+            <element signature="class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="181" column="25" selection-start-line="181" selection-start-column="25" selection-end-line="181" selection-end-column="25" />
+          <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
           <folding>
             <element signature="method#onStart#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#onPause#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#onStop#0;class#SetSongFragment#0" expanded="false" />
             <element signature="docComment;method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="docComment;method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/ChordClickableSpan.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.34812286">
+          <caret line="16" column="16" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
+          <folding>
+            <element signature="e#527#528#0" expanded="true" />
+            <element signature="e#569#570#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/ChordProParser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="68" column="120" selection-start-line="68" selection-start-column="120" selection-end-line="68" selection-end-column="120" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/ChordDisplay.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.53583616">
-          <caret line="100" column="13" selection-start-line="100" selection-start-column="13" selection-end-line="100" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.33105803">
+          <caret line="142" column="0" selection-start-line="142" selection-start-column="0" selection-end-line="142" selection-end-column="0" />
           <folding>
             <element signature="docComment;method#showChord#0;class#ChordDisplay#0" expanded="false" />
-            <element signature="method#setChordClickableText#0;class#ChordDisplay#0" expanded="false" />
+            <element signature="method#showChord#0;class#ChordDisplay#0" expanded="false" />
+            <element signature="e#4520#4728#0" expanded="true" />
+            <element signature="e#4727#4728#0" expanded="true" />
           </folding>
         </state>
       </provider>
