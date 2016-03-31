@@ -83,7 +83,7 @@ public class ChordDisplay {
             }
 
             // Common naming changes
-            if (chord.contains("maj")) {
+            if (chord.endsWith("maj")) {
                 chord = chord.replaceAll("maj", "");
             }
             if (chord.contains("sus2")) {
