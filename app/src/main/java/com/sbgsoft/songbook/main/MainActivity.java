@@ -2996,25 +2996,25 @@ public class MainActivity extends FragmentActivity {
     	// Set the on click listener for each item
     	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
-            	// Get the selected item and populate the songs list
-            	String groupName = songGroupsList.get(position);
-            	
-            	// Reset the scroll positions
-            	if (!currentSongGroup.equals(groupName)) {
-	            	songsCurrentScrollPosition = 0;
-	            	songsCurrentScrollOffset = 0;
-            	}
-            	
-            	// Refill song list
-            	currentSongGroup = groupName;
-            	fillSongsListView();
-            	
-            	// Set the sort by spinner back to default
-            	((Spinner)findViewById(R.id.song_sort_spinner)).setSelection(0);
+                // Get the selected item and populate the songs list
+                String groupName = songGroupsList.get(position);
+
+                // Reset the scroll positions
+                if (!currentSongGroup.equals(groupName)) {
+                    songsCurrentScrollPosition = 0;
+                    songsCurrentScrollOffset = 0;
+                }
+
+                // Refill song list
+                currentSongGroup = groupName;
+                fillSongsListView();
+
+                // Set the sort by spinner back to default
+                ((Spinner) findViewById(R.id.song_sort_spinner)).setSelection(0);
             }
-            
+
             public void onNothingSelected(AdapterView<?> arg0) {
-            	// Nothing was clicked so ignore it
+                // Nothing was clicked so ignore it
             }
         });
     	
@@ -3176,12 +3176,14 @@ public class MainActivity extends FragmentActivity {
     	final CharSequence[] groupNames = new CharSequence[c.getCount() - 1];
     	int counter = 0;
     	
-    	// Don't show the all songs group
-    	c.moveToFirst();
-    	
     	// Add groups to list view
     	while(c.moveToNext()) {
-    		groupNames[counter++] = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
+            String groupName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
+
+            // Make sure we don't show the All Songs group to delete
+            if (!groupName.equals("All Songs")) {
+                groupNames[counter++] = groupName;
+            }
     	}
     	c.close();
     	
