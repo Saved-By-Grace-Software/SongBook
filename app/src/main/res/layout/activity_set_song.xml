@@ -49,4 +49,14 @@
         android:text="@string/transpose_button"
         android:onClick="onTransposeButtonClick" />
 
+    <Button
+        android:id="@+id/song_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@android:drawable/btn_default_small"
+        android:text="@string/edit_button"
+        android:onClick="onEditButtonClick" />
+
 </RelativeLayout>

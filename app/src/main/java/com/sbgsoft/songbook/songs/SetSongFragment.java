@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -38,6 +39,7 @@ public class SetSongFragment extends Fragment {
     ScaleGestureDetector scaleGestureDetector;
     private Metronome mMetronome;
     ChordDisplay disp;
+    private int EDIT_SONG_ACTIVITY = 1;
     //endregion
 
     //region Class Functions
@@ -146,6 +148,26 @@ public class SetSongFragment extends Fragment {
         if (mMetronome != null)
             mMetronome.stop();
     }
+
+    /**
+     * Get the return from the file dialog activity
+     */
+    @Override
+    public synchronized void onActivityResult(final int requestCode, int resultCode, final Intent data) {
+
+        if (requestCode == EDIT_SONG_ACTIVITY && resultCode == Activity.RESULT_OK) {
+            // Reset the song text
+            try {
+                FileInputStream fis = mView.getContext().openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
+                mSongItem.setText(ChordProParser.ParseSongFile(mView.getContext(), mSongItem, mSongItem.getKey(), fis, true, false));
+
+                // Reload the song text
+                if (disp != null) {
+                    song.setText(disp.setChordClickableText(mSongItem.getText()), TextView.BufferType.SPANNABLE);
+                }
+            } catch (Exception e) { }
+        }
+    }
     //endregion
 
     //region Click Functions
@@ -193,6 +215,23 @@ public class SetSongFragment extends Fragment {
         	alert.show();
     	}
 	}
+
+    /**
+     * Handles the edit song button click
+     */
+    public void onEditButtonClick() {
+        // Get the song name
+        final String editSongName = mSongItem.getName();
+        final String editSongFile = mSongItem.getSongFile();
+
+        // Create the edit activity intent
+        Intent i = new Intent(mView.getContext(), EditSongRawActivity.class);
+        i.putExtra(StaticVars.SONG_NAME_KEY, editSongName);
+        i.putExtra(StaticVars.SONG_FILE_KEY, editSongFile);
+
+        // Start the activity
+        startActivityForResult(i, EDIT_SONG_ACTIVITY);
+    }
     //endregion
 
     //region Other Functions
