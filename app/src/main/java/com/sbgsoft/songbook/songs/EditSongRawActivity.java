@@ -68,6 +68,7 @@ public class EditSongRawActivity extends Activity {
     	}
     	
     	// Close the activity
+        setResult(Activity.RESULT_OK);
     	finish();
     }
     
@@ -77,6 +78,7 @@ public class EditSongRawActivity extends Activity {
      */
     public void onCancelClick(View v) {
     	// Cancel clicked so don't save the file
+        setResult(Activity.RESULT_CANCELED);
     	finish();
     }
     

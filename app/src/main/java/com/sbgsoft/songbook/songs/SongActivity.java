@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.files.OpenFile;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
@@ -39,10 +40,11 @@ public class SongActivity extends Activity {
      * 
      *****************************************************************************/
 	AutoFitTextView song;
-	private SongItem mSongItem;
+    ChordDisplay disp;
     ScaleGestureDetector scaleGestureDetector;
     private Metronome mMetronome;
-    ChordDisplay disp;
+    private SongItem mSongItem;
+    private int EDIT_SONG_ACTIVITY = 1;
     //endregion
 
 
@@ -176,6 +178,26 @@ public class SongActivity extends Activity {
         //getMenuInflater().inflate(R.menu.view_song_menu, menu);
         return true;
     }
+
+    /**
+     * Get the return from the file dialog activity
+     */
+    @Override
+    public synchronized void onActivityResult(final int requestCode, int resultCode, final Intent data) {
+
+        if (requestCode == EDIT_SONG_ACTIVITY && resultCode == Activity.RESULT_OK) {
+            // Reset the song text
+            try {
+                FileInputStream fis = openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
+                mSongItem.setText(ChordProParser.ParseSongFile(getApplicationContext(), mSongItem, mSongItem.getKey(), fis, true, false));
+
+                // Reload the song text
+                if (disp != null) {
+                    song.setText(disp.setChordClickableText(mSongItem.getText()), TextView.BufferType.SPANNABLE);
+                }
+            } catch (Exception e) { }
+        }
+    }
     //endregion
 
 
@@ -247,7 +269,7 @@ public class SongActivity extends Activity {
         i.putExtra(StaticVars.SONG_FILE_KEY, editSongFile);
 
         // Start the activity
-        startActivity(i);
+        startActivityForResult(i, EDIT_SONG_ACTIVITY);
     }
 
     /**
