@@ -54,10 +54,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
+import android.text.Layout;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.AlignmentSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
+import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -73,6 +77,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -704,15 +709,24 @@ public class MainActivity extends FragmentActivity {
      * Shows the about box with app information
      */
     public void showAboutBox() {
+        CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
+
+        // Set the dialog view to show the about message
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.simple_text_dialog, (ViewGroup) findViewById(R.id.simple_dialog_root));
+        alert.setView(dialoglayout);
+        final TextView tv = (TextView)dialoglayout.findViewById(R.id.simple_dialog_text);
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
+
     	// Create the dialog
-    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
     	alert.setTitle("About " + getString(R.string.app_name));
     	
     	// Build the message
-    	int start = 0, end = 0;
+    	int start, end, startTitle = 0, endTitle;
     	SpannableStringBuilder message = new SpannableStringBuilder();
-    	StyleSpan italics = new StyleSpan(Typeface.ITALIC);
-    	RelativeSizeSpan smallFont = new RelativeSizeSpan(0.75f);
+    	StyleSpan italics;
+    	RelativeSizeSpan smallFont;
+
     	try {
 			message.append(getString(R.string.full_app_name) + " v" + 
 					getPackageManager().getPackageInfo(getPackageName(), 0).versionName +
@@ -721,10 +735,12 @@ public class MainActivity extends FragmentActivity {
 			message.append(getString(R.string.full_app_name) + StaticVars.EOL);
 		}
     	message.append("Database Version " + DBStrings.DATABASE_VERSION + StaticVars.EOL);
+        endTitle = message.length();
     	message.append(StaticVars.EOL);
     	message.append("Truth Gaming & Saved By Grace Software" + StaticVars.EOL);
     	message.append("Pittsburgh, PA" + StaticVars.EOL);
     	message.append("http://truthgaming.net" + StaticVars.EOL);
+        message.append("savedbygracesoft@gmail.com" + StaticVars.EOL);
     	message.append(StaticVars.EOL);
     	message.append("Virtual SongBook is designed to allow you to carry all of your guitar music with you wherever " + 
     			"you go on your Android phone or tablet. It also allows you to create sets of songs for performances, gigs " +
@@ -733,23 +749,32 @@ public class MainActivity extends FragmentActivity {
     	start = message.length();
     	message.append("\"For by grace you have been saved through faith. And this is not your own doing; it is the gift of God, " +
     			"not a result of works so that no one may boast." +
-    			StaticVars.EOL + "-Ephesians 2:8-9");
-    	end = message.length();
-    	italics = new StyleSpan(Typeface.ITALIC);
-    	smallFont = new RelativeSizeSpan(0.75f);
-    	message.setSpan(italics, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-    	message.setSpan(smallFont, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-    	
-    	// Display information
-    	alert.setMessage(message);
+                StaticVars.EOL + "-Ephesians 2:8-9");
+        end = message.length();
+
+        // Set the spans
+        italics = new StyleSpan(Typeface.ITALIC);
+        smallFont = new RelativeSizeSpan(0.75f);
+        message.setSpan(italics, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        message.setSpan(smallFont, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        message.setSpan(new AlignmentSpan.Standard(Layout.Alignment.ALIGN_CENTER), startTitle, endTitle,  Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+        message.setSpan(new StyleSpan(Typeface.BOLD), startTitle, endTitle, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+
+        // Make the links clickable
+        Linkify.addLinks(message, Linkify.ALL);
+
+        // Display information
+        tv.setText(message);
     	
     	// Add an OK button
     	alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {}
-		});
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
 
-    	alert.show();
+        // Show the dialog and make the links clickable
+        alert.show();
     }
 
     /**
