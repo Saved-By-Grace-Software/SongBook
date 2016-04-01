@@ -348,7 +348,7 @@ public class MainActivity extends FragmentActivity {
      */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-    	String setName = "", songName = "", groupName = "";
+    	String setName, songName, groupName;
     	Intent i;
     	SongItem songI;
     	SetItem setI;

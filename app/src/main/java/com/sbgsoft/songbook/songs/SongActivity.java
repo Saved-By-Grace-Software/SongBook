@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -229,6 +230,24 @@ public class SongActivity extends Activity {
 
         	alert.show();
     	}
+    }
+
+    /**
+     * Handles the edit song button click
+     * @param v The song view
+     */
+    public void onEditButtonClick(View v) {
+        // Get the song name
+        final String editSongName = mSongItem.getName();
+        final String editSongFile = mSongItem.getSongFile();
+
+        // Create the edit activity intent
+        Intent i = new Intent(getBaseContext(), EditSongRawActivity.class);
+        i.putExtra(StaticVars.SONG_NAME_KEY, editSongName);
+        i.putExtra(StaticVars.SONG_FILE_KEY, editSongFile);
+
+        // Start the activity
+        startActivity(i);
     }
 
     /**
