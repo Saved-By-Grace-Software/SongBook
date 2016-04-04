@@ -258,6 +258,8 @@ public class MainActivity extends FragmentActivity {
             case R.id.menu_sets_import:
                 permissionRequiredFunction(StaticVars.PERMISSIONS_SET_IMPORT);
                 return true;
+            case R.id.menu_sets_find:
+                return true;
 	        case R.id.menu_songs_clear:
 	        	deleteAllSongs();
 	        	return true;
@@ -267,6 +269,9 @@ public class MainActivity extends FragmentActivity {
 	        case R.id.menu_songs_import:
                 permissionRequiredFunction(StaticVars.PERMISSIONS_SONG_IMPORT);
 	        	return true;
+            case R.id.menu_songs_find:
+                findSong();
+                return true;
 	        case R.id.menu_song_groups_create:
 	        	createSongGroup();
 	        	return true;
@@ -2873,6 +2878,44 @@ public class MainActivity extends FragmentActivity {
         }
 
         return ret;
+    }
+
+    /**
+     * Enables the user to find songs
+     */
+    private void findSong() {
+        CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
+
+        // Set the dialog view to gather user input
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.search_dialog, (ViewGroup) findViewById(R.id.search_dialog_root));
+        alert.setView(dialoglayout);
+        final EditText songNameSearch = (EditText)dialoglayout.findViewById(R.id.search_dialog_text);
+
+        // Add the dialog title
+        alert.setTitle("Find Song");
+
+        // Set the OK button
+        alert.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Make sure there is some text to search
+                String searchText = songNameSearch.getText().toString();
+
+                if (searchText.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "You must enter text to search. Please try again.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Search for song: " + songNameSearch.getText(), Toast.LENGTH_LONG).show();
+
+                    // Close the dialog
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel", null);
+        alert.setCanceledOnTouchOutside(true);
+
+        alert.show();
     }
     //endregion
 
