@@ -494,9 +494,14 @@ public class DBAdapter {
 		
 		// Check if the group is the all songs group
 		if (groupName.equals(SongsTab.ALL_SONGS_LABEL)) {
-			query = "SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
-					DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + ", " + DBStrings.TBLSONG_BPM + ", " +
-                    DBStrings.TBLSONG_LINK + ", " + DBStrings.TBLSONG_TIME +
+			query = "SELECT " + DBStrings.TBLSONG_ID + " as _id, " +
+                    DBStrings.TBLSONG_NAME + ", " +
+                    DBStrings.TBLSONG_FILE + ", " +
+					DBStrings.TBLSONG_AUTHOR + ", " +
+                    DBStrings.TBLSONG_KEY + ", " +
+                    DBStrings.TBLSONG_BPM + ", " +
+                    DBStrings.TBLSONG_LINK + ", " +
+                    DBStrings.TBLSONG_TIME +
 					" FROM " + DBStrings.SONGS_TABLE + " ORDER BY " + DBStrings.TBLSONG_NAME;
 		} else {
 			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " +
@@ -517,6 +522,32 @@ public class DBAdapter {
 		}
 		return mDb.rawQuery(query, null);
 	}
+
+    /**
+     * Gets all existing song names that meet the search criteria
+     * @return Cursor to the query
+     */
+    public Cursor getSongsSearch(String titleSearchText) {
+        String query;
+
+        // Check to make sure we have search text
+        if (!titleSearchText.isEmpty()) {
+            query = "SELECT " + DBStrings.TBLSONG_ID + " as _id, " +
+                    DBStrings.TBLSONG_NAME + ", " +
+                    DBStrings.TBLSONG_FILE + ", " +
+                    DBStrings.TBLSONG_AUTHOR + ", " +
+                    DBStrings.TBLSONG_KEY + ", " +
+                    DBStrings.TBLSONG_BPM + ", " +
+                    DBStrings.TBLSONG_LINK + ", " +
+                    DBStrings.TBLSONG_TIME +
+                    " FROM " + DBStrings.SONGS_TABLE +
+                    " WHERE " + DBStrings.TBLSONG_NAME + " like '%" + titleSearchText + "%' " +
+                    " ORDER BY " + DBStrings.TBLSONG_NAME;
+            return mDb.rawQuery(query, null);
+        } else {
+            return null;
+        }
+    }
 
 	/**
 	 * Deletes all songs in the database

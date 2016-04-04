@@ -77,7 +77,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -270,7 +269,7 @@ public class MainActivity extends FragmentActivity {
                 permissionRequiredFunction(StaticVars.PERMISSIONS_SONG_IMPORT);
 	        	return true;
             case R.id.menu_songs_find:
-                findSong();
+                findSongDialog();
                 return true;
 	        case R.id.menu_song_groups_create:
 	        	createSongGroup();
@@ -2883,7 +2882,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * Enables the user to find songs
      */
-    private void findSong() {
+    private void findSongDialog() {
         CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
 
         // Set the dialog view to gather user input
@@ -2904,7 +2903,8 @@ public class MainActivity extends FragmentActivity {
                 if (searchText.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You must enter text to search. Please try again.", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Search for song: " + songNameSearch.getText(), Toast.LENGTH_LONG).show();
+                    // Search for the text and display the results
+                    displaySongSearchResults(searchText);
 
                     // Close the dialog
                     dialog.dismiss();
@@ -2916,6 +2916,24 @@ public class MainActivity extends FragmentActivity {
         alert.setCanceledOnTouchOutside(true);
 
         alert.show();
+    }
+
+    /**
+     * Displays the search results of a song search
+     * @param titleSearchText The title text to search for
+     */
+    private void displaySongSearchResults(String titleSearchText) {
+        // Query for the songs
+        Cursor c = dbAdapter.getSongsSearch(titleSearchText);
+
+        // TEMP
+        if (c.getCount() > 0) {
+            c.moveToFirst();
+            String tmp = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
+            Toast.makeText(getApplicationContext(), "First result: " + tmp, Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "No songs match that search text", Toast.LENGTH_LONG).show();
+        }
     }
     //endregion
 
