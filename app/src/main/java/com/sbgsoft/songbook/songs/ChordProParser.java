@@ -833,8 +833,9 @@ public class ChordProParser {
     	in.close();
     	br.close();
 
-        // Test workaround
-        parsedOutput.append(StaticVars.chordClickHackFix);
+        // Workaround for pageviewer bug
+        if (useHtml)
+            parsedOutput.append(StaticVars.chordClickHackFix);
 		
 		return parsedOutput.toString();
 	}
