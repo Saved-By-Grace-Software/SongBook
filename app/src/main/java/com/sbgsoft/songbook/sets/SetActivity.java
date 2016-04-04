@@ -145,11 +145,23 @@ public class SetActivity extends FragmentActivity {
      * @param v
      */
     public void onTransposeButtonClick(View v) {
-    	// Get the current fragment
-    	Fragment f = mPagerAdapter.mFragments.get(currentSong);
-    	
-    	// Transpose the current song
-    	((SetSongFragment)f).onTransposeButtonClick();
+        // Get the current fragment
+        Fragment f = mPagerAdapter.mFragments.get(currentSong);
+
+        // Transpose the current song
+        ((SetSongFragment)f).onTransposeButtonClick();
+    }
+
+    /**
+     * Edits the currently viewed song
+     * @param v
+     */
+    public void onEditButtonClick(View v) {
+        // Get the current fragment
+        Fragment f = mPagerAdapter.mFragments.get(currentSong);
+
+        // Transpose the current song
+        ((SetSongFragment)f).onEditButtonClick();
     }
     
     
