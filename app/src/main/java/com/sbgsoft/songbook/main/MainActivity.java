@@ -92,6 +92,7 @@ import com.sbgsoft.songbook.items.ItemArrayAdapter;
 import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SetItem;
 import com.sbgsoft.songbook.items.SongItem;
+import com.sbgsoft.songbook.items.SongSearchCriteria;
 import com.sbgsoft.songbook.main.StaticVars.SongFileType;
 import com.sbgsoft.songbook.sets.CurrentSetTab;
 import com.sbgsoft.songbook.sets.SetActivity;
@@ -2163,10 +2164,21 @@ public class MainActivity extends FragmentActivity {
      * Sets the current song list for the specified group
      * @param groupName The song group
      */
-    public void setSongsList() {
+    public void setSongsList(SongSearchCriteria songSearch) {
     	ArrayList<Item> temp = new ArrayList<Item>();
-    	Cursor c = dbAdapter.getSongs(currentSongGroup);
-    	c.moveToFirst();
+        Cursor c;
+
+        // Determine if we are searching or using the song group
+        if (songSearch == null)
+    	    c = dbAdapter.getSongs(currentSongGroup);
+        else
+            c = dbAdapter.getSongsSearch(songSearch);
+
+        c.moveToFirst();
+
+        // Display error message for searching
+        if (c.getCount() <= 0 && songSearch != null)
+            Toast.makeText(getApplicationContext(), "No songs match that search", Toast.LENGTH_LONG).show();
     	
     	// Populate the ArrayList
     	while (!c.isAfterLast()) {
@@ -2217,18 +2229,16 @@ public class MainActivity extends FragmentActivity {
     
     /**
      * Fills the songs list
-     * @param v The view for the list
-     * @param groupName The name of the group to populate
      */
-    public void fillSongsListView() {
+    public void fillSongsListView(SongSearchCriteria songSearch) {
     	// Fill the songs array list
-    	setSongsList();
-    	
+    	setSongsList(songSearch);
+
     	// Set up the list view and adapter
     	ListView lv = ((ListView)findViewById(R.id.songs_list));
         lv.setEmptyView(findViewById(R.id.empty_songs));
         songsAdapter = new ItemArrayAdapter(songsFragment.getActivity(), songsList);
-        
+
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
@@ -2251,13 +2261,20 @@ public class MainActivity extends FragmentActivity {
                 }
             }
         });
-        
+
         // Register the context menu and add the adapter
         registerForContextMenu(lv);
         lv.setAdapter(songsAdapter);
-        
+
         // Scroll to the previous scroll position
         lv.setSelectionFromTop(songsCurrentScrollPosition, songsCurrentScrollOffset);
+    }
+
+    /**
+     * Fills the songs list with no search parameters
+     */
+    public void fillSongsListView() {
+        fillSongsListView(null);
     }
         
     /**
@@ -2903,8 +2920,16 @@ public class MainActivity extends FragmentActivity {
                 if (searchText.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "You must enter text to search. Please try again.", Toast.LENGTH_LONG).show();
                 } else {
-                    // Search for the text and display the results
-                    displaySongSearchResults(searchText);
+                    // Create the song search object
+                    SongSearchCriteria songSearch = new SongSearchCriteria();
+                    songSearch.songNameSearchText = searchText;
+
+                    // Fill the songs tab with the search data
+                    fillSongsListView(songSearch);
+
+                    // Set the songs tab as the current
+                    currentTab = 3;
+                    mViewPager.setCurrentItem(currentTab);
 
                     // Close the dialog
                     dialog.dismiss();
@@ -2916,24 +2941,6 @@ public class MainActivity extends FragmentActivity {
         alert.setCanceledOnTouchOutside(true);
 
         alert.show();
-    }
-
-    /**
-     * Displays the search results of a song search
-     * @param titleSearchText The title text to search for
-     */
-    private void displaySongSearchResults(String titleSearchText) {
-        // Query for the songs
-        Cursor c = dbAdapter.getSongsSearch(titleSearchText);
-
-        // TEMP
-        if (c.getCount() > 0) {
-            c.moveToFirst();
-            String tmp = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
-            Toast.makeText(getApplicationContext(), "First result: " + tmp, Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "No songs match that search text", Toast.LENGTH_LONG).show();
-        }
     }
     //endregion
 

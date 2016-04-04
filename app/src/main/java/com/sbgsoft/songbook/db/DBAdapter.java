@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.sbgsoft.songbook.items.SongSearchCriteria;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.sets.SetsTab;
 import com.sbgsoft.songbook.songs.SongsTab;
@@ -527,11 +528,13 @@ public class DBAdapter {
      * Gets all existing song names that meet the search criteria
      * @return Cursor to the query
      */
-    public Cursor getSongsSearch(String titleSearchText) {
+    public Cursor getSongsSearch(SongSearchCriteria songSearch) {
         String query;
 
+        // TODO: Add ability to search on things other than just song name
+
         // Check to make sure we have search text
-        if (!titleSearchText.isEmpty()) {
+        if (!songSearch.songNameSearchText.isEmpty()) {
             query = "SELECT " + DBStrings.TBLSONG_ID + " as _id, " +
                     DBStrings.TBLSONG_NAME + ", " +
                     DBStrings.TBLSONG_FILE + ", " +
@@ -541,7 +544,7 @@ public class DBAdapter {
                     DBStrings.TBLSONG_LINK + ", " +
                     DBStrings.TBLSONG_TIME +
                     " FROM " + DBStrings.SONGS_TABLE +
-                    " WHERE " + DBStrings.TBLSONG_NAME + " like '%" + titleSearchText + "%' " +
+                    " WHERE " + DBStrings.TBLSONG_NAME + " like '%" + songSearch.songNameSearchText + "%' " +
                     " ORDER BY " + DBStrings.TBLSONG_NAME;
             return mDb.rawQuery(query, null);
         } else {
