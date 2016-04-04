@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.sbgsoft.songbook.items.SetSearchCriteria;
 import com.sbgsoft.songbook.items.SongSearchCriteria;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.sets.SetsTab;
@@ -258,8 +259,8 @@ public class DBAdapter {
 	 * Gets all existing set names
 	 * @return Cursor to the query
 	 */	
-	public Cursor getSetNames(String groupName) {
-		String query = "";
+	public Cursor getSets(String groupName) {
+		String query;
 		
 		// Check if the group is the all sets group
 		if (groupName.equals(SetsTab.ALL_SETS_LABEL)) {
@@ -278,6 +279,30 @@ public class DBAdapter {
 		}
 		return mDb.rawQuery(query, null);
 	}
+
+    /**
+     * Gets all existing set names
+     * @return Cursor to the query
+     */
+    public Cursor getSetsSearch(SetSearchCriteria setSearch) {
+        String query;
+
+        // TODO: Add ability to search on things other than just set name
+
+        // Check if the group is the all sets group
+        if (!setSearch.setNameSearchText.isEmpty()) {
+            query = "SELECT " + DBStrings.TBLSETS_ID + " as _id, " +
+                    DBStrings.TBLSETS_NAME + ", " +
+                    DBStrings.TBLSETS_DATE +
+                    " FROM " + DBStrings.SETS_TABLE +
+                    " WHERE " + DBStrings.TBLSETS_NAME + " like '%" + setSearch.setNameSearchText + "%' " +
+                    " ORDER BY " + DBStrings.TBLSETS_NAME;
+
+            return mDb.rawQuery(query, null);
+        } else {
+            return null;
+        }
+    }
 	
 	/**
 	 * Updates the set to add it to the specified group

@@ -91,6 +91,7 @@ import com.sbgsoft.songbook.items.Item;
 import com.sbgsoft.songbook.items.ItemArrayAdapter;
 import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SetItem;
+import com.sbgsoft.songbook.items.SetSearchCriteria;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.items.SongSearchCriteria;
 import com.sbgsoft.songbook.main.StaticVars.SongFileType;
@@ -259,6 +260,7 @@ public class MainActivity extends FragmentActivity {
                 permissionRequiredFunction(StaticVars.PERMISSIONS_SET_IMPORT);
                 return true;
             case R.id.menu_sets_find:
+                findSetDialog();
                 return true;
 	        case R.id.menu_songs_clear:
 	        	deleteAllSongs();
@@ -1359,19 +1361,19 @@ public class MainActivity extends FragmentActivity {
     	alert.setMessage("Are you sure you want to delete '" + setName + "'???");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Delete set from database
-	    		dbAdapter.deleteSet(setName);
-	    		
-	    		// Refresh set and current set list
-	    		fillSetGroupsSpinner();
-	    		fillSetsListView();
-	    		fillCurrentSetListView();
-	        	
-	        	// Set the current tab
-	        	currentTab = 2;
-			}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Delete set from database
+                dbAdapter.deleteSet(setName);
+
+                // Refresh set and current set list
+                fillSetGroupsSpinner();
+                fillSetsListView();
+                fillCurrentSetListView();
+
+                // Set the current tab
+                currentTab = 2;
+            }
+        });
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -1386,13 +1388,26 @@ public class MainActivity extends FragmentActivity {
     /**
      * Sets the sets array list
      */
-    public void setSetsList() {
-    	Cursor c = dbAdapter.getSetNames(currentSetGroup);
-    	c.moveToFirst();
+    public int setSetsList(SetSearchCriteria setSearch) {
+        int ret;
+        Cursor c;
+
+        // Determine if we are searching or using the song group
+        if (setSearch == null)
+            c = dbAdapter.getSets(currentSetGroup);
+        else
+            c = dbAdapter.getSetsSearch(setSearch);
+
+        c.moveToFirst();
+        ret = c.getCount();
     	
     	// Clear the ArrayList
     	setsList.clear();
-    	
+
+        // Display error message for searching
+        if (c.getCount() <= 0 && setSearch != null)
+            Toast.makeText(getApplicationContext(), "No sets match that search", Toast.LENGTH_LONG).show();
+
     	// Populate the ArrayList
     	while (!c.isAfterLast()) {
     		// Get the strings from the cursor
@@ -1425,21 +1440,23 @@ public class MainActivity extends FragmentActivity {
 	    		Collections.sort(setsList, new ItemComparableName());
 	    		break;
     	}
+
+        return ret;
     }
-    
+
     /**
      * Fills the sets list
      * @param v The view for the list
      */
-    public void fillSetsListView() {
-    	// Fill the sets array list
-    	setSetsList();
+    public int fillSetsListView(SetSearchCriteria setSearch) {
+        // Fill the sets array list
+    	int ret = setSetsList(setSearch);
     	
     	// Set up the list view and adapter
         ListView lv = ((ListView)findViewById(R.id.sets_list));
         lv.setEmptyView(findViewById(R.id.empty_sets));
         setsAdapter = new ItemArrayAdapter(setsFragment.getActivity(), setsList);
-        
+
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
@@ -1459,6 +1476,15 @@ public class MainActivity extends FragmentActivity {
         
         // Scroll to the previous scroll position
         lv.setSelectionFromTop(setsCurrentScrollPosition, setsCurrentScrollOffset);
+
+        return ret;
+    }
+
+    /**
+     * Fills the sets list view with no search results
+     */
+    public void fillSetsListView() {
+        fillSetsListView(null);
     }
     
     /**
@@ -1694,6 +1720,54 @@ public class MainActivity extends FragmentActivity {
         i.putExtra(StaticVars.SET_NAME_KEY, setName);
         startActivityForResult(i, 1);
     }
+
+    /**
+     * Enables the user to find sets
+     */
+    private void findSetDialog() {
+        CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
+
+        // Set the dialog view to gather user input
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.search_dialog, (ViewGroup) findViewById(R.id.search_dialog_root));
+        alert.setView(dialoglayout);
+        final EditText setNameSearch = (EditText)dialoglayout.findViewById(R.id.search_dialog_text);
+
+        // Add the dialog title
+        alert.setTitle("Find Set");
+
+        // Set the OK button
+        alert.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Make sure there is some text to search
+                String searchText = setNameSearch.getText().toString();
+
+                if (searchText.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "You must enter text to search. Please try again.", Toast.LENGTH_LONG).show();
+                } else {
+                    // Create the song search object
+                    SetSearchCriteria setSearch = new SetSearchCriteria();
+                    setSearch.setNameSearchText = searchText;
+
+                    // Fill the songs tab with the search data
+                    int numResults = fillSetsListView(setSearch);
+                    fillSetGroupsSpinner(true, numResults);
+
+                    // Set the sets tab as the current
+                    currentTab = 1;
+                    mViewPager.setCurrentItem(currentTab);
+
+                    // Close the dialog
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel", null);
+        alert.setCanceledOnTouchOutside(true);
+
+        alert.show();
+    }
     //endregion
 
 
@@ -1886,7 +1960,7 @@ public class MainActivity extends FragmentActivity {
     	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
     	
     	// Get the list of group names
-    	Cursor c = dbAdapter.getSetNames(SetsTab.ALL_SETS_LABEL);
+    	Cursor c = dbAdapter.getSets(SetsTab.ALL_SETS_LABEL);
     	
     	// Clear the previous song lists
     	addSetsDialogList.clear();
@@ -1935,7 +2009,7 @@ public class MainActivity extends FragmentActivity {
             	String groupName = (String)setGroupSP.getSelectedItem();
             	
             	// Fill the new songs list
-            	Cursor c = dbAdapter.getSetNames(groupName);
+            	Cursor c = dbAdapter.getSets(groupName);
             	addSetsDialogList.clear();
             	
             	// Populate the ArrayList
@@ -3083,7 +3157,7 @@ public class MainActivity extends FragmentActivity {
 
         // Add search results field
         if (showSearchResults) {
-            songGroupsList.add(0, "Search Results");
+            songGroupsList.add(0, StaticVars.searchResultsText);
         }
     }
 
@@ -3156,7 +3230,7 @@ public class MainActivity extends FragmentActivity {
      * Displays the song groups w/o the search results display
      */
     public void fillSongGroupsSpinner() {
-        fillSongGroupsSpinner(false, 0);
+        fillSongGroupsSpinner(false, -1);
     }
     
     /**
@@ -3400,7 +3474,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * Sets the set group array list
      */
-    public void setSetGroupsList() {
+    public void setSetGroupsList(boolean showSearchResults) {
     	// Query the database
     	Cursor c = dbAdapter.getSetGroupNames();
     	
@@ -3417,34 +3491,58 @@ public class MainActivity extends FragmentActivity {
     	
     	// Sort the list alphabetically
     	Collections.sort(setGroupsList, new SortIgnoreCase());
+
+        // Add search results field
+        if (showSearchResults) {
+            setGroupsList.add(0, StaticVars.searchResultsText);
+        }
+    }
+
+    /**
+     * Fills the set groups list with no search results
+     */
+    public void setSetGroupsList() {
+        setSetGroupsList(false);
     }
     
     /**
      * Fills the group list spinner
      * @param v
      */
-    public void fillSetGroupsSpinner() {
+    public void fillSetGroupsSpinner(final boolean showSearchResults, final int numSearchResults) {
     	// Set the groups list
-    	setSetGroupsList();
-        
-    	// Create the spinner adapter
-    	setGroupsAdapter = new SetGroupArrayAdapter(this, setGroupsList);
-    	final Spinner groupSpinner = (Spinner) findViewById(R.id.set_group_spinner);
+    	setSetGroupsList(showSearchResults);
+
+        // Create the spinner adapter
+        if (showSearchResults)
+            setGroupsAdapter = new SetGroupArrayAdapter(this, setGroupsList, numSearchResults);
+        else
+            setGroupsAdapter = new SetGroupArrayAdapter(this, setGroupsList);
+        final Spinner groupSpinner = (Spinner) findViewById(R.id.set_group_spinner);
     	
     	// Set the on click listener for each item
     	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {            	
-            	// Get the selected item and populate the sets list
-            	String groupName = setGroupsList.get(position);
-            	
-            	// Reset the scroll positions
-            	if (!currentSetGroup.equals(groupName)) {
-	            	setsCurrentScrollPosition = 0;
-	            	setsCurrentScrollOffset = 0;
-            	}
-            	
-            	currentSetGroup = groupName;
-            	fillSetsListView();
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+                // Get the selected item and populate the sets list
+                String groupName = setGroupsList.get(position);
+
+                // If the selection has actually changed
+                if (!currentSetGroup.equals(groupName)) {
+                    // Reset the scroll positions
+                    setsCurrentScrollPosition = 0;
+                    setsCurrentScrollOffset = 0;
+
+                    // Remove the search results option from the spinner
+                    if (!groupName.equals(StaticVars.searchResultsText) &&
+                            setGroupsList.get(0).equals(StaticVars.searchResultsText))
+                        setGroupsList.remove(0);
+                }
+
+                // Refill song list (if not on search results)
+                currentSetGroup = groupName;
+                if (groupName != StaticVars.searchResultsText) {
+                    fillSetsListView();
+                }
             	
             	// Set the sort by spinner back to default
             	((Spinner)findViewById(R.id.set_sort_spinner)).setSelection(0);
@@ -3456,6 +3554,13 @@ public class MainActivity extends FragmentActivity {
         });
     	
     	groupSpinner.setAdapter(setGroupsAdapter);
+    }
+
+    /**
+     * Fills the set groups with no search results
+     */
+    public void fillSetGroupsSpinner() {
+        fillSetGroupsSpinner(false, -1);
     }
     
     /**
