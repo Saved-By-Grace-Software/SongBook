@@ -15,12 +15,21 @@ import com.sbgsoft.songbook.main.MainActivity;
 public class SetGroupArrayAdapter extends ArrayAdapter<String> {
 	private final Context context;
 	private final List<String> values;
+    private int mNumSearchResults;
  
 	public SetGroupArrayAdapter(Context context, List<String> item) {
 		super(context, R.layout.group_spinner_item, item);
 		this.context = context;
 		this.values = item;
+        mNumSearchResults = -1;
 	}
+
+    public SetGroupArrayAdapter(Context context, List<String> item, int numSearchResults) {
+        super(context, R.layout.group_spinner_item, item);
+        this.context = context;
+        this.values = item;
+        mNumSearchResults = numSearchResults;
+    }
  
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -35,6 +44,8 @@ public class SetGroupArrayAdapter extends ArrayAdapter<String> {
 		int numSets = 0;
 		if (groupName.equals(SetsTab.ALL_SETS_LABEL))
 			numSets = MainActivity.dbAdapter.getNumSets();
+        else if (mNumSearchResults > 0)
+            numSets = mNumSearchResults;
 		else
 			numSets = MainActivity.dbAdapter.getNumSetsPerGroup(groupName);
 		
@@ -58,6 +69,8 @@ public class SetGroupArrayAdapter extends ArrayAdapter<String> {
 		int numSets = 0;
 		if (groupName.equals(SetsTab.ALL_SETS_LABEL))
 			numSets = MainActivity.dbAdapter.getNumSets();
+        else if (mNumSearchResults > 0)
+            numSets = mNumSearchResults;
 		else
 			numSets = MainActivity.dbAdapter.getNumSetsPerGroup(groupName);
 		

@@ -15,12 +15,21 @@ import com.sbgsoft.songbook.main.MainActivity;
 public class SongGroupArrayAdapter extends ArrayAdapter<String> {
 	private final Context context;
 	private final List<String> values;
+    private int mNumSearchResults;
  
 	public SongGroupArrayAdapter(Context context, List<String> item) {
 		super(context, R.layout.group_spinner_item, item);
 		this.context = context;
 		this.values = item;
+        mNumSearchResults = -1;
 	}
+
+    public SongGroupArrayAdapter(Context context, List<String> item, int numSearchResults) {
+        super(context, R.layout.group_spinner_item, item);
+        this.context = context;
+        this.values = item;
+        mNumSearchResults = numSearchResults;
+    }
  
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -32,9 +41,11 @@ public class SongGroupArrayAdapter extends ArrayAdapter<String> {
 		
 		// Get the number of songs for the group
 		String groupName = values.get(position);
-		int numSongs = 0;
+		int numSongs;
 		if (groupName.equals(SongsTab.ALL_SONGS_LABEL))
 			numSongs = MainActivity.dbAdapter.getNumSongs();
+        else if (mNumSearchResults > 0)
+            numSongs = mNumSearchResults;
 		else
 			numSongs = MainActivity.dbAdapter.getNumSongsPerGroup(groupName);
 		
@@ -55,9 +66,11 @@ public class SongGroupArrayAdapter extends ArrayAdapter<String> {
 
 		// Get the number of songs for the group
 		String groupName = values.get(position);
-		int numSongs = 0;
+		int numSongs;
 		if (groupName.equals(SongsTab.ALL_SONGS_LABEL))
 			numSongs = MainActivity.dbAdapter.getNumSongs();
+        else if (mNumSearchResults > 0)
+            numSongs = mNumSearchResults;
 		else
 			numSongs = MainActivity.dbAdapter.getNumSongsPerGroup(groupName);
 		

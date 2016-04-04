@@ -64,6 +64,7 @@ public class StaticVars {
     public static final String chordMarkupEnd = "|";
     public static final String chordMarkupRegex = "\\|[\\w/#]+\\|";
     public static final String chordClickHackFix = "http://this.is.a.hack.fix";
+    public static final String searchResultsText = "Search Results";
 
     // Permission request codes
     public final static int PERMISSIONS_BACKUP_IMPORT = 10;

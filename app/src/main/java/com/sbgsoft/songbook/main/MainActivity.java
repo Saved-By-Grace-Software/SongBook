@@ -77,7 +77,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -92,7 +91,9 @@ import com.sbgsoft.songbook.items.Item;
 import com.sbgsoft.songbook.items.ItemArrayAdapter;
 import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SetItem;
+import com.sbgsoft.songbook.items.SetSearchCriteria;
 import com.sbgsoft.songbook.items.SongItem;
+import com.sbgsoft.songbook.items.SongSearchCriteria;
 import com.sbgsoft.songbook.main.StaticVars.SongFileType;
 import com.sbgsoft.songbook.sets.CurrentSetTab;
 import com.sbgsoft.songbook.sets.SetActivity;
@@ -258,6 +259,9 @@ public class MainActivity extends FragmentActivity {
             case R.id.menu_sets_import:
                 permissionRequiredFunction(StaticVars.PERMISSIONS_SET_IMPORT);
                 return true;
+            case R.id.menu_sets_find:
+                findSetDialog();
+                return true;
 	        case R.id.menu_songs_clear:
 	        	deleteAllSongs();
 	        	return true;
@@ -267,6 +271,9 @@ public class MainActivity extends FragmentActivity {
 	        case R.id.menu_songs_import:
                 permissionRequiredFunction(StaticVars.PERMISSIONS_SONG_IMPORT);
 	        	return true;
+            case R.id.menu_songs_find:
+                findSongDialog();
+                return true;
 	        case R.id.menu_song_groups_create:
 	        	createSongGroup();
 	        	return true;
@@ -1017,11 +1024,11 @@ public class MainActivity extends FragmentActivity {
             public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
             	// Get the selected group
             	String groupName = (String)songGroupSP.getSelectedItem();
-            	
+
             	// Fill the new songs list
             	Cursor c = dbAdapter.getSongs(groupName);
             	addSongsDialogList.clear();
-            	
+
             	// Populate the ArrayList
             	while (c.moveToNext()) {
             		// Get the strings from the cursor
@@ -1030,16 +1037,16 @@ public class MainActivity extends FragmentActivity {
             	}
             	c.close();
             	Collections.sort(addSongsDialogList, new SortIgnoreCase());
-            	
+
             	// Update list view
             	songsAD.notifyDataSetChanged();
-            	
+
             	// Set the list view checked properties
             	for(int i = 0; i < songsLV.getCount(); i++) {
             		songsLV.setItemChecked(i, addSongsDialogMap.get(songsLV.getItemAtPosition(i)));
             	}
             }
-            
+
             public void onNothingSelected(AdapterView<?> arg0) {
             	// Nothing was clicked so ignore it
             }
@@ -1354,19 +1361,19 @@ public class MainActivity extends FragmentActivity {
     	alert.setMessage("Are you sure you want to delete '" + setName + "'???");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Delete set from database
-	    		dbAdapter.deleteSet(setName);
-	    		
-	    		// Refresh set and current set list
-	    		fillSetGroupsSpinner();
-	    		fillSetsListView();
-	    		fillCurrentSetListView();
-	        	
-	        	// Set the current tab
-	        	currentTab = 2;
-			}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Delete set from database
+                dbAdapter.deleteSet(setName);
+
+                // Refresh set and current set list
+                fillSetGroupsSpinner();
+                fillSetsListView();
+                fillCurrentSetListView();
+
+                // Set the current tab
+                currentTab = 2;
+            }
+        });
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -1381,13 +1388,26 @@ public class MainActivity extends FragmentActivity {
     /**
      * Sets the sets array list
      */
-    public void setSetsList() {
-    	Cursor c = dbAdapter.getSetNames(currentSetGroup);
-    	c.moveToFirst();
+    public int setSetsList(SetSearchCriteria setSearch) {
+        int ret;
+        Cursor c;
+
+        // Determine if we are searching or using the song group
+        if (setSearch == null)
+            c = dbAdapter.getSets(currentSetGroup);
+        else
+            c = dbAdapter.getSetsSearch(setSearch);
+
+        c.moveToFirst();
+        ret = c.getCount();
     	
     	// Clear the ArrayList
     	setsList.clear();
-    	
+
+        // Display error message for searching
+        if (c.getCount() <= 0 && setSearch != null)
+            Toast.makeText(getApplicationContext(), "No sets match that search", Toast.LENGTH_LONG).show();
+
     	// Populate the ArrayList
     	while (!c.isAfterLast()) {
     		// Get the strings from the cursor
@@ -1420,21 +1440,23 @@ public class MainActivity extends FragmentActivity {
 	    		Collections.sort(setsList, new ItemComparableName());
 	    		break;
     	}
+
+        return ret;
     }
-    
+
     /**
      * Fills the sets list
      * @param v The view for the list
      */
-    public void fillSetsListView() {
-    	// Fill the sets array list
-    	setSetsList();
+    public int fillSetsListView(SetSearchCriteria setSearch) {
+        // Fill the sets array list
+    	int ret = setSetsList(setSearch);
     	
     	// Set up the list view and adapter
         ListView lv = ((ListView)findViewById(R.id.sets_list));
         lv.setEmptyView(findViewById(R.id.empty_sets));
         setsAdapter = new ItemArrayAdapter(setsFragment.getActivity(), setsList);
-        
+
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
@@ -1454,6 +1476,15 @@ public class MainActivity extends FragmentActivity {
         
         // Scroll to the previous scroll position
         lv.setSelectionFromTop(setsCurrentScrollPosition, setsCurrentScrollOffset);
+
+        return ret;
+    }
+
+    /**
+     * Fills the sets list view with no search results
+     */
+    public void fillSetsListView() {
+        fillSetsListView(null);
     }
     
     /**
@@ -1689,6 +1720,54 @@ public class MainActivity extends FragmentActivity {
         i.putExtra(StaticVars.SET_NAME_KEY, setName);
         startActivityForResult(i, 1);
     }
+
+    /**
+     * Enables the user to find sets
+     */
+    private void findSetDialog() {
+        CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
+
+        // Set the dialog view to gather user input
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.search_dialog, (ViewGroup) findViewById(R.id.search_dialog_root));
+        alert.setView(dialoglayout);
+        final EditText setNameSearch = (EditText)dialoglayout.findViewById(R.id.search_dialog_text);
+
+        // Add the dialog title
+        alert.setTitle("Find Set");
+
+        // Set the OK button
+        alert.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Make sure there is some text to search
+                String searchText = setNameSearch.getText().toString();
+
+                if (searchText.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "You must enter text to search. Please try again.", Toast.LENGTH_LONG).show();
+                } else {
+                    // Create the song search object
+                    SetSearchCriteria setSearch = new SetSearchCriteria();
+                    setSearch.setNameSearchText = searchText;
+
+                    // Fill the songs tab with the search data
+                    int numResults = fillSetsListView(setSearch);
+                    fillSetGroupsSpinner(true, numResults);
+
+                    // Set the sets tab as the current
+                    currentTab = 1;
+                    mViewPager.setCurrentItem(currentTab);
+
+                    // Close the dialog
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel", null);
+        alert.setCanceledOnTouchOutside(true);
+
+        alert.show();
+    }
     //endregion
 
 
@@ -1725,91 +1804,86 @@ public class MainActivity extends FragmentActivity {
 
     	// Set the OK button
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Get the user inputs
-	    		String songName = songNameET.getText().toString();
-	    		String songAuthor = StaticVars.UNKNOWN;
-	    		String songKey = "";
-	    		if (authorET.getText().length() > 0)
-	    			songAuthor = authorET.getText().toString().trim();
-	    		if (keyET.getText().length() > 1)
-	    			songKey = keyET.getText().toString().substring(0, 1).toUpperCase(Locale.US) + keyET.getText().toString().substring(1).trim();
-	    		else if (keyET.getText().length() > 0)
-	    			songKey = keyET.getText().toString().toUpperCase(Locale.US).trim();
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Get the user inputs
+                String songName = songNameET.getText().toString();
+                String songAuthor = StaticVars.UNKNOWN;
+                String songKey = "";
+                if (authorET.getText().length() > 0)
+                    songAuthor = authorET.getText().toString().trim();
+                if (keyET.getText().length() > 1)
+                    songKey = keyET.getText().toString().substring(0, 1).toUpperCase(Locale.US) + keyET.getText().toString().substring(1).trim();
+                else if (keyET.getText().length() > 0)
+                    songKey = keyET.getText().toString().toUpperCase(Locale.US).trim();
 
-	    		// Check for a correct key
+                // Check for a correct key
                 if (!isValidKey(songKey)) {
                     Toast.makeText(getBaseContext(), "That is not a valid key!" +
                             StaticVars.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
                     return;
                 }
 
-	    		// Create the song
-	    		if (songName.length() > 0) {
-	    			String songFile = songName + ".txt";
-		    		if(!dbAdapter.createSong(songName, songFile, songAuthor, songKey))
-		    			Toast.makeText(getApplicationContext(), "Failed to create song!", Toast.LENGTH_LONG).show();
-		    		else
-		    		{
-		    			// If a file is waiting to be imported
-		    			if (importFilePath != "")
-		    			{
-		    				// Copy the file into the tabapp songs directory
-		    				try {
-		    					if (importFilePath.substring(importFilePath.length() - 3).equals("txt")) {
-		    						TextFileImporter.importTextFile(importFilePath, songFile, songAuthor, getApplicationContext());
-		    					}
-		    					else {
-		    						InputStream in = new FileInputStream(importFilePath);
-				    				//OutputStream out = new FileOutputStream(songFile);
-				    				OutputStream out = openFileOutput(songFile, Context.MODE_PRIVATE);
-				    				byte[] buf = new byte[1024];
-				    				int len;
-				    				while ((len = in.read(buf)) > 0) {
-				    				   out.write(buf, 0, len);
-				    				}
-				    				in.close();
-				    				out.close();
-		    					}
-		    				} catch (Exception e) {
-		    					// Delete the song since the file could not be imported
-		    					dbAdapter.deleteSong(songName);
+                // Create the song
+                if (songName.length() > 0) {
+                    String songFile = songName + ".txt";
+                    if (!dbAdapter.createSong(songName, songFile, songAuthor, songKey))
+                        Toast.makeText(getApplicationContext(), "Failed to create song!", Toast.LENGTH_LONG).show();
+                    else {
+                        // If a file is waiting to be imported
+                        if (importFilePath != "") {
+                            // Copy the file into the tabapp songs directory
+                            try {
+                                if (importFilePath.substring(importFilePath.length() - 3).equals("txt")) {
+                                    TextFileImporter.importTextFile(importFilePath, songFile, songAuthor, getApplicationContext());
+                                } else {
+                                    InputStream in = new FileInputStream(importFilePath);
+                                    //OutputStream out = new FileOutputStream(songFile);
+                                    OutputStream out = openFileOutput(songFile, Context.MODE_PRIVATE);
+                                    byte[] buf = new byte[1024];
+                                    int len;
+                                    while ((len = in.read(buf)) > 0) {
+                                        out.write(buf, 0, len);
+                                    }
+                                    in.close();
+                                    out.close();
+                                }
+                            } catch (Exception e) {
+                                // Delete the song since the file could not be imported
+                                dbAdapter.deleteSong(songName);
 
-		    					// Alert that the song failed
-		    					Toast.makeText(getApplicationContext(), "Could not import file, Song deleted.", Toast.LENGTH_LONG).show();
-		    				}
+                                // Alert that the song failed
+                                Toast.makeText(getApplicationContext(), "Could not import file, Song deleted.", Toast.LENGTH_LONG).show();
+                            }
 
-		    				// Clear the import file path
-		    				importFilePath = "";
-		    			}
-		    			else {
-		    				try {
-		    					OutputStream out = openFileOutput(songFile, Context.MODE_PRIVATE);
-		    					out.close();
-		    				} catch (IOException e) {
-		    					// Delete the song since the file could not be imported
-		    					dbAdapter.deleteSong(songName);
+                            // Clear the import file path
+                            importFilePath = "";
+                        } else {
+                            try {
+                                OutputStream out = openFileOutput(songFile, Context.MODE_PRIVATE);
+                                out.close();
+                            } catch (IOException e) {
+                                // Delete the song since the file could not be imported
+                                dbAdapter.deleteSong(songName);
 
-		    					// Alert that the song failed
-		    					Toast.makeText(getApplicationContext(), "Could not create song file, Song deleted.", Toast.LENGTH_LONG).show();
-		    				}
+                                // Alert that the song failed
+                                Toast.makeText(getApplicationContext(), "Could not create song file, Song deleted.", Toast.LENGTH_LONG).show();
+                            }
 
-		    			}
+                        }
 
-		    			// Set the current tab
-			        	currentTab = 3;
+                        // Set the current tab
+                        currentTab = 3;
 
-			        	// Add the song to a group
-			        	addSongToGroup(songName);
-		    		}
-	    		}
-	    		else
-	    			Toast.makeText(getApplicationContext(), "Cannot create a song with no name!", Toast.LENGTH_LONG).show();
-	    		
-	    		// Close the dialog
-	    		dialog.dismiss();
-			}
-    	});
+                        // Add the song to a group
+                        addSongToGroup(songName);
+                    }
+                } else
+                    Toast.makeText(getApplicationContext(), "Cannot create a song with no name!", Toast.LENGTH_LONG).show();
+
+                // Close the dialog
+                dialog.dismiss();
+            }
+        });
 
     	alert.setNegativeButton("Cancel", null);
     	alert.setCanceledOnTouchOutside(true);
@@ -1886,7 +1960,7 @@ public class MainActivity extends FragmentActivity {
     	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
     	
     	// Get the list of group names
-    	Cursor c = dbAdapter.getSetNames(SetsTab.ALL_SETS_LABEL);
+    	Cursor c = dbAdapter.getSets(SetsTab.ALL_SETS_LABEL);
     	
     	// Clear the previous song lists
     	addSetsDialogList.clear();
@@ -1935,7 +2009,7 @@ public class MainActivity extends FragmentActivity {
             	String groupName = (String)setGroupSP.getSelectedItem();
             	
             	// Fill the new songs list
-            	Cursor c = dbAdapter.getSetNames(groupName);
+            	Cursor c = dbAdapter.getSets(groupName);
             	addSetsDialogList.clear();
             	
             	// Populate the ArrayList
@@ -2125,44 +2199,60 @@ public class MainActivity extends FragmentActivity {
     	alert.setMessage("Are you sure you want to delete '" + songName + "'???");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Get song file
-	    		String fileToDelete = dbAdapter.getSongFile(songName);
-	    		if (fileToDelete != "") {
-	    			// Delete song file
-	    			deleteFile(fileToDelete);
-		    		
-		    		// Delete song from database
-		    		dbAdapter.deleteSong(songName);
-	    		}
-	    		
-	    		// Refresh the song and current set view
-	    		fillSongGroupsSpinner();
-	    		fillCurrentSetListView();
-	        	
-	        	// Set the current tab
-	        	currentTab = 3;
-			}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Get song file
+                String fileToDelete = dbAdapter.getSongFile(songName);
+                if (fileToDelete != "") {
+                    // Delete song file
+                    deleteFile(fileToDelete);
+
+                    // Delete song from database
+                    dbAdapter.deleteSong(songName);
+                }
+
+                // Refresh the song and current set view
+                fillSongGroupsSpinner();
+                fillCurrentSetListView();
+
+                // Set the current tab
+                currentTab = 3;
+            }
+        });
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Set the current tab
-	        	currentTab = 3;
-	    	}
-    	});
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Set the current tab
+                currentTab = 3;
+            }
+        });
 
     	alert.show();
     }
     
     /**
      * Sets the current song list for the specified group
-     * @param groupName The song group
+     * @param songSearch The search criteria
+     * @return the number of items in the song list
      */
-    public void setSongsList() {
+    public int setSongsList(SongSearchCriteria songSearch) {
+        int ret;
+
     	ArrayList<Item> temp = new ArrayList<Item>();
-    	Cursor c = dbAdapter.getSongs(currentSongGroup);
-    	c.moveToFirst();
+        Cursor c;
+
+        // Determine if we are searching or using the song group
+        if (songSearch == null)
+    	    c = dbAdapter.getSongs(currentSongGroup);
+        else
+            c = dbAdapter.getSongsSearch(songSearch);
+
+        // Move to the first and get the count
+        c.moveToFirst();
+        ret = c.getCount();
+
+        // Display error message for searching
+        if (c.getCount() <= 0 && songSearch != null)
+            Toast.makeText(getApplicationContext(), "No songs match that search", Toast.LENGTH_LONG).show();
     	
     	// Populate the ArrayList
     	while (!c.isAfterLast()) {
@@ -2209,22 +2299,24 @@ public class MainActivity extends FragmentActivity {
     		
     		songsList.add(temp.get(i));
     	}
+
+        return ret;
     }
     
     /**
      * Fills the songs list
-     * @param v The view for the list
-     * @param groupName The name of the group to populate
      */
-    public void fillSongsListView() {
+    public int fillSongsListView(SongSearchCriteria songSearch) {
+        int ret;
+
     	// Fill the songs array list
-    	setSongsList();
-    	
+    	ret = setSongsList(songSearch);
+
     	// Set up the list view and adapter
     	ListView lv = ((ListView)findViewById(R.id.songs_list));
         lv.setEmptyView(findViewById(R.id.empty_songs));
         songsAdapter = new ItemArrayAdapter(songsFragment.getActivity(), songsList);
-        
+
         // Set the on click listener for each item
         lv.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
@@ -2247,13 +2339,22 @@ public class MainActivity extends FragmentActivity {
                 }
             }
         });
-        
+
         // Register the context menu and add the adapter
         registerForContextMenu(lv);
         lv.setAdapter(songsAdapter);
-        
+
         // Scroll to the previous scroll position
         lv.setSelectionFromTop(songsCurrentScrollPosition, songsCurrentScrollOffset);
+
+        return ret;
+    }
+
+    /**
+     * Fills the songs list with no search parameters
+     */
+    public void fillSongsListView() {
+        fillSongsListView(null);
     }
         
     /**
@@ -2316,16 +2417,16 @@ public class MainActivity extends FragmentActivity {
         }
     	
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		String key = keyET.getText().toString();
-	    		
-	    		// Upper case the key
-	    		if (key.length() > 1)
-	    			key = key.substring(0, 1).toUpperCase(Locale.US) + key.substring(1).trim();
-	    		else if (key.length() > 0)
-	    			key = key.toUpperCase(Locale.US).trim();
-	    		
-	    		// Check for a correct key
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String key = keyET.getText().toString();
+
+                // Upper case the key
+                if (key.length() > 1)
+                    key = key.substring(0, 1).toUpperCase(Locale.US) + key.substring(1).trim();
+                else if (key.length() > 0)
+                    key = key.toUpperCase(Locale.US).trim();
+
+                // Check for a correct key
                 if (!isValidKey(key)) {
                     Toast.makeText(getBaseContext(), "That is not a valid key!" +
                             StaticVars.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
@@ -2336,22 +2437,23 @@ public class MainActivity extends FragmentActivity {
                 int bpm = 0;
                 try {
                     bpm = Integer.parseInt(bpmET.getText().toString());
-                } catch (NumberFormatException nfe) {  }
+                } catch (NumberFormatException nfe) {
+                }
 
                 // Update the song in the database
                 dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
                         authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
                         linkET.getText().toString(), bpm);
-	    		
-	    		// Refresh lists
-				fillSongsListView();
+
+                // Refresh lists
+                fillSongsListView();
                 fillSetsListView();
                 fillCurrentSetListView();
-				
-				// Close the dialog
-				dialog.dismiss();
-	    	}
-    	});
+
+                // Close the dialog
+                dialog.dismiss();
+            }
+        });
     	
     	alert.setNegativeButton("Cancel", null);
     	alert.setCanceledOnTouchOutside(true);
@@ -2874,6 +2976,54 @@ public class MainActivity extends FragmentActivity {
 
         return ret;
     }
+
+    /**
+     * Enables the user to find songs
+     */
+    private void findSongDialog() {
+        CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
+
+        // Set the dialog view to gather user input
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.search_dialog, (ViewGroup) findViewById(R.id.search_dialog_root));
+        alert.setView(dialoglayout);
+        final EditText songNameSearch = (EditText)dialoglayout.findViewById(R.id.search_dialog_text);
+
+        // Add the dialog title
+        alert.setTitle("Find Song");
+
+        // Set the OK button
+        alert.setPositiveButton("Search", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Make sure there is some text to search
+                String searchText = songNameSearch.getText().toString();
+
+                if (searchText.isEmpty()) {
+                    Toast.makeText(getApplicationContext(), "You must enter text to search. Please try again.", Toast.LENGTH_LONG).show();
+                } else {
+                    // Create the song search object
+                    SongSearchCriteria songSearch = new SongSearchCriteria();
+                    songSearch.songNameSearchText = searchText;
+
+                    // Fill the songs tab with the search data
+                    int numResults = fillSongsListView(songSearch);
+                    fillSongGroupsSpinner(true, numResults);
+
+                    // Set the songs tab as the current
+                    currentTab = 3;
+                    mViewPager.setCurrentItem(currentTab);
+
+                    // Close the dialog
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel", null);
+        alert.setCanceledOnTouchOutside(true);
+
+        alert.show();
+    }
     //endregion
 
 
@@ -2987,7 +3137,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * Populates the song groups array list
      */
-    public void setSongGroupsList() {
+    public void setSongGroupsList(boolean showSearchResults) {
     	// Query the database
     	Cursor c = dbAdapter.getSongGroupNames();
     	
@@ -3004,18 +3154,33 @@ public class MainActivity extends FragmentActivity {
     	
     	// Sort the list alphabetically
     	Collections.sort(songGroupsList, new SortIgnoreCase());
+
+        // Add search results field
+        if (showSearchResults) {
+            songGroupsList.add(0, StaticVars.searchResultsText);
+        }
+    }
+
+    /**
+     * Sets the song groups list with no search results display
+     */
+    public void setSongGroupsList() {
+        setSongGroupsList(false);
     }
     
     /**
      * Fills the group list spinner
-     * @param v
+     * @param showSearchResults To show or not to show
      */
-    public void fillSongGroupsSpinner() {
+    public void fillSongGroupsSpinner(final boolean showSearchResults, final int numSearchResults) {
     	// Set the groups list
-    	setSongGroupsList();
+    	setSongGroupsList(showSearchResults);
         
     	// Create the spinner adapter
-    	songGroupsAdapter = new SongGroupArrayAdapter(this, songGroupsList);
+        if (showSearchResults)
+    	    songGroupsAdapter = new SongGroupArrayAdapter(this, songGroupsList, numSearchResults);
+        else
+            songGroupsAdapter = new SongGroupArrayAdapter(this, songGroupsList);
     	final Spinner groupSpinner = (Spinner) findViewById(R.id.song_group_spinner);
     	
     	// Set the on click listener for each item
@@ -3024,15 +3189,23 @@ public class MainActivity extends FragmentActivity {
                 // Get the selected item and populate the songs list
                 String groupName = songGroupsList.get(position);
 
-                // Reset the scroll positions
+                // If the selection has actually changed
                 if (!currentSongGroup.equals(groupName)) {
+                    // Reset the scroll positions
                     songsCurrentScrollPosition = 0;
                     songsCurrentScrollOffset = 0;
+
+                    // Remove the search results option from the spinner
+                    if (!groupName.equals(StaticVars.searchResultsText) &&
+                            songGroupsList.get(0).equals(StaticVars.searchResultsText))
+                        songGroupsList.remove(0);
                 }
 
-                // Refill song list
+                // Refill song list (if not on search results)
                 currentSongGroup = groupName;
-                fillSongsListView();
+                if (groupName != StaticVars.searchResultsText) {
+                    fillSongsListView();
+                }
 
                 // Set the sort by spinner back to default
                 ((Spinner) findViewById(R.id.song_sort_spinner)).setSelection(0);
@@ -3047,7 +3220,17 @@ public class MainActivity extends FragmentActivity {
     	groupSpinner.setAdapter(songGroupsAdapter);
     	
     	// Set the selected item to the current group
-    	groupSpinner.setSelection(songGroupsList.indexOf(currentSongGroup));
+        if (showSearchResults)
+            groupSpinner.setSelection(0);
+        else
+            groupSpinner.setSelection(songGroupsList.indexOf(currentSongGroup));
+    }
+
+    /**
+     * Displays the song groups w/o the search results display
+     */
+    public void fillSongGroupsSpinner() {
+        fillSongGroupsSpinner(false, -1);
     }
     
     /**
@@ -3291,7 +3474,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * Sets the set group array list
      */
-    public void setSetGroupsList() {
+    public void setSetGroupsList(boolean showSearchResults) {
     	// Query the database
     	Cursor c = dbAdapter.getSetGroupNames();
     	
@@ -3308,34 +3491,58 @@ public class MainActivity extends FragmentActivity {
     	
     	// Sort the list alphabetically
     	Collections.sort(setGroupsList, new SortIgnoreCase());
+
+        // Add search results field
+        if (showSearchResults) {
+            setGroupsList.add(0, StaticVars.searchResultsText);
+        }
+    }
+
+    /**
+     * Fills the set groups list with no search results
+     */
+    public void setSetGroupsList() {
+        setSetGroupsList(false);
     }
     
     /**
      * Fills the group list spinner
      * @param v
      */
-    public void fillSetGroupsSpinner() {
+    public void fillSetGroupsSpinner(final boolean showSearchResults, final int numSearchResults) {
     	// Set the groups list
-    	setSetGroupsList();
-        
-    	// Create the spinner adapter
-    	setGroupsAdapter = new SetGroupArrayAdapter(this, setGroupsList);
-    	final Spinner groupSpinner = (Spinner) findViewById(R.id.set_group_spinner);
+    	setSetGroupsList(showSearchResults);
+
+        // Create the spinner adapter
+        if (showSearchResults)
+            setGroupsAdapter = new SetGroupArrayAdapter(this, setGroupsList, numSearchResults);
+        else
+            setGroupsAdapter = new SetGroupArrayAdapter(this, setGroupsList);
+        final Spinner groupSpinner = (Spinner) findViewById(R.id.set_group_spinner);
     	
     	// Set the on click listener for each item
     	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {            	
-            	// Get the selected item and populate the sets list
-            	String groupName = setGroupsList.get(position);
-            	
-            	// Reset the scroll positions
-            	if (!currentSetGroup.equals(groupName)) {
-	            	setsCurrentScrollPosition = 0;
-	            	setsCurrentScrollOffset = 0;
-            	}
-            	
-            	currentSetGroup = groupName;
-            	fillSetsListView();
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+                // Get the selected item and populate the sets list
+                String groupName = setGroupsList.get(position);
+
+                // If the selection has actually changed
+                if (!currentSetGroup.equals(groupName)) {
+                    // Reset the scroll positions
+                    setsCurrentScrollPosition = 0;
+                    setsCurrentScrollOffset = 0;
+
+                    // Remove the search results option from the spinner
+                    if (!groupName.equals(StaticVars.searchResultsText) &&
+                            setGroupsList.get(0).equals(StaticVars.searchResultsText))
+                        setGroupsList.remove(0);
+                }
+
+                // Refill song list (if not on search results)
+                currentSetGroup = groupName;
+                if (groupName != StaticVars.searchResultsText) {
+                    fillSetsListView();
+                }
             	
             	// Set the sort by spinner back to default
             	((Spinner)findViewById(R.id.set_sort_spinner)).setSelection(0);
@@ -3347,6 +3554,13 @@ public class MainActivity extends FragmentActivity {
         });
     	
     	groupSpinner.setAdapter(setGroupsAdapter);
+    }
+
+    /**
+     * Fills the set groups with no search results
+     */
+    public void fillSetGroupsSpinner() {
+        fillSetGroupsSpinner(false, -1);
     }
     
     /**

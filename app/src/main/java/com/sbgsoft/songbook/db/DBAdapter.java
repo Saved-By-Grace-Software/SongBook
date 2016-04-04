@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.sbgsoft.songbook.items.SetSearchCriteria;
+import com.sbgsoft.songbook.items.SongSearchCriteria;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.sets.SetsTab;
 import com.sbgsoft.songbook.songs.SongsTab;
@@ -257,8 +259,8 @@ public class DBAdapter {
 	 * Gets all existing set names
 	 * @return Cursor to the query
 	 */	
-	public Cursor getSetNames(String groupName) {
-		String query = "";
+	public Cursor getSets(String groupName) {
+		String query;
 		
 		// Check if the group is the all sets group
 		if (groupName.equals(SetsTab.ALL_SETS_LABEL)) {
@@ -277,6 +279,30 @@ public class DBAdapter {
 		}
 		return mDb.rawQuery(query, null);
 	}
+
+    /**
+     * Gets all existing set names
+     * @return Cursor to the query
+     */
+    public Cursor getSetsSearch(SetSearchCriteria setSearch) {
+        String query;
+
+        // TODO: Add ability to search on things other than just set name
+
+        // Check if the group is the all sets group
+        if (!setSearch.setNameSearchText.isEmpty()) {
+            query = "SELECT " + DBStrings.TBLSETS_ID + " as _id, " +
+                    DBStrings.TBLSETS_NAME + ", " +
+                    DBStrings.TBLSETS_DATE +
+                    " FROM " + DBStrings.SETS_TABLE +
+                    " WHERE " + DBStrings.TBLSETS_NAME + " like '%" + setSearch.setNameSearchText + "%' " +
+                    " ORDER BY " + DBStrings.TBLSETS_NAME;
+
+            return mDb.rawQuery(query, null);
+        } else {
+            return null;
+        }
+    }
 	
 	/**
 	 * Updates the set to add it to the specified group
@@ -494,9 +520,14 @@ public class DBAdapter {
 		
 		// Check if the group is the all songs group
 		if (groupName.equals(SongsTab.ALL_SONGS_LABEL)) {
-			query = "SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
-					DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + ", " + DBStrings.TBLSONG_BPM + ", " +
-                    DBStrings.TBLSONG_LINK + ", " + DBStrings.TBLSONG_TIME +
+			query = "SELECT " + DBStrings.TBLSONG_ID + " as _id, " +
+                    DBStrings.TBLSONG_NAME + ", " +
+                    DBStrings.TBLSONG_FILE + ", " +
+					DBStrings.TBLSONG_AUTHOR + ", " +
+                    DBStrings.TBLSONG_KEY + ", " +
+                    DBStrings.TBLSONG_BPM + ", " +
+                    DBStrings.TBLSONG_LINK + ", " +
+                    DBStrings.TBLSONG_TIME +
 					" FROM " + DBStrings.SONGS_TABLE + " ORDER BY " + DBStrings.TBLSONG_NAME;
 		} else {
 			query = "SELECT " + DBStrings.SONGS_TABLE + "." + DBStrings.TBLSONG_ID + " as _id, " +
@@ -517,6 +548,34 @@ public class DBAdapter {
 		}
 		return mDb.rawQuery(query, null);
 	}
+
+    /**
+     * Gets all existing song names that meet the search criteria
+     * @return Cursor to the query
+     */
+    public Cursor getSongsSearch(SongSearchCriteria songSearch) {
+        String query;
+
+        // TODO: Add ability to search on things other than just song name
+
+        // Check to make sure we have search text
+        if (!songSearch.songNameSearchText.isEmpty()) {
+            query = "SELECT " + DBStrings.TBLSONG_ID + " as _id, " +
+                    DBStrings.TBLSONG_NAME + ", " +
+                    DBStrings.TBLSONG_FILE + ", " +
+                    DBStrings.TBLSONG_AUTHOR + ", " +
+                    DBStrings.TBLSONG_KEY + ", " +
+                    DBStrings.TBLSONG_BPM + ", " +
+                    DBStrings.TBLSONG_LINK + ", " +
+                    DBStrings.TBLSONG_TIME +
+                    " FROM " + DBStrings.SONGS_TABLE +
+                    " WHERE " + DBStrings.TBLSONG_NAME + " like '%" + songSearch.songNameSearchText + "%' " +
+                    " ORDER BY " + DBStrings.TBLSONG_NAME;
+            return mDb.rawQuery(query, null);
+        } else {
+            return null;
+        }
+    }
 
 	/**
 	 * Deletes all songs in the database
