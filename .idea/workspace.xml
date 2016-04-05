@@ -22,9 +22,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0b814f9b-14c2-4a07-9dcd-088d3dc0bab9" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongsTab.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongsTab.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/tab_songs.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/tab_songs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/tab_sets.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/tab_sets.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_sets.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_sets.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_sets.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_sets.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_songs.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_songs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_songs.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_songs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Songbook.iws" />
@@ -68,8 +70,8 @@
       <file leaf-file-name="tab_songs.xml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_songs.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.518851">
-              <caret line="38" column="50" selection-start-line="38" selection-start-column="50" selection-end-line="38" selection-end-column="50" />
+            <state vertical-scroll-proportion="0.21364452">
+              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
               <folding>
                 <element signature="e#980#1001#0" expanded="true" />
               </folding>
@@ -80,13 +82,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SongsTab.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongsTab.java">
+      <file leaf-file-name="tab_sets.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_sets.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
-              <folding />
+            <state vertical-scroll-proportion="-7.62069">
+              <caret line="28" column="54" selection-start-line="28" selection-start-column="54" selection-end-line="28" selection-end-column="54" />
+              <folding>
+                <element signature="e#938#958#0" expanded="true" />
+                <element signature="e#992#1017#0" expanded="true" />
+                <element signature="e#3209#3226#0" expanded="true" />
+              </folding>
             </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
@@ -94,7 +103,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="933" column="33" selection-start-line="933" selection-start-column="16" selection-end-line="933" selection-end-column="33" />
+              <caret line="4404" column="36" selection-start-line="4404" selection-start-column="36" selection-end-line="4404" selection-end-column="36" />
               <folding>
                 <element signature="e#4222#4246#0" expanded="false" />
                 <element signature="e#6112#6136#0" expanded="false" />
@@ -146,7 +155,9 @@
                 <element signature="docComment;method#onAttachedToWindow#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#onAttachedToWindow#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#onRequestPermissionsResult#0;class#MainActivity#0" expanded="false" />
+                <element signature="e#26209#26233#0" expanded="false" />
                 <element signature="docComment;method#showAboutBox#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#showAboutBox#0;class#MainActivity#0" expanded="false" />
                 <element signature="e#26896#26924#0" expanded="true" />
                 <element signature="e#27161#27194#0" expanded="true" />
                 <element signature="e#27358#27391#0" expanded="true" />
@@ -161,11 +172,7 @@
                 <element signature="docComment;method#executePermReqFunction#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#executePermReqFunction#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#onSongSearchClick#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#35443#35444#0" expanded="true" />
-                <element signature="e#35475#35476#0" expanded="true" />
                 <element signature="docComment;method#onSetSearchClick#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#35591#35592#0" expanded="true" />
-                <element signature="e#35622#35623#0" expanded="true" />
                 <element signature="e#35646#35668#0" expanded="false" />
                 <element signature="docComment;method#createSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#createSet#0;class#MainActivity#0" expanded="false" />
@@ -286,7 +293,6 @@
                 <element signature="method#setCurrentSetList#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#fillCurrentSetListView#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#fillCurrentSetListView#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#119230#119259#0" expanded="false" />
                 <element signature="docComment;method#setSongGroupsList#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#setSongGroupsList#1;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#fillSongGroupsSpinner#0;class#MainActivity#0" expanded="false" />
@@ -345,7 +351,6 @@
                 <element signature="method#selectImportFile#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#importFile#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#importFile#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#153072#153088#0" expanded="false" />
                 <element signature="class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#ImportDBParams#0;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#ImportDBParams#1;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
@@ -365,8 +370,6 @@
                 <element signature="class#PagerAdapter#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#addFragment#0;class#PagerAdapter#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;class#SortIgnoreCase#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#SortIgnoreCase#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#compare#0;class#SortIgnoreCase#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;class#SongItemComparableAuthor#0;class#MainActivity#0" expanded="false" />
                 <element signature="class#SongItemComparableAuthor#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#compare#0;class#SongItemComparableAuthor#0;class#MainActivity#0" expanded="false" />
@@ -389,13 +392,10 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="286" column="61" selection-start-line="286" selection-start-column="61" selection-end-line="286" selection-end-column="61" />
+              <caret line="1079" column="18" selection-start-line="1079" selection-start-column="18" selection-end-line="1079" selection-end-column="18" />
               <folding>
-                <element signature="imports" expanded="false" />
                 <element signature="e#1020#1044#0" expanded="false" />
                 <element signature="docComment;method#DBAdapter#0;class#DBAdapter#0" expanded="false" />
-                <element signature="e#1347#1348#0" expanded="false" />
-                <element signature="e#1369#1370#0" expanded="false" />
                 <element signature="docComment;method#open#0;class#DBAdapter#0" expanded="false" />
                 <element signature="method#open#0;class#DBAdapter#0" expanded="false" />
                 <element signature="method#close#0;class#DBAdapter#0" expanded="false" />
@@ -481,9 +481,7 @@
                 <element signature="method#getCurrentSetSongs#0;class#DBAdapter#0" expanded="false" />
                 <element signature="docComment;method#getCurrentSetName#0;class#DBAdapter#0" expanded="false" />
                 <element signature="method#getCurrentSetName#0;class#DBAdapter#0" expanded="false" />
-                <element signature="e#42275#42304#0" expanded="false" />
                 <element signature="docComment;method#getSongGroupNames#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongGroupNames#0;class#DBAdapter#0" expanded="false" />
                 <element signature="docComment;method#createSongGroup#0;class#DBAdapter#0" expanded="false" />
                 <element signature="method#createSongGroup#0;class#DBAdapter#0" expanded="false" />
                 <element signature="docComment;method#deleteSongGroup#0;class#DBAdapter#0" expanded="false" />
@@ -524,18 +522,6 @@
                 <element signature="method#onUpgrade#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
                 <element signature="docComment;method#addSetOrder#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
                 <element signature="method#addSetOrder#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StaticVars.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/StaticVars.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="66" column="68" selection-start-line="66" selection-start-column="68" selection-end-line="66" selection-end-column="68" />
-              <folding>
-                <element signature="imports" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -2019,6 +2005,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongsTab.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/tab_songs.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/tab_sets.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_sets.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_songs.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_sets.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_songs.xml" />
       </list>
     </option>
   </component>
@@ -2184,6 +2175,66 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout-sw700dp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout-sw600dp" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -2664,7 +2715,7 @@
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
       <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
       <option name="FORCE_STOP_RUNNING_APP" value="true" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="true" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
       <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="0" />
       <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
@@ -2733,11 +2784,11 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3290735" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32984003" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14009929" sideWeight="0.6840391" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14009929" sideWeight="0.6840391" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296582" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
@@ -2810,41 +2861,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Program Files (x86)/Android/android-sdk/sources/android-23/android/os/AsyncTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3327645">
-          <caret line="549" column="53" selection-start-line="549" selection-start-column="53" selection-end-line="549" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/zip/Decompress.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="78" selection-start-line="35" selection-start-column="78" selection-end-line="35" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/files/OpenFile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.5574614">
-          <caret line="183" column="9" selection-start-line="183" selection-start-column="9" selection-end-line="183" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Transpose.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39419794">
-          <caret line="112" column="28" selection-start-line="112" selection-start-column="28" selection-end-line="112" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/CustomAlertDialogBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-2.2757475">
@@ -3172,16 +3188,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetGroupArrayAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.59385663">
+          <caret line="72" column="40" selection-start-line="72" selection-start-column="40" selection-end-line="72" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongGroupArrayAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.63822526">
+          <caret line="47" column="41" selection-start-line="46" selection-start-column="8" selection-end-line="47" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/search.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongsTab.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.63822526">
+          <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="286" column="61" selection-start-line="286" selection-start-column="61" selection-end-line="286" selection-end-column="61" />
+          <caret line="1079" column="18" selection-start-line="1079" selection-start-column="18" selection-end-line="1079" selection-end-column="18" />
           <folding>
-            <element signature="imports" expanded="false" />
             <element signature="e#1020#1044#0" expanded="false" />
             <element signature="docComment;method#DBAdapter#0;class#DBAdapter#0" expanded="false" />
-            <element signature="e#1347#1348#0" expanded="false" />
-            <element signature="e#1369#1370#0" expanded="false" />
             <element signature="docComment;method#open#0;class#DBAdapter#0" expanded="false" />
             <element signature="method#open#0;class#DBAdapter#0" expanded="false" />
             <element signature="method#close#0;class#DBAdapter#0" expanded="false" />
@@ -3267,9 +3317,7 @@
             <element signature="method#getCurrentSetSongs#0;class#DBAdapter#0" expanded="false" />
             <element signature="docComment;method#getCurrentSetName#0;class#DBAdapter#0" expanded="false" />
             <element signature="method#getCurrentSetName#0;class#DBAdapter#0" expanded="false" />
-            <element signature="e#42275#42304#0" expanded="false" />
             <element signature="docComment;method#getSongGroupNames#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongGroupNames#0;class#DBAdapter#0" expanded="false" />
             <element signature="docComment;method#createSongGroup#0;class#DBAdapter#0" expanded="false" />
             <element signature="method#createSongGroup#0;class#DBAdapter#0" expanded="false" />
             <element signature="docComment;method#deleteSongGroup#0;class#DBAdapter#0" expanded="false" />
@@ -3314,39 +3362,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetGroupArrayAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59385663">
-          <caret line="72" column="40" selection-start-line="72" selection-start-column="40" selection-end-line="72" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongGroupArrayAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.63822526">
-          <caret line="47" column="41" selection-start-line="46" selection-start-column="8" selection-end-line="47" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/search.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="933" column="33" selection-start-line="933" selection-start-column="16" selection-end-line="933" selection-end-column="33" />
+          <caret line="4404" column="36" selection-start-line="4404" selection-start-column="36" selection-end-line="4404" selection-end-column="36" />
           <folding>
             <element signature="e#4222#4246#0" expanded="false" />
             <element signature="e#6112#6136#0" expanded="false" />
@@ -3398,7 +3417,9 @@
             <element signature="docComment;method#onAttachedToWindow#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onAttachedToWindow#0;class#MainActivity#0" expanded="false" />
             <element signature="method#onRequestPermissionsResult#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#26209#26233#0" expanded="false" />
             <element signature="docComment;method#showAboutBox#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#showAboutBox#0;class#MainActivity#0" expanded="false" />
             <element signature="e#26896#26924#0" expanded="true" />
             <element signature="e#27161#27194#0" expanded="true" />
             <element signature="e#27358#27391#0" expanded="true" />
@@ -3413,11 +3434,7 @@
             <element signature="docComment;method#executePermReqFunction#0;class#MainActivity#0" expanded="false" />
             <element signature="method#executePermReqFunction#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#onSongSearchClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#35443#35444#0" expanded="true" />
-            <element signature="e#35475#35476#0" expanded="true" />
             <element signature="docComment;method#onSetSearchClick#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#35591#35592#0" expanded="true" />
-            <element signature="e#35622#35623#0" expanded="true" />
             <element signature="e#35646#35668#0" expanded="false" />
             <element signature="docComment;method#createSet#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createSet#0;class#MainActivity#0" expanded="false" />
@@ -3538,7 +3555,6 @@
             <element signature="method#setCurrentSetList#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#fillCurrentSetListView#0;class#MainActivity#0" expanded="false" />
             <element signature="method#fillCurrentSetListView#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#119230#119259#0" expanded="false" />
             <element signature="docComment;method#setSongGroupsList#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#setSongGroupsList#1;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#fillSongGroupsSpinner#0;class#MainActivity#0" expanded="false" />
@@ -3597,7 +3613,6 @@
             <element signature="method#selectImportFile#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#importFile#0;class#MainActivity#0" expanded="false" />
             <element signature="method#importFile#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#153072#153088#0" expanded="false" />
             <element signature="class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
             <element signature="method#ImportDBParams#0;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
             <element signature="method#ImportDBParams#1;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
@@ -3617,8 +3632,6 @@
             <element signature="class#PagerAdapter#0;class#MainActivity#0" expanded="false" />
             <element signature="method#addFragment#0;class#PagerAdapter#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;class#SortIgnoreCase#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#SortIgnoreCase#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#compare#0;class#SortIgnoreCase#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;class#SongItemComparableAuthor#0;class#MainActivity#0" expanded="false" />
             <element signature="class#SongItemComparableAuthor#0;class#MainActivity#0" expanded="false" />
             <element signature="method#compare#0;class#SongItemComparableAuthor#0;class#MainActivity#0" expanded="false" />
@@ -3636,18 +3649,99 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongsTab.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_songs.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
-          <folding />
+        <state vertical-scroll-proportion="0.34654588">
+          <caret line="30" column="36" selection-start-line="30" selection-start-column="36" selection-end-line="30" selection-end-column="36" />
+          <folding>
+            <element signature="e#820#845#0" expanded="true" />
+            <element signature="e#976#997#0" expanded="true" />
+            <element signature="e#2022#2049#0" expanded="true" />
+            <element signature="e#2403#2420#0" expanded="true" />
+            <element signature="e#3108#3135#0" expanded="true" />
+            <element signature="e#3501#3521#0" expanded="true" />
+            <element signature="e#4675#4693#0" expanded="true" />
+          </folding>
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_sets.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7701019">
+          <caret line="40" column="25" selection-start-line="40" selection-start-column="25" selection-end-line="40" selection-end-column="25" />
+          <folding>
+            <element signature="e#922#942#0" expanded="true" />
+            <element signature="e#976#1001#0" expanded="true" />
+            <element signature="e#1981#2008#0" expanded="true" />
+            <element signature="e#2362#2379#0" expanded="true" />
+            <element signature="e#3065#3092#0" expanded="true" />
+            <element signature="e#3457#3476#0" expanded="true" />
+            <element signature="e#4595#4612#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_sets.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.62069">
+          <caret line="28" column="54" selection-start-line="28" selection-start-column="54" selection-end-line="28" selection-end-column="54" />
+          <folding>
+            <element signature="e#938#958#0" expanded="true" />
+            <element signature="e#992#1017#0" expanded="true" />
+            <element signature="e#3209#3226#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_sets.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.1034484">
+          <caret line="55" column="48" selection-start-line="55" selection-start-column="48" selection-end-line="55" selection-end-column="48" />
+          <folding>
+            <element signature="e#762#782#0" expanded="true" />
+            <element signature="e#812#837#0" expanded="true" />
+            <element signature="e#1209#1236#0" expanded="true" />
+            <element signature="e#1591#1608#0" expanded="true" />
+            <element signature="e#2235#2262#0" expanded="true" />
+            <element signature="e#2618#2637#0" expanded="true" />
+            <element signature="e#4148#4165#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_songs.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.75084937">
+          <caret line="84" column="35" selection-start-line="84" selection-start-column="35" selection-end-line="84" selection-end-column="35" />
+          <folding>
+            <element signature="e#618#643#0" expanded="true" />
+            <element signature="e#812#833#0" expanded="true" />
+            <element signature="e#1567#1584#0" expanded="true" />
+            <element signature="e#2577#2597#0" expanded="true" />
+            <element signature="e#4147#4165#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_songs.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.518851">
-          <caret line="38" column="50" selection-start-line="38" selection-start-column="50" selection-end-line="38" selection-end-column="50" />
+        <state vertical-scroll-proportion="0.21364452">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding>
             <element signature="e#980#1001#0" expanded="true" />
           </folding>
