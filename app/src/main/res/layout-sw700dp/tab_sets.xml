@@ -72,10 +72,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dip"
-            android:layout_alignParentRight="true"
+            android:layout_toLeftOf="@+id/search_set_icon"
             android:layout_alignParentBottom="true"
             android:textColor="@color/defaultTextColor"
             android:popupBackground="@color/TranslucentWhite"  />
+
+        <ImageView
+            android:id="@+id/search_set_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:paddingLeft="15dp"
+            android:src="@drawable/search"
+            android:clickable="true"
+            android:onClick="onSetSearchClick"/>
 
     </RelativeLayout>
     

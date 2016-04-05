@@ -10,42 +10,42 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="vertical" >
-        
-        <TextView 
-            android:id="@+id/sets_tab_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/TransparentWhite"
-            android:textStyle="bold"
-            android:text="@string/title_sets"
-            android:textSize="@dimen/tabTitleTextSize"
-            android:paddingLeft="5dp"
-            android:shadowColor="@color/TransparentGrey" 
-			android:shadowDx="3"
-			android:shadowDy="3" 
-			android:shadowRadius="1.5" />
-        
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/sets_tab_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/TransparentWhite"
+                android:textStyle="bold"
+                android:text="@string/title_sets"
+                android:textSize="@dimen/tabTitleTextSize"
+                android:paddingLeft="5dp"
+                android:shadowColor="@color/TransparentGrey"
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="1.5" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/search"
+                android:clickable="true"
+                android:onClick="onSetSearchClick"/>
+
+        </RelativeLayout>
+
 	    <RelativeLayout
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="5"
 	        android:orientation="horizontal" >
-	        
-	        <!-- <TextView
-	            android:id="@+id/set_sort_label"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-				android:layout_alignParentLeft="true"
-				android:layout_alignParentBottom="true"
-	            android:textSize="@dimen/tabSpinnerTextSize"
-	            android:textColor="@color/white"
-	            android:textStyle="bold"
-	            android:shadowColor="@color/TransparentGrey" 
-				android:shadowDx="2"
-				android:shadowDy="2" 
-				android:shadowRadius="1"
-	            android:text="@string/sort_by"
-	            android:paddingLeft="2dip"
-	            android:paddingBottom="7dp" /> -->
 	        
 	        <Spinner
 	            android:id="@+id/set_sort_spinner"
@@ -55,23 +55,7 @@
 				android:layout_alignParentLeft="true"
 	            android:paddingLeft="5dip"
 	            android:popupBackground="@color/TranslucentWhite" />
-	        
-	        <!-- <TextView
-	            android:id="@+id/set_group_label"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_toLeftOf="@+id/set_group_spinner"
-	            android:layout_alignParentBottom="true"
-	            android:textSize="@dimen/tabSpinnerTextSize"
-	            android:textColor="@color/white"
-	            android:textStyle="bold"
-	            android:shadowColor="@color/TransparentGrey" 
-				android:shadowDx="2"
-				android:shadowDy="2" 
-				android:shadowRadius="1"
-	            android:text="@string/set_group"
-	            android:paddingBottom="7dp" /> -->
-	
+
 	        <Spinner
 	            android:id="@+id/set_group_spinner"
 	            android:layout_width="wrap_content"
@@ -84,6 +68,7 @@
 	            android:popupBackground="@color/TranslucentWhite"  />
 	
 	    </RelativeLayout>
+
     </LinearLayout>
     
     <TextView 
