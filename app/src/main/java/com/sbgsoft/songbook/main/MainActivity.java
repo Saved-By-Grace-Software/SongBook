@@ -4402,9 +4402,21 @@ public class MainActivity extends FragmentActivity {
     @SuppressLint("DefaultLocale")
 	public class SortIgnoreCase implements Comparator<Object> {
         public int compare(Object o1, Object o2) {
+            int ret;
+
             String s1 = (String) o1;
             String s2 = (String) o2;
-            return s1.toLowerCase(Locale.ENGLISH).compareTo(s2.toLowerCase());
+
+            // Check for special case
+            if (s1.equals(SongsTab.ALL_SONGS_LABEL)) {
+                ret = -10;
+            } else if (s2.equals(SongsTab.ALL_SONGS_LABEL)) {
+                ret = 10;
+            } else {
+                ret = s1.toLowerCase(Locale.ENGLISH).compareTo(s2.toLowerCase());
+            }
+
+            return ret;
         }
     }
     
