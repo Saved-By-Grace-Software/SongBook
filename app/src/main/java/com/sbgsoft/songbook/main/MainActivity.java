@@ -926,6 +926,22 @@ public class MainActivity extends FragmentActivity {
                 break;
         }
     }
+
+    /**
+     * Opens the search dialog for songs
+     * @param v
+     */
+    public void onSongSearchClick(View v) {
+        findSongDialog();
+    }
+
+    /**
+     * Opens the search dialog for sets
+     * @param v
+     */
+    public void onSetSearchClick(View v) {
+        findSetDialog();
+    }
     //endregion
 
 
