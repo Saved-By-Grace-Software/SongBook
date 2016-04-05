@@ -1570,15 +1570,17 @@ public class MainActivity extends FragmentActivity {
      */
     private void emailSet(SetItem setItem, StaticVars.SongFileType songFileType) {
 		String setDate = setItem.getDate();
+        String setLink = setItem.getLink();
 		ArrayList<Uri> uris = new ArrayList<Uri>();
 		
 		// Start the output string
 		StringBuilder sb = new StringBuilder();
 		sb.append("<h2>" + setItem.getName() + "</h2>");
+        sb.append("<a href='" + setLink + "'>" + setLink + "</a><br/>");
 		sb.append("<i>" + setDate + "</i><br/><br/>");
 		
 		for (SongItem songItem : setItem.songs) {
-			File att = null;
+			File att;
 			
 			// Add the attachment
 			switch (songFileType) {
@@ -3139,12 +3141,17 @@ public class MainActivity extends FragmentActivity {
         // Register the context menu and add the adapter
         registerForContextMenu(lv);
         lv.setAdapter(currSetAdapter);
-        
-        // Append the current set name to the title
-        TextView title = ((TextView)findViewById(R.id.current_set_tab_title));
-        if (dbAdapter.getCurrentSetName() != "") {
-        	//title.setText(getResources().getString(R.string.title_current_set) + " - " + dbAdapter.getCurrentSetName());
-        	title.setText(dbAdapter.getCurrentSetName());
+
+        // Update the current set title bar
+        String currentSetName = dbAdapter.getCurrentSetName();
+        if (currentSetName != "") {
+            // Append the current set name to the title
+            TextView title = ((TextView)findViewById(R.id.current_set_tab_title));
+            title.setText(dbAdapter.getCurrentSetName());
+
+            // Add the set link
+            TextView link = ((TextView)findViewById(R.id.current_set_tab_link));
+            link.setText(dbAdapter.getSetLink(currentSetName));
         }
     }
     //endregion
