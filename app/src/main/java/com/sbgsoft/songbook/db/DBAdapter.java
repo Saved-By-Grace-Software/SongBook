@@ -264,11 +264,17 @@ public class DBAdapter {
 		
 		// Check if the group is the all sets group
 		if (groupName.equals(SetsTab.ALL_SETS_LABEL)) {
-			query = "SELECT " + DBStrings.TBLSETS_ID + " as _id, " + DBStrings.TBLSETS_NAME + ", " + DBStrings.TBLSETS_DATE +
-					" FROM " + DBStrings.SETS_TABLE + " ORDER BY " + DBStrings.TBLSETS_NAME;
+			query = "SELECT " + DBStrings.TBLSETS_ID + " as _id, " +
+                    DBStrings.TBLSETS_NAME + ", " +
+                    DBStrings.TBLSETS_LINK + ", " +
+                    DBStrings.TBLSETS_DATE +
+					" FROM " + DBStrings.SETS_TABLE +
+                    " ORDER BY " + DBStrings.TBLSETS_NAME;
 		} else {
-			query = "SELECT " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + " as _id, " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_NAME +
-					", " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_DATE +
+			query = "SELECT " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + " as _id, " +
+                    DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_NAME + ", " +
+                    DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_LINK + ", " +
+                    DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_DATE +
 					" FROM " + DBStrings.SETS_TABLE + 
 					" INNER JOIN " + DBStrings.SETGPLOOKUP_TABLE + " ON " + DBStrings.SETS_TABLE + "." + DBStrings.TBLSETS_ID + 
 					" = " + DBStrings.SETGPLOOKUP_TABLE + "." + DBStrings.TBLSETGPLOOKUP_SET +
@@ -293,6 +299,7 @@ public class DBAdapter {
         if (!setSearch.setNameSearchText.isEmpty()) {
             query = "SELECT " + DBStrings.TBLSETS_ID + " as _id, " +
                     DBStrings.TBLSETS_NAME + ", " +
+                    DBStrings.TBLSETS_LINK + ", " +
                     DBStrings.TBLSETS_DATE +
                     " FROM " + DBStrings.SETS_TABLE +
                     " WHERE " + DBStrings.TBLSETS_NAME + " like '%" + setSearch.setNameSearchText + "%' " +
@@ -463,20 +470,57 @@ public class DBAdapter {
 			return "";
 		}
 	}
+
+    /**
+     * Gets the set link
+     * @param setName The set to get the link for
+     * @return The set link
+     */
+    public String getSetLink(String setName) {
+        try {
+            String query = "SELECT " + DBStrings.TBLSETS_ID + " as _id, " +
+                    DBStrings.TBLSETS_NAME + ", " +
+                    DBStrings.TBLSETS_LINK +
+                    " FROM " + DBStrings.SETS_TABLE +
+                    " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'";
+
+            Cursor c = mDb.rawQuery(query, null);
+            c.moveToFirst();
+            String ret = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_LINK));
+            c.close();
+            return ret;
+        } catch (IndexOutOfBoundsException e) {
+            return "";
+        } catch (SQLiteException s) {
+            return "";
+        }
+    }
 	
 	/**
 	 * Updates the set attributes
 	 * @param oldSetName The original set name
 	 * @param newSetName The new set name
 	 * @param date The new set date
+     * @param setLink The link of the set
 	 * @return True if success, False if failure
 	 */
-	public boolean updateSetAttributes(String oldSetName, String newSetName, String date) {
+	public boolean updateSetAttributes(String oldSetName, String newSetName, String date, String setLink) {
 		try {
-			String query = "UPDATE " + DBStrings.SETS_TABLE + 
-					" SET " + DBStrings.TBLSETS_NAME + " = '" + newSetName + "', " +
-					DBStrings.TBLSETS_DATE + " = '" + date + "' " + 
-					" WHERE " + DBStrings.TBLSETS_NAME + " = '" + oldSetName + "'";
+            String query;
+
+            if (setLink.isEmpty()) {
+                query = "UPDATE " + DBStrings.SETS_TABLE +
+                        " SET " + DBStrings.TBLSETS_NAME + " = '" + newSetName + "', " +
+                        DBStrings.TBLSETS_DATE + " = '" + date + "' " +
+                        " WHERE " + DBStrings.TBLSETS_NAME + " = '" + oldSetName + "'";
+            } else {
+                query = "UPDATE " + DBStrings.SETS_TABLE +
+                        " SET " +
+                        DBStrings.TBLSETS_NAME + " = '" + newSetName + "', " +
+                        DBStrings.TBLSETS_LINK + " = '" + setLink + "', " +
+                        DBStrings.TBLSETS_DATE + " = '" + date + "' " +
+                        " WHERE " + DBStrings.TBLSETS_NAME + " = '" + oldSetName + "'";
+            }
 			mDb.execSQL(query);
 		} catch (SQLException e) {
 			return false;
@@ -1610,6 +1654,7 @@ public class DBAdapter {
     			db.execSQL("create table " + DBStrings.SETS_TABLE +
     					"(" + DBStrings.TBLSETS_ID + " integer PRIMARY KEY autoincrement, " + 
     					DBStrings.TBLSETS_DATE + " date, " +
+                        DBStrings.TBLSETS_LINK + " text, " +
     					DBStrings.TBLSETS_NAME + " text UNIQUE); ");
     			
     			// Songs table
@@ -1704,10 +1749,16 @@ public class DBAdapter {
                     db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_TIME + " text");
                 }
 
-                // Updates from DB version 5 or lower
-                if (oldVersion <= 6) {
+                // Updates from DB version 6 or lower
+                if (oldVersion < 6) {
                     // Add link column to the songs table
                     db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_LINK + " text");
+                }
+
+                // Updates from DB version 7 or lower
+                if (oldVersion < 7) {
+                    // Add link column to the sets table
+                    db.execSQL("ALTER TABLE " + DBStrings.SETS_TABLE + " ADD COLUMN " + DBStrings.TBLSETS_LINK + " text");
                 }
     			
     			db.setTransactionSuccessful(); 

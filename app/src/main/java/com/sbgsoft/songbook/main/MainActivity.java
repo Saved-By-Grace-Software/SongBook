@@ -777,6 +777,8 @@ public class MainActivity extends FragmentActivity {
     	alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                // Close the dialog
+                dialog.dismiss();
             }
         });
 
@@ -1428,12 +1430,13 @@ public class MainActivity extends FragmentActivity {
     	while (!c.isAfterLast()) {
     		// Get the strings from the cursor
         	String setName = c.getString(c.getColumnIndex(DBStrings.TBLSETS_NAME));
+            String setLink = c.getString(c.getColumnIndex(DBStrings.TBLSETS_LINK));
         	String setDate = c.getString(c.getColumnIndex(DBStrings.TBLSETS_DATE));
         	String[] datesplit = setDate.split("-");
         	setDate = datesplit[1] + "/" + datesplit[2] + "/" + datesplit[0];
     		
         	// Create a new set item
-        	SetItem tmp = new SetItem(setName, setDate);
+        	SetItem tmp = new SetItem(setName, setDate, setLink);
         	tmp.selfPopulateSongsList();
         	
         	// Add the set item
@@ -1522,10 +1525,12 @@ public class MainActivity extends FragmentActivity {
     	View dialoglayout = inflater.inflate(R.layout.add_set, (ViewGroup) findViewById(R.id.add_set_root));
     	alert.setView(dialoglayout);
     	final EditText setNameET = (EditText)dialoglayout.findViewById(R.id.add_set_name);
+        final EditText setLinkET = (EditText)dialoglayout.findViewById(R.id.add_set_link);
     	final DatePicker setDateDP = (DatePicker)dialoglayout.findViewById(R.id.add_set_date);
     	
     	// Populate the set fields
     	setNameET.setText(setName);
+        setLinkET.setText(dbAdapter.getSetLink(setName));
     	String temp[] = dbAdapter.getSetDate(setName).split("-");
     	if (temp.length >= 2)
     		setDateDP.updateDate(Integer.parseInt(temp[0].trim()), Integer.parseInt(temp[1].trim()) - 1, Integer.parseInt(temp[2].trim()));
@@ -1536,9 +1541,10 @@ public class MainActivity extends FragmentActivity {
                 // Get the date and set name
                 String newSetName = setNameET.getText().toString();
                 String setDate = setDateDP.getYear() + "-" + String.format("%02d", (setDateDP.getMonth() + 1)) + "-" + String.format("%02d", setDateDP.getDayOfMonth());
+                String setLink = setLinkET.getText().toString();
 
                 if (newSetName.length() > 0) {
-                    dbAdapter.updateSetAttributes(setName, newSetName, setDate);
+                    dbAdapter.updateSetAttributes(setName, newSetName, setDate, setLink);
 
                     // Refresh set and current set list
                     fillSetsListView();

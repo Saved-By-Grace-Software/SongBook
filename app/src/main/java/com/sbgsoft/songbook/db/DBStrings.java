@@ -4,7 +4,7 @@ public class DBStrings {
 
 	// Database Strings
 	public static final String DATABASE_NAME = "tabAppDB";
-	public static final int DATABASE_VERSION = 6;
+	public static final int DATABASE_VERSION = 7;
 	
 	// Sets Table
 	public static final String SETS_TABLE = "tblSets";
@@ -12,6 +12,7 @@ public class DBStrings {
 	public static final String TBLSETS_NAME = "setName";
 	public static final String TBLSETS_SONGS = "songs";
 	public static final String TBLSETS_DATE = "setDate";
+    public static final String TBLSETS_LINK = "setLink";
 	
 	// Songs Table
 	public static final String SONGS_TABLE = "tblSongs";

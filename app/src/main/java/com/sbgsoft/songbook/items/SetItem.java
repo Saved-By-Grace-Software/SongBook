@@ -12,6 +12,7 @@ import android.os.Parcelable;
 public class SetItem implements Item, Parcelable {
 	private String name;
 	private String date;
+    private String link;
 	
 	public ArrayList<SongItem> songs;
 	
@@ -24,6 +25,7 @@ public class SetItem implements Item, Parcelable {
 	public void writeToParcel(Parcel out, int flags) {
 		out.writeString(name);
 		out.writeString(date);
+        out.writeString(link);
 		out.writeSerializable(songs);
 	}
 	
@@ -33,6 +35,7 @@ public class SetItem implements Item, Parcelable {
 			SetItem setItem = new SetItem();
 			setItem.name = source.readString();
 			setItem.date = source.readString();
+            setItem.link = source.readString();
 			setItem.songs = (ArrayList<SongItem>)source.readSerializable();
 			return setItem;
 		}
@@ -41,21 +44,19 @@ public class SetItem implements Item, Parcelable {
 			return new SetItem[size];
 		}
 	};
-	
-	/**
-	 * Constructor
-	 * @param songName
-	 */
-	public SetItem(String setName, String setDate) {
-		name = setName;
-		date = setDate;
-		songs = new ArrayList<SongItem>();
-	}
+
+    public SetItem(String setName, String setDate, String setLink) {
+        setName(setName);
+        setDate(setDate);
+        setLink(setLink);
+        songs = new ArrayList<>();
+    }
 	
 	public SetItem() {
 		setName("");
 		setDate("");
-		songs = new ArrayList<SongItem>();
+        setLink("");
+		songs = new ArrayList<>();
 	}
 
 	/**
@@ -71,6 +72,10 @@ public class SetItem implements Item, Parcelable {
 	public String getDate() {
 		return date;
 	}
+
+    public String getLink() {
+        return link;
+    }
 	
 	public void setName(String name) {
 		this.name = name;
@@ -79,6 +84,10 @@ public class SetItem implements Item, Parcelable {
 	public void setDate(String date) {
 		this.date = date;
 	}
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 	
 	public void selfPopulateSongsList() {
 		// Clear current songs list
