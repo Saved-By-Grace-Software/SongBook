@@ -4408,9 +4408,9 @@ public class MainActivity extends FragmentActivity {
             String s2 = (String) o2;
 
             // Check for special case
-            if (s1.equals(SongsTab.ALL_SONGS_LABEL)) {
+            if (s1.equals(SongsTab.ALL_SONGS_LABEL) || s1.equals(SetsTab.ALL_SETS_LABEL)) {
                 ret = -10;
-            } else if (s2.equals(SongsTab.ALL_SONGS_LABEL)) {
+            } else if (s2.equals(SongsTab.ALL_SONGS_LABEL) || s2.equals(SetsTab.ALL_SETS_LABEL)) {
                 ret = 10;
             } else {
                 ret = s1.toLowerCase(Locale.ENGLISH).compareTo(s2.toLowerCase());
