@@ -75,11 +75,17 @@ public class DBAdapter {
 	 * @param setName The name of the set
 	 * @return True if success, False if failure
 	 */
-	public boolean createSet(String setName, String setDate) {
+	public boolean createSet(String setName, String setDate, String setLink) {
 		// Create a new set with the specified name
 		try {
-			mDb.execSQL( "INSERT INTO " + DBStrings.SETS_TABLE + "(" + DBStrings.TBLSETS_NAME + ", " + DBStrings.TBLSETS_DATE +
-					") VALUES ('" + setName + "', '" + setDate + "');" );
+			mDb.execSQL( "INSERT INTO " + DBStrings.SETS_TABLE + "(" +
+                    DBStrings.TBLSETS_NAME + ", " +
+                    DBStrings.TBLSETS_LINK + ", " +
+                    DBStrings.TBLSETS_DATE +
+					") VALUES ('" +
+                    setName + "', '" +
+                    setLink + "', '" +
+                    setDate + "');" );
 		} catch (SQLiteException e) {
 			return false;
 		}
@@ -93,20 +99,23 @@ public class DBAdapter {
 	 * @param songs The string of song names
 	 * @return True if success, False if failure
 	 */
-	public boolean createSet(String setName, ArrayList<String> setSongs, String setDate) {
-		String song = "";
-		int order = 1;
+	public boolean createSet(String setName, ArrayList<String> setSongs, String setDate, String setLink) {
+		String song;
+		int order;
 		// Create a new set with the specified name
 		try {
 			// Add the set name
-			if (createSet(setName, setDate)) {
+			if (createSet(setName, setDate, setLink)) {
 				// Add the songs to the set
 				for(int i = 0; i < setSongs.size(); i++) {
 					song = setSongs.get(i);
 					order = i + 1;
 					if (song != "") {
-						mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" + DBStrings.TBLSLOOKUP_SET + ", " + 
-								DBStrings.TBLSLOOKUP_SONG + ", " + DBStrings.TBLSLOOKUP_KEY + ", " + DBStrings.TBLSLOOKUP_ORDER + ") " + 
+						mDb.execSQL( "INSERT INTO " + DBStrings.SETLOOKUP_TABLE + "(" +
+                                DBStrings.TBLSLOOKUP_SET + ", " +
+								DBStrings.TBLSLOOKUP_SONG + ", " +
+                                DBStrings.TBLSLOOKUP_KEY + ", " +
+                                DBStrings.TBLSLOOKUP_ORDER + ") " +
 								" VALUES ((SELECT " + DBStrings.TBLSETS_ID + " FROM " + DBStrings.SETS_TABLE + " WHERE " + DBStrings.TBLSETS_NAME + " = '" + setName + "'), " + 
 								" (SELECT " + DBStrings.TBLSONG_ID + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'), " +
 								" (SELECT " + DBStrings.TBLSONG_KEY + " FROM " + DBStrings.SONGS_TABLE + " WHERE " + DBStrings.TBLSONG_NAME + " = '" + song + "'), " +

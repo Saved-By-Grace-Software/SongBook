@@ -966,6 +966,7 @@ public class MainActivity extends FragmentActivity {
     	View dialoglayout = inflater.inflate(R.layout.add_set, (ViewGroup) findViewById(R.id.add_set_root));
     	alert.setView(dialoglayout);
     	final EditText setNameET = (EditText)dialoglayout.findViewById(R.id.add_set_name);
+        final EditText setLinkET = (EditText)dialoglayout.findViewById(R.id.add_set_link);
     	final DatePicker setDateDP = (DatePicker)dialoglayout.findViewById(R.id.add_set_date);
 
     	// Set the OK button
@@ -974,9 +975,10 @@ public class MainActivity extends FragmentActivity {
 	    		// Get the date and set name
 	    		String setName = setNameET.getText().toString();
 	    		String setDate = setDateDP.getYear() + "-" + String.format("%02d", (setDateDP.getMonth() + 1)) + "-" + String.format("%02d", setDateDP.getDayOfMonth());
+                String setLink = setLinkET.getText().toString();
 	    		
 	    		if (setName.length() > 0) {
-		    			selectSetSongs(setName, setDate);
+		    			selectSetSongs(setName, setDate, setLink);
 	    		}
 	    		else
 	    			Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
@@ -995,7 +997,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * Selects the songs for the set
      */
-    private void selectSetSongs(final String setName, final String setDate) {
+    private void selectSetSongs(final String setName, final String setDate, final String setLink) {
     	Cursor c = dbAdapter.getSongs(SongsTab.ALL_SONGS_LABEL);
     	
     	// Clear the previous song lists
@@ -1082,7 +1084,7 @@ public class MainActivity extends FragmentActivity {
 	    		}
 	    		
 	    		// Create the set and refresh the list
-	    		if(!dbAdapter.createSet(setName, setSongs, setDate + " "))
+	    		if(!dbAdapter.createSet(setName, setSongs, setDate + " ", setLink))
 	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
 	    		else {
                     // Refresh set and current set list
