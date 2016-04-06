@@ -1387,10 +1387,17 @@ public class DBAdapter {
 				// Get the song properties
 				String setName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_NAME));
 				String setDate = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_DATE));
+                String setLink = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETS_LINK));
 				
 				// Append the insert statement with a line ending
-				output.append("INSERT INTO " + DBStrings.SETS_TABLE + "(" + DBStrings.TBLSETS_NAME + ", " + DBStrings.TBLSETS_DATE +
-						") VALUES ('" + setName + "', '" + setDate + "'); ");
+				output.append("INSERT INTO " + DBStrings.SETS_TABLE + "(" +
+                        DBStrings.TBLSETS_NAME + ", " +
+                        DBStrings.TBLSETS_LINK + ", " +
+                        DBStrings.TBLSETS_DATE +
+						") VALUES ('" +
+                        setName + "', '" +
+                        setLink + "', '" +
+                        setDate + "'); ");
 				output.append(StaticVars.EOL);
 			}
 			
@@ -1504,15 +1511,27 @@ public class DBAdapter {
 		return output.toString();
 	}
 
+    /**
+     * Exports a single set
+     * @param setName The set to export
+     * @return The SQL statements to import the set on a different device
+     */
     public String exportSetDBData(String setName) {
         StringBuilder output = new StringBuilder();
         try {
             // Add the set to the export file
             String setDate = getSetDate(setName);
+            String setLink = getSetLink(setName);
 
             // Append the insert statement with a line ending
-            output.append("INSERT INTO " + DBStrings.SETS_TABLE + "(" + DBStrings.TBLSETS_NAME + ", " + DBStrings.TBLSETS_DATE +
-                    ") VALUES ('" + setName + "', '" + setDate + "'); ");
+            output.append("INSERT INTO " + DBStrings.SETS_TABLE + "(" +
+                    DBStrings.TBLSETS_NAME + ", " +
+                    DBStrings.TBLSETS_LINK + ", " +
+                    DBStrings.TBLSETS_DATE +
+                    ") VALUES ('" +
+                    setName + "', '" +
+                    setLink + "', '" +
+                    setDate + "'); ");
             output.append(StaticVars.EOL);
 
             // Add songs to the export file

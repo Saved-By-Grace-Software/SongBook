@@ -1084,8 +1084,11 @@ public class MainActivity extends FragmentActivity {
 	    		// Create the set and refresh the list
 	    		if(!dbAdapter.createSet(setName, setSongs, setDate + " "))
 	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
-	    		else
-	    			setsAdapter.notifyDataSetChanged();
+	    		else {
+                    // Refresh set and current set list
+                    fillSetsListView();
+                    fillCurrentSetListView();
+                }
 	    		
 	    		// Set the current tab
 	        	currentTab = 2;
