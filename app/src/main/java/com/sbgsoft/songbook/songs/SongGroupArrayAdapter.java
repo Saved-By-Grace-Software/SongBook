@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.main.MainActivity;
+import com.sbgsoft.songbook.main.StaticVars;
 
 public class SongGroupArrayAdapter extends ArrayAdapter<String> {
 	private final Context context;
@@ -44,7 +45,7 @@ public class SongGroupArrayAdapter extends ArrayAdapter<String> {
 		int numSongs;
 		if (groupName.equals(SongsTab.ALL_SONGS_LABEL))
 			numSongs = MainActivity.dbAdapter.getNumSongs();
-        else if (mNumSearchResults > 0)
+        else if (groupName.equals(StaticVars.searchResultsText))
             numSongs = mNumSearchResults;
 		else
 			numSongs = MainActivity.dbAdapter.getNumSongsPerGroup(groupName);
@@ -69,10 +70,12 @@ public class SongGroupArrayAdapter extends ArrayAdapter<String> {
 		int numSongs;
 		if (groupName.equals(SongsTab.ALL_SONGS_LABEL))
 			numSongs = MainActivity.dbAdapter.getNumSongs();
-        else if (mNumSearchResults > 0)
+        else if (groupName.equals(StaticVars.searchResultsText))
             numSongs = mNumSearchResults;
 		else
 			numSongs = MainActivity.dbAdapter.getNumSongsPerGroup(groupName);
+
+
 		
 		// Set the text
 		textView.setText(groupName + " {" + numSongs + "}");
