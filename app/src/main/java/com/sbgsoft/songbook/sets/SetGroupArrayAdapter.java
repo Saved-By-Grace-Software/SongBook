@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.main.MainActivity;
+import com.sbgsoft.songbook.main.StaticVars;
 
 public class SetGroupArrayAdapter extends ArrayAdapter<String> {
 	private final Context context;
@@ -44,7 +45,7 @@ public class SetGroupArrayAdapter extends ArrayAdapter<String> {
 		int numSets = 0;
 		if (groupName.equals(SetsTab.ALL_SETS_LABEL))
 			numSets = MainActivity.dbAdapter.getNumSets();
-        else if (mNumSearchResults > 0)
+        else if (groupName.equals(StaticVars.searchResultsText))
             numSets = mNumSearchResults;
 		else
 			numSets = MainActivity.dbAdapter.getNumSetsPerGroup(groupName);
@@ -69,7 +70,7 @@ public class SetGroupArrayAdapter extends ArrayAdapter<String> {
 		int numSets = 0;
 		if (groupName.equals(SetsTab.ALL_SETS_LABEL))
 			numSets = MainActivity.dbAdapter.getNumSets();
-        else if (mNumSearchResults > 0)
+        else if (groupName.equals(StaticVars.searchResultsText))
             numSets = mNumSearchResults;
 		else
 			numSets = MainActivity.dbAdapter.getNumSetsPerGroup(groupName);
