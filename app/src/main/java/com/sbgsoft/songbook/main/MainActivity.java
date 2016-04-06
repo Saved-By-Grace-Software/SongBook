@@ -1820,6 +1820,9 @@ public class MainActivity extends FragmentActivity {
     	final EditText songNameET = (EditText)dialoglayout.findViewById(R.id.add_song_name);
     	final EditText authorET = (EditText)dialoglayout.findViewById(R.id.add_song_author);
     	final EditText keyET = (EditText)dialoglayout.findViewById(R.id.add_song_key);
+        final EditText linkET = (EditText)dialoglayout.findViewById(R.id.add_song_link);
+        final EditText bpmET = (EditText)dialoglayout.findViewById(R.id.add_song_bpm);
+        final Spinner timeSpin = (Spinner)dialoglayout.findViewById(R.id.add_song_time);
     	
     	// Add the dialog title
     	if (importFilePath != "") {
@@ -1838,12 +1841,22 @@ public class MainActivity extends FragmentActivity {
                 String songName = songNameET.getText().toString();
                 String songAuthor = StaticVars.UNKNOWN;
                 String songKey = "";
+                String songTime = String.valueOf(timeSpin.getSelectedItem());
+                String songLink = linkET.getText().toString();
+
                 if (authorET.getText().length() > 0)
                     songAuthor = authorET.getText().toString().trim();
                 if (keyET.getText().length() > 1)
                     songKey = keyET.getText().toString().substring(0, 1).toUpperCase(Locale.US) + keyET.getText().toString().substring(1).trim();
                 else if (keyET.getText().length() > 0)
                     songKey = keyET.getText().toString().toUpperCase(Locale.US).trim();
+
+                // Check for bpm populated
+                int bpm = 0;
+                try {
+                    bpm = Integer.parseInt(bpmET.getText().toString());
+                } catch (NumberFormatException nfe) {
+                }
 
                 // Check for a correct key
                 if (!isValidKey(songKey)) {
@@ -1855,7 +1868,7 @@ public class MainActivity extends FragmentActivity {
                 // Create the song
                 if (songName.length() > 0) {
                     String songFile = songName + ".txt";
-                    if (!dbAdapter.createSong(songName, songFile, songAuthor, songKey))
+                    if (!dbAdapter.createSong(songName, songFile, songAuthor, songKey, songTime, songLink, bpm))
                         Toast.makeText(getApplicationContext(), "Failed to create song!", Toast.LENGTH_LONG).show();
                     else {
                         // If a file is waiting to be imported

@@ -551,12 +551,25 @@ public class DBAdapter {
 	 * @param fileName The name of the file 
 	 * @return True if success, False if failure
 	 */
-	public boolean createSong(String songName, String fileName, String author, String key) {
+	public boolean createSong(String songName, String fileName, String author, String key, String timeSignature, String songLink, int bpm) {
 		// Create a new set with the specified name
 		try {
-			mDb.execSQL( "INSERT INTO " + DBStrings.SONGS_TABLE + "(" + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_FILE + ", " +
-					DBStrings.TBLSONG_AUTHOR + ", " + DBStrings.TBLSONG_KEY + 
-					") VALUES ('" + songName + "', '" + fileName + "', '" + author + "', '" + key + "');" );
+			mDb.execSQL( "INSERT INTO " + DBStrings.SONGS_TABLE + "(" +
+                    DBStrings.TBLSONG_NAME + ", " +
+                    DBStrings.TBLSONG_FILE + ", " +
+					DBStrings.TBLSONG_AUTHOR + ", " +
+                    DBStrings.TBLSONG_KEY + ", " +
+                    DBStrings.TBLSONG_TIME + ", " +
+                    DBStrings.TBLSONG_LINK + ", " +
+                    DBStrings.TBLSONG_BPM +
+                    ") VALUES ('" +
+                    songName + "', '" +
+                    fileName + "', '" +
+                    author + "', '" +
+                    key + "', '" +
+                    timeSignature + "', '" +
+                    songLink + "', " +
+                    bpm + ");" );
 		} catch (SQLiteException e) {
 			return false;
 		}
