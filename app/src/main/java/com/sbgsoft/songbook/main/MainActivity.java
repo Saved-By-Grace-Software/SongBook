@@ -1131,17 +1131,17 @@ public class MainActivity extends FragmentActivity {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSetGroupNames();
     	
-    	final CharSequence[] groupNames = new CharSequence[c.getCount()];
-    	final boolean[] checkedGroupNames = new boolean[c.getCount()];
+    	final CharSequence[] groupNames = new CharSequence[c.getCount() - 1];
+    	final boolean[] checkedGroupNames = new boolean[c.getCount() - 1];
     	int counter = 0;
     	
     	// Add groups to list view
     	while(c.moveToNext()) {
     		String groupName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME));
-    		if (groupName.equals(SetsTab.ALL_SETS_LABEL))
-    			groupName = "No Group";
-    		checkedGroupNames[counter] = false;
-    		groupNames[counter++] = groupName;
+    		if (!groupName.equals(SetsTab.ALL_SETS_LABEL)) {
+                checkedGroupNames[counter] = false;
+                groupNames[counter++] = groupName;
+            }
     	}
     	c.close();
     	
@@ -1946,17 +1946,17 @@ public class MainActivity extends FragmentActivity {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSongGroupNames();
     	
-    	final CharSequence[] groupNames = new CharSequence[c.getCount()];
-    	final boolean[] checkedGroupNames = new boolean[c.getCount()];
+    	final CharSequence[] groupNames = new CharSequence[c.getCount() - 1];
+    	final boolean[] checkedGroupNames = new boolean[c.getCount() - 1];
     	int counter = 0;
     	
     	// Add groups to list view
     	while(c.moveToNext()) {
     		String groupName = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME));
-    		if (groupName.equals(SongsTab.ALL_SONGS_LABEL))
-    			groupName = "No Group";
-    		checkedGroupNames[counter] = false;
-    		groupNames[counter++] = groupName;
+    		if (!groupName.equals(SongsTab.ALL_SONGS_LABEL)) {
+                checkedGroupNames[counter] = false;
+                groupNames[counter++] = groupName;
+            }
     	}
     	
     	// Close the cursor
