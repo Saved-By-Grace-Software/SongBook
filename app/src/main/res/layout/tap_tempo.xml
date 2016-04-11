@@ -12,7 +12,7 @@
         android:background="@drawable/box_outline"
         android:layout_margin="10dp"/>
 
-    <LinearLayout
+    <RelativeLayout
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:orientation="horizontal" >
@@ -20,20 +20,51 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:id="@+id/tempo_text"
             android:text="@string/empty_tempo"
             android:textSize="40sp"
-            android:paddingLeft="15dp"
+            android:paddingLeft="@dimen/dialogBoxSideMargin"
             android:paddingTop="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tempo_text"
             android:text="@string/bpm"
             android:textSize="40sp"
-            android:paddingLeft="15dp"
+            android:paddingLeft="@dimen/dialogBoxSideMargin"
             android:paddingTop="5dp" />
 
-        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical"
+            android:paddingRight="@dimen/dialogBoxSideMargin"
+            android:paddingTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/manual_tempo_text"
+                android:text="@string/tap_tempo_manual"
+                android:textSize="@dimen/dialogSmallTextSize"
+                android:layout_alignParentRight="true"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/manual_tempo"
+                android:inputType="number"
+                android:textSize="@dimen/dialogSmallTextSize"
+                android:paddingTop="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/manual_tempo_text"/>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
 
 </LinearLayout>

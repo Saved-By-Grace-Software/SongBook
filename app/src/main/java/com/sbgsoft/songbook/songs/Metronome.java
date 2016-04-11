@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -312,6 +313,9 @@ public class Metronome {
         LayoutInflater inflater = mActivity.getLayoutInflater();
         final View dialoglayout = inflater.inflate(R.layout.tap_tempo, (ViewGroup) mActivity.findViewById(R.id.tap_tempo_root));
 
+        // Get the manual edit text
+        final EditText manualTempo = (EditText)dialoglayout.findViewById(R.id.manual_tempo);
+
         // Set the height of the tap box
         int height = getTapBoxHeight();
         if (height > 0) {
@@ -343,21 +347,27 @@ public class Metronome {
         // Set tempo button
         alert.setPositiveButton("Set Tempo", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // Turn off tap tempo mode
-                inTapTempoMode = false;
+                // Make sure they have tapped
+                int newBpm = calculateBPMFromTapTempoArray();
+                if (tempoTaps.size() > 1 && newBpm > 0 ){
+                    // Turn off tap tempo mode
+                    inTapTempoMode = false;
 
-                // Calculate the new tempo
-                setBeatsPerMinute(calculateBPMFromTapTempoArray());
+                    // Calculate the new tempo
+                    setBeatsPerMinute(newBpm);
 
-                // Restart the metronome
-                mDots.resetToStart();
-                start();
+                    // Restart the metronome
+                    mDots.resetToStart();
+                    start();
 
-                // Close the dialog
-                dialog.dismiss();
+                    // Close the dialog
+                    dialog.dismiss();
 
-                // Check to set as default
-                setTempoAsSongDefaultDialog();
+                    // Check to set as default
+                    setTempoAsSongDefaultDialog();
+                } else {
+                    Toast.makeText(mActivity, "You must tap a tempo to set it.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -373,6 +383,33 @@ public class Metronome {
 
                 // Close the dialog
                 dialog.dismiss();
+            }
+        });
+
+        // Set tempo button
+        alert.setNeutralButton("Manual Set", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String bpmString = manualTempo.getText().toString();
+                if (!bpmString.isEmpty()) {
+                    // Turn off tap tempo mode
+                    inTapTempoMode = false;
+
+                    // Calculate the new tempo
+                    int manualBpm = Integer.parseInt(bpmString);
+                    setBeatsPerMinute(manualBpm);
+
+                    // Restart the metronome
+                    mDots.resetToStart();
+                    start();
+
+                    // Close the dialog
+                    dialog.dismiss();
+
+                    // Check to set as default
+                    setTempoAsSongDefaultDialog();
+                } else {
+                    Toast.makeText(mActivity, "To manually set the tempo, you must enter a tempo.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -427,7 +464,7 @@ public class Metronome {
         AlertDialog.Builder alert = new AlertDialog.Builder(mActivity);
 
         alert.setTitle("Set As Default?");
-        alert.setMessage("Do you want to set this tempo as the song default tempo?");
+        alert.setMessage("Do you want to set " + mBeatsPerMinute + "bpm as the song default tempo?");
 
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
