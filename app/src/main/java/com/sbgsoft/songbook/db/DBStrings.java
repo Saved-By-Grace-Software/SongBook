@@ -4,7 +4,7 @@ public class DBStrings {
 
 	// Database Strings
 	public static final String DATABASE_NAME = "tabAppDB";
-	public static final int DATABASE_VERSION = 7;
+	public static final int DATABASE_VERSION = 8;
 	
 	// Sets Table
 	public static final String SETS_TABLE = "tblSets";
@@ -62,5 +62,11 @@ public class DBStrings {
 	public static final String TBLSETGPLOOKUP_ID = "ID";
 	public static final String TBLSETGPLOOKUP_SET = "setID";
 	public static final String TBLSETGPLOOKUP_GROUP = "setGroupID";
-	
+
+    // Settings Table
+    public static final String SETTINGS_TABLE = "tblSettings";
+	public static final String TBLSETTINGS_ID = "ID";
+    public static final String TBLSETTINGS_METRONOME_STATE = "metronomeState";
+    public static final String TBLSETTINGS_SET_TRANSPOSE = "setTransposeState";
+    public static final String TBLSETTINGS_SET_EDIT = "setEditState";
 }

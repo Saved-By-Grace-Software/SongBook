@@ -31,6 +31,15 @@ public class StaticVars {
 	public static final String FILE_ACTIVITY_FILE = "fileActivityFile";
 	public static final String FILE_ACTIVITY_FOLDER = "fileActivityFolder";
 
+    // Settings Strings
+    public static final String SETTINGS_METRONOME_STATE_ON = "ON";
+    public static final String SETTINGS_METRONOME_STATE_OFF = "OFF";
+    public static final String SETTINGS_METRONOME_STATE_WITHBPM = "WITHBPM";
+    public static final String SETTINGS_SET_TRANSPOSE_ON = "ON";
+    public static final String SETTINGS_SET_TRANSPOSE_OFF = "OFF";
+    public static final String SETTINGS_SET_EDIT_ON = "ON";
+    public static final String SETTINGS_SET_EDIT_OFF = "OFF";
+
 	// General
 	public static final String EOL = System.getProperty("line.separator");
 	public static final String UNKNOWN = "Unknown";

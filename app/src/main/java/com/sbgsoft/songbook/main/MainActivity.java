@@ -75,6 +75,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -92,6 +93,7 @@ import com.sbgsoft.songbook.items.ItemArrayAdapter;
 import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SetItem;
 import com.sbgsoft.songbook.items.SetSearchCriteria;
+import com.sbgsoft.songbook.items.Settings;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.items.SongSearchCriteria;
 import com.sbgsoft.songbook.main.StaticVars.SongFileType;
@@ -959,14 +961,25 @@ public class MainActivity extends FragmentActivity {
         View dialoglayout = inflater.inflate(R.layout.settings, (ViewGroup) findViewById(R.id.settings_root));
         alert.setView(dialoglayout);
 
+        // Get the current settings
+        Settings settings = dbAdapter.getCurrentSettings();
+
+        // Update the options
+        final CheckBox transposeOn = (CheckBox)dialoglayout.findViewById(R.id.settings_transpose_show);
+        final CheckBox editOn = (CheckBox)dialoglayout.findViewById(R.id.settings_edit_show);
+        transposeOn.setChecked(settings.getShowTransposeInSet());
+        editOn.setChecked(settings.getShowEditInSet());
+
         // Add the dialog title
         alert.setTitle("SongBook Settings");
 
         // Set the OK button
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // Close the dialog
-                dialog.dismiss();
+            // Save the options to the database
+
+            // Close the dialog
+            dialog.dismiss();
             }
         });
 

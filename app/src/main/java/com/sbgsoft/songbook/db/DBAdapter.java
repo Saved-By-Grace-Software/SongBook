@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.sbgsoft.songbook.items.SetSearchCriteria;
+import com.sbgsoft.songbook.items.Settings;
 import com.sbgsoft.songbook.items.SongSearchCriteria;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.sets.SetsTab;
@@ -60,6 +61,42 @@ public class DBAdapter {
     public void close() {
         mDbHelper.close();
         mDb.close();
+    }
+    //endregion
+
+
+    //region Other Functions
+    /**
+     * Gets the current settings
+     * @return The current settings
+     */
+    public Settings getCurrentSettings() {
+        try {
+            // Run the query
+            String query =
+                    "SELECT " +
+                            DBStrings.TBLSETTINGS_ID + " as _id, " +
+                            DBStrings.TBLSETTINGS_METRONOME_STATE + ", " +
+                            DBStrings.TBLSETTINGS_SET_TRANSPOSE + ", " +
+                            DBStrings.TBLSETTINGS_SET_EDIT +
+                    " FROM " + DBStrings.SETTINGS_TABLE;
+
+            Cursor c = mDb.rawQuery(query, null);
+            c.moveToFirst();
+
+            // Get the results
+            String metronomeState = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_METRONOME_STATE));
+            String transposeOn = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_SET_TRANSPOSE));
+            String editOn = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_SET_EDIT));
+            c.close();
+
+            // Return the settings object
+            return new Settings(metronomeState, transposeOn, editOn);
+        } catch (IndexOutOfBoundsException e) {
+            return null;
+        } catch (SQLiteException s) {
+            return null;
+        }
     }
     //endregion
 
@@ -1745,11 +1782,28 @@ public class DBAdapter {
     					"(" + DBStrings.TBLSETGPLOOKUP_ID + " integer PRIMARY KEY autoincrement, " + 
     					DBStrings.TBLSETGPLOOKUP_SET + " int, " + 
     					DBStrings.TBLSETGPLOOKUP_GROUP + " int ); " );
+
+                // Settings table
+                db.execSQL("create table " + DBStrings.SETTINGS_TABLE + "(" +
+                        DBStrings.TBLSETTINGS_ID + " integer PRIMARY KEY autoincrement, " +
+                        DBStrings.TBLSETTINGS_METRONOME_STATE + " text, " +
+                        DBStrings.TBLSETTINGS_SET_EDIT + " text, " +
+                        DBStrings.TBLSETTINGS_SET_TRANSPOSE + " text ); " );
     			
     			// Add default values
-    			db.execSQL("insert into " + DBStrings.CURRSET_TABLE + "(" + DBStrings.TBLCURRSET_SET + ") values (0);" );
+    			db.execSQL("INSERT INTO " + DBStrings.CURRSET_TABLE + "(" + DBStrings.TBLCURRSET_SET + ") VALUES (0);" );
     			db.execSQL("INSERT INTO " + DBStrings.SONGGROUPS_TABLE + "(" + DBStrings.TBLSONGGROUPS_NAME + ", " + DBStrings.TBLSONGGROUPS_PARENT + ") VALUES ('" + SongsTab.ALL_SONGS_LABEL + "', -1)");
     			db.execSQL("INSERT INTO " + DBStrings.SETGROUPS_TABLE + "(" + DBStrings.TBLSETGROUPS_NAME + ", " + DBStrings.TBLSETGROUPS_PARENT + ") VALUES ('" + SetsTab.ALL_SETS_LABEL + "', -1)");
+
+                // Add default settings values
+                db.execSQL("INSERT INTO " + DBStrings.SETTINGS_TABLE + "(" +
+                        DBStrings.TBLSETTINGS_METRONOME_STATE + ", " +
+                        DBStrings.TBLSETTINGS_SET_EDIT + ", " +
+                        DBStrings.TBLSETTINGS_SET_TRANSPOSE +
+                        ") VALUES (" +
+                        "'" + StaticVars.SETTINGS_METRONOME_STATE_WITHBPM + "', " +
+                        "'" + StaticVars.SETTINGS_SET_EDIT_ON + "', " +
+                        "'" + StaticVars.SETTINGS_SET_TRANSPOSE_ON + "')");
     			
     			db.setTransactionSuccessful(); 
     		}catch(SQLiteException e) {
@@ -1800,6 +1854,26 @@ public class DBAdapter {
                 if (oldVersion < 7) {
                     // Add link column to the sets table
                     db.execSQL("ALTER TABLE " + DBStrings.SETS_TABLE + " ADD COLUMN " + DBStrings.TBLSETS_LINK + " text");
+                }
+
+                // Updates from DB version 8 or lower
+                if (oldVersion < 8) {
+                    // Creaet the Settings table
+                    db.execSQL("create table " + DBStrings.SETTINGS_TABLE + "(" +
+                            DBStrings.TBLSETTINGS_ID + " integer PRIMARY KEY autoincrement, " +
+                            DBStrings.TBLSETTINGS_METRONOME_STATE + " text, " +
+                            DBStrings.TBLSETTINGS_SET_EDIT + " text, " +
+                            DBStrings.TBLSETTINGS_SET_TRANSPOSE + " text ); " );
+
+                    // Add default settings values
+                    db.execSQL("INSERT INTO " + DBStrings.SETTINGS_TABLE + "(" +
+                            DBStrings.TBLSETTINGS_METRONOME_STATE + ", " +
+                            DBStrings.TBLSETTINGS_SET_EDIT + ", " +
+                            DBStrings.TBLSETTINGS_SET_TRANSPOSE +
+                            ") VALUES (" +
+                            "'" + StaticVars.SETTINGS_METRONOME_STATE_WITHBPM + "', " +
+                            "'" + StaticVars.SETTINGS_SET_EDIT_ON + "', " +
+                            "'" + StaticVars.SETTINGS_SET_TRANSPOSE_ON + "')");
                 }
     			
     			db.setTransactionSuccessful(); 
