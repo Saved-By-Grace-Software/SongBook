@@ -304,6 +304,9 @@ public class MainActivity extends FragmentActivity {
 	        case R.id.menu_about_about:
 	        	showAboutBox();
 	        	return true;
+            case R.id.menu_options:
+                showSettingsPage();
+                return true;
 	        default:
 	            return super.onOptionsItemSelected(item);
         }
@@ -943,6 +946,34 @@ public class MainActivity extends FragmentActivity {
      */
     public void onSetSearchClick(View v) {
         findSetDialog();
+    }
+
+    /**
+     * Shows the settings page
+     */
+    public void showSettingsPage() {
+        CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
+
+        // Set the dialog view to gather user input
+        LayoutInflater inflater = getLayoutInflater();
+        View dialoglayout = inflater.inflate(R.layout.settings, (ViewGroup) findViewById(R.id.settings_root));
+        alert.setView(dialoglayout);
+
+        // Add the dialog title
+        alert.setTitle("SongBook Settings");
+
+        // Set the OK button
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Close the dialog
+                dialog.dismiss();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", null);
+        alert.setCanceledOnTouchOutside(true);
+
+        alert.show();
     }
     //endregion
 

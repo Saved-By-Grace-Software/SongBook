@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settings_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_metronome"
+        android:textSize="@dimen/dialogSmallTitleTextSize"
+        android:layout_marginTop="@dimen/dialogLargeVerticalMarginSize"
+        android:layout_marginLeft="@dimen/dialogBoxSideMargin"
+        android:layout_marginRight="@dimen/dialogBoxSideMargin" />
+
+    <RadioGroup
+        android:id="@+id/settings_metronome_radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dialogSmallVerticalMarginSize"
+        android:layout_marginLeft="@dimen/dialogBoxSideMargin"
+        android:layout_marginRight="@dimen/dialogBoxSideMargin" >
+
+        <RadioButton
+            android:id="@+id/settings_metronome_on"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_metronome_on" />
+
+        <RadioButton
+            android:id="@+id/settings_metronome_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_metronome_off" />
+
+        <RadioButton
+            android:id="@+id/settings_metronome_withbpm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_metronome_withbpm"
+            android:checked="true" />
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_set_view"
+        android:textSize="@dimen/dialogSmallTitleTextSize"
+        android:layout_marginTop="@dimen/dialogLargeVerticalMarginSize"
+        android:layout_marginLeft="@dimen/dialogBoxSideMargin"
+        android:layout_marginRight="@dimen/dialogBoxSideMargin"/>
+
+    <CheckBox
+        android:id="@+id/settings_transpose_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_transpose_show"
+        android:checked="true"
+        android:layout_marginTop="@dimen/dialogSmallVerticalMarginSize"
+        android:layout_marginLeft="@dimen/dialogBoxSideMargin"
+        android:layout_marginRight="@dimen/dialogBoxSideMargin" />
+
+    <CheckBox
+        android:id="@+id/settings_edit_show"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_edit_show"
+        android:checked="true"
+        android:layout_marginTop="@dimen/dialogSmallVerticalMarginSize"
+        android:layout_marginLeft="@dimen/dialogBoxSideMargin"
+        android:layout_marginRight="@dimen/dialogBoxSideMargin" />
+
+</LinearLayout>
