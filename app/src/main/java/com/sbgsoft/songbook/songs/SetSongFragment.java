@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,24 @@ public class SetSongFragment extends Fragment {
         // Populate it with the song text
         Bundle extras = getArguments();
         if (extras != null) {
+            // Get the transpose/edit button settings
+            boolean showEdit = extras.getBoolean(StaticVars.SHOW_EDIT_INSET_KEY);
+            boolean showTranspose = extras.getBoolean(StaticVars.SHOW_TRANSPOSE_INSET_KEY);
+
+            // Get a reference to the edit/transpose buttons
+            Button editButton = (Button)mView.findViewById(R.id.set_song_edit_button);
+            Button transposeButton = (Button)mView.findViewById(R.id.set_song_transpose_button);
+
+            // Enable/Disable the buttons according to the settings
+            if (showEdit)
+                editButton.setVisibility(View.VISIBLE);
+            else
+                editButton.setVisibility(View.GONE);
+            if (showTranspose)
+                transposeButton.setVisibility(View.VISIBLE);
+            else
+                transposeButton.setVisibility(View.GONE);
+
         	mSongItem = extras.getParcelable(StaticVars.SONG_ITEM_KEY);
             
         	if (mSongItem.getKey().length() > 1)

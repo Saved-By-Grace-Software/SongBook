@@ -3213,10 +3213,17 @@ public class MainActivity extends FragmentActivity {
     					Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
     				}
             	}
+
+                // Get the current settings for showing/disabling buttons in set view
+                Settings settings = dbAdapter.getCurrentSettings();
+                boolean showTranspose = settings.getShowTransposeInSet();
+                boolean showEdit = settings.getShowEditInSet();
             	
             	// Show the set activity
             	SetActivity set = new SetActivity();
             	Intent showSet = new Intent(v.getContext(), set.getClass());
+                showSet.putExtra(StaticVars.SHOW_EDIT_INSET_KEY, showEdit);
+                showSet.putExtra(StaticVars.SHOW_TRANSPOSE_INSET_KEY, showTranspose);
             	showSet.putExtra(StaticVars.CURRENT_SONG_KEY, position);
             	showSet.putExtra(StaticVars.SET_SONGS_KEY, setItem);
                 startActivity(showSet);

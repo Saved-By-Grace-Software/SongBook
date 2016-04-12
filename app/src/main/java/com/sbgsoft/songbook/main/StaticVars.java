@@ -19,6 +19,8 @@ public class StaticVars {
 	public static final String SET_NAME_KEY = "setName";
 	public static final String FILE_ACTIVITY_KEY = "fileActivityKey";
 	public static final String FILE_ACTIVITY_TYPE_KEY = "fileActivityTypeKey";
+    public static final String SHOW_EDIT_INSET_KEY = "showEditButtonInSet";
+    public static final String SHOW_TRANSPOSE_INSET_KEY = "showTransposeButtonInSet";
 	
 	// Activity Strings
 	public static final String ACTIVITY_RESPONSE_TYPE = "activityResponseType";
