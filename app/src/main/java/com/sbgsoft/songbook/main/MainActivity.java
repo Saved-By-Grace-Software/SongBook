@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import android.Manifest;
+import android.animation.StateListAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
@@ -79,6 +80,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -964,11 +966,18 @@ public class MainActivity extends FragmentActivity {
         // Get the current settings
         Settings settings = dbAdapter.getCurrentSettings();
 
-        // Update the options
-        final CheckBox transposeOn = (CheckBox)dialoglayout.findViewById(R.id.settings_transpose_show);
-        final CheckBox editOn = (CheckBox)dialoglayout.findViewById(R.id.settings_edit_show);
-        transposeOn.setChecked(settings.getShowTransposeInSet());
-        editOn.setChecked(settings.getShowEditInSet());
+        // Get the options views
+        final CheckBox transposeOnCB = (CheckBox)dialoglayout.findViewById(R.id.settings_transpose_show);
+        final CheckBox editOnCB = (CheckBox)dialoglayout.findViewById(R.id.settings_edit_show);
+        final RadioGroup metronomeStateRG = (RadioGroup)dialoglayout.findViewById(R.id.settings_metronome_radio);
+
+        // Update the views with the current settings
+        transposeOnCB.setChecked(settings.getShowTransposeInSet());
+        editOnCB.setChecked(settings.getShowEditInSet());
+        if (settings.getMetronomeState().equals(StaticVars.SETTINGS_METRONOME_STATE_ON))
+            metronomeStateRG.check(R.id.settings_metronome_on);
+        else if (settings.getMetronomeState().equals(StaticVars.SETTINGS_METRONOME_STATE_OFF))
+            metronomeStateRG.check(R.id.settings_metronome_off);
 
         // Add the dialog title
         alert.setTitle("SongBook Settings");
@@ -976,10 +985,24 @@ public class MainActivity extends FragmentActivity {
         // Set the OK button
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-            // Save the options to the database
+                // Get the settings strings
+                String metronomeState;
+                int metStId = metronomeStateRG.getCheckedRadioButtonId();
+                if (metStId == R.id.settings_metronome_on)
+                    metronomeState = StaticVars.SETTINGS_METRONOME_STATE_ON;
+                else if (metStId == R.id.settings_metronome_off)
+                    metronomeState = StaticVars.SETTINGS_METRONOME_STATE_OFF;
+                else
+                    metronomeState = StaticVars.SETTINGS_METRONOME_STATE_WITHBPM;
 
-            // Close the dialog
-            dialog.dismiss();
+                // Create the settings object to save
+                Settings settings = new Settings(metronomeState, transposeOnCB.isChecked(), editOnCB.isChecked());
+
+                // Save the options to the database
+                dbAdapter.setCurrentSettings(settings);
+
+                // Close the dialog
+                dialog.dismiss();
             }
         });
 

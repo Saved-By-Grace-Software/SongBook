@@ -98,6 +98,31 @@ public class DBAdapter {
             return null;
         }
     }
+
+    /**
+     * Updates the settings in the database
+     * @param settings The settings object to update
+     * @return True if success, false if failure
+     */
+    public boolean setCurrentSettings(Settings settings) {
+        // Update the app settings
+        try {
+            String query =
+                    "UPDATE " + DBStrings.SETTINGS_TABLE +
+                    " SET " +
+                    DBStrings.TBLSETTINGS_METRONOME_STATE + " = '" + settings.getMetronomeState() + "', " +
+                    DBStrings.TBLSETTINGS_SET_EDIT + " = '" + settings.getShowEditInSetString() + "', " +
+                    DBStrings.TBLSETTINGS_SET_TRANSPOSE + " = '" + settings.getShowTransposeInSetString() + "' " +
+                    " WHERE " +
+                    DBStrings.TBLSETTINGS_ID + " = 1";
+
+            mDb.execSQL(query);
+        } catch (SQLiteException e) {
+            return false;
+        }
+
+        return true;
+    }
     //endregion
 
     
