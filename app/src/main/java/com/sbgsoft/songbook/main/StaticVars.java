@@ -21,6 +21,7 @@ public class StaticVars {
 	public static final String FILE_ACTIVITY_TYPE_KEY = "fileActivityTypeKey";
     public static final String SHOW_EDIT_INSET_KEY = "showEditButtonInSet";
     public static final String SHOW_TRANSPOSE_INSET_KEY = "showTransposeButtonInSet";
+    public static final String METRONOME_STATE_KEY = "metronomeStateKey";
 	
 	// Activity Strings
 	public static final String ACTIVITY_RESPONSE_TYPE = "activityResponseType";

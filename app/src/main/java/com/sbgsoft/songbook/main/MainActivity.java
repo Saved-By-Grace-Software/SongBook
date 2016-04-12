@@ -3218,12 +3218,14 @@ public class MainActivity extends FragmentActivity {
                 Settings settings = dbAdapter.getCurrentSettings();
                 boolean showTranspose = settings.getShowTransposeInSet();
                 boolean showEdit = settings.getShowEditInSet();
+                String metronomeState = settings.getMetronomeState();
             	
             	// Show the set activity
             	SetActivity set = new SetActivity();
             	Intent showSet = new Intent(v.getContext(), set.getClass());
                 showSet.putExtra(StaticVars.SHOW_EDIT_INSET_KEY, showEdit);
                 showSet.putExtra(StaticVars.SHOW_TRANSPOSE_INSET_KEY, showTranspose);
+                showSet.putExtra(StaticVars.METRONOME_STATE_KEY, metronomeState);
             	showSet.putExtra(StaticVars.CURRENT_SONG_KEY, position);
             	showSet.putExtra(StaticVars.SET_SONGS_KEY, setItem);
                 startActivity(showSet);

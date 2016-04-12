@@ -41,6 +41,7 @@ public class SetSongFragment extends Fragment {
     private Metronome mMetronome;
     ChordDisplay disp;
     private int EDIT_SONG_ACTIVITY = 1;
+    private String mMetronomeState = StaticVars.SETTINGS_METRONOME_STATE_WITHBPM;
     //endregion
 
     //region Class Functions
@@ -94,10 +95,13 @@ public class SetSongFragment extends Fragment {
                 disp = new ChordDisplay((Activity)mView.getContext());
                 song.setText(disp.setChordClickableText(mSongItem.getText()), TextView.BufferType.SPANNABLE);
             }
+
+            // Initialize the metronome
+            mMetronomeState = extras.getString(StaticVars.METRONOME_STATE_KEY);
+            initializeMetronome();
         }
 
-        // Resize metronome bar icons
-        initializeMetronome();
+
 
         // Add the touch listener
         song.setOnTouchListener(new View.OnTouchListener() {
@@ -262,11 +266,14 @@ public class SetSongFragment extends Fragment {
         if (mSongItem != null) {
             // Create the metronome object
             mMetronome = new Metronome(getActivity(), mSongItem.getBpm(), new TimeSignature(mSongItem.getTimeSignature()), mSongItem.getName());
-        }
 
-        // Initialize the metronome
-        LinearLayout metronomeBar = (LinearLayout)mView.findViewById(R.id.metronome_bar);
-        mMetronome.initialize(metronomeBar);
+            // Set the state
+            mMetronome.setmMetronomeState(mMetronomeState);
+
+            // Initialize the metronome
+            LinearLayout metronomeBar = (LinearLayout)mView.findViewById(R.id.metronome_bar);
+            mMetronome.initialize(metronomeBar);
+        }
     }
     //endregion
 

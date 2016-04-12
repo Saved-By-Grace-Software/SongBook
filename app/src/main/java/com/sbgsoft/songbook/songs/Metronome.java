@@ -1,5 +1,6 @@
 package com.sbgsoft.songbook.songs;
 
+import android.animation.StateListAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.main.CustomAlertDialogBuilder;
 import com.sbgsoft.songbook.main.MainActivity;
+import com.sbgsoft.songbook.main.StaticVars;
 
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -33,6 +35,12 @@ import java.util.concurrent.TimeUnit;
  * Created by SamIAm on 12/22/2015.
  */
 public class Metronome {
+
+    private enum MetronomeState {
+        On,
+        Off,
+        WithBPM
+    }
 
     //region Private Class Members
     private Activity mActivity;
@@ -50,6 +58,7 @@ public class Metronome {
     private static int startDelay = 0;
     private static int maxTapTempoTapsToRemember = 12;
     private String mCurrentSongName;
+    private MetronomeState mMetronomeState;
     //endregion
 
     //region Public Class Members
@@ -95,20 +104,23 @@ public class Metronome {
      * Starts the metronome ticking
      */
     public void start() {
-        // Only start if the sleeptime is set properly
-        if (tickDelay > 0) {
+        // Check to see if we need to disable the metronome
+        if (mMetronomeState == MetronomeState.Off ||
+                (mMetronomeState == MetronomeState.WithBPM && tickDelay <= 0)) {
+            // Sleep time not set, check for display
+            disableMetronomeDisplay();
+        } else {
             // Restart the metronome list to the start
             mDots.resetToStart();
 
             // Start the task
-            exec = new ScheduledThreadPoolExecutor(1);
-            exec.scheduleAtFixedRate(new MetronomeTimer(mDots), startDelay, tickDelay, TimeUnit.MILLISECONDS);
+            if (tickDelay > 0) {
+                exec = new ScheduledThreadPoolExecutor(1);
+                exec.scheduleAtFixedRate(new MetronomeTimer(mDots), startDelay, tickDelay, TimeUnit.MILLISECONDS);
+            }
 
             // Set the is running trigger
             isRunning = true;
-        } else {
-            // Sleep time not set, disable the buttons
-            disableMetronomeDisplay();
         }
     }
 
@@ -536,6 +548,33 @@ public class Metronome {
     // Sets the time signature for the metronome
     public void setTimeSignature(TimeSignature mTimeSignature) {
         this.mTimeSignature = mTimeSignature;
+    }
+
+    public String getmMetronomeState() {
+        String ret;
+
+        switch (mMetronomeState) {
+            case On:
+                ret = StaticVars.SETTINGS_METRONOME_STATE_ON;
+                break;
+            case Off:
+                ret = StaticVars.SETTINGS_METRONOME_STATE_OFF;
+                break;
+            case WithBPM:
+            default:
+                ret = StaticVars.SETTINGS_METRONOME_STATE_WITHBPM;
+                break;
+        }
+        return ret;
+    }
+
+    public void setmMetronomeState(String mMetronomeState) {
+        if (mMetronomeState.equals(StaticVars.SETTINGS_METRONOME_STATE_ON))
+            this.mMetronomeState = MetronomeState.On;
+        else if (mMetronomeState.equals(StaticVars.SETTINGS_METRONOME_STATE_OFF))
+            this.mMetronomeState = MetronomeState.Off;
+        else
+            this.mMetronomeState = MetronomeState.WithBPM;
     }
     //endregion
 
