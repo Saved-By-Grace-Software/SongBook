@@ -19,7 +19,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import android.Manifest;
-import android.animation.StateListAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
@@ -308,7 +307,7 @@ public class MainActivity extends FragmentActivity {
 	        case R.id.menu_about_about:
 	        	showAboutBox();
 	        	return true;
-            case R.id.menu_options:
+            case R.id.menu_settings:
                 showSettingsPage();
                 return true;
 	        default:
@@ -1890,6 +1889,7 @@ public class MainActivity extends FragmentActivity {
         final EditText linkET = (EditText)dialoglayout.findViewById(R.id.add_song_link);
         final EditText bpmET = (EditText)dialoglayout.findViewById(R.id.add_song_bpm);
         final Spinner timeSpin = (Spinner)dialoglayout.findViewById(R.id.add_song_time);
+        timeSpin.setSelection(3);
     	
     	// Add the dialog title
     	if (importFilePath != "") {

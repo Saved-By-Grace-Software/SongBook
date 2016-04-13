@@ -11,8 +11,8 @@ public final class TimeSignature {
 
     // Constructor
     public TimeSignature() {
-        beatsPerBar = 0;
-        noteOneBeat = 0;
+        beatsPerBar = 4;
+        noteOneBeat = 4;
     }
 
     // Constructor, convert string to time signature
@@ -32,18 +32,18 @@ public final class TimeSignature {
                     noteOneBeat = Integer.parseInt(split[1]);
                 } catch (NumberFormatException nfe) {
                     // Failed to parse string
-                    beatsPerBar = 0;
-                    noteOneBeat = 0;
+                    beatsPerBar = 4;
+                    noteOneBeat = 4;
                 }
             } else {
                 // Invalid string
-                beatsPerBar = 0;
-                noteOneBeat = 0;
+                beatsPerBar = 4;
+                noteOneBeat = 4;
             }
         } else {
             // Invalid string
-            beatsPerBar = 0;
-            noteOneBeat = 0;
+            beatsPerBar = 4;
+            noteOneBeat = 4;
         }
     }
 

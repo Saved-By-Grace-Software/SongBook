@@ -1869,19 +1869,19 @@ public class DBAdapter {
                     db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_TIME + " text");
                 }
 
-                // Updates from DB version 6 or lower
+                // Updates from DB version 5 or lower
                 if (oldVersion < 6) {
                     // Add link column to the songs table
                     db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_LINK + " text");
                 }
 
-                // Updates from DB version 7 or lower
+                // Updates from DB version 6 or lower
                 if (oldVersion < 7) {
                     // Add link column to the sets table
                     db.execSQL("ALTER TABLE " + DBStrings.SETS_TABLE + " ADD COLUMN " + DBStrings.TBLSETS_LINK + " text");
                 }
 
-                // Updates from DB version 8 or lower
+                // Updates from DB version 7 or lower
                 if (oldVersion < 8) {
                     // Creaet the Settings table
                     db.execSQL("create table " + DBStrings.SETTINGS_TABLE + "(" +
@@ -1899,6 +1899,14 @@ public class DBAdapter {
                             "'" + StaticVars.SETTINGS_METRONOME_STATE_WITHBPM + "', " +
                             "'" + StaticVars.SETTINGS_SET_EDIT_ON + "', " +
                             "'" + StaticVars.SETTINGS_SET_TRANSPOSE_ON + "')");
+                }
+
+                // Updates from DB version 8 or lower
+                if (oldVersion < 9) {
+                    // Add link column to the sets table
+                    db.execSQL("UPDATE " + DBStrings.SONGS_TABLE + " " +
+                        "SET " + DBStrings.TBLSONG_TIME + " = '4/4' " +
+                        "WHERE " + DBStrings.TBLSONG_TIME + " = '0/0'");
                 }
     			
     			db.setTransactionSuccessful(); 
