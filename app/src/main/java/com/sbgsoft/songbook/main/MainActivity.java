@@ -2435,9 +2435,14 @@ public class MainActivity extends FragmentActivity {
                     FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
                     song.setText(ChordProParser.ParseSongFile(getApplicationContext(), song, song.getKey(), fis, true, false));
 
+                    // Get the metronome settings
+                    Settings settings = dbAdapter.getCurrentSettings();
+                    String metronomeState = settings.getMetronomeState();
+
                     // Show the song activity
                     SongActivity songA = new SongActivity();
                     Intent showSong = new Intent(v.getContext(), songA.getClass());
+                    showSong.putExtra(StaticVars.METRONOME_STATE_KEY, metronomeState);
                     showSong.putExtra(StaticVars.SONG_ITEM_KEY, (Parcelable) song);
                     startActivity(showSong);
 

@@ -45,6 +45,7 @@ public class SongActivity extends Activity {
     private Metronome mMetronome;
     private SongItem mSongItem;
     private int EDIT_SONG_ACTIVITY = 1;
+    private String mMetronomeState = StaticVars.SETTINGS_METRONOME_STATE_WITHBPM;
     //endregion
 
 
@@ -73,7 +74,7 @@ public class SongActivity extends Activity {
         // Populate it with the song text
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-        	mSongItem = extras.getParcelable(StaticVars.SONG_ITEM_KEY);
+            mSongItem = extras.getParcelable(StaticVars.SONG_ITEM_KEY);
         	
             if (mSongItem.getKey().length() > 1)
             	mSongItem.setKey(mSongItem.getKey().substring(0, 1).toUpperCase(Locale.ENGLISH) + mSongItem.getKey().substring(1).trim());
@@ -86,10 +87,11 @@ public class SongActivity extends Activity {
             // Set spans for the chords and add to the textview
             disp = new ChordDisplay(this);
             song.setText(disp.setChordClickableText(mSongItem.getText()), TextView.BufferType.SPANNABLE);
-        }
 
-        // Initialize the metronome
-        initializeMetronome();
+            // Initialize the metronome
+            mMetronomeState = extras.getString(StaticVars.METRONOME_STATE_KEY);
+            initializeMetronome();
+        }
         
         // Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -280,11 +282,14 @@ public class SongActivity extends Activity {
         if (mSongItem != null) {
             // Create the metronome object
             mMetronome = new Metronome(this, mSongItem.getBpm(), new TimeSignature(mSongItem.getTimeSignature()), mSongItem.getName());
-        }
 
-        // Initialize the metronome
-        LinearLayout metronomeBar = (LinearLayout)findViewById(R.id.metronome_bar);
-        mMetronome.initialize(metronomeBar);
+            // Set the state
+            mMetronome.setmMetronomeState(mMetronomeState);
+
+            // Initialize the metronome
+            LinearLayout metronomeBar = (LinearLayout)findViewById(R.id.metronome_bar);
+            mMetronome.initialize(metronomeBar);
+        }
     }
     //endregion
 

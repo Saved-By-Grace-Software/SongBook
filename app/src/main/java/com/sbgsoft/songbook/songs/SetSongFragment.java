@@ -101,8 +101,6 @@ public class SetSongFragment extends Fragment {
             initializeMetronome();
         }
 
-
-
         // Add the touch listener
         song.setOnTouchListener(new View.OnTouchListener() {
             @Override
