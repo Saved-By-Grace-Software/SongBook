@@ -60,7 +60,9 @@
                 android:textSize="@dimen/dialogSmallTextSize"
                 android:paddingTop="5dp"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/manual_tempo_text"/>
+                android:layout_below="@+id/manual_tempo_text"
+                android:minEms="2"
+                android:maxEms="3"/>
 
         </RelativeLayout>
 

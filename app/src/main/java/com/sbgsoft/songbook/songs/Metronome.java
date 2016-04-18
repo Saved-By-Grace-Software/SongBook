@@ -328,6 +328,10 @@ public class Metronome {
         // Get the manual edit text
         final EditText manualTempo = (EditText)dialoglayout.findViewById(R.id.manual_tempo);
 
+        // Populate the manual edit text with the current bpm (if there is one)
+        if (mBeatsPerMinute > 0)
+            manualTempo.setText(Integer.toString(mBeatsPerMinute));
+
         // Set the height of the tap box
         int height = getTapBoxHeight();
         if (height > 0) {

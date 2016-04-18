@@ -1647,7 +1647,10 @@ public class MainActivity extends FragmentActivity {
 		// Start the output string
 		StringBuilder sb = new StringBuilder();
 		sb.append("<h2>" + setItem.getName() + "</h2>");
-        sb.append("<a href='" + setLink + "'>" + setLink + "</a><br/>");
+
+        if (setItem.getLink() != null && !setItem.getLink().isEmpty())
+            sb.append("<a href='" + setLink + "'>" + setLink + "</a><br/>");
+
 		sb.append("<i>" + setDate + "</i><br/><br/>");
 		
 		for (SongItem songItem : setItem.songs) {
