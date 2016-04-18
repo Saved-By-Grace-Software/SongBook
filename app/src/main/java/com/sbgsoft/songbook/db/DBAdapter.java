@@ -905,6 +905,25 @@ public class DBAdapter {
     }
 
     /**
+     * Sets the song time signature
+     * @param songName The song to set the time signature for
+     * @param timeSignature The new time signature to set
+     * @return True if success, false if failure
+     */
+    public boolean setSongTime(String songName, String timeSignature) {
+        try {
+            String query = "UPDATE " + DBStrings.SONGS_TABLE +
+                    " SET " +
+                    DBStrings.TBLSONG_TIME + " = '" + timeSignature + "' " +
+                    " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'";
+            mDb.execSQL(query);
+        } catch (SQLException e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Gets the song time signature
      * @param songName The song to get the time signature for
      * @return The song time signature

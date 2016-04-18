@@ -174,6 +174,17 @@ public class MetronomeList {
         }
     }
 
+    public void clear() {
+        while (size > 0) {
+            removeAtPos(0);
+        }
+
+        start = null;
+        end = null;
+        currentNode = null;
+        firstTick = true;
+    }
+
     // Resets the current node back to the start
     public void resetToStart() {
         if (start != null) {

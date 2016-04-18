@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -59,6 +61,7 @@ public class Metronome {
     private static int maxTapTempoTapsToRemember = 12;
     private String mCurrentSongName;
     private MetronomeState mMetronomeState;
+    private LinearLayout mMetronomeLayout;
     //endregion
 
     //region Public Class Members
@@ -194,6 +197,8 @@ public class Metronome {
         });
 
         metronomeBar.requestLayout();
+
+        mMetronomeLayout = metronomeBar;
     }
 
     // Calculates the sleep time from the given beats per minute
@@ -325,8 +330,19 @@ public class Metronome {
         LayoutInflater inflater = mActivity.getLayoutInflater();
         final View dialoglayout = inflater.inflate(R.layout.tap_tempo, (ViewGroup) mActivity.findViewById(R.id.tap_tempo_root));
 
-        // Get the manual edit text
+        // Get the dialog components
         final EditText manualTempo = (EditText)dialoglayout.findViewById(R.id.manual_tempo);
+        final Spinner timeSpin = (Spinner)dialoglayout.findViewById(R.id.tap_tempo_time);
+
+        // Get the time signature and select the spinner
+        if (mTimeSignature.noteOneBeat > 0 && mTimeSignature.beatsPerBar > 0) {
+            String[] timeSigs = mActivity.getResources().getStringArray(R.array.time_signatures);
+            int loc = Arrays.asList(timeSigs).indexOf(mTimeSignature.toString());
+            if (loc >= 0 && loc < timeSpin.getCount())
+                timeSpin.setSelection(loc);
+        } else {
+            timeSpin.setSelection(3);
+        }
 
         // Populate the manual edit text with the current bpm (if there is one)
         if (mBeatsPerMinute > 0)
@@ -369,11 +385,17 @@ public class Metronome {
                     // Turn off tap tempo mode
                     inTapTempoMode = false;
 
+                    // Set the new time signature
+                    //setTimeSignature(new TimeSignature(timeSpin.getSelectedItem().toString()));
+
                     // Calculate the new tempo
                     setBeatsPerMinute(newBpm);
 
                     // Restart the metronome
-                    mDots.resetToStart();
+                    if(mMetronomeLayout.getChildCount() > 0)
+                        mMetronomeLayout.removeAllViews();
+                    mDots.clear();
+                    initialize(mMetronomeLayout);
                     start();
 
                     // Close the dialog
@@ -410,12 +432,18 @@ public class Metronome {
                     // Turn off tap tempo mode
                     inTapTempoMode = false;
 
+                    // Set the new time signature
+                    //setTimeSignature(new TimeSignature(timeSpin.getSelectedItem().toString()));
+
                     // Calculate the new tempo
                     int manualBpm = Integer.parseInt(bpmString);
                     setBeatsPerMinute(manualBpm);
 
                     // Restart the metronome
-                    mDots.resetToStart();
+                    if(mMetronomeLayout.getChildCount() > 0)
+                        mMetronomeLayout.removeAllViews();
+                    mDots.clear();
+                    initialize(mMetronomeLayout);
                     start();
 
                     // Close the dialog
@@ -476,19 +504,25 @@ public class Metronome {
         tempoText.setText(String.format("%02d", tmp));
     }
 
+    /**
+     * Offers to set the new metronome info as the song default
+     */
     private void setTempoAsSongDefaultDialog() {
         AlertDialog.Builder alert = new AlertDialog.Builder(mActivity);
 
         alert.setTitle("Set As Default?");
-        alert.setMessage("Do you want to set " + mBeatsPerMinute + "bpm as the song default tempo?");
+        //alert.setMessage("Do you want to set " + mBeatsPerMinute + "bpm and " + mTimeSignature.toString() + " as the song defaults?");
+        alert.setMessage("Do you want to set " + mBeatsPerMinute + "bpm as the song default?");
 
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 if (mCurrentSongName != null && !mCurrentSongName.isEmpty()) {
                     // Set the new bpm as default
-                    boolean ret = MainActivity.dbAdapter.setSongBpm(mCurrentSongName, mBeatsPerMinute);
+                    boolean ret1 = MainActivity.dbAdapter.setSongBpm(mCurrentSongName, mBeatsPerMinute);
 
-                    if (ret) {
+                    //boolean ret2 = MainActivity.dbAdapter.setSongTime(mCurrentSongName, mTimeSignature.toString());
+
+                    if (ret1) {
                         // Alert the user of the new bpm
                         Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute + "\nSet as song default", Toast.LENGTH_LONG).show();
                     } else {

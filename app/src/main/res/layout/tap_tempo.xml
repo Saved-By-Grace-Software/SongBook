@@ -52,20 +52,34 @@
                 android:textSize="@dimen/dialogSmallTextSize"
                 android:layout_alignParentRight="true"/>
 
-            <EditText
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/manual_tempo"
-                android:inputType="number"
-                android:textSize="@dimen/dialogSmallTextSize"
-                android:paddingTop="5dp"
+                android:orientation="horizontal"
                 android:layout_alignParentRight="true"
-                android:layout_below="@+id/manual_tempo_text"
-                android:minEms="2"
-                android:maxEms="3"/>
+                android:layout_below="@+id/manual_tempo_text">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/manual_tempo"
+                    android:inputType="number"
+                    android:textSize="@dimen/dialogSmallTextSize"
+                    android:paddingTop="5dp"
+                    android:minEms="2"
+                    android:maxEms="3"/>
+
+                <Spinner
+                    android:id="@+id/tap_tempo_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:entries="@array/time_signatures"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
 
         </RelativeLayout>
-
 
     </RelativeLayout>
 
