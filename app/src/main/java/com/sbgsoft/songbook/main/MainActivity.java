@@ -2434,6 +2434,11 @@ public class MainActivity extends FragmentActivity {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {
                 // Get the song to show
                 SongItem song = (SongItem) songsList.get(position);
+
+                // Get the updated time information
+                song.setBpm(dbAdapter.getSongBpm(song.getName()));
+                song.setTimeSignature(dbAdapter.getSongTimeSignature(song.getName()).toString());
+
                 try {
                     FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
                     song.setText(ChordProParser.ParseSongFile(getApplicationContext(), song, song.getKey(), fis, true, false));
@@ -3206,6 +3211,10 @@ public class MainActivity extends FragmentActivity {
             	// Loop through each song in the current set and add it to the array
             	for (Item i : currSetList) {
             		SongItem currSong = (SongItem)i;
+
+                    // Get the updated time information
+                    currSong.setBpm(dbAdapter.getSongBpm(currSong.getName()));
+                    currSong.setTimeSignature(dbAdapter.getSongTimeSignature(currSong.getName()).toString());
             		
             		// Set song text
             		try {

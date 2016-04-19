@@ -335,6 +335,9 @@ public class Metronome {
         final EditText manualTempo = (EditText)dialoglayout.findViewById(R.id.manual_tempo);
         final Spinner timeSpin = (Spinner)dialoglayout.findViewById(R.id.tap_tempo_time);
 
+        // Save the current time signature in case of a cancel
+        final TimeSignature tsCurrent = mTimeSignature;
+
         // Get the time signature and select the spinner
         if (mTimeSignature.noteOneBeat > 0 && mTimeSignature.beatsPerBar > 0) {
             String[] timeSigs = mActivity.getResources().getStringArray(R.array.time_signatures);
@@ -429,6 +432,9 @@ public class Metronome {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // Turn off tap tempo mode
                 inTapTempoMode = false;
+
+                // Reset the time signature
+                setTimeSignature(tsCurrent);
 
                 // Restart the metronome
                 mDots.resetToStart();
@@ -534,7 +540,6 @@ public class Metronome {
                 if (mCurrentSongName != null && !mCurrentSongName.isEmpty()) {
                     // Set the new bpm as default
                     boolean ret1 = MainActivity.dbAdapter.setSongBpm(mCurrentSongName, mBeatsPerMinute);
-
                     boolean ret2 = MainActivity.dbAdapter.setSongTime(mCurrentSongName, mTimeSignature.toString());
 
                     if (ret1 && ret2) {
