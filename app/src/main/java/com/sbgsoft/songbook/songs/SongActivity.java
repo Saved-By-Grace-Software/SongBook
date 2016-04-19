@@ -21,6 +21,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -127,6 +129,9 @@ public class SongActivity extends Activity {
                 return true;
             }
         });
+
+        // Adjust the layout based on settings
+        setDrummerLayout();
     }
 
     @Override
@@ -198,6 +203,26 @@ public class SongActivity extends Activity {
                     song.setText(disp.setChordClickableText(mSongItem.getText()), TextView.BufferType.SPANNABLE);
                 }
             } catch (Exception e) { }
+        }
+    }
+    //endregion
+
+
+    //region Other Functions
+    private void setDrummerLayout() {
+        // Do not show words behind metronome
+        ScrollView scrollView = (ScrollView)findViewById(R.id.scrollView);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)scrollView.getLayoutParams();
+        params.addRule(RelativeLayout.ABOVE, R.id.metronome_bar);
+        scrollView.setLayoutParams(params);
+
+        // Change metronome color
+        if (mMetronome != null) {
+            // Set image on
+
+            // Set image off
+
+            // Set image tap tempo
         }
     }
     //endregion
