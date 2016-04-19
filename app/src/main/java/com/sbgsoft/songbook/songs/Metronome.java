@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -357,6 +358,20 @@ public class Metronome {
             tapBox.setLayoutParams(params);
         }
 
+        // Set the on change listener for the spinner
+        timeSpin.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+           @Override
+           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               // Set the new time signature
+               setTimeSignature(new TimeSignature(timeSpin.getSelectedItem().toString()));
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> parent) {
+
+           }
+       });
+
         // Set the click listener for the tap box
         View tapBox = dialoglayout.findViewById(R.id.tap_box);
         tapBox.setOnClickListener(new View.OnClickListener() {
@@ -386,7 +401,7 @@ public class Metronome {
                     inTapTempoMode = false;
 
                     // Set the new time signature
-                    //setTimeSignature(new TimeSignature(timeSpin.getSelectedItem().toString()));
+                    setTimeSignature(new TimeSignature(timeSpin.getSelectedItem().toString()));
 
                     // Calculate the new tempo
                     setBeatsPerMinute(newBpm);
@@ -433,7 +448,7 @@ public class Metronome {
                     inTapTempoMode = false;
 
                     // Set the new time signature
-                    //setTimeSignature(new TimeSignature(timeSpin.getSelectedItem().toString()));
+                    setTimeSignature(new TimeSignature(timeSpin.getSelectedItem().toString()));
 
                     // Calculate the new tempo
                     int manualBpm = Integer.parseInt(bpmString);
@@ -511,8 +526,8 @@ public class Metronome {
         AlertDialog.Builder alert = new AlertDialog.Builder(mActivity);
 
         alert.setTitle("Set As Default?");
-        //alert.setMessage("Do you want to set " + mBeatsPerMinute + "bpm and " + mTimeSignature.toString() + " as the song defaults?");
-        alert.setMessage("Do you want to set " + mBeatsPerMinute + "bpm as the song default?");
+        alert.setMessage("Do you want to set " + mBeatsPerMinute + "bpm and " + mTimeSignature.toString() + " as the song defaults?");
+        //alert.setMessage("Do you want to set " + mBeatsPerMinute + "bpm as the song default?");
 
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -520,9 +535,9 @@ public class Metronome {
                     // Set the new bpm as default
                     boolean ret1 = MainActivity.dbAdapter.setSongBpm(mCurrentSongName, mBeatsPerMinute);
 
-                    //boolean ret2 = MainActivity.dbAdapter.setSongTime(mCurrentSongName, mTimeSignature.toString());
+                    boolean ret2 = MainActivity.dbAdapter.setSongTime(mCurrentSongName, mTimeSignature.toString());
 
-                    if (ret1) {
+                    if (ret1 && ret2) {
                         // Alert the user of the new bpm
                         Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute + "\nSet as song default", Toast.LENGTH_LONG).show();
                     } else {
