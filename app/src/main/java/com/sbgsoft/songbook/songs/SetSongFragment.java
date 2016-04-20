@@ -12,6 +12,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
@@ -22,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +45,7 @@ public class SetSongFragment extends Fragment {
     ChordDisplay disp;
     private int EDIT_SONG_ACTIVITY = 1;
     private String mMetronomeState = StaticVars.SETTINGS_METRONOME_STATE_WITHBPM;
+    private boolean mMetronomeDrummerMode = false;
     //endregion
 
     //region Class Functions
@@ -267,6 +271,25 @@ public class SetSongFragment extends Fragment {
 
             // Set the state
             mMetronome.setmMetronomeState(mMetronomeState);
+
+            // Check for drummer mode
+            if (mMetronomeDrummerMode) {
+                // Do not show words behind metronome
+                ScrollView scrollView = (ScrollView)(mView.findViewById(R.id.scrollView));
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)scrollView.getLayoutParams();
+                params.addRule(RelativeLayout.ABOVE, R.id.metronome_bar);
+                scrollView.setLayoutParams(params);
+
+                // Set bright images
+                mMetronome.setImageOn(ContextCompat.getDrawable(mView.getContext(), R.drawable.bright_filled));
+                mMetronome.setImageOff(ContextCompat.getDrawable(mView.getContext(), R.drawable.bright_open));
+                mMetronome.setImageTempoMode(ContextCompat.getDrawable(mView.getContext(), R.drawable.bright_mid));
+            } else {
+                // Set normal images
+                mMetronome.setImageOn(ContextCompat.getDrawable(mView.getContext(), R.drawable.filled));
+                mMetronome.setImageOff(ContextCompat.getDrawable(mView.getContext(), R.drawable.open));
+                mMetronome.setImageTempoMode(ContextCompat.getDrawable(mView.getContext(), R.drawable.mid));
+            }
 
             // Initialize the metronome
             LinearLayout metronomeBar = (LinearLayout)mView.findViewById(R.id.metronome_bar);

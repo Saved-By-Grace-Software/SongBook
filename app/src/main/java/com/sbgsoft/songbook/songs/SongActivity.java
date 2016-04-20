@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.TypedValue;
@@ -48,6 +49,7 @@ public class SongActivity extends Activity {
     private SongItem mSongItem;
     private int EDIT_SONG_ACTIVITY = 1;
     private String mMetronomeState = StaticVars.SETTINGS_METRONOME_STATE_WITHBPM;
+    private boolean mMetronomeDrummerMode = false;
     //endregion
 
 
@@ -129,9 +131,6 @@ public class SongActivity extends Activity {
                 return true;
             }
         });
-
-        // Adjust the layout based on settings
-        setDrummerLayout();
     }
 
     @Override
@@ -203,26 +202,6 @@ public class SongActivity extends Activity {
                     song.setText(disp.setChordClickableText(mSongItem.getText()), TextView.BufferType.SPANNABLE);
                 }
             } catch (Exception e) { }
-        }
-    }
-    //endregion
-
-
-    //region Other Functions
-    private void setDrummerLayout() {
-        // Do not show words behind metronome
-        ScrollView scrollView = (ScrollView)findViewById(R.id.scrollView);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)scrollView.getLayoutParams();
-        params.addRule(RelativeLayout.ABOVE, R.id.metronome_bar);
-        scrollView.setLayoutParams(params);
-
-        // Change metronome color
-        if (mMetronome != null) {
-            // Set image on
-
-            // Set image off
-
-            // Set image tap tempo
         }
     }
     //endregion
@@ -310,6 +289,25 @@ public class SongActivity extends Activity {
 
             // Set the state
             mMetronome.setmMetronomeState(mMetronomeState);
+
+            // Check for drummer mode
+            if (mMetronomeDrummerMode) {
+                // Do not show words behind metronome
+                ScrollView scrollView = (ScrollView)findViewById(R.id.scrollView);
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)scrollView.getLayoutParams();
+                params.addRule(RelativeLayout.ABOVE, R.id.metronome_bar);
+                scrollView.setLayoutParams(params);
+
+                // Set bright images
+                mMetronome.setImageOn(ContextCompat.getDrawable(this, R.drawable.bright_filled));
+                mMetronome.setImageOff(ContextCompat.getDrawable(this, R.drawable.bright_open));
+                mMetronome.setImageTempoMode(ContextCompat.getDrawable(this, R.drawable.bright_mid));
+            } else {
+                // Set normal images
+                mMetronome.setImageOn(ContextCompat.getDrawable(this, R.drawable.filled));
+                mMetronome.setImageOff(ContextCompat.getDrawable(this, R.drawable.open));
+                mMetronome.setImageTempoMode(ContextCompat.getDrawable(this, R.drawable.mid));
+            }
 
             // Initialize the metronome
             LinearLayout metronomeBar = (LinearLayout)findViewById(R.id.metronome_bar);

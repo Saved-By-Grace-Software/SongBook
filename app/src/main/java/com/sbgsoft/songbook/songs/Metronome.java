@@ -63,6 +63,8 @@ public class Metronome {
     private String mCurrentSongName;
     private MetronomeState mMetronomeState;
     private LinearLayout mMetronomeLayout;
+    private float mHeightRatio = 0.08f;
+    private float mWidthRatio = 0.1f;
     //endregion
 
     //region Public Class Members
@@ -167,18 +169,13 @@ public class Metronome {
         int height = size.y;
         int width = size.x;
 
-        // Set the on and off images for the metronome
-        setImageOn(ContextCompat.getDrawable(mActivity, R.drawable.filled));
-        setImageOff(ContextCompat.getDrawable(mActivity, R.drawable.open));
-        setImageTempoMode(ContextCompat.getDrawable(mActivity, R.drawable.mid));
-
         // Add the dots for the metronome, based on time signature
         for (int i = 0; i < mTimeSignature.beatsPerBar; i++) {
             ImageView icon = new ImageView(mActivity);
             icon.setImageDrawable(imageOff);
             icon.setLayoutParams(new LinearLayout.LayoutParams(
-                    (int) (height * 0.08),
-                    (int) (width * 0.1)));
+                    (int) (height * mHeightRatio),
+                    (int) (width * mWidthRatio)));
 
             metronomeBar.addView(icon);
 
@@ -608,24 +605,6 @@ public class Metronome {
         this.mTimeSignature = mTimeSignature;
     }
 
-    public String getmMetronomeState() {
-        String ret;
-
-        switch (mMetronomeState) {
-            case On:
-                ret = StaticVars.SETTINGS_METRONOME_STATE_ON;
-                break;
-            case Off:
-                ret = StaticVars.SETTINGS_METRONOME_STATE_OFF;
-                break;
-            case WithBPM:
-            default:
-                ret = StaticVars.SETTINGS_METRONOME_STATE_WITHBPM;
-                break;
-        }
-        return ret;
-    }
-
     public void setmMetronomeState(String mMetronomeState) {
         if (mMetronomeState.equals(StaticVars.SETTINGS_METRONOME_STATE_ON))
             this.mMetronomeState = MetronomeState.On;
@@ -633,6 +612,14 @@ public class Metronome {
             this.mMetronomeState = MetronomeState.Off;
         else
             this.mMetronomeState = MetronomeState.WithBPM;
+    }
+
+    public void setHeightRatio(float heightRatio) {
+        this.mHeightRatio = heightRatio;
+    }
+
+    public void setWidthRatio(float widthRatio) {
+        this.mWidthRatio = widthRatio;
     }
     //endregion
 

@@ -23,9 +23,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0b814f9b-14c2-4a07-9dcd-088d3dc0bab9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml" />
     </list>
     <ignored path="Songbook.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -69,7 +69,7 @@
       <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.9230769">
+            <state vertical-scroll-proportion="0.0">
               <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
               <folding />
             </state>
@@ -315,11 +315,10 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="133" column="27" selection-start-line="133" selection-start-column="27" selection-end-line="133" selection-end-column="27" />
+              <caret line="51" column="50" selection-start-line="51" selection-start-column="4" selection-end-line="51" selection-end-column="50" />
               <folding>
-                <element signature="e#1153#1177#0" expanded="false" />
                 <element signature="docComment;field#song#0;class#SongActivity#0" expanded="false" />
-                <element signature="docComment;method#onCreate#0;class#SongActivity#0" expanded="false" />
+                <element signature="e#1784#1808#0" expanded="false" />
                 <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
@@ -332,7 +331,7 @@
                 <element signature="docComment;method#onEditButtonClick#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onEditButtonClick#0;class#SongActivity#0" expanded="false" />
                 <element signature="docComment;method#initializeMetronome#0;class#SongActivity#0" expanded="false" />
-                <element signature="e#11644#11660#0" expanded="false" />
+                <element signature="e#12207#12223#0" expanded="false" />
                 <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
                 <element signature="class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
@@ -341,16 +340,96 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="activity_song.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml">
+      <file leaf-file-name="SetSongFragment.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.25612053">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="264" column="7" selection-start-line="264" selection-start-column="7" selection-end-line="264" selection-end-column="7" />
+              <folding>
+                <element signature="e#1214#1236#0" expanded="false" />
+                <element signature="method#onActivityCreated#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onCreateView#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onStart#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onPause#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onStop#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="docComment;method#onActivityResult#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onActivityResult#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="e#7221#7245#0" expanded="false" />
+                <element signature="docComment;method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="docComment;method#onEditButtonClick#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onEditButtonClick#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="docComment;method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="e#11700#11716#0" expanded="false" />
+                <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Metronome.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="2.2627985">
+              <caret line="621" column="24" selection-start-line="621" selection-start-column="24" selection-end-line="621" selection-end-column="24" />
+              <folding>
+                <element signature="docComment;class#Metronome#0" expanded="false" />
+                <element signature="class#MetronomeState#0;class#Metronome#0" expanded="false" />
+                <element signature="e#1306#1336#0" expanded="false" />
+                <element signature="e#2097#2126#0" expanded="false" />
+                <element signature="e#2180#2201#0" expanded="false" />
+                <element signature="method#Metronome#0;class#Metronome#0" expanded="false" />
+                <element signature="method#Metronome#1;class#Metronome#0" expanded="false" />
+                <element signature="method#Metronome#2;class#Metronome#0" expanded="false" />
+                <element signature="docComment;method#start#0;class#Metronome#0" expanded="false" />
+                <element signature="method#start#0;class#Metronome#0" expanded="false" />
+                <element signature="method#start#1;class#Metronome#0" expanded="false" />
+                <element signature="docComment;method#stop#0;class#Metronome#0" expanded="false" />
+                <element signature="method#stop#0;class#Metronome#0" expanded="false" />
+                <element signature="docComment;method#initialize#0;class#Metronome#0" expanded="false" />
+                <element signature="method#calculateTickDelayFromBPM#0;class#Metronome#0" expanded="false" />
+                <element signature="method#calculateBPMFromTickDelay#0;class#Metronome#0" expanded="false" />
+                <element signature="e#7899#7925#0" expanded="false" />
+                <element signature="method#calculateBPMFromTapTempoArray#0;class#Metronome#0" expanded="false" />
+                <element signature="e#8378#8420#0" expanded="false" />
+                <element signature="method#touch#0;class#Metronome#0" expanded="false" />
+                <element signature="method#enterTapTempoMode#0;class#Metronome#0" expanded="false" />
+                <element signature="method#showTapTempoPad#0;class#Metronome#0" expanded="false" />
+                <element signature="docComment;method#getTapBoxHeight#0;class#Metronome#0" expanded="false" />
+                <element signature="method#getTapBoxHeight#0;class#Metronome#0" expanded="false" />
+                <element signature="method#tapTempoClick#0;class#Metronome#0" expanded="false" />
+                <element signature="docComment;method#setTempoAsSongDefaultDialog#0;class#Metronome#0" expanded="false" />
+                <element signature="method#setTempoAsSongDefaultDialog#0;class#Metronome#0" expanded="false" />
+                <element signature="method#setImageOn#0;class#Metronome#0" expanded="false" />
+                <element signature="method#setImageOff#0;class#Metronome#0" expanded="false" />
+                <element signature="method#setImageTempoMode#0;class#Metronome#0" expanded="false" />
+                <element signature="method#setBeatsPerMinute#0;class#Metronome#0" expanded="false" />
+                <element signature="method#setTimeSignature#0;class#Metronome#0" expanded="false" />
+                <element signature="method#setmMetronomeState#0;class#Metronome#0" expanded="false" />
+                <element signature="e#21123#21148#0" expanded="false" />
+                <element signature="class#21285:21876" expanded="false" />
+                <element signature="e#21329#21348#0" expanded="false" />
+                <element signature="method#onSingleTapUp#0;class#21285:21876" expanded="false" />
+                <element signature="method#onDoubleTap#0;class#21285:21876" expanded="false" />
+                <element signature="class#MetronomeTimer#0" expanded="false" />
+                <element signature="method#run#0;class#MetronomeTimer#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_song.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-3.9818182">
               <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
               <folding />
             </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
           </provider>
         </entry>
       </file>
@@ -1879,7 +1958,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBStrings.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/TimeSignature.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/settings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values-sw700dp/dimens.xml" />
@@ -1887,11 +1965,12 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/tap_tempo.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/items/SongItem.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
       </list>
     </option>
   </component>
@@ -1961,159 +2040,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Songbook" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Songbook" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Songbook" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="menu" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Songbook" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Songbook" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Songbook" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="songbook" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Songbook" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="songbook" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Songbook" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Songbook" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -2408,48 +2335,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="songs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Metronome.java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Songbook" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Songbook" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="songbook" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -2524,6 +2409,158 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="menu" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2890,7 +2927,6 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14009929" sideWeight="0.6840391" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3283582" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928848" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
@@ -2904,6 +2940,7 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3283582" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -2965,14 +3002,14 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/chord_display.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.36624774">
           <caret line="12" column="41" selection-start-line="12" selection-start-column="41" selection-end-line="12" selection-end-column="41" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/color.xml">
@@ -3005,14 +3042,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/simple_text_dialog.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3967684">
           <caret line="13" column="31" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://C:/Program Files (x86)/Android/android-sdk/sources/android-23/android/app/Activity.java">
@@ -3044,6 +3081,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/search_dialog.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.42728904">
           <caret line="14" column="32" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
@@ -3051,9 +3091,6 @@
             <element signature="e#396#420#0" expanded="false" />
           </folding>
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/items/SongSearchCriteria.java">
@@ -3076,6 +3113,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_songs.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34654588">
           <caret line="30" column="36" selection-start-line="30" selection-start-column="36" selection-end-line="30" selection-end-column="36" />
@@ -3090,11 +3130,11 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_sets.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_sets.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7701019">
           <caret line="40" column="25" selection-start-line="40" selection-start-column="25" selection-end-line="40" selection-end-column="25" />
@@ -3109,11 +3149,11 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_sets.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_sets.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.1034484">
           <caret line="55" column="48" selection-start-line="55" selection-start-column="48" selection-end-line="55" selection-end-column="48" />
@@ -3128,11 +3168,11 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_songs.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_songs.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.75084937">
           <caret line="84" column="35" selection-start-line="84" selection-start-column="35" selection-end-line="84" selection-end-column="35" />
@@ -3145,11 +3185,11 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_songs.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_songs.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.21364452">
           <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
@@ -3158,11 +3198,11 @@
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_set.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_set.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.1034484">
           <caret line="13" column="41" selection-start-line="13" selection-start-column="41" selection-end-line="13" selection-end-column="41" />
@@ -3190,9 +3230,6 @@
           </folding>
         </state>
       </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/items/SetItem.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -3202,39 +3239,42 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_sets.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4047619">
           <caret line="28" column="54" selection-start-line="28" selection-start-column="54" selection-end-line="28" selection-end-column="54" />
           <folding />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_current_set.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_current_set.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.15765765">
           <caret line="18" column="51" selection-start-line="17" selection-start-column="12" selection-end-line="18" selection-end-column="51" />
           <folding />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_current_set.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_current_set.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.11486486">
           <caret line="18" column="51" selection-start-line="18" selection-start-column="51" selection-end-line="18" selection-end-column="51" />
           <folding />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_current_set.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_current_set.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.46771377">
           <caret line="16" column="49" selection-start-line="16" selection-start-column="49" selection-end-line="16" selection-end-column="49" />
@@ -3245,9 +3285,6 @@
             <element signature="e#2457#2480#0" expanded="true" />
           </folding>
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetGroupArrayAdapter.java">
@@ -3288,14 +3325,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_set_song.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34463277">
           <caret line="46" column="46" selection-start-line="46" selection-start-column="46" selection-end-line="46" selection-end-column="46" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBStrings.java">
@@ -3360,36 +3397,36 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/settings.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="1.354049">
           <caret line="73" column="73" selection-start-line="73" selection-start-column="73" selection-end-line="73" selection-end-column="73" />
           <folding />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_song.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/add_song.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38418078">
           <caret line="131" column="54" selection-start-line="125" selection-start-column="8" selection-end-line="131" selection-end-column="54" />
           <folding />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tap_tempo.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tap_tempo.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.581818">
           <caret line="77" column="47" selection-start-line="77" selection-start-column="47" selection-end-line="77" selection-end-column="47" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/StaticVars.java">
@@ -3397,31 +3434,6 @@
         <state vertical-scroll-proportion="0.028239202">
           <caret line="23" column="73" selection-start-line="23" selection-start-column="73" selection-end-line="23" selection-end-column="73" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5199336">
-          <caret line="268" column="59" selection-start-line="268" selection-start-column="59" selection-end-line="268" selection-end-column="59" />
-          <folding>
-            <element signature="method#onActivityCreated#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="method#onStart#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="method#onPause#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="method#onStop#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="docComment;method#onActivityResult#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="method#onActivityResult#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="e#7049#7073#0" expanded="false" />
-            <element signature="docComment;method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="docComment;method#onEditButtonClick#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="method#onEditButtonClick#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="docComment;method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="e#10298#10314#0" expanded="false" />
-            <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3587,10 +3599,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.6611296">
           <caret line="211" column="5" selection-start-line="211" selection-start-column="5" selection-end-line="211" selection-end-column="5" />
-          <folding>
-            <element signature="e#3707#3708#0" expanded="true" />
-            <element signature="e#3730#3731#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3829,7 +3837,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.9230769">
+        <state vertical-scroll-proportion="0.0">
           <caret line="3" column="27" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
           <folding />
         </state>
@@ -3852,14 +3860,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.9818182">
+          <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="133" column="27" selection-start-line="133" selection-start-column="27" selection-end-line="133" selection-end-column="27" />
+          <caret line="51" column="50" selection-start-line="51" selection-start-column="4" selection-end-line="51" selection-end-column="50" />
           <folding>
-            <element signature="e#1153#1177#0" expanded="false" />
             <element signature="docComment;field#song#0;class#SongActivity#0" expanded="false" />
-            <element signature="docComment;method#onCreate#0;class#SongActivity#0" expanded="false" />
+            <element signature="e#1784#1808#0" expanded="false" />
             <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
@@ -3872,7 +3890,7 @@
             <element signature="docComment;method#onEditButtonClick#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onEditButtonClick#0;class#SongActivity#0" expanded="false" />
             <element signature="docComment;method#initializeMetronome#0;class#SongActivity#0" expanded="false" />
-            <element signature="e#11644#11660#0" expanded="false" />
+            <element signature="e#12207#12223#0" expanded="false" />
             <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
             <element signature="class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
@@ -3880,28 +3898,57 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="264" column="7" selection-start-line="264" selection-start-column="7" selection-end-line="264" selection-end-column="7" />
+          <folding>
+            <element signature="e#1214#1236#0" expanded="false" />
+            <element signature="method#onActivityCreated#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onCreateView#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onStart#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onPause#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onStop#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="docComment;method#onActivityResult#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onActivityResult#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="e#7221#7245#0" expanded="false" />
+            <element signature="docComment;method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="docComment;method#onEditButtonClick#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onEditButtonClick#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="docComment;method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="e#11700#11716#0" expanded="false" />
+            <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.2081912">
-          <caret line="530" column="47" selection-start-line="530" selection-start-column="47" selection-end-line="530" selection-end-column="47" />
+        <state vertical-scroll-proportion="2.2627985">
+          <caret line="621" column="24" selection-start-line="621" selection-start-column="24" selection-end-line="621" selection-end-column="24" />
           <folding>
             <element signature="docComment;class#Metronome#0" expanded="false" />
             <element signature="class#MetronomeState#0;class#Metronome#0" expanded="false" />
-            <element signature="e#2019#2048#0" expanded="false" />
-            <element signature="e#2102#2123#0" expanded="false" />
+            <element signature="e#1306#1336#0" expanded="false" />
+            <element signature="e#2097#2126#0" expanded="false" />
+            <element signature="e#2180#2201#0" expanded="false" />
             <element signature="method#Metronome#0;class#Metronome#0" expanded="false" />
             <element signature="method#Metronome#1;class#Metronome#0" expanded="false" />
             <element signature="method#Metronome#2;class#Metronome#0" expanded="false" />
             <element signature="docComment;method#start#0;class#Metronome#0" expanded="false" />
+            <element signature="method#start#0;class#Metronome#0" expanded="false" />
             <element signature="method#start#1;class#Metronome#0" expanded="false" />
             <element signature="docComment;method#stop#0;class#Metronome#0" expanded="false" />
             <element signature="method#stop#0;class#Metronome#0" expanded="false" />
             <element signature="docComment;method#initialize#0;class#Metronome#0" expanded="false" />
-            <element signature="method#initialize#0;class#Metronome#0" expanded="false" />
             <element signature="method#calculateTickDelayFromBPM#0;class#Metronome#0" expanded="false" />
             <element signature="method#calculateBPMFromTickDelay#0;class#Metronome#0" expanded="false" />
+            <element signature="e#7899#7925#0" expanded="false" />
             <element signature="method#calculateBPMFromTapTempoArray#0;class#Metronome#0" expanded="false" />
-            <element signature="e#8574#8616#0" expanded="false" />
+            <element signature="e#8378#8420#0" expanded="false" />
             <element signature="method#touch#0;class#Metronome#0" expanded="false" />
             <element signature="method#enterTapTempoMode#0;class#Metronome#0" expanded="false" />
             <element signature="method#showTapTempoPad#0;class#Metronome#0" expanded="false" />
@@ -3910,35 +3957,21 @@
             <element signature="method#tapTempoClick#0;class#Metronome#0" expanded="false" />
             <element signature="docComment;method#setTempoAsSongDefaultDialog#0;class#Metronome#0" expanded="false" />
             <element signature="method#setTempoAsSongDefaultDialog#0;class#Metronome#0" expanded="false" />
-            <element signature="e#19542#19568#0" expanded="false" />
             <element signature="method#setImageOn#0;class#Metronome#0" expanded="false" />
             <element signature="method#setImageOff#0;class#Metronome#0" expanded="false" />
             <element signature="method#setImageTempoMode#0;class#Metronome#0" expanded="false" />
             <element signature="method#setBeatsPerMinute#0;class#Metronome#0" expanded="false" />
             <element signature="method#setTimeSignature#0;class#Metronome#0" expanded="false" />
-            <element signature="method#getmMetronomeState#0;class#Metronome#0" expanded="false" />
             <element signature="method#setmMetronomeState#0;class#Metronome#0" expanded="false" />
-            <element signature="e#21608#21633#0" expanded="false" />
-            <element signature="docComment;field#simpleOnGestureListener#0;class#Metronome#0" expanded="false" />
-            <element signature="class#21770:22361" expanded="false" />
-            <element signature="e#21814#21833#0" expanded="false" />
-            <element signature="method#onSingleTapUp#0;class#21770:22361" expanded="false" />
-            <element signature="method#onDoubleTap#0;class#21770:22361" expanded="false" />
+            <element signature="e#21123#21148#0" expanded="false" />
+            <element signature="class#21285:21876" expanded="false" />
+            <element signature="e#21329#21348#0" expanded="false" />
+            <element signature="method#onSingleTapUp#0;class#21285:21876" expanded="false" />
+            <element signature="method#onDoubleTap#0;class#21285:21876" expanded="false" />
             <element signature="class#MetronomeTimer#0" expanded="false" />
             <element signature="method#run#0;class#MetronomeTimer#0" expanded="false" />
           </folding>
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25612053">
-          <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
       </provider>
     </entry>
   </component>
