@@ -45,7 +45,7 @@ public class SetSongFragment extends Fragment {
     ChordDisplay disp;
     private int EDIT_SONG_ACTIVITY = 1;
     private String mMetronomeState = StaticVars.SETTINGS_METRONOME_STATE_WITHBPM;
-    private boolean mMetronomeDrummerMode = false;
+    private boolean mBrightMetronome = false;
     //endregion
 
     //region Class Functions
@@ -273,9 +273,9 @@ public class SetSongFragment extends Fragment {
             mMetronome.setmMetronomeState(mMetronomeState);
 
             // Check for drummer mode
-            if (mMetronomeDrummerMode) {
+            if (mBrightMetronome) {
                 // Do not show words behind metronome
-                ScrollView scrollView = (ScrollView)(mView.findViewById(R.id.scrollView));
+                ScrollView scrollView = (ScrollView)(mView.findViewById(R.id.set_scrollView));
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)scrollView.getLayoutParams();
                 params.addRule(RelativeLayout.ABOVE, R.id.metronome_bar);
                 scrollView.setLayoutParams(params);

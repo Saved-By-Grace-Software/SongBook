@@ -28,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
-import com.sbgsoft.songbook.files.OpenFile;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
@@ -49,7 +48,7 @@ public class SongActivity extends Activity {
     private SongItem mSongItem;
     private int EDIT_SONG_ACTIVITY = 1;
     private String mMetronomeState = StaticVars.SETTINGS_METRONOME_STATE_WITHBPM;
-    private boolean mMetronomeDrummerMode = false;
+    private boolean mBrightMetronome = false;
     //endregion
 
 
@@ -291,7 +290,7 @@ public class SongActivity extends Activity {
             mMetronome.setmMetronomeState(mMetronomeState);
 
             // Check for drummer mode
-            if (mMetronomeDrummerMode) {
+            if (mBrightMetronome) {
                 // Do not show words behind metronome
                 ScrollView scrollView = (ScrollView)findViewById(R.id.scrollView);
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)scrollView.getLayoutParams();
