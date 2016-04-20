@@ -969,6 +969,7 @@ public class MainActivity extends FragmentActivity {
         final CheckBox transposeOnCB = (CheckBox)dialoglayout.findViewById(R.id.settings_transpose_show);
         final CheckBox editOnCB = (CheckBox)dialoglayout.findViewById(R.id.settings_edit_show);
         final RadioGroup metronomeStateRG = (RadioGroup)dialoglayout.findViewById(R.id.settings_metronome_radio);
+        final RadioGroup metronomeTypeRG = (RadioGroup)dialoglayout.findViewById(R.id.settings_metronome_type_radio);
 
         // Update the views with the current settings
         transposeOnCB.setChecked(settings.getShowTransposeInSet());
@@ -977,6 +978,8 @@ public class MainActivity extends FragmentActivity {
             metronomeStateRG.check(R.id.settings_metronome_on);
         else if (settings.getMetronomeState().equals(StaticVars.SETTINGS_METRONOME_STATE_OFF))
             metronomeStateRG.check(R.id.settings_metronome_off);
+        if (settings.getUseBrightMetronomeInt() == StaticVars.SETTINGS_BRIGHT_METRONOME)
+            metronomeTypeRG.check(R.id.settings_bright_metronome);
 
         // Add the dialog title
         alert.setTitle("SongBook Settings");
@@ -994,8 +997,13 @@ public class MainActivity extends FragmentActivity {
                 else
                     metronomeState = StaticVars.SETTINGS_METRONOME_STATE_WITHBPM;
 
+                boolean metronomeType = false;
+                int metTpId = metronomeTypeRG.getCheckedRadioButtonId();
+                if (metTpId == R.id.settings_bright_metronome)
+                    metronomeType = true;
+
                 // Create the settings object to save
-                Settings settings = new Settings(metronomeState, transposeOnCB.isChecked(), editOnCB.isChecked());
+                Settings settings = new Settings(metronomeState, transposeOnCB.isChecked(), editOnCB.isChecked(), metronomeType);
 
                 // Save the options to the database
                 dbAdapter.setCurrentSettings(settings);
@@ -2443,14 +2451,9 @@ public class MainActivity extends FragmentActivity {
                     FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
                     song.setText(ChordProParser.ParseSongFile(getApplicationContext(), song, song.getKey(), fis, true, false));
 
-                    // Get the metronome settings
-                    Settings settings = dbAdapter.getCurrentSettings();
-                    String metronomeState = settings.getMetronomeState();
-
                     // Show the song activity
                     SongActivity songA = new SongActivity();
                     Intent showSong = new Intent(v.getContext(), songA.getClass());
-                    showSong.putExtra(StaticVars.METRONOME_STATE_KEY, metronomeState);
                     showSong.putExtra(StaticVars.SONG_ITEM_KEY, (Parcelable) song);
                     startActivity(showSong);
 
@@ -3230,19 +3233,10 @@ public class MainActivity extends FragmentActivity {
     					Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
     				}
             	}
-
-                // Get the current settings for showing/disabling buttons in set view
-                Settings settings = dbAdapter.getCurrentSettings();
-                boolean showTranspose = settings.getShowTransposeInSet();
-                boolean showEdit = settings.getShowEditInSet();
-                String metronomeState = settings.getMetronomeState();
             	
             	// Show the set activity
             	SetActivity set = new SetActivity();
             	Intent showSet = new Intent(v.getContext(), set.getClass());
-                showSet.putExtra(StaticVars.SHOW_EDIT_INSET_KEY, showEdit);
-                showSet.putExtra(StaticVars.SHOW_TRANSPOSE_INSET_KEY, showTranspose);
-                showSet.putExtra(StaticVars.METRONOME_STATE_KEY, metronomeState);
             	showSet.putExtra(StaticVars.CURRENT_SONG_KEY, position);
             	showSet.putExtra(StaticVars.SET_SONGS_KEY, setItem);
                 startActivity(showSet);

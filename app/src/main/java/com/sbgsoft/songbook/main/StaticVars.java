@@ -19,9 +19,6 @@ public class StaticVars {
 	public static final String SET_NAME_KEY = "setName";
 	public static final String FILE_ACTIVITY_KEY = "fileActivityKey";
 	public static final String FILE_ACTIVITY_TYPE_KEY = "fileActivityTypeKey";
-    public static final String SHOW_EDIT_INSET_KEY = "showEditButtonInSet";
-    public static final String SHOW_TRANSPOSE_INSET_KEY = "showTransposeButtonInSet";
-    public static final String METRONOME_STATE_KEY = "metronomeStateKey";
 	
 	// Activity Strings
 	public static final String ACTIVITY_RESPONSE_TYPE = "activityResponseType";
@@ -42,6 +39,8 @@ public class StaticVars {
     public static final String SETTINGS_SET_TRANSPOSE_OFF = "OFF";
     public static final String SETTINGS_SET_EDIT_ON = "ON";
     public static final String SETTINGS_SET_EDIT_OFF = "OFF";
+    public static final int SETTINGS_BRIGHT_METRONOME = 1;
+    public static final int SETTIGNS_STANDARD_METRONOME = 0;
 
 	// General
 	public static final String EOL = System.getProperty("line.separator");

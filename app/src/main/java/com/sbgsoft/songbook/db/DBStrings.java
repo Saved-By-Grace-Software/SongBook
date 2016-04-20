@@ -4,7 +4,7 @@ public class DBStrings {
 
 	// Database Strings
 	public static final String DATABASE_NAME = "tabAppDB";
-	public static final int DATABASE_VERSION = 9;
+	public static final int DATABASE_VERSION = 10;
 	
 	// Sets Table
 	public static final String SETS_TABLE = "tblSets";
@@ -69,4 +69,5 @@ public class DBStrings {
     public static final String TBLSETTINGS_METRONOME_STATE = "metronomeState";
     public static final String TBLSETTINGS_SET_TRANSPOSE = "setTransposeState";
     public static final String TBLSETTINGS_SET_EDIT = "setEditState";
+    public static final String TBLSETTINGS_METRONOME_TYPE = "metronomeType";
 }

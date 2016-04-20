@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.items.Settings;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
@@ -73,10 +74,16 @@ public class SongActivity extends Activity {
 
         // Instantiate the scale class
         scaleGestureDetector = new ScaleGestureDetector(this, new simpleOnScaleGestureListener());
+
+        // Get the current settings
+        Settings settings = MainActivity.dbAdapter.getCurrentSettings();
+        mMetronomeState = settings.getMetronomeState();
+        mBrightMetronome = settings.getUseBrightMetronome();
         
         // Populate it with the song text
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            // Get the song item
             mSongItem = extras.getParcelable(StaticVars.SONG_ITEM_KEY);
         	
             if (mSongItem.getKey().length() > 1)
@@ -92,7 +99,6 @@ public class SongActivity extends Activity {
             song.setText(disp.setChordClickableText(mSongItem.getText()), TextView.BufferType.SPANNABLE);
 
             // Initialize the metronome
-            mMetronomeState = extras.getString(StaticVars.METRONOME_STATE_KEY);
             initializeMetronome();
         }
         

@@ -78,6 +78,7 @@ public class DBAdapter {
                             DBStrings.TBLSETTINGS_ID + " as _id, " +
                             DBStrings.TBLSETTINGS_METRONOME_STATE + ", " +
                             DBStrings.TBLSETTINGS_SET_TRANSPOSE + ", " +
+                            DBStrings.TBLSETTINGS_METRONOME_TYPE + ", " +
                             DBStrings.TBLSETTINGS_SET_EDIT +
                     " FROM " + DBStrings.SETTINGS_TABLE;
 
@@ -88,10 +89,11 @@ public class DBAdapter {
             String metronomeState = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_METRONOME_STATE));
             String transposeOn = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_SET_TRANSPOSE));
             String editOn = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_SET_EDIT));
+            int brightMetronome = c.getInt(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_METRONOME_TYPE));
             c.close();
 
             // Return the settings object
-            return new Settings(metronomeState, transposeOn, editOn);
+            return new Settings(metronomeState, transposeOn, editOn, brightMetronome);
         } catch (IndexOutOfBoundsException e) {
             return null;
         } catch (SQLiteException s) {
@@ -112,9 +114,8 @@ public class DBAdapter {
                     " SET " +
                     DBStrings.TBLSETTINGS_METRONOME_STATE + " = '" + settings.getMetronomeState() + "', " +
                     DBStrings.TBLSETTINGS_SET_EDIT + " = '" + settings.getShowEditInSetString() + "', " +
-                    DBStrings.TBLSETTINGS_SET_TRANSPOSE + " = '" + settings.getShowTransposeInSetString() + "' " +
-                    " WHERE " +
-                    DBStrings.TBLSETTINGS_ID + " = 1";
+                    DBStrings.TBLSETTINGS_METRONOME_TYPE + " = " + settings.getUseBrightMetronomeInt() + ", " +
+                    DBStrings.TBLSETTINGS_SET_TRANSPOSE + " = '" + settings.getShowTransposeInSetString() + "'";
 
             mDb.execSQL(query);
         } catch (SQLiteException e) {
@@ -1832,6 +1833,7 @@ public class DBAdapter {
                         DBStrings.TBLSETTINGS_ID + " integer PRIMARY KEY autoincrement, " +
                         DBStrings.TBLSETTINGS_METRONOME_STATE + " text, " +
                         DBStrings.TBLSETTINGS_SET_EDIT + " text, " +
+                        DBStrings.TBLSETTINGS_METRONOME_TYPE+ " int, " +
                         DBStrings.TBLSETTINGS_SET_TRANSPOSE + " text ); " );
     			
     			// Add default values
@@ -1843,10 +1845,12 @@ public class DBAdapter {
                 db.execSQL("INSERT INTO " + DBStrings.SETTINGS_TABLE + "(" +
                         DBStrings.TBLSETTINGS_METRONOME_STATE + ", " +
                         DBStrings.TBLSETTINGS_SET_EDIT + ", " +
+                        DBStrings.TBLSETTINGS_METRONOME_TYPE + ", " +
                         DBStrings.TBLSETTINGS_SET_TRANSPOSE +
                         ") VALUES (" +
                         "'" + StaticVars.SETTINGS_METRONOME_STATE_WITHBPM + "', " +
                         "'" + StaticVars.SETTINGS_SET_EDIT_ON + "', " +
+                        " " + StaticVars.SETTIGNS_STANDARD_METRONOME + ", " +
                         "'" + StaticVars.SETTINGS_SET_TRANSPOSE_ON + "')");
     			
     			db.setTransactionSuccessful(); 
@@ -1926,6 +1930,17 @@ public class DBAdapter {
                     db.execSQL("UPDATE " + DBStrings.SONGS_TABLE + " " +
                         "SET " + DBStrings.TBLSONG_TIME + " = '4/4' " +
                         "WHERE " + DBStrings.TBLSONG_TIME + " = '0/0'");
+                }
+
+                // Updates from DB version 9 or lower
+                if (oldVersion < 10) {
+                    // Add metronome type column to the setting table
+                    db.execSQL("ALTER TABLE " + DBStrings.SETTINGS_TABLE + " ADD COLUMN " + DBStrings.TBLSETTINGS_METRONOME_TYPE + " int");
+
+                    // Set the standard metronome as default
+                    db.execSQL("UPDATE " + DBStrings.SETTINGS_TABLE + " " +
+                            "SET " + DBStrings.TBLSETTINGS_METRONOME_TYPE +
+                            " = " + StaticVars.SETTIGNS_STANDARD_METRONOME);
                 }
     			
     			db.setTransactionSuccessful(); 

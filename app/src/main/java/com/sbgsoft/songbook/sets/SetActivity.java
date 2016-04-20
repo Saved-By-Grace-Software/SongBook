@@ -59,13 +59,6 @@ public class SetActivity extends FragmentActivity {
         // Get songs and add them to the page adapter
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            // Get the show edit/transpose settings
-            boolean showEdit = extras.getBoolean(StaticVars.SHOW_EDIT_INSET_KEY);
-            boolean showTranspose = extras.getBoolean(StaticVars.SHOW_TRANSPOSE_INSET_KEY);
-
-            // Get the metronome state
-            String metronomeState = extras.getString(StaticVars.METRONOME_STATE_KEY);
-
             // Get the extras
             int currSong = extras.getInt(StaticVars.CURRENT_SONG_KEY);
             SetItem setItem = extras.getParcelable(StaticVars.SET_SONGS_KEY);
@@ -76,9 +69,6 @@ public class SetActivity extends FragmentActivity {
             	Fragment songFrag = new SetSongFragment();
             	Bundle bSong = new Bundle();
             	bSong.putParcelable(StaticVars.SONG_ITEM_KEY, song);
-                bSong.putBoolean(StaticVars.SHOW_TRANSPOSE_INSET_KEY, showTranspose);
-                bSong.putBoolean(StaticVars.SHOW_EDIT_INSET_KEY, showEdit);
-                bSong.putString(StaticVars.METRONOME_STATE_KEY, metronomeState);
             	songFrag.setArguments(bSong);
             	
             	// Add the fragment to the page adapter

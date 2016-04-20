@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.items.Settings;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
@@ -64,28 +65,31 @@ public class SetSongFragment extends Fragment {
 
         // Instantiate the scale class
         scaleGestureDetector = new ScaleGestureDetector(getActivity(), new simpleOnScaleGestureListener());
+
+        // Get a reference to the edit/transpose buttons
+        Button editButton = (Button)mView.findViewById(R.id.set_song_edit_button);
+        Button transposeButton = (Button)mView.findViewById(R.id.set_song_transpose_button);
+
+        // Get the current settings
+        Settings settings = MainActivity.dbAdapter.getCurrentSettings();
+        boolean showTranspose = settings.getShowTransposeInSet();
+        boolean showEdit = settings.getShowEditInSet();
+        mMetronomeState = settings.getMetronomeState();
+        mBrightMetronome = settings.getUseBrightMetronome();
+
+        // Enable/Disable the buttons according to the settings
+        if (showEdit)
+            editButton.setVisibility(View.VISIBLE);
+        else
+            editButton.setVisibility(View.GONE);
+        if (showTranspose)
+            transposeButton.setVisibility(View.VISIBLE);
+        else
+            transposeButton.setVisibility(View.GONE);
         
         // Populate it with the song text
         Bundle extras = getArguments();
         if (extras != null) {
-            // Get the transpose/edit button settings
-            boolean showEdit = extras.getBoolean(StaticVars.SHOW_EDIT_INSET_KEY);
-            boolean showTranspose = extras.getBoolean(StaticVars.SHOW_TRANSPOSE_INSET_KEY);
-
-            // Get a reference to the edit/transpose buttons
-            Button editButton = (Button)mView.findViewById(R.id.set_song_edit_button);
-            Button transposeButton = (Button)mView.findViewById(R.id.set_song_transpose_button);
-
-            // Enable/Disable the buttons according to the settings
-            if (showEdit)
-                editButton.setVisibility(View.VISIBLE);
-            else
-                editButton.setVisibility(View.GONE);
-            if (showTranspose)
-                transposeButton.setVisibility(View.VISIBLE);
-            else
-                transposeButton.setVisibility(View.GONE);
-
         	mSongItem = extras.getParcelable(StaticVars.SONG_ITEM_KEY);
             
         	if (mSongItem.getKey().length() > 1)
@@ -101,7 +105,6 @@ public class SetSongFragment extends Fragment {
             }
 
             // Initialize the metronome
-            mMetronomeState = extras.getString(StaticVars.METRONOME_STATE_KEY);
             initializeMetronome();
         }
 

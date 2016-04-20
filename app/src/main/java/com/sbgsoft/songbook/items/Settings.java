@@ -10,6 +10,7 @@ public class Settings {
     private boolean mShowTransposeInSet;
     private boolean mShowEditInSet;
     private String mMetronomeState;
+    private boolean mUseBrightMetronome;
     //endregion
 
     //region Constructors
@@ -23,6 +24,13 @@ public class Settings {
         mShowTransposeInSet = transposeOn;
         mShowEditInSet = editOn;
         mMetronomeState = metronomeState;
+    }
+
+    public Settings(String metronomeState, boolean transposeOn, boolean editOn, boolean useBrightMetronome) {
+        mShowTransposeInSet = transposeOn;
+        mShowEditInSet = editOn;
+        mMetronomeState = metronomeState;
+        mUseBrightMetronome = useBrightMetronome;
     }
 
     public Settings(String metronomeState, String transposeOn, String editOn) {
@@ -41,6 +49,30 @@ public class Settings {
             // We default to true
             mShowEditInSet = true;
         }
+
+        // Metronome status
+        mMetronomeState = metronomeState;
+    }
+
+    public Settings(String metronomeState, String transposeOn, String editOn, int useBrightMetronome) {
+        // Set transpose option
+        if (transposeOn.equals(StaticVars.SETTINGS_SET_TRANSPOSE_OFF)) {
+            mShowTransposeInSet = false;
+        } else {
+            // We default to true
+            mShowTransposeInSet = true;
+        }
+
+        // Set edit option
+        if (editOn.equals(StaticVars.SETTINGS_SET_EDIT_OFF)) {
+            mShowEditInSet = false;
+        } else {
+            // We default to true
+            mShowEditInSet = true;
+        }
+
+        // Set the metronome type
+        setUseBrightMetronome(useBrightMetronome);
 
         // Metronome status
         mMetronomeState = metronomeState;
@@ -84,6 +116,28 @@ public class Settings {
 
     public void setMetronomeState(String mMetronomeState) {
         this.mMetronomeState = mMetronomeState;
+    }
+
+    public boolean getUseBrightMetronome() {
+        return mUseBrightMetronome;
+    }
+
+    public int getUseBrightMetronomeInt() {
+        if (mUseBrightMetronome)
+            return StaticVars.SETTINGS_BRIGHT_METRONOME;
+        else
+            return StaticVars.SETTIGNS_STANDARD_METRONOME;
+    }
+
+    public void setUseBrightMetronome(boolean useBrightMetronome) {
+        this.mUseBrightMetronome = useBrightMetronome;
+    }
+
+    public void setUseBrightMetronome(int useBrightMetronome) {
+        if (useBrightMetronome == StaticVars.SETTINGS_BRIGHT_METRONOME)
+            this.mUseBrightMetronome = true;
+        else
+            this.mUseBrightMetronome = false;
     }
     //endregion
 }
