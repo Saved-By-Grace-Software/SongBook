@@ -578,21 +578,12 @@ public class DBAdapter {
 	 */
 	public boolean updateSetAttributes(String oldSetName, String newSetName, String date, String setLink) {
 		try {
-            String query;
-
-            if (setLink.isEmpty()) {
-                query = "UPDATE " + DBStrings.SETS_TABLE +
-                        " SET " + DBStrings.TBLSETS_NAME + " = '" + newSetName + "', " +
-                        DBStrings.TBLSETS_DATE + " = '" + date + "' " +
-                        " WHERE " + DBStrings.TBLSETS_NAME + " = '" + oldSetName + "'";
-            } else {
-                query = "UPDATE " + DBStrings.SETS_TABLE +
+            String query = "UPDATE " + DBStrings.SETS_TABLE +
                         " SET " +
                         DBStrings.TBLSETS_NAME + " = '" + newSetName + "', " +
                         DBStrings.TBLSETS_LINK + " = '" + setLink + "', " +
                         DBStrings.TBLSETS_DATE + " = '" + date + "' " +
                         " WHERE " + DBStrings.TBLSETS_NAME + " = '" + oldSetName + "'";
-            }
 			mDb.execSQL(query);
 		} catch (SQLException e) {
 			return false;

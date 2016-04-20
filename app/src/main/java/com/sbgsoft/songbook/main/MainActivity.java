@@ -1050,6 +1050,9 @@ public class MainActivity extends FragmentActivity {
 	    		String setName = setNameET.getText().toString();
 	    		String setDate = setDateDP.getYear() + "-" + String.format("%02d", (setDateDP.getMonth() + 1)) + "-" + String.format("%02d", setDateDP.getDayOfMonth());
                 String setLink = setLinkET.getText().toString();
+
+                if (setLink == null)
+                    setLink = "";
 	    		
 	    		if (setName.length() > 0) {
 		    			selectSetSongs(setName, setDate, setLink);
@@ -1621,6 +1624,9 @@ public class MainActivity extends FragmentActivity {
                 String newSetName = setNameET.getText().toString();
                 String setDate = setDateDP.getYear() + "-" + String.format("%02d", (setDateDP.getMonth() + 1)) + "-" + String.format("%02d", setDateDP.getDayOfMonth());
                 String setLink = setLinkET.getText().toString();
+
+                if (setLink == null)
+                    setLink = "";
 
                 if (newSetName.length() > 0) {
                     dbAdapter.updateSetAttributes(setName, newSetName, setDate, setLink);
