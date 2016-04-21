@@ -36,6 +36,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfDocument.Page;
 import android.graphics.pdf.PdfDocument.PageInfo;
@@ -179,6 +180,17 @@ public class MainActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Get the current theme
+        SongBookTheme theme = new SongBookTheme();
+
+        // Apply the background color
+        View layout = findViewById(R.id.main_linear_layout);
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom()});
+        gd.setCornerRadius(0f);
+        layout.setBackground(gd);
         
         setsFragment = new SetsTab();
         songsFragment = new SongsTab();
