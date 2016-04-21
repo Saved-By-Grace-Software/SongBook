@@ -10,6 +10,7 @@ import java.util.Locale;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.main.SongBookTheme;
 import com.sbgsoft.songbook.main.StaticVars;
 
 public class OpenFile extends ListActivity {
@@ -37,6 +39,17 @@ public class OpenFile extends ListActivity {
 		super.onCreate(savedInstanceState);
     	setContentView(R.layout.activity_open_file);
         myPath = (TextView)findViewById(R.id.open_file_path);
+
+        // TODO: Get the current theme from the database
+        SongBookTheme theme = new SongBookTheme();
+
+        // Apply the background color
+        View layout = findViewById(R.id.open_file_layout);
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom()});
+        gd.setCornerRadius(0f);
+        layout.setBackground(gd);
         
         // Get Extras
         activityType = "";

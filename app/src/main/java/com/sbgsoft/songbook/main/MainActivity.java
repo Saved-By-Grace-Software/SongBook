@@ -181,7 +181,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Get the current theme
+        // TODO: Get the current theme from the database
         SongBookTheme theme = new SongBookTheme();
 
         // Apply the background color
@@ -191,7 +191,8 @@ public class MainActivity extends FragmentActivity {
                 new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom()});
         gd.setCornerRadius(0f);
         layout.setBackground(gd);
-        
+
+        // Create the tab objects
         setsFragment = new SetsTab();
         songsFragment = new SongsTab();
         currSetFragment = new CurrentSetTab();
@@ -200,9 +201,7 @@ public class MainActivity extends FragmentActivity {
         mPagerAdapter.addFragment(currSetFragment);
         mPagerAdapter.addFragment(setsFragment);
         mPagerAdapter.addFragment(songsFragment);
-       
-        
-        //transaction = getSupportFragmentManager().beginTransaction();
+
         
         mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mPagerAdapter);
