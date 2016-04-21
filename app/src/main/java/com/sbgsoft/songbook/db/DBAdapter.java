@@ -1645,7 +1645,7 @@ public class DBAdapter {
                 TimeSignature songTime = getSongTimeSignature(songName);
 
                 // Append the insert statement with a line ending for adding the song
-                output.append("INSERT INTO " + DBStrings.SONGS_TABLE +
+                output.append("INSERT OR REPLACE INTO " + DBStrings.SONGS_TABLE +
                         "(" +
                         DBStrings.TBLSONG_NAME + ", " +
                         DBStrings.TBLSONG_FILE + ", " +
