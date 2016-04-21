@@ -1,14 +1,17 @@
 package com.sbgsoft.songbook.main;
 
-import android.graphics.Color;
-
 public class SongBookTheme {
 
     //region Static Default Values
     private static final int BACKGROUND_TOP = 0xFF6783A1;
     private static final int BACKGROUND_BOTTOM = 0xFFDEEBFF;
     private static final int BACKGROUND_ANGLE = 90;
-    private static final int MAIN_FONT = 0xFF000040;
+    //private static final int MAIN_FONT = 0xFF000040;
+    private static final int MAIN_FONT = 0xFFEF0A15;
+    private static final int MAIN_FONT_SHADOW = 0x77000000;
+    //private static final int TITLE_FONT = 0x77000000;
+    private static final int TITLE_FONT = 0xFFEF0A15;
+    private static final int TITLE_FONT_SHADOW = 0x77000000;
     private static final int CHORD_FONT = 0xFF006B9F;
     //endregion
 
@@ -17,6 +20,9 @@ public class SongBookTheme {
     private int mBackgroundBottom;
     private int mBackgroundAngle;
     private int mMainFontColor;
+    private int mMainFontShadowColor;
+    private int mTitleFontColor;
+    private int mTitleFontShadowColor;
     private int mChordFontColor;
     //endregion
 
@@ -27,6 +33,9 @@ public class SongBookTheme {
         mBackgroundBottom = BACKGROUND_BOTTOM;
         mBackgroundAngle = BACKGROUND_ANGLE;
         mMainFontColor = MAIN_FONT;
+        mMainFontShadowColor = MAIN_FONT_SHADOW;
+        mTitleFontColor = TITLE_FONT;
+        mTitleFontShadowColor = TITLE_FONT_SHADOW;
         mChordFontColor = CHORD_FONT;
     }
     //endregion
@@ -51,6 +60,18 @@ public class SongBookTheme {
     public int getBackgroundAngle() {
         return mBackgroundAngle;
     }
+
+    public int getTitleFontColor() {
+        return mTitleFontColor;
+    }
+
+    public int getMainFontShadowColor() {
+        return mMainFontShadowColor;
+    }
+
+    public int getTitleFontShadowColor() {
+        return mTitleFontShadowColor;
+    }
     //endregion
 
     //region Setters
@@ -72,6 +93,18 @@ public class SongBookTheme {
 
     public void setBackgroundAngle(int backgroundAngle) {
         this.mBackgroundAngle = backgroundAngle;
+    }
+
+    public void setTitleFontColor(int titleFontColot) {
+        this.mTitleFontColor = titleFontColot;
+    }
+
+    public void setMainFontShadowColor(int mainFontShadowColor) {
+        this.mMainFontShadowColor = mainFontShadowColor;
+    }
+
+    public void setTitleFontShadowColor(int titleFontShadowColor) {
+        this.mTitleFontShadowColor = titleFontShadowColor;
     }
     //endregion
 }

@@ -5,17 +5,16 @@
     android:orientation="vertical"
     android:gravity="top" > 
     
-	<TextView android:id="@+id/songs_row_text"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:includeFontPadding="true"
-	    android:paddingLeft="15dp"
-	    android:textSize="@dimen/listMainTextSize"
-	    android:textColor="@color/defaultTextColor"
-	    android:shadowColor="@color/TransparentGrey" 
-		android:shadowDx="3"
-		android:shadowDy="3" 
-		android:shadowRadius="1.5" />
+	<com.sbgsoft.songbook.views.SongBookThemeMainTextView
+        android:id="@+id/songs_row_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="true"
+        android:paddingLeft="15dp"
+        android:textSize="@dimen/listMainTextSize"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1.5" />
 	
 	<LinearLayout
 	    android:layout_width="match_parent"
@@ -25,7 +24,7 @@
 	    android:paddingBottom="5dp"
 	    android:paddingLeft="25dp" >
 	    
-	    <TextView 
+	    <com.sbgsoft.songbook.views.SongBookThemeMainTextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
 	        android:text="@string/songs_row_author_text"
@@ -33,19 +32,18 @@
 	        android:textSize="@dimen/listSubTextSize"
 		    android:textStyle="bold|italic"
 		    android:paddingLeft="20dp"
-		    android:paddingRight="7dp"
-		    android:textColor="@color/defaultTextColor" />
+		    android:paddingRight="7dp" />
 	    
-	    <TextView android:id="@+id/songs_row_author"
+	    <com.sbgsoft.songbook.views.SongBookThemeMainTextView
+            android:id="@+id/songs_row_author"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:includeFontPadding="true"
 		    android:textSize="@dimen/listSubTextSize"
 		    android:textStyle="italic"
-		    android:paddingRight="7dp"
-		    android:textColor="@color/defaultTextColor" />
+		    android:paddingRight="7dp" />
 	    
-	    <TextView 
+	    <com.sbgsoft.songbook.views.SongBookThemeMainTextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
 	        android:text="@string/songs_row_key_text"
@@ -53,17 +51,16 @@
 		    android:textSize="@dimen/listSubTextSize"
 		    android:textStyle="bold|italic"
 		    android:paddingLeft="20dp"
-		    android:paddingRight="7dp"
-		    android:textColor="@color/defaultTextColor" />
+		    android:paddingRight="7dp" />
 	    
-	    <TextView android:id="@+id/songs_row_key"
+	    <com.sbgsoft.songbook.views.SongBookThemeMainTextView
+            android:id="@+id/songs_row_key"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:includeFontPadding="true"
 		    android:textSize="@dimen/listSubTextSize"
 		    android:textStyle="italic"
-		    android:paddingRight="7dp"
-		    android:textColor="@color/defaultTextColor" />
+		    android:paddingRight="7dp" />
 	    
 	</LinearLayout>
 	
