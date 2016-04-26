@@ -7,9 +7,14 @@
     <declare-styleable name="AutoScaleTextView">
         <attr name="minTextSize" format="dimension" />
     </declare-styleable>
+
     <declare-styleable name="ButtonBarContainerTheme">
         <attr name="metaButtonBarStyle" format="reference" />
         <attr name="metaButtonBarButtonStyle" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SongBookThemeMainTextView">
+        <attr name="useShadow" format="boolean" />
     </declare-styleable>
 
 </resources>
