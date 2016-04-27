@@ -2,18 +2,6 @@ package com.sbgsoft.songbook.main;
 
 public class SongBookTheme {
 
-    //region Static Default Values
-    private static final String THEME_NAME = StaticVars.SETTINGS_DEFAULT_THEME_COLOR;
-    private static final int BACKGROUND_TOP = 0xFF6783A1;
-    private static final int BACKGROUND_BOTTOM = 0xFFDEEBFF;
-    private static final int BACKGROUND_ANGLE = 90;
-    private static final int MAIN_FONT = 0xFF000040;
-    private static final int MAIN_FONT_SHADOW = 0x77000000;
-    private static final int TITLE_FONT = 0x7FFFFFFF;
-    private static final int TITLE_FONT_SHADOW = 0x77000000;
-    private static final int SPINNER_FONT = 0xFFFFFFFF;
-    //endregion
-
     //region Static Chord Color Values
     private static final int CHORD_COLOR_BLUE = 0xFF006B9F;     // Default
     private static final int CHORD_COLOR_GREEN = 0xFF1AA809;
@@ -27,7 +15,6 @@ public class SongBookTheme {
     private String mThemeName;
     private int mBackgroundTop;
     private int mBackgroundBottom;
-    private int mBackgroundAngle;
     private int mMainFontColor;
     private int mMainFontShadowColor;
     private int mTitleFontColor;
@@ -40,7 +27,6 @@ public class SongBookTheme {
         // By default we use the blue theme
         mBackgroundTop = BACKGROUND_TOP;
         mBackgroundBottom = BACKGROUND_BOTTOM;
-        mBackgroundAngle = BACKGROUND_ANGLE;
         mMainFontColor = MAIN_FONT;
         mMainFontShadowColor = MAIN_FONT_SHADOW;
         mTitleFontColor = TITLE_FONT;
@@ -53,14 +39,13 @@ public class SongBookTheme {
         // TODO: Select colors based upon themeColor
 
         // By default we use the blue theme
-        mBackgroundTop = BACKGROUND_TOP;
-        mBackgroundBottom = BACKGROUND_BOTTOM;
-        mBackgroundAngle = BACKGROUND_ANGLE;
-        mMainFontColor = MAIN_FONT;
-        mMainFontShadowColor = MAIN_FONT_SHADOW;
-        mTitleFontColor = TITLE_FONT;
-        mTitleFontShadowColor = TITLE_FONT_SHADOW;
-        mSpinnerFontColor = SPINNER_FONT;
+        mBackgroundTop = GREEN_BACKGROUND_TOP;
+        mBackgroundBottom = GREEN_BACKGROUND_BOTTOM;
+        mMainFontColor = GREEN_MAIN_FONT;
+        mMainFontShadowColor = GREEN_MAIN_FONT_SHADOW;
+        mTitleFontColor = GREEN_TITLE_FONT;
+        mTitleFontShadowColor = GREEN_TITLE_FONT_SHADOW;
+        mSpinnerFontColor = GREEN_SPINNER_FONT;
         mThemeName = themeColor;
     }
     //endregion
@@ -80,10 +65,6 @@ public class SongBookTheme {
 
     public int getBackgroundTop() {
         return mBackgroundTop;
-    }
-
-    public int getBackgroundAngle() {
-        return mBackgroundAngle;
     }
 
     public int getTitleFontColor() {
@@ -147,10 +128,6 @@ public class SongBookTheme {
         this.mBackgroundTop = backgroundTop;
     }
 
-    public void setBackgroundAngle(int backgroundAngle) {
-        this.mBackgroundAngle = backgroundAngle;
-    }
-
     public void setTitleFontColor(int titleFontColot) {
         this.mTitleFontColor = titleFontColot;
     }
@@ -166,5 +143,29 @@ public class SongBookTheme {
     public void setSpinnerFontColor(int spinnerFontColor) {
         this.mSpinnerFontColor = spinnerFontColor;
     }
+    //endregion
+
+    //region Theme Color Values
+    //region Static Default Values
+    private static final String THEME_NAME = StaticVars.SETTINGS_DEFAULT_THEME_COLOR;
+    private static final int BACKGROUND_TOP = 0xFF6783A1;
+    private static final int BACKGROUND_BOTTOM = 0xFFDEEBFF;
+    private static final int MAIN_FONT = 0xFF000040;
+    private static final int MAIN_FONT_SHADOW = 0x77000000;
+    private static final int TITLE_FONT = 0x7FFFFFFF;
+    private static final int TITLE_FONT_SHADOW = 0x77000000;
+    private static final int SPINNER_FONT = 0xFFFFFFFF;
+    //endregion
+
+    //region Static Default Values
+    private static final String GREEN_THEME_NAME = StaticVars.SETTINGS_DEFAULT_THEME_COLOR;
+    private static final int GREEN_BACKGROUND_TOP = 0xFF325231;
+    private static final int GREEN_BACKGROUND_BOTTOM = 0xFFA6E7A4;
+    private static final int GREEN_MAIN_FONT = 0xFF000040;
+    private static final int GREEN_MAIN_FONT_SHADOW = 0x77000000;
+    private static final int GREEN_TITLE_FONT = 0x7FFFFFFF;
+    private static final int GREEN_TITLE_FONT_SHADOW = 0x77000000;
+    private static final int GREEN_SPINNER_FONT = 0xFFFFFFFF;
+    //endregion
     //endregion
 }

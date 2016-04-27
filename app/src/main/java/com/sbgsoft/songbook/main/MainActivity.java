@@ -181,8 +181,12 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: Get the current theme from the database
-        SongBookTheme theme = new SongBookTheme();
+        // Set up the database
+        dbAdapter = new DBAdapter(this);
+        dbAdapter.open();
+
+        // Get the current theme from the database
+        SongBookTheme theme = dbAdapter.getCurrentSettings().getSongBookTheme();
 
         // Apply the background color
         View layout = findViewById(R.id.main_linear_layout);
@@ -237,10 +241,6 @@ public class MainActivity extends FragmentActivity {
 		ab.addTab(tab3);
 		ab.addTab(tab1);
 		ab.addTab(tab2);
-				
-		// Set up the database
-		dbAdapter = new DBAdapter(this);
-		dbAdapter.open();
     }
     
     /**
