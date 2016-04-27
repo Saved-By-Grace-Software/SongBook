@@ -10,8 +10,16 @@ public class SongBookTheme {
     private static final int MAIN_FONT_SHADOW = 0x77000000;
     private static final int TITLE_FONT = 0x7FFFFFFF;
     private static final int TITLE_FONT_SHADOW = 0x77000000;
-    private static final int CHORD_FONT = 0xFF006B9F;
     private static final int SPINNER_FONT = 0xFFFFFFFF;
+    //endregion
+
+    //region Static Chord Color Values
+    private static final int CHORD_COLOR_BLUE = 0xFF006B9F;     // Default
+    private static final int CHORD_COLOR_GREEN = 0xFF1AA809;
+    private static final int CHORD_COLOR_PURPLE = 0xFF4309A8;
+    private static final int CHORD_COLOR_PINK = 0xFFEA1081;
+    private static final int CHORD_COLOR_BLACK = 0xFF000000;
+    private static final int CHORD_COLOR_ORANGE = 0xFFFD8200;
     //endregion
 
     //region Private Class Members
@@ -22,7 +30,6 @@ public class SongBookTheme {
     private int mMainFontShadowColor;
     private int mTitleFontColor;
     private int mTitleFontShadowColor;
-    private int mChordFontColor;
     private int mSpinnerFontColor;
     //endregion
 
@@ -36,16 +43,11 @@ public class SongBookTheme {
         mMainFontShadowColor = MAIN_FONT_SHADOW;
         mTitleFontColor = TITLE_FONT;
         mTitleFontShadowColor = TITLE_FONT_SHADOW;
-        mChordFontColor = CHORD_FONT;
         mSpinnerFontColor = SPINNER_FONT;
     }
     //endregion
 
     //region Getters
-    public int getChordFontColor() {
-        return mChordFontColor;
-    }
-
     public int getMainFontColor() {
         return mMainFontColor;
     }
@@ -77,13 +79,36 @@ public class SongBookTheme {
     public int getSpinnerFontColor() {
         return mSpinnerFontColor;
     }
+
+    public static int getChordColorCode(String colorName) {
+        int ret;
+
+        switch(colorName) {
+            case "Green":
+                ret = CHORD_COLOR_GREEN;
+                break;
+            case "Purple":
+                ret = CHORD_COLOR_PURPLE;
+                break;
+            case "Pink":
+                ret = CHORD_COLOR_PINK;
+                break;
+            case "Black":
+                ret = CHORD_COLOR_BLACK;
+                break;
+            case "Orange":
+                ret = CHORD_COLOR_ORANGE;
+                break;
+            case "Default (Blue)":
+            default:
+                ret = CHORD_COLOR_BLUE;
+        }
+
+        return ret;
+    }
     //endregion
 
     //region Setters
-    public void setChordFontColor(int chordFontColor) {
-        this.mChordFontColor = chordFontColor;
-    }
-
     public void setMainFontColor(int mainFontColor) {
         this.mMainFontColor = mainFontColor;
     }

@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.main.ChordClickableSpan;
 import com.sbgsoft.songbook.main.CustomAlertDialogBuilder;
+import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
 import com.sbgsoft.songbook.main.StaticVars;
 
@@ -30,15 +31,15 @@ import java.util.regex.Pattern;
 public class ChordDisplay {
     //region Private Members
     private Activity mActivity;
-    private SongBookTheme mSongBookTheme;
+    private int chordFontColor;
     //endregion
 
     //region Constructors
     public ChordDisplay(Activity _activity) {
         mActivity = _activity;
 
-        // TODO: Get the current theme from the database
-        mSongBookTheme = new SongBookTheme();
+        // Get the current theme from the database
+        chordFontColor = SongBookTheme.getChordColorCode(MainActivity.dbAdapter.getCurrentSettings().getChordColor());
     }
     //endregion
 
@@ -173,7 +174,7 @@ public class ChordDisplay {
                 spannable.setSpan(boldSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                 // Set the color
-                ForegroundColorSpan colorSpan = new ForegroundColorSpan(mSongBookTheme.getChordFontColor());
+                ForegroundColorSpan colorSpan = new ForegroundColorSpan(chordFontColor);
                 spannable.setSpan(colorSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             }
         }
