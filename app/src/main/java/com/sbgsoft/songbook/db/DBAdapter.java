@@ -65,7 +65,7 @@ public class DBAdapter {
     //endregion
 
 
-    //region Other Functions
+    //region Settings Functions
     /**
      * Gets the current settings
      * @return The current settings
@@ -79,6 +79,8 @@ public class DBAdapter {
                             DBStrings.TBLSETTINGS_METRONOME_STATE + ", " +
                             DBStrings.TBLSETTINGS_SET_TRANSPOSE + ", " +
                             DBStrings.TBLSETTINGS_METRONOME_TYPE + ", " +
+                            DBStrings.TBLSETTINGS_THEME_COLOR + ", " +
+                            DBStrings.TBLSETTINGS_CHORD_COLOR + ", " +
                             DBStrings.TBLSETTINGS_SET_EDIT +
                     " FROM " + DBStrings.SETTINGS_TABLE;
 
@@ -90,10 +92,15 @@ public class DBAdapter {
             String transposeOn = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_SET_TRANSPOSE));
             String editOn = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_SET_EDIT));
             int brightMetronome = c.getInt(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_METRONOME_TYPE));
+            String themeColor = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_THEME_COLOR));
+            String chordColor = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_CHORD_COLOR));
             c.close();
 
             // Return the settings object
-            return new Settings(metronomeState, transposeOn, editOn, brightMetronome);
+            Settings tmp = new Settings(metronomeState, transposeOn, editOn, brightMetronome);
+            tmp.setThemeColor(themeColor);
+            tmp.setChordColor(chordColor);
+            return tmp;
         } catch (IndexOutOfBoundsException e) {
             return null;
         } catch (SQLiteException s) {
@@ -115,6 +122,8 @@ public class DBAdapter {
                     DBStrings.TBLSETTINGS_METRONOME_STATE + " = '" + settings.getMetronomeState() + "', " +
                     DBStrings.TBLSETTINGS_SET_EDIT + " = '" + settings.getShowEditInSetString() + "', " +
                     DBStrings.TBLSETTINGS_METRONOME_TYPE + " = " + settings.getUseBrightMetronomeInt() + ", " +
+                    DBStrings.TBLSETTINGS_THEME_COLOR + " = '" + settings.getThemeColor() + "', " +
+                    DBStrings.TBLSETTINGS_CHORD_COLOR + " = '" + settings.getChordColor() + "', " +
                     DBStrings.TBLSETTINGS_SET_TRANSPOSE + " = '" + settings.getShowTransposeInSetString() + "'";
 
             mDb.execSQL(query);
@@ -1824,7 +1833,9 @@ public class DBAdapter {
                         DBStrings.TBLSETTINGS_ID + " integer PRIMARY KEY autoincrement, " +
                         DBStrings.TBLSETTINGS_METRONOME_STATE + " text, " +
                         DBStrings.TBLSETTINGS_SET_EDIT + " text, " +
-                        DBStrings.TBLSETTINGS_METRONOME_TYPE+ " int, " +
+                        DBStrings.TBLSETTINGS_METRONOME_TYPE + " int, " +
+                        DBStrings.TBLSETTINGS_THEME_COLOR + " text, " +
+                        DBStrings.TBLSETTINGS_CHORD_COLOR + " text, " +
                         DBStrings.TBLSETTINGS_SET_TRANSPOSE + " text ); " );
     			
     			// Add default values
@@ -1837,11 +1848,15 @@ public class DBAdapter {
                         DBStrings.TBLSETTINGS_METRONOME_STATE + ", " +
                         DBStrings.TBLSETTINGS_SET_EDIT + ", " +
                         DBStrings.TBLSETTINGS_METRONOME_TYPE + ", " +
+                        DBStrings.TBLSETTINGS_THEME_COLOR + ", " +
+                        DBStrings.TBLSETTINGS_CHORD_COLOR + ", " +
                         DBStrings.TBLSETTINGS_SET_TRANSPOSE +
                         ") VALUES (" +
                         "'" + StaticVars.SETTINGS_METRONOME_STATE_WITHBPM + "', " +
                         "'" + StaticVars.SETTINGS_SET_EDIT_ON + "', " +
-                        " " + StaticVars.SETTIGNS_STANDARD_METRONOME + ", " +
+                        " " + StaticVars.SETTINGS_STANDARD_METRONOME + ", " +
+                        "'" + StaticVars.SETTINGS_DEFAULT_THEME_COLOR + "', " +
+                        "'" + StaticVars.SETTINGS_DEFAULT_CHORD_COLOR + "', " +
                         "'" + StaticVars.SETTINGS_SET_TRANSPOSE_ON + "')");
     			
     			db.setTransactionSuccessful(); 
@@ -1925,13 +1940,28 @@ public class DBAdapter {
 
                 // Updates from DB version 9 or lower
                 if (oldVersion < 10) {
-                    // Add metronome type column to the setting table
+                    // Add metronome type column to the settings table
                     db.execSQL("ALTER TABLE " + DBStrings.SETTINGS_TABLE + " ADD COLUMN " + DBStrings.TBLSETTINGS_METRONOME_TYPE + " int");
 
                     // Set the standard metronome as default
                     db.execSQL("UPDATE " + DBStrings.SETTINGS_TABLE + " " +
                             "SET " + DBStrings.TBLSETTINGS_METRONOME_TYPE +
-                            " = " + StaticVars.SETTIGNS_STANDARD_METRONOME);
+                            " = " + StaticVars.SETTINGS_STANDARD_METRONOME);
+                }
+
+                // Updates from DB version 10 or lower
+                if (oldVersion < 11) {
+                    // Add theme and chord color columns to the settings table
+                    db.execSQL("ALTER TABLE " + DBStrings.SETTINGS_TABLE + " ADD COLUMN " + DBStrings.TBLSETTINGS_THEME_COLOR + " text");
+                    db.execSQL("ALTER TABLE " + DBStrings.SETTINGS_TABLE + " ADD COLUMN " + DBStrings.TBLSETTINGS_CHORD_COLOR + " text");
+
+                    // Set the blue theme as detaulf
+                    db.execSQL("UPDATE " + DBStrings.SETTINGS_TABLE + " " +
+                            "SET " + DBStrings.TBLSETTINGS_THEME_COLOR +
+                            " = '" + StaticVars.SETTINGS_DEFAULT_THEME_COLOR + "'");
+                    db.execSQL("UPDATE " + DBStrings.SETTINGS_TABLE + " " +
+                            "SET " + DBStrings.TBLSETTINGS_CHORD_COLOR +
+                            " = '" + StaticVars.SETTINGS_DEFAULT_CHORD_COLOR + "'");
                 }
     			
     			db.setTransactionSuccessful(); 

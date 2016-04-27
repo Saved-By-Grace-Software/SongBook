@@ -11,6 +11,8 @@ public class Settings {
     private boolean mShowEditInSet;
     private String mMetronomeState;
     private boolean mUseBrightMetronome;
+    private String mThemeColor;
+    private String mChordColor;
     //endregion
 
     //region Constructors
@@ -126,7 +128,7 @@ public class Settings {
         if (mUseBrightMetronome)
             return StaticVars.SETTINGS_BRIGHT_METRONOME;
         else
-            return StaticVars.SETTIGNS_STANDARD_METRONOME;
+            return StaticVars.SETTINGS_STANDARD_METRONOME;
     }
 
     public void setUseBrightMetronome(boolean useBrightMetronome) {
@@ -138,6 +140,22 @@ public class Settings {
             this.mUseBrightMetronome = true;
         else
             this.mUseBrightMetronome = false;
+    }
+
+    public String getThemeColor() {
+        return mThemeColor;
+    }
+
+    public void setThemeColor(String themeColor) {
+        this.mThemeColor = themeColor;
+    }
+
+    public String getChordColor() {
+        return mChordColor;
+    }
+
+    public void setChordColor(String chordColor) {
+        this.mChordColor = chordColor;
     }
     //endregion
 }

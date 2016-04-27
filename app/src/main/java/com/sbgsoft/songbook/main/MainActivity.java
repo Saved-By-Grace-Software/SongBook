@@ -981,6 +981,8 @@ public class MainActivity extends FragmentActivity {
         final CheckBox editOnCB = (CheckBox)dialoglayout.findViewById(R.id.settings_edit_show);
         final RadioGroup metronomeStateRG = (RadioGroup)dialoglayout.findViewById(R.id.settings_metronome_radio);
         final RadioGroup metronomeTypeRG = (RadioGroup)dialoglayout.findViewById(R.id.settings_metronome_type_radio);
+        final Spinner themeColorSpin = (Spinner)dialoglayout.findViewById(R.id.settings_theme_color_spinner);
+        final Spinner chordColorSpin = (Spinner)dialoglayout.findViewById(R.id.settings_chord_color_spinner);
 
         // Update the views with the current settings
         transposeOnCB.setChecked(settings.getShowTransposeInSet());
@@ -991,6 +993,26 @@ public class MainActivity extends FragmentActivity {
             metronomeStateRG.check(R.id.settings_metronome_off);
         if (settings.getUseBrightMetronomeInt() == StaticVars.SETTINGS_BRIGHT_METRONOME)
             metronomeTypeRG.check(R.id.settings_bright_metronome);
+
+        // Update the theme color spinner
+        if (settings.getThemeColor() != null && settings.getThemeColor() != "") {
+            String[] themeColors = getResources().getStringArray(R.array.theme_colors);
+            int loc = Arrays.asList(themeColors).indexOf(settings.getThemeColor());
+            if (loc >= 0 && loc < themeColorSpin.getCount())
+                themeColorSpin.setSelection(loc);
+        } else {
+            themeColorSpin.setSelection(0);
+        }
+
+        // Update the chord color spinner
+        if (settings.getChordColor() != null && settings.getChordColor() != "") {
+            String[] chordColors = getResources().getStringArray(R.array.chord_colors);
+            int loc = Arrays.asList(chordColors).indexOf(settings.getChordColor());
+            if (loc >= 0 && loc < chordColorSpin.getCount())
+                chordColorSpin.setSelection(loc);
+        } else {
+            chordColorSpin.setSelection(0);
+        }
 
         // Add the dialog title
         alert.setTitle("SongBook Settings");
@@ -1015,6 +1037,10 @@ public class MainActivity extends FragmentActivity {
 
                 // Create the settings object to save
                 Settings settings = new Settings(metronomeState, transposeOnCB.isChecked(), editOnCB.isChecked(), metronomeType);
+
+                // Set the color options
+                settings.setThemeColor(String.valueOf(themeColorSpin.getSelectedItem()));
+                settings.setChordColor(String.valueOf(chordColorSpin.getSelectedItem()));
 
                 // Save the options to the database
                 dbAdapter.setCurrentSettings(settings);
