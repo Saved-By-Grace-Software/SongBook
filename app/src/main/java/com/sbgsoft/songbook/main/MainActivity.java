@@ -995,9 +995,9 @@ public class MainActivity extends FragmentActivity {
             metronomeTypeRG.check(R.id.settings_bright_metronome);
 
         // Update the theme color spinner
-        if (settings.getThemeColor() != null && settings.getThemeColor() != "") {
+        if (settings.getSongBookTheme().getThemeName() != null && settings.getSongBookTheme().getThemeName() != "") {
             String[] themeColors = getResources().getStringArray(R.array.theme_colors);
-            int loc = Arrays.asList(themeColors).indexOf(settings.getThemeColor());
+            int loc = Arrays.asList(themeColors).indexOf(settings.getSongBookTheme().getThemeName());
             if (loc >= 0 && loc < themeColorSpin.getCount())
                 themeColorSpin.setSelection(loc);
         } else {
@@ -1039,7 +1039,7 @@ public class MainActivity extends FragmentActivity {
                 Settings settings = new Settings(metronomeState, transposeOnCB.isChecked(), editOnCB.isChecked(), metronomeType);
 
                 // Set the color options
-                settings.setThemeColor(String.valueOf(themeColorSpin.getSelectedItem()));
+                settings.setSongBookTheme(new SongBookTheme(String.valueOf(themeColorSpin.getSelectedItem())));
                 settings.setChordColor(String.valueOf(chordColorSpin.getSelectedItem()));
 
                 // Save the options to the database

@@ -13,6 +13,7 @@ import android.util.Log;
 import com.sbgsoft.songbook.items.SetSearchCriteria;
 import com.sbgsoft.songbook.items.Settings;
 import com.sbgsoft.songbook.items.SongSearchCriteria;
+import com.sbgsoft.songbook.main.SongBookTheme;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.sets.SetsTab;
 import com.sbgsoft.songbook.songs.SongsTab;
@@ -98,7 +99,7 @@ public class DBAdapter {
 
             // Return the settings object
             Settings tmp = new Settings(metronomeState, transposeOn, editOn, brightMetronome);
-            tmp.setThemeColor(themeColor);
+            tmp.setSongBookTheme(new SongBookTheme(themeColor));
             tmp.setChordColor(chordColor);
             return tmp;
         } catch (IndexOutOfBoundsException e) {
@@ -122,7 +123,7 @@ public class DBAdapter {
                     DBStrings.TBLSETTINGS_METRONOME_STATE + " = '" + settings.getMetronomeState() + "', " +
                     DBStrings.TBLSETTINGS_SET_EDIT + " = '" + settings.getShowEditInSetString() + "', " +
                     DBStrings.TBLSETTINGS_METRONOME_TYPE + " = " + settings.getUseBrightMetronomeInt() + ", " +
-                    DBStrings.TBLSETTINGS_THEME_COLOR + " = '" + settings.getThemeColor() + "', " +
+                    DBStrings.TBLSETTINGS_THEME_COLOR + " = '" + settings.getSongBookTheme().getThemeName() + "', " +
                     DBStrings.TBLSETTINGS_CHORD_COLOR + " = '" + settings.getChordColor() + "', " +
                     DBStrings.TBLSETTINGS_SET_TRANSPOSE + " = '" + settings.getShowTransposeInSetString() + "'";
 

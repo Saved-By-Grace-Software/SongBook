@@ -3,6 +3,7 @@ package com.sbgsoft.songbook.main;
 public class SongBookTheme {
 
     //region Static Default Values
+    private static final String THEME_NAME = StaticVars.SETTINGS_DEFAULT_THEME_COLOR;
     private static final int BACKGROUND_TOP = 0xFF6783A1;
     private static final int BACKGROUND_BOTTOM = 0xFFDEEBFF;
     private static final int BACKGROUND_ANGLE = 90;
@@ -23,6 +24,7 @@ public class SongBookTheme {
     //endregion
 
     //region Private Class Members
+    private String mThemeName;
     private int mBackgroundTop;
     private int mBackgroundBottom;
     private int mBackgroundAngle;
@@ -44,10 +46,30 @@ public class SongBookTheme {
         mTitleFontColor = TITLE_FONT;
         mTitleFontShadowColor = TITLE_FONT_SHADOW;
         mSpinnerFontColor = SPINNER_FONT;
+        mThemeName = THEME_NAME;
+    }
+
+    public SongBookTheme(String themeColor) {
+        // TODO: Select colors based upon themeColor
+
+        // By default we use the blue theme
+        mBackgroundTop = BACKGROUND_TOP;
+        mBackgroundBottom = BACKGROUND_BOTTOM;
+        mBackgroundAngle = BACKGROUND_ANGLE;
+        mMainFontColor = MAIN_FONT;
+        mMainFontShadowColor = MAIN_FONT_SHADOW;
+        mTitleFontColor = TITLE_FONT;
+        mTitleFontShadowColor = TITLE_FONT_SHADOW;
+        mSpinnerFontColor = SPINNER_FONT;
+        mThemeName = themeColor;
     }
     //endregion
 
     //region Getters
+    public String getThemeName() {
+        return mThemeName;
+    }
+
     public int getMainFontColor() {
         return mMainFontColor;
     }
@@ -109,6 +131,10 @@ public class SongBookTheme {
     //endregion
 
     //region Setters
+    public void setThemeName(String themeName) {
+        this.mThemeName = themeName;
+    }
+
     public void setMainFontColor(int mainFontColor) {
         this.mMainFontColor = mainFontColor;
     }

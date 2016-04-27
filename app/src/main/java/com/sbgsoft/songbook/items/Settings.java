@@ -1,5 +1,6 @@
 package com.sbgsoft.songbook.items;
 
+import com.sbgsoft.songbook.main.SongBookTheme;
 import com.sbgsoft.songbook.main.StaticVars;
 
 /**
@@ -11,7 +12,7 @@ public class Settings {
     private boolean mShowEditInSet;
     private String mMetronomeState;
     private boolean mUseBrightMetronome;
-    private String mThemeColor;
+    private SongBookTheme mSongBookTheme;
     private String mChordColor;
     //endregion
 
@@ -20,12 +21,14 @@ public class Settings {
         mShowTransposeInSet = true;
         mShowEditInSet = true;
         mMetronomeState = "";
+        mSongBookTheme = new SongBookTheme();
     }
 
     public Settings(String metronomeState, boolean transposeOn, boolean editOn) {
         mShowTransposeInSet = transposeOn;
         mShowEditInSet = editOn;
         mMetronomeState = metronomeState;
+        mSongBookTheme = new SongBookTheme();
     }
 
     public Settings(String metronomeState, boolean transposeOn, boolean editOn, boolean useBrightMetronome) {
@@ -33,6 +36,7 @@ public class Settings {
         mShowEditInSet = editOn;
         mMetronomeState = metronomeState;
         mUseBrightMetronome = useBrightMetronome;
+        mSongBookTheme = new SongBookTheme();
     }
 
     public Settings(String metronomeState, String transposeOn, String editOn) {
@@ -54,6 +58,8 @@ public class Settings {
 
         // Metronome status
         mMetronomeState = metronomeState;
+
+        mSongBookTheme = new SongBookTheme();
     }
 
     public Settings(String metronomeState, String transposeOn, String editOn, int useBrightMetronome) {
@@ -78,6 +84,8 @@ public class Settings {
 
         // Metronome status
         mMetronomeState = metronomeState;
+
+        mSongBookTheme = new SongBookTheme();
     }
     //endregion
 
@@ -142,12 +150,12 @@ public class Settings {
             this.mUseBrightMetronome = false;
     }
 
-    public String getThemeColor() {
-        return mThemeColor;
+    public SongBookTheme getSongBookTheme() {
+        return mSongBookTheme;
     }
 
-    public void setThemeColor(String themeColor) {
-        this.mThemeColor = themeColor;
+    public void setSongBookTheme(SongBookTheme themeColor) {
+        this.mSongBookTheme = themeColor;
     }
 
     public String getChordColor() {
