@@ -51,12 +51,14 @@ public class SongBookThemeTextView extends TextView {
             if (isTitle) {
                 // Set the color to the current theme color
                 setTextColor(songBookTheme.getTitleFontColor());
+                setLinkTextColor(songBookTheme.getTitleFontColor());
             } else if (isSpinner) {
                 // Set the color to the current theme color
                 setTextColor(songBookTheme.getSpinnerFontColor());
             } else {
                 // Set the color to the current theme color
                 setTextColor(songBookTheme.getMainFontColor());
+                setLinkTextColor(songBookTheme.getMainFontColor());
             }
         }
     }
