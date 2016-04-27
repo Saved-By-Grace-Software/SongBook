@@ -8,23 +8,23 @@ import android.widget.TextView;
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.main.SongBookTheme;
 
-public class SongBookThemeMainTextView extends TextView {
+public class SongBookThemeTextView extends TextView {
     private static final float SHADOW_RADIUS = 1.5f;
     private static final int SHADOW_DX = 3;
     private static final int SHADOW_DY = 3;
 
-    public SongBookThemeMainTextView(Context context, AttributeSet attrs, int defStyle) {
+    public SongBookThemeTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context, attrs);
     }
 
-    public SongBookThemeMainTextView(Context context, AttributeSet attrs) {
+    public SongBookThemeTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
 
     }
 
-    public SongBookThemeMainTextView(Context context) {
+    public SongBookThemeTextView(Context context) {
         super(context);
         init(context, null);
     }
@@ -33,17 +33,25 @@ public class SongBookThemeMainTextView extends TextView {
         // TODO: Get current theme from database
         SongBookTheme songBookTheme = new SongBookTheme();
 
-        // Set the color to the current theme color
-        setTextColor(songBookTheme.getMainFontColor());
-
-        // Get the use shadow field
+        // Read the xml attributes
         if (context != null && attrs != null) {
-            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SongBookThemeMainTextView, 0, 0);
-            boolean useShadow = a.getBoolean(R.styleable.SongBookThemeMainTextView_useShadow, false);
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SongBookThemeTextView, 0, 0);
 
+            // Check for using shadow
+            boolean useShadow = a.getBoolean(R.styleable.SongBookThemeTextView_useShadow, false);
             if (useShadow) {
                 // Set shadow color
                 setShadowLayer(SHADOW_RADIUS, SHADOW_DX, SHADOW_DY, songBookTheme.getMainFontShadowColor());
+            }
+
+            // Check for a title
+            boolean isTitle = a.getBoolean(R.styleable.SongBookThemeTextView_isTitle, false);
+            if (isTitle) {
+                // Set the color to the current theme color
+                setTextColor(songBookTheme.getTitleFontColor());
+            } else {
+                // Set the color to the current theme color
+                setTextColor(songBookTheme.getMainFontColor());
             }
         }
     }

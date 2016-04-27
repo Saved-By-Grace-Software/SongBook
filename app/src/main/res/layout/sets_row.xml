@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="top">
 
-    <com.sbgsoft.songbook.views.SongBookThemeMainTextView
+    <com.sbgsoft.songbook.views.SongBookThemeTextView
         android:id="@+id/sets_row_text"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
 	    android:orientation="horizontal"
 	    android:padding="7dp" >
 
-        <com.sbgsoft.songbook.views.SongBookThemeMainTextView
+        <com.sbgsoft.songbook.views.SongBookThemeTextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
 	        android:text="@string/sets_row_date_text"
@@ -32,7 +32,7 @@
 		    android:paddingRight="7dp"
             themetv:useShadow="false"/>
 
-        <com.sbgsoft.songbook.views.SongBookThemeMainTextView
+        <com.sbgsoft.songbook.views.SongBookThemeTextView
             android:id="@+id/sets_row_date"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"

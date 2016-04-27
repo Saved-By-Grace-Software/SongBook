@@ -8,8 +8,7 @@ public class SongBookTheme {
     private static final int BACKGROUND_ANGLE = 90;
     private static final int MAIN_FONT = 0xFF000040;
     private static final int MAIN_FONT_SHADOW = 0x77000000;
-    //private static final int TITLE_FONT = 0x77000000;
-    private static final int TITLE_FONT = 0xFFEF0A15;
+    private static final int TITLE_FONT = 0x7FFFFFFF;
     private static final int TITLE_FONT_SHADOW = 0x77000000;
     private static final int CHORD_FONT = 0xFF006B9F;
     //endregion
