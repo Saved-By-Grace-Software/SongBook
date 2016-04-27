@@ -11,6 +11,7 @@ public class SongBookTheme {
     private static final int TITLE_FONT = 0x7FFFFFFF;
     private static final int TITLE_FONT_SHADOW = 0x77000000;
     private static final int CHORD_FONT = 0xFF006B9F;
+    private static final int SPINNER_FONT = 0xFFFFFFFF;
     //endregion
 
     //region Private Class Members
@@ -22,6 +23,7 @@ public class SongBookTheme {
     private int mTitleFontColor;
     private int mTitleFontShadowColor;
     private int mChordFontColor;
+    private int mSpinnerFontColor;
     //endregion
 
     //region Constructors
@@ -35,6 +37,7 @@ public class SongBookTheme {
         mTitleFontColor = TITLE_FONT;
         mTitleFontShadowColor = TITLE_FONT_SHADOW;
         mChordFontColor = CHORD_FONT;
+        mSpinnerFontColor = SPINNER_FONT;
     }
     //endregion
 
@@ -70,6 +73,10 @@ public class SongBookTheme {
     public int getTitleFontShadowColor() {
         return mTitleFontShadowColor;
     }
+
+    public int getSpinnerFontColor() {
+        return mSpinnerFontColor;
+    }
     //endregion
 
     //region Setters
@@ -103,6 +110,10 @@ public class SongBookTheme {
 
     public void setTitleFontShadowColor(int titleFontShadowColor) {
         this.mTitleFontShadowColor = titleFontShadowColor;
+    }
+
+    public void setSpinnerFontColor(int spinnerFontColor) {
+        this.mSpinnerFontColor = spinnerFontColor;
     }
     //endregion
 }
