@@ -59,6 +59,15 @@ public class SongBookTheme {
                 mThemeName = themeColor;
                 break;
             case "Pink":
+                mBackgroundTop = PINK_BACKGROUND_TOP;
+                mBackgroundBottom = PINK_BACKGROUND_BOTTOM;
+                mMainFontColor = PINK_MAIN_FONT;
+                mMainFontShadowColor = PINK_MAIN_FONT_SHADOW;
+                mTitleFontColor = PINK_TITLE_FONT;
+                mTitleFontShadowColor = PINK_TITLE_FONT_SHADOW;
+                mSpinnerFontColor = PINK_SPINNER_FONT;
+                mThemeName = themeColor;
+                break;
             case "Black":
             case "Orange":
             case "Default (Blue)":
@@ -182,7 +191,7 @@ public class SongBookTheme {
     private static final int MAIN_FONT_SHADOW = 0x77000000;
     private static final int TITLE_FONT = 0x7FFFFFFF;
     private static final int TITLE_FONT_SHADOW = 0x77000000;
-    private static final int SPINNER_FONT = 0xFFFFFFFF;
+    private static final int SPINNER_FONT = 0xFFD1D8F6;
     //endregion
 
     //region Green Theme Color Values
@@ -192,7 +201,7 @@ public class SongBookTheme {
     private static final int GREEN_MAIN_FONT_SHADOW = 0x77000000;
     private static final int GREEN_TITLE_FONT = 0xFFCEF9CE;
     private static final int GREEN_TITLE_FONT_SHADOW = 0x77000000;
-    private static final int GREEN_SPINNER_FONT = 0xFFFFFFFF;
+    private static final int GREEN_SPINNER_FONT = 0xFFCEF9CE;
     //endregion
 
     //region Purple Theme Color Values
@@ -203,6 +212,16 @@ public class SongBookTheme {
     private static final int PURPLE_TITLE_FONT = 0xFFD59AF6;
     private static final int PURPLE_TITLE_FONT_SHADOW = 0x77000000;
     private static final int PURPLE_SPINNER_FONT = 0xFFD9B6ED;
+    //endregion
+
+    //region Pink Theme Color Values
+    private static final int PINK_BACKGROUND_TOP = 0xFFCD0074;
+    private static final int PINK_BACKGROUND_BOTTOM = 0xFFF4B8DA;
+    private static final int PINK_MAIN_FONT = 0xFF32001C;
+    private static final int PINK_MAIN_FONT_SHADOW = 0x77000000;
+    private static final int PINK_TITLE_FONT = 0xFFEA83BD;
+    private static final int PINK_TITLE_FONT_SHADOW = 0x77000000;
+    private static final int PINK_SPINNER_FONT = 0xFFF9CEE7;
     //endregion
     //endregion
 }
