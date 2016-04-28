@@ -40,7 +40,9 @@ public class StaticVars {
     public static final String SETTINGS_SET_EDIT_ON = "ON";
     public static final String SETTINGS_SET_EDIT_OFF = "OFF";
     public static final int SETTINGS_BRIGHT_METRONOME = 1;
-    public static final int SETTIGNS_STANDARD_METRONOME = 0;
+    public static final int SETTINGS_STANDARD_METRONOME = 0;
+    public static final String SETTINGS_DEFAULT_THEME_COLOR = "Default (Blue)";
+    public static final String SETTINGS_DEFAULT_CHORD_COLOR = "Default (Blue)";
 
 	// General
 	public static final String EOL = System.getProperty("line.separator");

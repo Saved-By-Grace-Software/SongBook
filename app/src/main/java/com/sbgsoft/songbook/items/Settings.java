@@ -1,5 +1,6 @@
 package com.sbgsoft.songbook.items;
 
+import com.sbgsoft.songbook.main.SongBookTheme;
 import com.sbgsoft.songbook.main.StaticVars;
 
 /**
@@ -11,6 +12,8 @@ public class Settings {
     private boolean mShowEditInSet;
     private String mMetronomeState;
     private boolean mUseBrightMetronome;
+    private SongBookTheme mSongBookTheme;
+    private String mChordColor;
     //endregion
 
     //region Constructors
@@ -18,12 +21,14 @@ public class Settings {
         mShowTransposeInSet = true;
         mShowEditInSet = true;
         mMetronomeState = "";
+        mSongBookTheme = new SongBookTheme();
     }
 
     public Settings(String metronomeState, boolean transposeOn, boolean editOn) {
         mShowTransposeInSet = transposeOn;
         mShowEditInSet = editOn;
         mMetronomeState = metronomeState;
+        mSongBookTheme = new SongBookTheme();
     }
 
     public Settings(String metronomeState, boolean transposeOn, boolean editOn, boolean useBrightMetronome) {
@@ -31,6 +36,7 @@ public class Settings {
         mShowEditInSet = editOn;
         mMetronomeState = metronomeState;
         mUseBrightMetronome = useBrightMetronome;
+        mSongBookTheme = new SongBookTheme();
     }
 
     public Settings(String metronomeState, String transposeOn, String editOn) {
@@ -52,6 +58,8 @@ public class Settings {
 
         // Metronome status
         mMetronomeState = metronomeState;
+
+        mSongBookTheme = new SongBookTheme();
     }
 
     public Settings(String metronomeState, String transposeOn, String editOn, int useBrightMetronome) {
@@ -76,6 +84,8 @@ public class Settings {
 
         // Metronome status
         mMetronomeState = metronomeState;
+
+        mSongBookTheme = new SongBookTheme();
     }
     //endregion
 
@@ -126,7 +136,7 @@ public class Settings {
         if (mUseBrightMetronome)
             return StaticVars.SETTINGS_BRIGHT_METRONOME;
         else
-            return StaticVars.SETTIGNS_STANDARD_METRONOME;
+            return StaticVars.SETTINGS_STANDARD_METRONOME;
     }
 
     public void setUseBrightMetronome(boolean useBrightMetronome) {
@@ -138,6 +148,22 @@ public class Settings {
             this.mUseBrightMetronome = true;
         else
             this.mUseBrightMetronome = false;
+    }
+
+    public SongBookTheme getSongBookTheme() {
+        return mSongBookTheme;
+    }
+
+    public void setSongBookTheme(SongBookTheme themeColor) {
+        this.mSongBookTheme = themeColor;
+    }
+
+    public String getChordColor() {
+        return mChordColor;
+    }
+
+    public void setChordColor(String chordColor) {
+        this.mChordColor = chordColor;
     }
     //endregion
 }

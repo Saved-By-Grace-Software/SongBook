@@ -36,6 +36,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfDocument.Page;
 import android.graphics.pdf.PdfDocument.PageInfo;
@@ -111,6 +112,7 @@ import com.sbgsoft.songbook.songs.SongsTab;
 import com.sbgsoft.songbook.songs.TextFileImporter;
 import com.sbgsoft.songbook.songs.TimeSignature;
 import com.sbgsoft.songbook.views.AutoFitTextView;
+import com.sbgsoft.songbook.views.SongBookThemeTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
 
@@ -179,7 +181,23 @@ public class MainActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
+        // Set up the database
+        dbAdapter = new DBAdapter(this);
+        dbAdapter.open();
+
+        // Get the current theme from the database
+        SongBookTheme theme = dbAdapter.getCurrentSettings().getSongBookTheme();
+
+        // Apply the background color
+        View layout = findViewById(R.id.main_linear_layout);
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom()});
+        gd.setCornerRadius(0f);
+        layout.setBackground(gd);
+
+        // Create the tab objects
         setsFragment = new SetsTab();
         songsFragment = new SongsTab();
         currSetFragment = new CurrentSetTab();
@@ -188,9 +206,7 @@ public class MainActivity extends FragmentActivity {
         mPagerAdapter.addFragment(currSetFragment);
         mPagerAdapter.addFragment(setsFragment);
         mPagerAdapter.addFragment(songsFragment);
-       
-        
-        //transaction = getSupportFragmentManager().beginTransaction();
+
         
         mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mPagerAdapter);
@@ -226,10 +242,6 @@ public class MainActivity extends FragmentActivity {
 		ab.addTab(tab3);
 		ab.addTab(tab1);
 		ab.addTab(tab2);
-				
-		// Set up the database
-		dbAdapter = new DBAdapter(this);
-		dbAdapter.open();
     }
     
     /**
@@ -970,6 +982,8 @@ public class MainActivity extends FragmentActivity {
         final CheckBox editOnCB = (CheckBox)dialoglayout.findViewById(R.id.settings_edit_show);
         final RadioGroup metronomeStateRG = (RadioGroup)dialoglayout.findViewById(R.id.settings_metronome_radio);
         final RadioGroup metronomeTypeRG = (RadioGroup)dialoglayout.findViewById(R.id.settings_metronome_type_radio);
+        final Spinner themeColorSpin = (Spinner)dialoglayout.findViewById(R.id.settings_theme_color_spinner);
+        final Spinner chordColorSpin = (Spinner)dialoglayout.findViewById(R.id.settings_chord_color_spinner);
 
         // Update the views with the current settings
         transposeOnCB.setChecked(settings.getShowTransposeInSet());
@@ -980,6 +994,26 @@ public class MainActivity extends FragmentActivity {
             metronomeStateRG.check(R.id.settings_metronome_off);
         if (settings.getUseBrightMetronomeInt() == StaticVars.SETTINGS_BRIGHT_METRONOME)
             metronomeTypeRG.check(R.id.settings_bright_metronome);
+
+        // Update the theme color spinner
+        if (settings.getSongBookTheme().getThemeName() != null && settings.getSongBookTheme().getThemeName() != "") {
+            String[] themeColors = getResources().getStringArray(R.array.theme_colors);
+            int loc = Arrays.asList(themeColors).indexOf(settings.getSongBookTheme().getThemeName());
+            if (loc >= 0 && loc < themeColorSpin.getCount())
+                themeColorSpin.setSelection(loc);
+        } else {
+            themeColorSpin.setSelection(0);
+        }
+
+        // Update the chord color spinner
+        if (settings.getChordColor() != null && settings.getChordColor() != "") {
+            String[] chordColors = getResources().getStringArray(R.array.chord_colors);
+            int loc = Arrays.asList(chordColors).indexOf(settings.getChordColor());
+            if (loc >= 0 && loc < chordColorSpin.getCount())
+                chordColorSpin.setSelection(loc);
+        } else {
+            chordColorSpin.setSelection(0);
+        }
 
         // Add the dialog title
         alert.setTitle("SongBook Settings");
@@ -1005,8 +1039,15 @@ public class MainActivity extends FragmentActivity {
                 // Create the settings object to save
                 Settings settings = new Settings(metronomeState, transposeOnCB.isChecked(), editOnCB.isChecked(), metronomeType);
 
+                // Set the color options
+                settings.setSongBookTheme(new SongBookTheme(String.valueOf(themeColorSpin.getSelectedItem())));
+                settings.setChordColor(String.valueOf(chordColorSpin.getSelectedItem()));
+
                 // Save the options to the database
                 dbAdapter.setCurrentSettings(settings);
+
+                // Load the current theme
+                loadTheme();
 
                 // Close the dialog
                 dialog.dismiss();
@@ -1017,6 +1058,49 @@ public class MainActivity extends FragmentActivity {
         alert.setCanceledOnTouchOutside(true);
 
         alert.show();
+    }
+
+    /**
+     * Loads the current theme from the database and displays it
+     */
+    public void loadTheme() {
+        // Get the current theme from the database
+        SongBookTheme theme = dbAdapter.getCurrentSettings().getSongBookTheme();
+
+        // Apply the background color
+        View layout = findViewById(R.id.main_linear_layout);
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom()});
+        gd.setCornerRadius(0f);
+        layout.setBackground(gd);
+
+        // Apply the list font colors
+        fillSetsListView();
+        fillCurrentSetListView();
+        fillSongsListView();
+
+        // Apply spinner color
+        fillSetGroupsSpinner();
+        fillSetSortSpinner();
+        fillSongGroupsSpinner();
+        fillSongSortSpinner();
+
+        // Apply title color for sets tab
+        SongBookThemeTextView setsTitle = ((SongBookThemeTextView)findViewById(R.id.sets_tab_title));
+        setsTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+
+        // Apply title color for current set tab
+        SongBookThemeTextView currSetTitle = ((SongBookThemeTextView)findViewById(R.id.current_set_tab_title));
+        currSetTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+
+        // Apply title color for songs tab
+        SongBookThemeTextView songsTitle = ((SongBookThemeTextView)findViewById(R.id.songs_tab_title));
+        songsTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+
+        // Apply title color for current set link
+        SongBookThemeTextView currSetLinkTitle = ((SongBookThemeTextView)findViewById(R.id.current_set_tab_link));
+        currSetLinkTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
     }
     //endregion
 

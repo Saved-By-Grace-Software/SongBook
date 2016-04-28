@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:themetv="http://schemas.android.com/apk/res/com.sbgsoft.songbook"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="top"> 
+    android:gravity="top">
 
-	<TextView android:id="@+id/sets_row_text"
+    <com.sbgsoft.songbook.views.SongBookThemeTextView
+        android:id="@+id/sets_row_text"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:includeFontPadding="true"
 	    android:textSize="@dimen/listMainTextSize"
-	    android:textColor="@color/defaultTextColor"
-	    android:shadowColor="@color/TransparentGrey" 
-		android:shadowDx="3"
-		android:shadowDy="3" 
-		android:shadowRadius="1.5" />
+        themetv:useShadow="true" />
 	
 	<LinearLayout
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal"
 	    android:padding="7dp" >
-	    
-	    <TextView 
+
+        <com.sbgsoft.songbook.views.SongBookThemeTextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content" 
 	        android:text="@string/sets_row_date_text"
@@ -31,16 +30,17 @@
 		    android:textStyle="bold|italic"
 		    android:paddingLeft="20dp"
 		    android:paddingRight="7dp"
-		    android:textColor="@color/defaultTextColor" />
+            themetv:useShadow="false"/>
 
-		<TextView android:id="@+id/sets_row_date"
+        <com.sbgsoft.songbook.views.SongBookThemeTextView
+            android:id="@+id/sets_row_date"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:includeFontPadding="true"
 		    android:textSize="@dimen/listSubTextSize"
 		    android:textStyle="italic"
 		    android:paddingRight="7dp"
-		    android:textColor="@color/defaultTextColor" />
+            themetv:useShadow="false"/>
 	
 	</LinearLayout>
 	
