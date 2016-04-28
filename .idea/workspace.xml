@@ -23,8 +23,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0b814f9b-14c2-4a07-9dcd-088d3dc0bab9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SongBookThemeTextView.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SongBookThemeTextView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/SongBookTheme.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/SongBookTheme.java" />
     </list>
     <ignored path="Songbook.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -75,10 +74,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8788396">
+            <state vertical-scroll-proportion="0.0">
               <caret line="1102" column="24" selection-start-line="1102" selection-start-column="24" selection-end-line="1102" selection-end-column="24" />
               <folding>
                 <element signature="e#4440#4464#0" expanded="false" />
@@ -321,45 +320,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tab_current_set.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_current_set.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.6363635">
-              <caret line="30" column="49" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="49" />
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="android-designer">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SongBookTheme.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SongBookTheme.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/SongBookTheme.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="185" column="4" selection-start-line="185" selection-start-column="4" selection-end-line="185" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.70989764">
+              <caret line="204" column="61" selection-start-line="204" selection-start-column="61" selection-end-line="204" selection-end-column="61" />
               <folding>
                 <element signature="e#70#104#0" expanded="false" />
                 <element signature="e#507#537#0" expanded="false" />
-                <element signature="e#2532#2548#0" expanded="false" />
+                <element signature="e#3005#3021#0" expanded="false" />
                 <element signature="method#getChordColorCode#0;class#SongBookTheme#0" expanded="false" />
-                <element signature="e#3888#3904#0" expanded="false" />
+                <element signature="e#4361#4377#0" expanded="false" />
                 <element signature="method#setBackgroundBottom#0;class#SongBookTheme#0" expanded="false" />
                 <element signature="method#setMainFontShadowColor#0;class#SongBookTheme#0" expanded="false" />
                 <element signature="method#setTitleFontShadowColor#0;class#SongBookTheme#0" expanded="false" />
                 <element signature="method#setSpinnerFontColor#0;class#SongBookTheme#0" expanded="false" />
+                <element signature="e#5345#5385#0" expanded="false" />
+                <element signature="e#5896#5929#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SongBookThemeTextView.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SongBookThemeTextView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="76" column="30" selection-start-line="76" selection-start-column="30" selection-end-line="76" selection-end-column="30" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -1983,9 +1961,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/items/Settings.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/songs_row_section.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/SongBookTheme.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SongBookThemeTextView.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/SongBookTheme.java" />
       </list>
     </option>
   </component>
@@ -3659,14 +3637,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SongBookThemeTextView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="76" column="30" selection-start-line="76" selection-start-column="30" selection-end-line="76" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/songs_row_section.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3219697">
@@ -3676,24 +3646,6 @@
       </provider>
       <provider editor-type-id="android-designer">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/SongBookTheme.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="185" column="4" selection-start-line="185" selection-start-column="4" selection-end-line="185" selection-end-column="4" />
-          <folding>
-            <element signature="e#70#104#0" expanded="false" />
-            <element signature="e#507#537#0" expanded="false" />
-            <element signature="e#2532#2548#0" expanded="false" />
-            <element signature="method#getChordColorCode#0;class#SongBookTheme#0" expanded="false" />
-            <element signature="e#3888#3904#0" expanded="false" />
-            <element signature="method#setBackgroundBottom#0;class#SongBookTheme#0" expanded="false" />
-            <element signature="method#setMainFontShadowColor#0;class#SongBookTheme#0" expanded="false" />
-            <element signature="method#setTitleFontShadowColor#0;class#SongBookTheme#0" expanded="false" />
-            <element signature="method#setSpinnerFontColor#0;class#SongBookTheme#0" expanded="false" />
-          </folding>
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_sets.xml">
@@ -3720,7 +3672,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/tab_current_set.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.6363635">
+        <state vertical-scroll-proportion="0.48022598">
           <caret line="30" column="49" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="49" />
           <folding />
         </state>
@@ -3731,7 +3683,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8788396">
+        <state vertical-scroll-proportion="0.0">
           <caret line="1102" column="24" selection-start-line="1102" selection-start-column="24" selection-end-line="1102" selection-end-column="24" />
           <folding>
             <element signature="e#4440#4464#0" expanded="false" />
@@ -3969,6 +3921,34 @@
             <element signature="docComment;class#SetItemComparableDateReverse#0;class#MainActivity#0" expanded="false" />
             <element signature="class#SetItemComparableDateReverse#0;class#MainActivity#0" expanded="false" />
             <element signature="method#compare#0;class#SetItemComparableDateReverse#0;class#MainActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SongBookThemeTextView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.78327644">
+          <caret line="76" column="30" selection-start-line="76" selection-start-column="30" selection-end-line="76" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/SongBookTheme.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.70989764">
+          <caret line="204" column="61" selection-start-line="204" selection-start-column="61" selection-end-line="204" selection-end-column="61" />
+          <folding>
+            <element signature="e#70#104#0" expanded="false" />
+            <element signature="e#507#537#0" expanded="false" />
+            <element signature="e#3005#3021#0" expanded="false" />
+            <element signature="method#getChordColorCode#0;class#SongBookTheme#0" expanded="false" />
+            <element signature="e#4361#4377#0" expanded="false" />
+            <element signature="method#setBackgroundBottom#0;class#SongBookTheme#0" expanded="false" />
+            <element signature="method#setMainFontShadowColor#0;class#SongBookTheme#0" expanded="false" />
+            <element signature="method#setTitleFontShadowColor#0;class#SongBookTheme#0" expanded="false" />
+            <element signature="method#setSpinnerFontColor#0;class#SongBookTheme#0" expanded="false" />
+            <element signature="e#5345#5385#0" expanded="false" />
+            <element signature="e#5896#5929#0" expanded="false" />
           </folding>
         </state>
       </provider>

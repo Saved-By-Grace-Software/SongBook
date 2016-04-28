@@ -49,6 +49,15 @@ public class SongBookTheme {
                 mThemeName = themeColor;
                 break;
             case "Purple":
+                mBackgroundTop = PURPLE_BACKGROUND_TOP;
+                mBackgroundBottom = PURPLE_BACKGROUND_BOTTOM;
+                mMainFontColor = PURPLE_MAIN_FONT;
+                mMainFontShadowColor = PURPLE_MAIN_FONT_SHADOW;
+                mTitleFontColor = PURPLE_TITLE_FONT;
+                mTitleFontShadowColor = PURPLE_TITLE_FONT_SHADOW;
+                mSpinnerFontColor = PURPLE_SPINNER_FONT;
+                mThemeName = themeColor;
+                break;
             case "Pink":
             case "Black":
             case "Orange":
@@ -165,7 +174,7 @@ public class SongBookTheme {
     //endregion
 
     //region Theme Color Values
-    //region Static Default Values
+    //region Default Blue Theme Color Values
     private static final String THEME_NAME = StaticVars.SETTINGS_DEFAULT_THEME_COLOR;
     private static final int BACKGROUND_TOP = 0xFF6783A1;
     private static final int BACKGROUND_BOTTOM = 0xFFDEEBFF;
@@ -176,7 +185,7 @@ public class SongBookTheme {
     private static final int SPINNER_FONT = 0xFFFFFFFF;
     //endregion
 
-    //region Static Default Values
+    //region Green Theme Color Values
     private static final int GREEN_BACKGROUND_TOP = 0xFF5CDD5C;
     private static final int GREEN_BACKGROUND_BOTTOM = 0xFFB3F6B3;
     private static final int GREEN_MAIN_FONT = 0xFF002100;
@@ -184,6 +193,16 @@ public class SongBookTheme {
     private static final int GREEN_TITLE_FONT = 0xFFCEF9CE;
     private static final int GREEN_TITLE_FONT_SHADOW = 0x77000000;
     private static final int GREEN_SPINNER_FONT = 0xFFFFFFFF;
+    //endregion
+
+    //region Purple Theme Color Values
+    private static final int PURPLE_BACKGROUND_TOP = 0xFF500D75;
+    private static final int PURPLE_BACKGROUND_BOTTOM = 0xFFD9B6ED;
+    private static final int PURPLE_MAIN_FONT = 0xFF1C0229;
+    private static final int PURPLE_MAIN_FONT_SHADOW = 0x77000000;
+    private static final int PURPLE_TITLE_FONT = 0xFFD59AF6;
+    private static final int PURPLE_TITLE_FONT_SHADOW = 0x77000000;
+    private static final int PURPLE_SPINNER_FONT = 0xFFD9B6ED;
     //endregion
     //endregion
 }
