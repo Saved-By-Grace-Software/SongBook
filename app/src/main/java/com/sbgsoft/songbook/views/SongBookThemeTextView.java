@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
 
 public class SongBookThemeTextView extends TextView {
@@ -30,8 +31,8 @@ public class SongBookThemeTextView extends TextView {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        // TODO: Get current theme from database
-        SongBookTheme songBookTheme = new SongBookTheme();
+        // Get current theme from database
+        SongBookTheme songBookTheme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
 
         // Read the xml attributes
         if (context != null && attrs != null) {
