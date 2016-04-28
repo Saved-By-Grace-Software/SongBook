@@ -68,7 +68,16 @@ public class SongBookTheme {
                 mSpinnerFontColor = PINK_SPINNER_FONT;
                 mThemeName = themeColor;
                 break;
-            case "Black":
+            case "Grey":
+                mBackgroundTop = GREY_BACKGROUND_TOP;
+                mBackgroundBottom = GREY_BACKGROUND_BOTTOM;
+                mMainFontColor = GREY_MAIN_FONT;
+                mMainFontShadowColor = GREY_MAIN_FONT_SHADOW;
+                mTitleFontColor = GREY_TITLE_FONT;
+                mTitleFontShadowColor = GREY_TITLE_FONT_SHADOW;
+                mSpinnerFontColor = GREY_SPINNER_FONT;
+                mThemeName = themeColor;
+                break;
             case "Orange":
             case "Default (Blue)":
             default:
@@ -222,6 +231,16 @@ public class SongBookTheme {
     private static final int PINK_TITLE_FONT = 0xFFEA83BD;
     private static final int PINK_TITLE_FONT_SHADOW = 0x77000000;
     private static final int PINK_SPINNER_FONT = 0xFFF9CEE7;
+    //endregion
+
+    //region Grey Theme Color Values
+    private static final int GREY_BACKGROUND_TOP = 0xFF424242;
+    private static final int GREY_BACKGROUND_BOTTOM = 0xFFEEEEEE;
+    private static final int GREY_MAIN_FONT = 0xFF000000;
+    private static final int GREY_MAIN_FONT_SHADOW = 0x77000000;
+    private static final int GREY_TITLE_FONT = 0xFFBDBDBD;
+    private static final int GREY_TITLE_FONT_SHADOW = 0x77000000;
+    private static final int GREY_SPINNER_FONT = 0xFFFAFAFA;
     //endregion
     //endregion
 }
