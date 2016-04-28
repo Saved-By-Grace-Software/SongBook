@@ -112,6 +112,7 @@ import com.sbgsoft.songbook.songs.SongsTab;
 import com.sbgsoft.songbook.songs.TextFileImporter;
 import com.sbgsoft.songbook.songs.TimeSignature;
 import com.sbgsoft.songbook.views.AutoFitTextView;
+import com.sbgsoft.songbook.views.SongBookThemeTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
 
@@ -1085,8 +1086,21 @@ public class MainActivity extends FragmentActivity {
         fillSongGroupsSpinner();
         fillSongSortSpinner();
 
-        // TODO: Apply title color
-        ((TextView)findViewById(R.id.sets_tab_title)).setText("Test");
+        // Apply title color for sets tab
+        SongBookThemeTextView setsTitle = ((SongBookThemeTextView)findViewById(R.id.sets_tab_title));
+        setsTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+
+        // Apply title color for current set tab
+        SongBookThemeTextView currSetTitle = ((SongBookThemeTextView)findViewById(R.id.current_set_tab_title));
+        currSetTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+
+        // Apply title color for songs tab
+        SongBookThemeTextView songsTitle = ((SongBookThemeTextView)findViewById(R.id.songs_tab_title));
+        songsTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+
+        // Apply title color for current set link
+        SongBookThemeTextView currSetLinkTitle = ((SongBookThemeTextView)findViewById(R.id.current_set_tab_link));
+        currSetLinkTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
     }
     //endregion
 
