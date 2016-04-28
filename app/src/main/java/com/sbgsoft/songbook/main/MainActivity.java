@@ -1045,6 +1045,9 @@ public class MainActivity extends FragmentActivity {
                 // Save the options to the database
                 dbAdapter.setCurrentSettings(settings);
 
+                // Load the current theme
+                loadTheme();
+
                 // Close the dialog
                 dialog.dismiss();
             }
@@ -1054,6 +1057,36 @@ public class MainActivity extends FragmentActivity {
         alert.setCanceledOnTouchOutside(true);
 
         alert.show();
+    }
+
+    /**
+     * Loads the current theme from the database and displays it
+     */
+    public void loadTheme() {
+        // Get the current theme from the database
+        SongBookTheme theme = dbAdapter.getCurrentSettings().getSongBookTheme();
+
+        // Apply the background color
+        View layout = findViewById(R.id.main_linear_layout);
+        GradientDrawable gd = new GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM,
+                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom()});
+        gd.setCornerRadius(0f);
+        layout.setBackground(gd);
+
+        // Apply the list font colors
+        fillSetsListView();
+        fillCurrentSetListView();
+        fillSongsListView();
+
+        // Apply spinner color
+        fillSetGroupsSpinner();
+        fillSetSortSpinner();
+        fillSongGroupsSpinner();
+        fillSongSortSpinner();
+
+        // TODO: Apply title color
+        ((TextView)findViewById(R.id.sets_tab_title)).setText("Test");
     }
     //endregion
 

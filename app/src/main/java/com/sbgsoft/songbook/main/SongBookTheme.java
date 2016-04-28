@@ -177,7 +177,6 @@ public class SongBookTheme {
     //endregion
 
     //region Static Default Values
-    private static final String GREEN_THEME_NAME = StaticVars.SETTINGS_DEFAULT_THEME_COLOR;
     private static final int GREEN_BACKGROUND_TOP = 0xFF5CDD5C;
     private static final int GREEN_BACKGROUND_BOTTOM = 0xFFB3F6B3;
     private static final int GREEN_MAIN_FONT = 0xFF002100;
