@@ -78,7 +78,26 @@ public class SongBookTheme {
                 mSpinnerFontColor = GREY_SPINNER_FONT;
                 mThemeName = themeColor;
                 break;
+            case "Yellow":
+                mBackgroundTop = YELLOW_BACKGROUND_TOP;
+                mBackgroundBottom = YELLOW_BACKGROUND_BOTTOM;
+                mMainFontColor = YELLOW_MAIN_FONT;
+                mMainFontShadowColor = YELLOW_MAIN_FONT_SHADOW;
+                mTitleFontColor = YELLOW_TITLE_FONT;
+                mTitleFontShadowColor = YELLOW_TITLE_FONT_SHADOW;
+                mSpinnerFontColor = YELLOW_SPINNER_FONT;
+                mThemeName = themeColor;
+                break;
             case "Orange":
+                mBackgroundTop = ORANGE_BACKGROUND_TOP;
+                mBackgroundBottom = ORANGE_BACKGROUND_BOTTOM;
+                mMainFontColor = ORANGE_MAIN_FONT;
+                mMainFontShadowColor = ORANGE_MAIN_FONT_SHADOW;
+                mTitleFontColor = ORANGE_TITLE_FONT;
+                mTitleFontShadowColor = ORANGE_TITLE_FONT_SHADOW;
+                mSpinnerFontColor = ORANGE_SPINNER_FONT;
+                mThemeName = themeColor;
+                break;
             case "Default (Blue)":
             default:
                 mBackgroundTop = BACKGROUND_TOP;
@@ -241,6 +260,26 @@ public class SongBookTheme {
     private static final int GREY_TITLE_FONT = 0xFFBDBDBD;
     private static final int GREY_TITLE_FONT_SHADOW = 0x77000000;
     private static final int GREY_SPINNER_FONT = 0xFFFAFAFA;
+    //endregion
+
+    //region Yellow Theme Color Values
+    private static final int YELLOW_BACKGROUND_TOP = 0xFFFFFF00;
+    private static final int YELLOW_BACKGROUND_BOTTOM = 0xFFFFFFD3;
+    private static final int YELLOW_MAIN_FONT = 0xFF000000;
+    private static final int YELLOW_MAIN_FONT_SHADOW = 0xFFEEEEEE;
+    private static final int YELLOW_TITLE_FONT = 0xFF000000;
+    private static final int YELLOW_TITLE_FONT_SHADOW = 0xFFEEEEEE;
+    private static final int YELLOW_SPINNER_FONT = 0xFF424242;
+    //endregion
+
+    //region Orange Theme Color Values
+    private static final int ORANGE_BACKGROUND_TOP = 0xFFFF3D00;
+    private static final int ORANGE_BACKGROUND_BOTTOM = 0xFFFFCCBC;
+    private static final int ORANGE_MAIN_FONT = 0xFF6A1900;
+    private static final int ORANGE_MAIN_FONT_SHADOW = 0xFF000000;
+    private static final int ORANGE_TITLE_FONT = 0xFFFF8A65;
+    private static final int ORANGE_TITLE_FONT_SHADOW = 0xFF000000;
+    private static final int ORANGE_SPINNER_FONT = 0xFFFFCCBC;
     //endregion
     //endregion
 }
