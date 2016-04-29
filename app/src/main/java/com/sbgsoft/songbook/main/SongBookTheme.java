@@ -118,6 +118,16 @@ public class SongBookTheme {
                 mThemeName = themeColor;
                 break;
             case "Red":
+                mBackgroundTop = RED_BACKGROUND_TOP;
+                mBackgroundBottom = RED_BACKGROUND_BOTTOM;
+                mMainFontColor = RED_MAIN_FONT;
+                mMainFontShadowColor = RED_MAIN_FONT_SHADOW;
+                mTitleFontColor = RED_TITLE_FONT;
+                mTitleFontShadowColor = RED_TITLE_FONT_SHADOW;
+                mSpinnerFontColor = RED_SPINNER_FONT;
+                mSeparatorBarColor = RED_SEPARATOR_BAR;
+                mThemeName = themeColor;
+                break;
             case "Default (Blue)":
             default:
                 mBackgroundTop = BACKGROUND_TOP;
@@ -286,6 +296,17 @@ public class SongBookTheme {
     private static final int ORANGE_TITLE_FONT_SHADOW = 0xFFBF360C;
     private static final int ORANGE_SPINNER_FONT = 0xFFFBE9E7;
     private static final int ORANGE_SEPARATOR_BAR = 0xFF360D00;
+    //endregion
+
+    //region Red Theme Color Values
+    private static final int RED_BACKGROUND_TOP = 0xFFD50000;
+    private static final int RED_BACKGROUND_BOTTOM = 0xFFFFEBEE;
+    private static final int RED_MAIN_FONT = 0xFF360400;
+    private static final int RED_MAIN_FONT_SHADOW = 0xFF730800;
+    private static final int RED_TITLE_FONT = 0xFFEF9A9A;
+    private static final int RED_TITLE_FONT_SHADOW = 0xFFB71C1C;
+    private static final int RED_SPINNER_FONT = 0xFFFFEBEE;
+    private static final int RED_SEPARATOR_BAR = 0xFF360400;
     //endregion
     //endregion
 }
