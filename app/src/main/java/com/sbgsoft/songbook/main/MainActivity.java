@@ -36,6 +36,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfDocument.Page;
@@ -196,6 +197,14 @@ public class MainActivity extends FragmentActivity {
                 new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom()});
         gd.setCornerRadius(0f);
         layout.setBackground(gd);
+
+        // Set titlebar background
+        ActionBar bar = getActionBar();
+        GradientDrawable bd = new GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT,
+                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
+        bd.setCornerRadius(0f);
+        bar.setBackgroundDrawable(bd);
 
         // Create the tab objects
         setsFragment = new SetsTab();
@@ -1074,6 +1083,14 @@ public class MainActivity extends FragmentActivity {
                 new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom()});
         gd.setCornerRadius(0f);
         layout.setBackground(gd);
+
+        // Set titlebar background
+        ActionBar bar = getActionBar();
+        GradientDrawable bd = new GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT,
+                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
+        bd.setCornerRadius(0f);
+        bar.setBackgroundDrawable(bd);
 
         // Apply the list font colors
         fillSetsListView();
