@@ -216,7 +216,6 @@ public class MainActivity extends FragmentActivity {
         mPagerAdapter.addFragment(setsFragment);
         mPagerAdapter.addFragment(songsFragment);
 
-        
         mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mPagerAdapter);
 		mViewPager.setOffscreenPageLimit(3);
