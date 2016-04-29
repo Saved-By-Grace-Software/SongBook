@@ -212,56 +212,56 @@ public class SongBookTheme {
     //endregion
 
     //region Green Theme Color Values
-    private static final int GREEN_BACKGROUND_TOP = 0xFF1B5E20;
+    private static final int GREEN_BACKGROUND_TOP = 0xFF388E3C;
     private static final int GREEN_BACKGROUND_BOTTOM = 0xFFE8F5E9;
-    private static final int GREEN_MAIN_FONT = 0xFF002100;
-    private static final int GREEN_MAIN_FONT_SHADOW = 0x77000000;
-    private static final int GREEN_TITLE_FONT = 0xFFCEF9CE;
-    private static final int GREEN_TITLE_FONT_SHADOW = 0x77000000;
-    private static final int GREEN_SPINNER_FONT = 0xFFCEF9CE;
-    private static final int GREEN_SEPARATOR_BAR = 0xFF002100;
+    private static final int GREEN_MAIN_FONT = 0xFF002A03;
+    private static final int GREEN_MAIN_FONT_SHADOW = 0xFF005A06;
+    private static final int GREEN_TITLE_FONT = 0xFFA5D6A7;
+    private static final int GREEN_TITLE_FONT_SHADOW = 0xFF1B5E20;
+    private static final int GREEN_SPINNER_FONT = 0xFFE8F5E9;
+    private static final int GREEN_SEPARATOR_BAR = 0xFF002A03;
     //endregion
 
-    //region Green Theme Color Values
+    //region Teal Theme Color Values
     private static final int TEAL_BACKGROUND_TOP = 0xFF009688;
     private static final int TEAL_BACKGROUND_BOTTOM = 0xFFE0F2F1;
-    private static final int TEAL_MAIN_FONT = 0xFF004D40;
-    private static final int TEAL_MAIN_FONT_SHADOW = 0xFF00695C;
+    private static final int TEAL_MAIN_FONT = 0xFF00211D;
+    private static final int TEAL_MAIN_FONT_SHADOW = 0xFF00473F;
     private static final int TEAL_TITLE_FONT = 0xFF80CBC4;
-    private static final int TEAL_TITLE_FONT_SHADOW = 0x77004D40;
+    private static final int TEAL_TITLE_FONT_SHADOW = 0xFF004D40;
     private static final int TEAL_SPINNER_FONT = 0xFFE0F2F1;
-    private static final int TEAL_SEPARATOR_BAR = 0xFF004D40;
+    private static final int TEAL_SEPARATOR_BAR = 0xFF00211D;
     //endregion
 
     //region Purple Theme Color Values
-    private static final int PURPLE_BACKGROUND_TOP = 0xFF500D75;
-    private static final int PURPLE_BACKGROUND_BOTTOM = 0xFFD9B6ED;
-    private static final int PURPLE_MAIN_FONT = 0xFF1C0229;
-    private static final int PURPLE_MAIN_FONT_SHADOW = 0x77000000;
-    private static final int PURPLE_TITLE_FONT = 0xFFD59AF6;
-    private static final int PURPLE_TITLE_FONT_SHADOW = 0x77000000;
-    private static final int PURPLE_SPINNER_FONT = 0xFFD9B6ED;
-    private static final int PURPLE_SEPARATOR_BAR = 0xFF1C0229;
+    private static final int PURPLE_BACKGROUND_TOP = 0xFF651FFF;
+    private static final int PURPLE_BACKGROUND_BOTTOM = 0xFFEDE7F6;
+    private static final int PURPLE_MAIN_FONT = 0xFF0F0225;
+    private static final int PURPLE_MAIN_FONT_SHADOW = 0xFF1F034E;
+    private static final int PURPLE_TITLE_FONT = 0xFFB39DDB;
+    private static final int PURPLE_TITLE_FONT_SHADOW = 0xFF311B92;
+    private static final int PURPLE_SPINNER_FONT = 0xFFEDE7F6;
+    private static final int PURPLE_SEPARATOR_BAR = 0xFF0F0225;
     //endregion
 
     //region Pink Theme Color Values
-    private static final int PINK_BACKGROUND_TOP = 0xFFCD0074;
-    private static final int PINK_BACKGROUND_BOTTOM = 0xFFF4B8DA;
-    private static final int PINK_MAIN_FONT = 0xFF32001C;
-    private static final int PINK_MAIN_FONT_SHADOW = 0x77000000;
-    private static final int PINK_TITLE_FONT = 0xFFEA83BD;
-    private static final int PINK_TITLE_FONT_SHADOW = 0x77000000;
-    private static final int PINK_SPINNER_FONT = 0xFFF9CEE7;
-    private static final int PINK_SEPARATOR_BAR = 0xFF32001C;
+    private static final int PINK_BACKGROUND_TOP = 0xFFE91E63;
+    private static final int PINK_BACKGROUND_BOTTOM = 0xFFFCE4EC;
+    private static final int PINK_MAIN_FONT = 0xFF2F0010;
+    private static final int PINK_MAIN_FONT_SHADOW = 0xFF650022;
+    private static final int PINK_TITLE_FONT = 0xFFF48FB1;
+    private static final int PINK_TITLE_FONT_SHADOW = 0xFF880E4F;
+    private static final int PINK_SPINNER_FONT = 0xFFFCE4EC;
+    private static final int PINK_SEPARATOR_BAR = 0xFF2F0010;
     //endregion
 
     //region Grey Theme Color Values
-    private static final int GREY_BACKGROUND_TOP = 0xFF424242;
-    private static final int GREY_BACKGROUND_BOTTOM = 0xFFEEEEEE;
+    private static final int GREY_BACKGROUND_TOP = 0xFF616161;
+    private static final int GREY_BACKGROUND_BOTTOM = 0xFFFAFAFA;
     private static final int GREY_MAIN_FONT = 0xFF000000;
-    private static final int GREY_MAIN_FONT_SHADOW = 0x77000000;
-    private static final int GREY_TITLE_FONT = 0xFFBDBDBD;
-    private static final int GREY_TITLE_FONT_SHADOW = 0x77000000;
+    private static final int GREY_MAIN_FONT_SHADOW = 0xFF212121;
+    private static final int GREY_TITLE_FONT = 0xFFEEEEEE;
+    private static final int GREY_TITLE_FONT_SHADOW = 0xFF212121;
     private static final int GREY_SPINNER_FONT = 0xFFFAFAFA;
     private static final int GREY_SEPARATOR_BAR = 0xFF000000;
     //endregion
@@ -279,13 +279,13 @@ public class SongBookTheme {
 
     //region Orange Theme Color Values
     private static final int ORANGE_BACKGROUND_TOP = 0xFFFF3D00;
-    private static final int ORANGE_BACKGROUND_BOTTOM = 0xFFFFCCBC;
-    private static final int ORANGE_MAIN_FONT = 0xFF212121;
-    private static final int ORANGE_MAIN_FONT_SHADOW = 0x77000000;
-    private static final int ORANGE_TITLE_FONT = 0xFFFF8A65;
-    private static final int ORANGE_TITLE_FONT_SHADOW = 0xFF000000;
-    private static final int ORANGE_SPINNER_FONT = 0xFFFFCCBC;
-    private static final int ORANGE_SEPARATOR_BAR = 0xFF6A1900;
+    private static final int ORANGE_BACKGROUND_BOTTOM = 0xFFFBE9E7;
+    private static final int ORANGE_MAIN_FONT = 0xFF360D00;
+    private static final int ORANGE_MAIN_FONT_SHADOW = 0xFF731C00;
+    private static final int ORANGE_TITLE_FONT = 0xFFFFAB91;
+    private static final int ORANGE_TITLE_FONT_SHADOW = 0xFFBF360C;
+    private static final int ORANGE_SPINNER_FONT = 0xFFFBE9E7;
+    private static final int ORANGE_SEPARATOR_BAR = 0xFF360D00;
     //endregion
     //endregion
 }
