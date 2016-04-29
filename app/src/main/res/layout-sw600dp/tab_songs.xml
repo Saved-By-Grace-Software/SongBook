@@ -71,7 +71,9 @@
 	            android:paddingLeft="5dip"
 	            android:layout_toRightOf="@+id/song_sort_label"
 	            android:layout_alignParentBottom="true"
-	            android:popupBackground="@color/TranslucentWhite" />
+                android:popupBackground="@color/SemiTransparentWhite"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="25dp" />
 	        
 	        <TextView
 	            android:id="@+id/song_group_label"
@@ -97,7 +99,9 @@
 	            android:paddingRight="2dip"
 	            android:layout_alignParentRight="true"
 	            android:layout_alignParentBottom="true"
-	            android:popupBackground="@color/TranslucentWhite" />
+                android:popupBackground="@color/SemiTransparentWhite"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="25dp" />
 	        
 	        </RelativeLayout>
         

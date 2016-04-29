@@ -48,7 +48,9 @@
             android:padding="10dip"
             android:layout_toLeftOf="@+id/song_group_label"
             android:layout_alignParentBottom="true"
-            android:popupBackground="@color/TranslucentWhite" />
+            android:popupBackground="@color/SemiTransparentWhite"
+            android:spinnerMode="dropdown"
+            android:dropDownVerticalOffset="25dp" />
         
         <TextView
             android:id="@+id/song_group_label"
@@ -74,7 +76,9 @@
             android:padding="10dip"
             android:layout_toLeftOf="@+id/search_song_icon"
             android:layout_alignParentBottom="true"
-            android:popupBackground="@color/TranslucentWhite" />
+            android:popupBackground="@color/SemiTransparentWhite"
+            android:spinnerMode="dropdown"
+            android:dropDownVerticalOffset="25dp" />
 
         <ImageView
             android:id="@+id/search_song_icon"
