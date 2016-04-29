@@ -36,6 +36,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfDocument.Page;
@@ -197,6 +198,14 @@ public class MainActivity extends FragmentActivity {
         gd.setCornerRadius(0f);
         layout.setBackground(gd);
 
+        // Set titlebar background
+        ActionBar bar = getActionBar();
+        GradientDrawable bd = new GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT,
+                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
+        bd.setCornerRadius(0f);
+        bar.setBackgroundDrawable(bd);
+
         // Create the tab objects
         setsFragment = new SetsTab();
         songsFragment = new SongsTab();
@@ -207,7 +216,6 @@ public class MainActivity extends FragmentActivity {
         mPagerAdapter.addFragment(setsFragment);
         mPagerAdapter.addFragment(songsFragment);
 
-        
         mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mPagerAdapter);
 		mViewPager.setOffscreenPageLimit(3);
@@ -1075,6 +1083,14 @@ public class MainActivity extends FragmentActivity {
         gd.setCornerRadius(0f);
         layout.setBackground(gd);
 
+        // Set titlebar background
+        ActionBar bar = getActionBar();
+        GradientDrawable bd = new GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT,
+                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
+        bd.setCornerRadius(0f);
+        bar.setBackgroundDrawable(bd);
+
         // Apply the list font colors
         fillSetsListView();
         fillCurrentSetListView();
@@ -1085,6 +1101,22 @@ public class MainActivity extends FragmentActivity {
         fillSetSortSpinner();
         fillSongGroupsSpinner();
         fillSongSortSpinner();
+
+        // Update the set tab spinner labels
+        SongBookThemeTextView setSortByLabel = ((SongBookThemeTextView)findViewById(R.id.set_sort_label));
+        if (setSortByLabel != null)
+            setSortByLabel.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+        SongBookThemeTextView setGroupLabel = ((SongBookThemeTextView)findViewById(R.id.set_group_label));
+        if (setGroupLabel != null)
+            setGroupLabel.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+
+        // Update the song tab spinner labels
+        SongBookThemeTextView songSortByLabel = ((SongBookThemeTextView)findViewById(R.id.song_sort_label));
+        if (songSortByLabel != null)
+            songSortByLabel.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+        SongBookThemeTextView songGroupLabel = ((SongBookThemeTextView)findViewById(R.id.song_group_label));
+        if (songGroupLabel != null)
+            songGroupLabel.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
 
         // Apply title color for sets tab
         SongBookThemeTextView setsTitle = ((SongBookThemeTextView)findViewById(R.id.sets_tab_title));
@@ -1101,6 +1133,11 @@ public class MainActivity extends FragmentActivity {
         // Apply title color for current set link
         SongBookThemeTextView currSetLinkTitle = ((SongBookThemeTextView)findViewById(R.id.current_set_tab_link));
         currSetLinkTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+
+        // Update the separator bar color
+        ((SetsTab)setsFragment).reColorSeparatorBar();
+        ((SongsTab)songsFragment).reColorSeparatorBar();
+        ((CurrentSetTab)currSetFragment).reColorSeparatorBar();
     }
     //endregion
 
@@ -3346,7 +3383,14 @@ public class MainActivity extends FragmentActivity {
 
             // Add the set link
             TextView link = ((TextView)findViewById(R.id.current_set_tab_link));
-            link.setText(dbAdapter.getSetLink(currentSetName));
+            link.setMovementMethod(LinkMovementMethod.getInstance());
+            String setLink = dbAdapter.getSetLink(currentSetName);
+            if (setLink.length() > 25)
+                setLink = "<a href=\"" + setLink + "\">" + setLink.substring(0, 25) + "...</a>";
+            else
+                setLink = "<a href=\"" + setLink + "\">" + setLink + "</a>";
+            link.setText(Html.fromHtml(setLink));
+
         }
     }
     //endregion

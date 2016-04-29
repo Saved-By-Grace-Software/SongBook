@@ -46,20 +46,18 @@
             android:layout_height="0dp"
             android:layout_weight="5"
 	        android:orientation="horizontal" >
-        
-	        <TextView
+
+            <com.sbgsoft.songbook.views.SongBookThemeTextView
 	            android:id="@+id/song_sort_label"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textSize="@dimen/tabSpinnerTextSize"
 	            android:layout_alignParentBottom="true"
 	            android:layout_alignParentLeft="true"
-	            android:textColor="@color/white"
 	            android:textStyle="bold"
-	            android:shadowColor="@color/TransparentGrey" 
-				android:shadowDx="2"
-				android:shadowDy="2" 
-				android:shadowRadius="1"
+                themetv:useShadow="true"
+                themetv:isTitle="true"
+                themetv:isSpinner="false"
 	            android:text="@string/sort_by"
 	            android:paddingLeft="5dip"
 	            android:paddingBottom="7dip" />
@@ -71,21 +69,21 @@
 	            android:paddingLeft="5dip"
 	            android:layout_toRightOf="@+id/song_sort_label"
 	            android:layout_alignParentBottom="true"
-	            android:popupBackground="@color/TranslucentWhite" />
-	        
-	        <TextView
+                android:popupBackground="@color/SemiTransparentWhite"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="@dimen/dropDownOffset" />
+
+            <com.sbgsoft.songbook.views.SongBookThemeTextView
 	            android:id="@+id/song_group_label"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textSize="@dimen/tabSpinnerTextSize"
 	            android:layout_toLeftOf="@+id/song_group_spinner"
 	            android:layout_alignParentBottom="true"
-	            android:textColor="@color/white"
 	            android:textStyle="bold"
-	            android:shadowColor="@color/TransparentGrey" 
-				android:shadowDx="2"
-				android:shadowDy="2" 
-				android:shadowRadius="1"
+                themetv:useShadow="true"
+                themetv:isTitle="true"
+                themetv:isSpinner="false"
 	            android:text="@string/song_group"
 	            android:paddingBottom="7dip" />
 	
@@ -97,16 +95,18 @@
 	            android:paddingRight="2dip"
 	            android:layout_alignParentRight="true"
 	            android:layout_alignParentBottom="true"
-	            android:popupBackground="@color/TranslucentWhite" />
+                android:popupBackground="@color/SemiTransparentWhite"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="@dimen/dropDownOffset" />
 	        
 	        </RelativeLayout>
         
     </LinearLayout>
-    
-    <TextView android:id="@+id/horizontal_bar"
+
+    <View
+        android:id="@+id/song_separator_bar"
         android:layout_width="fill_parent"
-		android:layout_height="3dip"
-		android:background="@color/darkGrey"/>
+        android:layout_height="3dip"/>
     
     <ListView android:id="@+id/songs_list"
         android:layout_width="match_parent"

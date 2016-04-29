@@ -46,14 +46,8 @@ public class SongBookThemeTextView extends TextView {
         if (mContext != null && mAttrs != null) {
             TypedArray a = mContext.obtainStyledAttributes(mAttrs, R.styleable.SongBookThemeTextView, 0, 0);
 
-            // Check for using shadow
+            // Get the custom attributes
             boolean useShadow = a.getBoolean(R.styleable.SongBookThemeTextView_useShadow, false);
-            if (useShadow) {
-                // Set shadow color
-                setShadowLayer(SHADOW_RADIUS, SHADOW_DX, SHADOW_DY, songBookTheme.getMainFontShadowColor());
-            }
-
-            // Check for a title or spinner
             boolean isTitle = a.getBoolean(R.styleable.SongBookThemeTextView_isTitle, false);
             boolean isSpinner = a.getBoolean(R.styleable.SongBookThemeTextView_isSpinner, false);
 
@@ -61,13 +55,31 @@ public class SongBookThemeTextView extends TextView {
                 // Set the color to the current theme color
                 setTextColor(songBookTheme.getTitleFontColor());
                 setLinkTextColor(songBookTheme.getTitleFontColor());
+
+                // Check for shadow
+                if (useShadow) {
+                    // Set shadow color
+                    setShadowLayer(SHADOW_RADIUS, SHADOW_DX, SHADOW_DY, songBookTheme.getTitleFontShadowColor());
+                }
             } else if (isSpinner) {
                 // Set the color to the current theme color
                 setTextColor(songBookTheme.getSpinnerFontColor());
+
+                // Check for shadow
+                if (useShadow) {
+                    // Set shadow color
+                    setShadowLayer(SHADOW_RADIUS, SHADOW_DX, SHADOW_DY, songBookTheme.getTitleFontShadowColor());
+                }
             } else {
                 // Set the color to the current theme color
                 setTextColor(songBookTheme.getMainFontColor());
                 setLinkTextColor(songBookTheme.getMainFontColor());
+
+                // Check for shadow
+                if (useShadow) {
+                    // Set shadow color
+                    setShadowLayer(SHADOW_RADIUS, SHADOW_DX, SHADOW_DY, songBookTheme.getMainFontShadowColor());
+                }
             }
         }
     }

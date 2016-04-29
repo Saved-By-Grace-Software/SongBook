@@ -53,7 +53,9 @@
 				android:layout_alignParentBottom="true"
 				android:layout_alignParentLeft="true"
 	            android:paddingLeft="5dip"
-	            android:popupBackground="@color/TranslucentWhite" />
+	            android:popupBackground="@color/SemiTransparentWhite"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="@dimen/dropDownOffset"/>
 
 	        <Spinner
 	            android:id="@+id/set_group_spinner"
@@ -64,16 +66,18 @@
 	            android:paddingLeft="5dip"
 	            android:paddingRight="2dip"
 	            android:textColor="@color/defaultTextColor"
-	            android:popupBackground="@color/TranslucentWhite"  />
+	            android:popupBackground="@color/SemiTransparentWhite"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="@dimen/dropDownOffset"/>
 	
 	    </RelativeLayout>
 
     </LinearLayout>
     
-    <TextView 
+    <View
+        android:id="@+id/set_separator_bar"
         android:layout_width="fill_parent"
-		android:layout_height="3dip"
-		android:background="@color/darkGrey"/>
+		android:layout_height="3dip"/>
     
     <ListView android:id="@+id/sets_list"
         android:layout_width="match_parent"
