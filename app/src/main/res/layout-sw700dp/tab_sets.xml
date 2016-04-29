@@ -50,7 +50,7 @@
             android:layout_alignParentBottom="true"
             android:popupBackground="@color/SemiTransparentWhite"
             android:spinnerMode="dropdown"
-            android:dropDownVerticalOffset="25dp" />
+            android:dropDownVerticalOffset="@dimen/dropDownOffset" />
         
         <TextView
             android:id="@+id/set_group_label"
@@ -79,7 +79,7 @@
             android:textColor="@color/defaultTextColor"
             android:popupBackground="@color/SemiTransparentWhite"
             android:spinnerMode="dropdown"
-            android:dropDownVerticalOffset="25dp"  />
+            android:dropDownVerticalOffset="@dimen/dropDownOffset"  />
 
         <ImageView
             android:id="@+id/search_set_icon"

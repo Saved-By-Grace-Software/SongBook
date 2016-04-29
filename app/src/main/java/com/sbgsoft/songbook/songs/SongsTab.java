@@ -1,10 +1,12 @@
 package com.sbgsoft.songbook.songs;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
@@ -31,6 +33,7 @@ public class SongsTab extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mView = inflater.inflate(R.layout.tab_songs, container, false);
         reColorSeparatorBar();
+        disableOffsetForOlderAndroid();
 		return mView;
 	}
 
@@ -41,5 +44,17 @@ public class SongsTab extends Fragment {
         // Color the separator bars
         View setBar = mView.findViewById(R.id.song_separator_bar);
         setBar.setBackgroundColor(theme.getSeparatorBarColor());
+    }
+
+    private void disableOffsetForOlderAndroid() {
+        // If android 4 or below
+        if (Build.VERSION.SDK_INT < 21) {
+            // Disable the spinner offset
+            Spinner groupSpinner = (Spinner)mView.findViewById(R.id.song_group_spinner);
+            groupSpinner.setDropDownVerticalOffset(0);
+
+            Spinner sortSpinner = (Spinner)mView.findViewById(R.id.song_sort_spinner);
+            sortSpinner.setDropDownVerticalOffset(0);
+        }
     }
 }

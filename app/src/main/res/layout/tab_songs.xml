@@ -55,7 +55,7 @@
 	            android:layout_alignParentLeft="true"
                 android:popupBackground="@color/SemiTransparentWhite"
                 android:spinnerMode="dropdown"
-                android:dropDownVerticalOffset="25dp" />
+                android:dropDownVerticalOffset="@dimen/dropDownOffset" />
 	
 	        <Spinner
 	            android:id="@+id/song_group_spinner"
@@ -67,7 +67,7 @@
 	            android:layout_alignParentBottom="true"
                 android:popupBackground="@color/SemiTransparentWhite"
                 android:spinnerMode="dropdown"
-                android:dropDownVerticalOffset="25dp" />
+                android:dropDownVerticalOffset="@dimen/dropDownOffset" />
 	        
 	    </RelativeLayout>
 

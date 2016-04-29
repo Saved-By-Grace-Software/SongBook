@@ -55,7 +55,7 @@
 	            android:paddingLeft="5dip"
 	            android:popupBackground="@color/SemiTransparentWhite"
                 android:spinnerMode="dropdown"
-                android:dropDownVerticalOffset="25dp"/>
+                android:dropDownVerticalOffset="@dimen/dropDownOffset"/>
 
 	        <Spinner
 	            android:id="@+id/set_group_spinner"
@@ -68,7 +68,7 @@
 	            android:textColor="@color/defaultTextColor"
 	            android:popupBackground="@color/SemiTransparentWhite"
                 android:spinnerMode="dropdown"
-                android:dropDownVerticalOffset="25dp"/>
+                android:dropDownVerticalOffset="@dimen/dropDownOffset"/>
 	
 	    </RelativeLayout>
 
