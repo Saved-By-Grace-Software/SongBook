@@ -24,20 +24,20 @@
             android:paddingLeft="5dp"
             android:paddingBottom="5dp"
             themetv:useShadow="true"
-            themetv:isTitle="true" />
-        
-        <TextView
+            themetv:isTitle="true"
+            themetv:isSpinner="false"/>
+
+        <com.sbgsoft.songbook.views.SongBookThemeTextView
+            android:id="@+id/set_sort_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/tabSpinnerTextSize"
             android:layout_toLeftOf="@+id/set_sort_spinner"
             android:layout_alignParentBottom="true"
-            android:textColor="@color/white"
             android:textStyle="bold"
-            android:shadowColor="@color/TransparentGrey" 
-			android:shadowDx="2"
-			android:shadowDy="2" 
-			android:shadowRadius="1"
+            themetv:useShadow="true"
+            themetv:isTitle="true"
+            themetv:isSpinner="false"
             android:text="@string/sort_by"
             android:paddingBottom="10dip" />
         
@@ -51,20 +51,17 @@
             android:popupBackground="@color/SemiTransparentWhite"
             android:spinnerMode="dropdown"
             android:dropDownVerticalOffset="@dimen/dropDownOffset" />
-        
-        <TextView
+
+        <com.sbgsoft.songbook.views.SongBookThemeTextView
             android:id="@+id/set_group_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/tabSpinnerTextSize"
             android:layout_toLeftOf="@+id/set_group_spinner"
             android:layout_alignParentBottom="true"
-            android:textColor="@color/white"
             android:textStyle="bold"
-            android:shadowColor="@color/TransparentGrey" 
-			android:shadowDx="2"
-			android:shadowDy="2" 
-			android:shadowRadius="1"
+            themetv:useShadow="true"
+            themetv:isTitle="true"
             android:text="@string/set_group"
             android:paddingBottom="10dip"
             android:paddingLeft="30dp" />

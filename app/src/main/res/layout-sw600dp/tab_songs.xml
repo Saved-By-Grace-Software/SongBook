@@ -46,20 +46,18 @@
             android:layout_height="0dp"
             android:layout_weight="5"
 	        android:orientation="horizontal" >
-        
-	        <TextView
+
+            <com.sbgsoft.songbook.views.SongBookThemeTextView
 	            android:id="@+id/song_sort_label"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textSize="@dimen/tabSpinnerTextSize"
 	            android:layout_alignParentBottom="true"
 	            android:layout_alignParentLeft="true"
-	            android:textColor="@color/white"
 	            android:textStyle="bold"
-	            android:shadowColor="@color/TransparentGrey" 
-				android:shadowDx="2"
-				android:shadowDy="2" 
-				android:shadowRadius="1"
+                themetv:useShadow="true"
+                themetv:isTitle="true"
+                themetv:isSpinner="false"
 	            android:text="@string/sort_by"
 	            android:paddingLeft="5dip"
 	            android:paddingBottom="7dip" />
@@ -74,20 +72,18 @@
                 android:popupBackground="@color/SemiTransparentWhite"
                 android:spinnerMode="dropdown"
                 android:dropDownVerticalOffset="@dimen/dropDownOffset" />
-	        
-	        <TextView
+
+            <com.sbgsoft.songbook.views.SongBookThemeTextView
 	            android:id="@+id/song_group_label"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textSize="@dimen/tabSpinnerTextSize"
 	            android:layout_toLeftOf="@+id/song_group_spinner"
 	            android:layout_alignParentBottom="true"
-	            android:textColor="@color/white"
 	            android:textStyle="bold"
-	            android:shadowColor="@color/TransparentGrey" 
-				android:shadowDx="2"
-				android:shadowDy="2" 
-				android:shadowRadius="1"
+                themetv:useShadow="true"
+                themetv:isTitle="true"
+                themetv:isSpinner="false"
 	            android:text="@string/song_group"
 	            android:paddingBottom="7dip" />
 	

@@ -200,8 +200,8 @@ public class SongBookTheme {
     //endregion
 
     //region Green Theme Color Values
-    private static final int GREEN_BACKGROUND_TOP = 0xFF5CDD5C;
-    private static final int GREEN_BACKGROUND_BOTTOM = 0xFFB3F6B3;
+    private static final int GREEN_BACKGROUND_TOP = 0xFF1B5E20;
+    private static final int GREEN_BACKGROUND_BOTTOM = 0xFFE8F5E9;
     private static final int GREEN_MAIN_FONT = 0xFF002100;
     private static final int GREEN_MAIN_FONT_SHADOW = 0x77000000;
     private static final int GREEN_TITLE_FONT = 0xFFCEF9CE;
@@ -257,8 +257,8 @@ public class SongBookTheme {
     //region Orange Theme Color Values
     private static final int ORANGE_BACKGROUND_TOP = 0xFFFF3D00;
     private static final int ORANGE_BACKGROUND_BOTTOM = 0xFFFFCCBC;
-    private static final int ORANGE_MAIN_FONT = 0xFF6A1900;
-    private static final int ORANGE_MAIN_FONT_SHADOW = 0xFF000000;
+    private static final int ORANGE_MAIN_FONT = 0xFF212121;
+    private static final int ORANGE_MAIN_FONT_SHADOW = 0x77000000;
     private static final int ORANGE_TITLE_FONT = 0xFFFF8A65;
     private static final int ORANGE_TITLE_FONT_SHADOW = 0xFF000000;
     private static final int ORANGE_SPINNER_FONT = 0xFFFFCCBC;

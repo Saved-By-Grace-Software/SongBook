@@ -1086,6 +1086,22 @@ public class MainActivity extends FragmentActivity {
         fillSongGroupsSpinner();
         fillSongSortSpinner();
 
+        // Update the set tab spinner labels
+        SongBookThemeTextView setSortByLabel = ((SongBookThemeTextView)findViewById(R.id.set_sort_label));
+        if (setSortByLabel != null)
+            setSortByLabel.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+        SongBookThemeTextView setGroupLabel = ((SongBookThemeTextView)findViewById(R.id.set_group_label));
+        if (setGroupLabel != null)
+            setGroupLabel.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+
+        // Update the song tab spinner labels
+        SongBookThemeTextView songSortByLabel = ((SongBookThemeTextView)findViewById(R.id.song_sort_label));
+        if (songSortByLabel != null)
+            songSortByLabel.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+        SongBookThemeTextView songGroupLabel = ((SongBookThemeTextView)findViewById(R.id.song_group_label));
+        if (songGroupLabel != null)
+            songGroupLabel.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+
         // Apply title color for sets tab
         SongBookThemeTextView setsTitle = ((SongBookThemeTextView)findViewById(R.id.sets_tab_title));
         setsTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
