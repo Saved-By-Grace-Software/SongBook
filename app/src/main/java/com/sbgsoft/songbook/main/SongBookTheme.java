@@ -9,6 +9,7 @@ public class SongBookTheme {
     private static final int CHORD_COLOR_PINK = 0xFFEA1081;
     private static final int CHORD_COLOR_BLACK = 0xFF000000;
     private static final int CHORD_COLOR_ORANGE = 0xFFFD8200;
+    private static final int CHORD_COLOR_RED = 0xFFD50000;
     //endregion
 
     //region Private Class Members
@@ -194,6 +195,9 @@ public class SongBookTheme {
                 break;
             case "Orange":
                 ret = CHORD_COLOR_ORANGE;
+                break;
+            case "Red":
+                ret = CHORD_COLOR_RED;
                 break;
             case "Default (Blue)":
             default:
