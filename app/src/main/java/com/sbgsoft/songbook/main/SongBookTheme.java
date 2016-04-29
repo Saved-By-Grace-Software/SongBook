@@ -51,6 +51,17 @@ public class SongBookTheme {
                 mSeparatorBarColor = GREEN_SEPARATOR_BAR;
                 mThemeName = themeColor;
                 break;
+            case "Teal":
+                mBackgroundTop = TEAL_BACKGROUND_TOP;
+                mBackgroundBottom = TEAL_BACKGROUND_BOTTOM;
+                mMainFontColor = TEAL_MAIN_FONT;
+                mMainFontShadowColor = TEAL_MAIN_FONT_SHADOW;
+                mTitleFontColor = TEAL_TITLE_FONT;
+                mTitleFontShadowColor = TEAL_TITLE_FONT_SHADOW;
+                mSpinnerFontColor = TEAL_SPINNER_FONT;
+                mSeparatorBarColor = TEAL_SEPARATOR_BAR;
+                mThemeName = themeColor;
+                break;
             case "Purple":
                 mBackgroundTop = PURPLE_BACKGROUND_TOP;
                 mBackgroundBottom = PURPLE_BACKGROUND_BOTTOM;
@@ -106,6 +117,7 @@ public class SongBookTheme {
                 mSeparatorBarColor = ORANGE_SEPARATOR_BAR;
                 mThemeName = themeColor;
                 break;
+            case "Red":
             case "Default (Blue)":
             default:
                 mBackgroundTop = BACKGROUND_TOP;
@@ -208,6 +220,17 @@ public class SongBookTheme {
     private static final int GREEN_TITLE_FONT_SHADOW = 0x77000000;
     private static final int GREEN_SPINNER_FONT = 0xFFCEF9CE;
     private static final int GREEN_SEPARATOR_BAR = 0xFF002100;
+    //endregion
+
+    //region Green Theme Color Values
+    private static final int TEAL_BACKGROUND_TOP = 0xFF009688;
+    private static final int TEAL_BACKGROUND_BOTTOM = 0xFFE0F2F1;
+    private static final int TEAL_MAIN_FONT = 0xFF004D40;
+    private static final int TEAL_MAIN_FONT_SHADOW = 0xFF00695C;
+    private static final int TEAL_TITLE_FONT = 0xFF80CBC4;
+    private static final int TEAL_TITLE_FONT_SHADOW = 0x77004D40;
+    private static final int TEAL_SPINNER_FONT = 0xFFE0F2F1;
+    private static final int TEAL_SEPARATOR_BAR = 0xFF004D40;
     //endregion
 
     //region Purple Theme Color Values
