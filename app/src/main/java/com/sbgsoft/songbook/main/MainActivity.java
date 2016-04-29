@@ -3346,7 +3346,14 @@ public class MainActivity extends FragmentActivity {
 
             // Add the set link
             TextView link = ((TextView)findViewById(R.id.current_set_tab_link));
-            link.setText(dbAdapter.getSetLink(currentSetName));
+            link.setMovementMethod(LinkMovementMethod.getInstance());
+            String setLink = dbAdapter.getSetLink(currentSetName);
+            if (setLink.length() > 25)
+                setLink = "<a href=\"" + setLink + "\">" + setLink.substring(0, 25) + "...</a>";
+            else
+                setLink = "<a href=\"" + setLink + "\">" + setLink + "</a>";
+            link.setText(Html.fromHtml(setLink));
+
         }
     }
     //endregion
