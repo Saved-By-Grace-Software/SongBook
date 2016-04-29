@@ -9,9 +9,12 @@ import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.main.MainActivity;
+import com.sbgsoft.songbook.main.SongBookTheme;
 
 public class SongsTab extends Fragment {
 	public static final String ALL_SONGS_LABEL = "All Songs";
+
+    private View mView;
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -26,7 +29,17 @@ public class SongsTab extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.tab_songs, container, false);
-		return view;
+		mView = inflater.inflate(R.layout.tab_songs, container, false);
+        reColorSeparatorBar();
+		return mView;
 	}
+
+    public void reColorSeparatorBar() {
+        // Get the current theme from the database
+        SongBookTheme theme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
+
+        // Color the separator bars
+        View setBar = mView.findViewById(R.id.song_separator_bar);
+        setBar.setBackgroundColor(theme.getSeparatorBarColor());
+    }
 }

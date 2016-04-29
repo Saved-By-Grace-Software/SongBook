@@ -1101,6 +1101,11 @@ public class MainActivity extends FragmentActivity {
         // Apply title color for current set link
         SongBookThemeTextView currSetLinkTitle = ((SongBookThemeTextView)findViewById(R.id.current_set_tab_link));
         currSetLinkTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
+
+        // Update the separator bar color
+        ((SetsTab)setsFragment).reColorSeparatorBar();
+        ((SongsTab)songsFragment).reColorSeparatorBar();
+        ((CurrentSetTab)currSetFragment).reColorSeparatorBar();
     }
     //endregion
 

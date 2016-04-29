@@ -20,6 +20,7 @@ public class SongBookTheme {
     private int mTitleFontColor;
     private int mTitleFontShadowColor;
     private int mSpinnerFontColor;
+    private int mSeparatorBarColor;
     //endregion
 
     //region Constructors
@@ -32,6 +33,7 @@ public class SongBookTheme {
         mTitleFontColor = TITLE_FONT;
         mTitleFontShadowColor = TITLE_FONT_SHADOW;
         mSpinnerFontColor = SPINNER_FONT;
+        mSeparatorBarColor = SEPARATOR_BAR;
         mThemeName = THEME_NAME;
     }
 
@@ -46,6 +48,7 @@ public class SongBookTheme {
                 mTitleFontColor = GREEN_TITLE_FONT;
                 mTitleFontShadowColor = GREEN_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = GREEN_SPINNER_FONT;
+                mSeparatorBarColor = GREEN_SEPARATOR_BAR;
                 mThemeName = themeColor;
                 break;
             case "Purple":
@@ -56,6 +59,7 @@ public class SongBookTheme {
                 mTitleFontColor = PURPLE_TITLE_FONT;
                 mTitleFontShadowColor = PURPLE_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = PURPLE_SPINNER_FONT;
+                mSeparatorBarColor = PURPLE_SEPARATOR_BAR;
                 mThemeName = themeColor;
                 break;
             case "Pink":
@@ -66,6 +70,7 @@ public class SongBookTheme {
                 mTitleFontColor = PINK_TITLE_FONT;
                 mTitleFontShadowColor = PINK_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = PINK_SPINNER_FONT;
+                mSeparatorBarColor = PINK_SEPARATOR_BAR;
                 mThemeName = themeColor;
                 break;
             case "Grey":
@@ -76,6 +81,7 @@ public class SongBookTheme {
                 mTitleFontColor = GREY_TITLE_FONT;
                 mTitleFontShadowColor = GREY_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = GREY_SPINNER_FONT;
+                mSeparatorBarColor = GREY_SEPARATOR_BAR;
                 mThemeName = themeColor;
                 break;
             case "Yellow":
@@ -86,6 +92,7 @@ public class SongBookTheme {
                 mTitleFontColor = YELLOW_TITLE_FONT;
                 mTitleFontShadowColor = YELLOW_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = YELLOW_SPINNER_FONT;
+                mSeparatorBarColor = YELLOW_SEPARATOR_BAR;
                 mThemeName = themeColor;
                 break;
             case "Orange":
@@ -96,6 +103,7 @@ public class SongBookTheme {
                 mTitleFontColor = ORANGE_TITLE_FONT;
                 mTitleFontShadowColor = ORANGE_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = ORANGE_SPINNER_FONT;
+                mSeparatorBarColor = ORANGE_SEPARATOR_BAR;
                 mThemeName = themeColor;
                 break;
             case "Default (Blue)":
@@ -107,11 +115,9 @@ public class SongBookTheme {
                 mTitleFontColor = TITLE_FONT;
                 mTitleFontShadowColor = TITLE_FONT_SHADOW;
                 mSpinnerFontColor = SPINNER_FONT;
+                mSeparatorBarColor = SEPARATOR_BAR;
                 mThemeName = THEME_NAME;
         }
-
-        // By default we use the blue theme
-
     }
     //endregion
 
@@ -174,39 +180,9 @@ public class SongBookTheme {
 
         return ret;
     }
-    //endregion
 
-    //region Setters
-    public void setThemeName(String themeName) {
-        this.mThemeName = themeName;
-    }
-
-    public void setMainFontColor(int mainFontColor) {
-        this.mMainFontColor = mainFontColor;
-    }
-
-    public void setBackgroundBottom(int backgroundBottom) {
-        this.mBackgroundBottom = backgroundBottom;
-    }
-
-    public void setBackgroundTop(int backgroundTop) {
-        this.mBackgroundTop = backgroundTop;
-    }
-
-    public void setTitleFontColor(int titleFontColot) {
-        this.mTitleFontColor = titleFontColot;
-    }
-
-    public void setMainFontShadowColor(int mainFontShadowColor) {
-        this.mMainFontShadowColor = mainFontShadowColor;
-    }
-
-    public void setTitleFontShadowColor(int titleFontShadowColor) {
-        this.mTitleFontShadowColor = titleFontShadowColor;
-    }
-
-    public void setSpinnerFontColor(int spinnerFontColor) {
-        this.mSpinnerFontColor = spinnerFontColor;
+    public int getSeparatorBarColor() {
+        return mSeparatorBarColor;
     }
     //endregion
 
@@ -220,6 +196,7 @@ public class SongBookTheme {
     private static final int TITLE_FONT = 0x7FFFFFFF;
     private static final int TITLE_FONT_SHADOW = 0x77000000;
     private static final int SPINNER_FONT = 0xFFD1D8F6;
+    private static final int SEPARATOR_BAR = 0xFF26303B;
     //endregion
 
     //region Green Theme Color Values
@@ -230,6 +207,7 @@ public class SongBookTheme {
     private static final int GREEN_TITLE_FONT = 0xFFCEF9CE;
     private static final int GREEN_TITLE_FONT_SHADOW = 0x77000000;
     private static final int GREEN_SPINNER_FONT = 0xFFCEF9CE;
+    private static final int GREEN_SEPARATOR_BAR = 0xFF002100;
     //endregion
 
     //region Purple Theme Color Values
@@ -240,6 +218,7 @@ public class SongBookTheme {
     private static final int PURPLE_TITLE_FONT = 0xFFD59AF6;
     private static final int PURPLE_TITLE_FONT_SHADOW = 0x77000000;
     private static final int PURPLE_SPINNER_FONT = 0xFFD9B6ED;
+    private static final int PURPLE_SEPARATOR_BAR = 0xFF1C0229;
     //endregion
 
     //region Pink Theme Color Values
@@ -250,6 +229,7 @@ public class SongBookTheme {
     private static final int PINK_TITLE_FONT = 0xFFEA83BD;
     private static final int PINK_TITLE_FONT_SHADOW = 0x77000000;
     private static final int PINK_SPINNER_FONT = 0xFFF9CEE7;
+    private static final int PINK_SEPARATOR_BAR = 0xFF32001C;
     //endregion
 
     //region Grey Theme Color Values
@@ -260,6 +240,7 @@ public class SongBookTheme {
     private static final int GREY_TITLE_FONT = 0xFFBDBDBD;
     private static final int GREY_TITLE_FONT_SHADOW = 0x77000000;
     private static final int GREY_SPINNER_FONT = 0xFFFAFAFA;
+    private static final int GREY_SEPARATOR_BAR = 0xFF000000;
     //endregion
 
     //region Yellow Theme Color Values
@@ -270,6 +251,7 @@ public class SongBookTheme {
     private static final int YELLOW_TITLE_FONT = 0xFF000000;
     private static final int YELLOW_TITLE_FONT_SHADOW = 0xFFEEEEEE;
     private static final int YELLOW_SPINNER_FONT = 0xFF424242;
+    private static final int YELLOW_SEPARATOR_BAR = 0xFF000000;
     //endregion
 
     //region Orange Theme Color Values
@@ -280,6 +262,7 @@ public class SongBookTheme {
     private static final int ORANGE_TITLE_FONT = 0xFFFF8A65;
     private static final int ORANGE_TITLE_FONT_SHADOW = 0xFF000000;
     private static final int ORANGE_SPINNER_FONT = 0xFFFFCCBC;
+    private static final int ORANGE_SEPARATOR_BAR = 0xFF6A1900;
     //endregion
     //endregion
 }

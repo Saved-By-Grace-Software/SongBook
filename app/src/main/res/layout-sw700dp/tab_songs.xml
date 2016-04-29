@@ -88,11 +88,11 @@
             android:onClick="onSongSearchClick"/>
         
     </RelativeLayout>
-    
-    <TextView android:id="@+id/horizontal_bar"
+
+    <View
+        android:id="@+id/song_separator_bar"
         android:layout_width="fill_parent"
-		android:layout_height="3dip"
-		android:background="@color/darkGrey"/>
+        android:layout_height="3dip"/>
     
     <ListView android:id="@+id/songs_list"
         android:layout_width="match_parent"
