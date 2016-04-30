@@ -22,6 +22,7 @@ public class SongBookTheme {
     private int mTitleFontShadowColor;
     private int mSpinnerFontColor;
     private int mSeparatorBarColor;
+    private int mSectionHeaderColor;
     //endregion
 
     //region Constructors
@@ -50,6 +51,7 @@ public class SongBookTheme {
                 mTitleFontShadowColor = BLUE_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = BLUE_SPINNER_FONT;
                 mSeparatorBarColor = BLUE_SEPARATOR_BAR;
+                mSectionHeaderColor = BLUE_SECTION_HEADER;
                 mThemeName = themeColor;
                 break;
             case "Green":
@@ -61,6 +63,7 @@ public class SongBookTheme {
                 mTitleFontShadowColor = GREEN_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = GREEN_SPINNER_FONT;
                 mSeparatorBarColor = GREEN_SEPARATOR_BAR;
+                mSectionHeaderColor = GREEN_SECTION_HEADER;
                 mThemeName = themeColor;
                 break;
             case "Teal":
@@ -72,6 +75,7 @@ public class SongBookTheme {
                 mTitleFontShadowColor = TEAL_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = TEAL_SPINNER_FONT;
                 mSeparatorBarColor = TEAL_SEPARATOR_BAR;
+                mSectionHeaderColor = TEAL_SECTION_HEADER;
                 mThemeName = themeColor;
                 break;
             case "Purple":
@@ -83,6 +87,7 @@ public class SongBookTheme {
                 mTitleFontShadowColor = PURPLE_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = PURPLE_SPINNER_FONT;
                 mSeparatorBarColor = PURPLE_SEPARATOR_BAR;
+                mSectionHeaderColor = PURPLE_SECTION_HEADER;
                 mThemeName = themeColor;
                 break;
             case "Pink":
@@ -94,6 +99,7 @@ public class SongBookTheme {
                 mTitleFontShadowColor = PINK_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = PINK_SPINNER_FONT;
                 mSeparatorBarColor = PINK_SEPARATOR_BAR;
+                mSectionHeaderColor = PINK_SECTION_HEADER;
                 mThemeName = themeColor;
                 break;
             case "Grey":
@@ -105,6 +111,7 @@ public class SongBookTheme {
                 mTitleFontShadowColor = GREY_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = GREY_SPINNER_FONT;
                 mSeparatorBarColor = GREY_SEPARATOR_BAR;
+                mSectionHeaderColor = GREY_SECTION_HEADER;
                 mThemeName = themeColor;
                 break;
             case "Yellow":
@@ -116,6 +123,7 @@ public class SongBookTheme {
                 mTitleFontShadowColor = YELLOW_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = YELLOW_SPINNER_FONT;
                 mSeparatorBarColor = YELLOW_SEPARATOR_BAR;
+                mSectionHeaderColor = YELLOW_SECTION_HEADER;
                 mThemeName = themeColor;
                 break;
             case "Orange":
@@ -127,6 +135,7 @@ public class SongBookTheme {
                 mTitleFontShadowColor = ORANGE_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = ORANGE_SPINNER_FONT;
                 mSeparatorBarColor = ORANGE_SEPARATOR_BAR;
+                mSectionHeaderColor = ORANGE_SECTION_HEADER;
                 mThemeName = themeColor;
                 break;
             case "Red":
@@ -138,6 +147,7 @@ public class SongBookTheme {
                 mTitleFontShadowColor = RED_TITLE_FONT_SHADOW;
                 mSpinnerFontColor = RED_SPINNER_FONT;
                 mSeparatorBarColor = RED_SEPARATOR_BAR;
+                mSectionHeaderColor = RED_SECTION_HEADER;
                 mThemeName = themeColor;
                 break;
             case "Default (Slate)":
@@ -150,6 +160,7 @@ public class SongBookTheme {
                 mTitleFontShadowColor = TITLE_FONT_SHADOW;
                 mSpinnerFontColor = SPINNER_FONT;
                 mSeparatorBarColor = SEPARATOR_BAR;
+                mSectionHeaderColor = SECTION_HEADER;
                 mThemeName = THEME_NAME;
         }
     }
@@ -221,19 +232,29 @@ public class SongBookTheme {
     public int getSeparatorBarColor() {
         return mSeparatorBarColor;
     }
+
+    public int getSectionHeaderColor() {
+        return mSectionHeaderColor;
+    }
     //endregion
 
     //region Theme Color Values
+
+    // https://www.google.com/design/spec/style/color.html#color-color-palette
+    // http://paletton.com/#uid=1000u0kllllaFw0g0qFqFg0w0aF
+    //   Use 500 from google as base
+
     //region Default Slate Theme Color Values
     private static final String THEME_NAME = StaticVars.SETTINGS_DEFAULT_THEME_COLOR;
-    private static final int BACKGROUND_TOP = 0xFF607D8B;
-    private static final int BACKGROUND_BOTTOM = 0xFFECEFF1;
-    private static final int MAIN_FONT = 0xFF011722;
-    private static final int MAIN_FONT_SHADOW = 0xFF023049;
-    private static final int TITLE_FONT = 0xFFB0BEC5;
-    private static final int TITLE_FONT_SHADOW = 0xFF263238;
-    private static final int SPINNER_FONT = 0xFFECEFF1;
-    private static final int SEPARATOR_BAR = 0xFF011722;
+    private static final int BACKGROUND_TOP = 0xFF607D8B;           // 500-700
+    private static final int BACKGROUND_BOTTOM = 0xFFECEFF1;        // 50
+    private static final int MAIN_FONT = 0xFF011722;                // Paletton Deep Base
+    private static final int MAIN_FONT_SHADOW = 0xFF023049;         // Paletton Deep UL
+    private static final int TITLE_FONT = 0xFFB0BEC5;               // 200
+    private static final int TITLE_FONT_SHADOW = 0xFF263238;        // 900
+    private static final int SPINNER_FONT = 0xFFECEFF1;             // 50
+    private static final int SEPARATOR_BAR = 0xFF011722;            // Paletton Deep Base
+    private static final int SECTION_HEADER = 0x7737474F;           // 800
     //endregion
 
     //region Blue Theme Color Values
@@ -245,6 +266,7 @@ public class SongBookTheme {
     private static final int BLUE_TITLE_FONT_SHADOW = 0xFF0D47A1;
     private static final int BLUE_SPINNER_FONT = 0xFFE3F2FD;
     private static final int BLUE_SEPARATOR_BAR = 0xFF011423;
+    private static final int BLUE_SECTION_HEADER = 0x771565C0;
     //endregion
 
     //region Green Theme Color Values
@@ -256,6 +278,7 @@ public class SongBookTheme {
     private static final int GREEN_TITLE_FONT_SHADOW = 0xFF1B5E20;
     private static final int GREEN_SPINNER_FONT = 0xFFE8F5E9;
     private static final int GREEN_SEPARATOR_BAR = 0xFF002A03;
+    private static final int GREEN_SECTION_HEADER = 0x772E7D32;
     //endregion
 
     //region Teal Theme Color Values
@@ -267,9 +290,10 @@ public class SongBookTheme {
     private static final int TEAL_TITLE_FONT_SHADOW = 0xFF004D40;
     private static final int TEAL_SPINNER_FONT = 0xFFE0F2F1;
     private static final int TEAL_SEPARATOR_BAR = 0xFF00211D;
+    private static final int TEAL_SECTION_HEADER = 0x7700695C;
     //endregion
 
-    //region Purple Theme Color Values
+    //region Purple Theme Color Values (Deep Purple)
     private static final int PURPLE_BACKGROUND_TOP = 0xFF651FFF;
     private static final int PURPLE_BACKGROUND_BOTTOM = 0xFFEDE7F6;
     private static final int PURPLE_MAIN_FONT = 0xFF0F0225;
@@ -278,6 +302,7 @@ public class SongBookTheme {
     private static final int PURPLE_TITLE_FONT_SHADOW = 0xFF311B92;
     private static final int PURPLE_SPINNER_FONT = 0xFFEDE7F6;
     private static final int PURPLE_SEPARATOR_BAR = 0xFF0F0225;
+    private static final int PURPLE_SECTION_HEADER = 0x774527A0;
     //endregion
 
     //region Pink Theme Color Values
@@ -289,6 +314,7 @@ public class SongBookTheme {
     private static final int PINK_TITLE_FONT_SHADOW = 0xFF880E4F;
     private static final int PINK_SPINNER_FONT = 0xFFFCE4EC;
     private static final int PINK_SEPARATOR_BAR = 0xFF2F0010;
+    private static final int PINK_SECTION_HEADER = 0x77AD1457;
     //endregion
 
     //region Grey Theme Color Values
@@ -300,9 +326,10 @@ public class SongBookTheme {
     private static final int GREY_TITLE_FONT_SHADOW = 0xFF212121;
     private static final int GREY_SPINNER_FONT = 0xFFFAFAFA;
     private static final int GREY_SEPARATOR_BAR = 0xFF000000;
+    private static final int GREY_SECTION_HEADER = 0x77424242;
     //endregion
 
-    //region Yellow Theme Color Values
+    //region Yellow Theme Color Values (Special)
     private static final int YELLOW_BACKGROUND_TOP = 0xFFFFFF00;
     private static final int YELLOW_BACKGROUND_BOTTOM = 0xFFFFFFD3;
     private static final int YELLOW_MAIN_FONT = 0xFF000000;
@@ -311,9 +338,10 @@ public class SongBookTheme {
     private static final int YELLOW_TITLE_FONT_SHADOW = 0x00000000;
     private static final int YELLOW_SPINNER_FONT = 0xFF424242;
     private static final int YELLOW_SEPARATOR_BAR = 0xFF000000;
+    private static final int YELLOW_SECTION_HEADER = 0x77424242;
     //endregion
 
-    //region Orange Theme Color Values
+    //region Orange Theme Color Values (Deep Orange)
     private static final int ORANGE_BACKGROUND_TOP = 0xFFFF3D00;
     private static final int ORANGE_BACKGROUND_BOTTOM = 0xFFFBE9E7;
     private static final int ORANGE_MAIN_FONT = 0xFF360D00;
@@ -322,6 +350,7 @@ public class SongBookTheme {
     private static final int ORANGE_TITLE_FONT_SHADOW = 0xFFBF360C;
     private static final int ORANGE_SPINNER_FONT = 0xFFFBE9E7;
     private static final int ORANGE_SEPARATOR_BAR = 0xFF360D00;
+    private static final int ORANGE_SECTION_HEADER = 0x77D84315;
     //endregion
 
     //region Red Theme Color Values
@@ -333,6 +362,7 @@ public class SongBookTheme {
     private static final int RED_TITLE_FONT_SHADOW = 0xFFB71C1C;
     private static final int RED_SPINNER_FONT = 0xFFFFEBEE;
     private static final int RED_SEPARATOR_BAR = 0xFF360400;
+    private static final int RED_SECTION_HEADER = 0x77C62828;
     //endregion
     //endregion
 }

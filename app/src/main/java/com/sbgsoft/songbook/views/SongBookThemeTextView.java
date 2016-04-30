@@ -72,7 +72,8 @@ public class SongBookThemeTextView extends TextView {
                     setShadowLayer(SHADOW_RADIUS, SHADOW_DX, SHADOW_DY, songBookTheme.getTitleFontShadowColor());
                 }
             } else if (isSection) {
-                
+                setBackgroundColor(songBookTheme.getSectionHeaderColor());
+                setTextColor(songBookTheme.getTitleFontColor());
             } else {
                 // Set the color to the current theme color
                 setTextColor(songBookTheme.getMainFontColor());
