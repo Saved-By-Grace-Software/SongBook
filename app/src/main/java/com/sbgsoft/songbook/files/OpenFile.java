@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
 import com.sbgsoft.songbook.main.StaticVars;
 
@@ -40,8 +41,8 @@ public class OpenFile extends ListActivity {
     	setContentView(R.layout.activity_open_file);
         myPath = (TextView)findViewById(R.id.open_file_path);
 
-        // TODO: Get the current theme from the database
-        SongBookTheme theme = new SongBookTheme();
+		// Get the current theme from the database
+		SongBookTheme theme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
 
         // Apply the background color
         View layout = findViewById(R.id.open_file_layout);
@@ -84,7 +85,6 @@ public class OpenFile extends ListActivity {
         } else {
         	fillSongFileTypeSpinner();
         }
-        
         
         // Show the files
         getDir(root);
@@ -161,8 +161,8 @@ public class OpenFile extends ListActivity {
     private void getDir(String dirPath)
     {
     	myPath.setText("Location: " + dirPath);
-    	item = new ArrayList<String>();
-    	path = new ArrayList<String>();
+    	item = new ArrayList<>();
+    	path = new ArrayList<>();
     	File f = new File(dirPath);
     	File[] files = f.listFiles();
 

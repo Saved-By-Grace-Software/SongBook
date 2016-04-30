@@ -1,4 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:themetv="http://schemas.android.com/apk/res-auto"
     android:id="@+id/open_file_layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" 
@@ -10,14 +12,16 @@
     	android:orientation="vertical"
     	android:layout_alignParentTop="true"
     	android:layout_above="@+id/open_file_bottom_bar" >
-    	
-	    <TextView
+
+		<com.sbgsoft.songbook.views.SongBookThemeTextView
 	        android:id="@+id/open_file_path"
 	        android:layout_width="fill_parent" 
 	        android:layout_height="wrap_content"
 	        android:includeFontPadding="true"
 		    android:textSize="@dimen/filePathTextSize"
-		    android:textColor="@color/defaultTextColor" />
+            themetv:useShadow="false"
+            themetv:isTitle="false"
+            themetv:isSpinner="false"/>
 	    
 	    <ListView
 	        android:id="@android:id/list"
