@@ -41,6 +41,17 @@ public class SongBookTheme {
     public SongBookTheme(String themeColor) {
         // Select colors based upon themeColor
         switch(themeColor) {
+            case "Blue":
+                mBackgroundTop = BLUE_BACKGROUND_TOP;
+                mBackgroundBottom = BLUE_BACKGROUND_BOTTOM;
+                mMainFontColor = BLUE_MAIN_FONT;
+                mMainFontShadowColor = BLUE_MAIN_FONT_SHADOW;
+                mTitleFontColor = BLUE_TITLE_FONT;
+                mTitleFontShadowColor = BLUE_TITLE_FONT_SHADOW;
+                mSpinnerFontColor = BLUE_SPINNER_FONT;
+                mSeparatorBarColor = BLUE_SEPARATOR_BAR;
+                mThemeName = themeColor;
+                break;
             case "Green":
                 mBackgroundTop = GREEN_BACKGROUND_TOP;
                 mBackgroundBottom = GREEN_BACKGROUND_BOTTOM;
@@ -129,7 +140,7 @@ public class SongBookTheme {
                 mSeparatorBarColor = RED_SEPARATOR_BAR;
                 mThemeName = themeColor;
                 break;
-            case "Default (Blue)":
+            case "Default (Slate)":
             default:
                 mBackgroundTop = BACKGROUND_TOP;
                 mBackgroundBottom = BACKGROUND_BOTTOM;
@@ -213,16 +224,27 @@ public class SongBookTheme {
     //endregion
 
     //region Theme Color Values
-    //region Default Blue Theme Color Values
+    //region Default Slate Theme Color Values
     private static final String THEME_NAME = StaticVars.SETTINGS_DEFAULT_THEME_COLOR;
-    private static final int BACKGROUND_TOP = 0xFF6783A1;
-    private static final int BACKGROUND_BOTTOM = 0xFFDEEBFF;
-    private static final int MAIN_FONT = 0xFF000040;
-    private static final int MAIN_FONT_SHADOW = 0x77000000;
-    private static final int TITLE_FONT = 0x7FFFFFFF;
-    private static final int TITLE_FONT_SHADOW = 0x77000000;
-    private static final int SPINNER_FONT = 0xFFD1D8F6;
-    private static final int SEPARATOR_BAR = 0xFF26303B;
+    private static final int BACKGROUND_TOP = 0xFF607D8B;
+    private static final int BACKGROUND_BOTTOM = 0xFFECEFF1;
+    private static final int MAIN_FONT = 0xFF011722;
+    private static final int MAIN_FONT_SHADOW = 0xFF023049;
+    private static final int TITLE_FONT = 0xFFB0BEC5;
+    private static final int TITLE_FONT_SHADOW = 0xFF263238;
+    private static final int SPINNER_FONT = 0xFFECEFF1;
+    private static final int SEPARATOR_BAR = 0xFF011722;
+    //endregion
+
+    //region Blue Theme Color Values
+    private static final int BLUE_BACKGROUND_TOP = 0xFF2962FF;
+    private static final int BLUE_BACKGROUND_BOTTOM = 0xFFE3F2FD;
+    private static final int BLUE_MAIN_FONT = 0xFF011423;
+    private static final int BLUE_MAIN_FONT_SHADOW = 0xFF022B4A;
+    private static final int BLUE_TITLE_FONT = 0xFF90CAF9;
+    private static final int BLUE_TITLE_FONT_SHADOW = 0xFF0D47A1;
+    private static final int BLUE_SPINNER_FONT = 0xFFE3F2FD;
+    private static final int BLUE_SEPARATOR_BAR = 0xFF011423;
     //endregion
 
     //region Green Theme Color Values
