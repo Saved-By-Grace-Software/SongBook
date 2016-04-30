@@ -45,7 +45,7 @@
     	android:orientation="horizontal"
     	android:layout_alignParentBottom="true"	>
 	    
-        <Button
+        <com.sbgsoft.songbook.views.SongBookThemeButton
             android:id="@+id/open_file_select_folder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -63,8 +63,8 @@
             android:layout_weight="2"
             android:layout_gravity="left"
             android:popupBackground="@color/white" />
-          
-        <Button
+
+		<com.sbgsoft.songbook.views.SongBookThemeButton
 	        android:id="@+id/open_file_cancel"
 	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
