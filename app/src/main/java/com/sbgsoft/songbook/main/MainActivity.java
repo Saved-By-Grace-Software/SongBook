@@ -200,11 +200,22 @@ public class MainActivity extends FragmentActivity {
 
         // Set titlebar background
         ActionBar bar = getActionBar();
-        GradientDrawable bd = new GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT,
-                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
-        bd.setCornerRadius(0f);
-        bar.setBackgroundDrawable(bd);
+        bar.setDisplayShowHomeEnabled(false);
+        bar.setDisplayShowTitleEnabled(false);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+
+        View mCustomView = mInflater.inflate(R.layout.action_bar, null);
+        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.title_text);
+        mTitleTextView.setText("Virtual SongBook");
+
+        bar.setCustomView(mCustomView);
+        bar.setDisplayShowCustomEnabled(true);
+
+//        GradientDrawable bd = new GradientDrawable(
+//                GradientDrawable.Orientation.LEFT_RIGHT,
+//                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
+//        bd.setCornerRadius(0f);
+//        bar.setBackgroundDrawable(bd);
 
         // Create the tab objects
         setsFragment = new SetsTab();
