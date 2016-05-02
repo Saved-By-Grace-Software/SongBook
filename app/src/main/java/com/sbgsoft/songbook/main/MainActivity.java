@@ -198,14 +198,6 @@ public class MainActivity extends FragmentActivity {
         gd.setCornerRadius(0f);
         layout.setBackground(gd);
 
-        // Set titlebar background
-        ActionBar bar = getActionBar();
-        GradientDrawable bd = new GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT,
-                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
-        bd.setCornerRadius(0f);
-        bar.setBackgroundDrawable(bd);
-
         // Create the tab objects
         setsFragment = new SetsTab();
         songsFragment = new SongsTab();
@@ -235,10 +227,12 @@ public class MainActivity extends FragmentActivity {
         ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
         ab.setDisplayShowTitleEnabled(true);
         ab.setDisplayShowHomeEnabled(true);
+
+
         Tab tab3 = ab.newTab().setText("Current Set")
 				.setTabListener(new TabListener<CurrentSetTab>(
-						this, "tabcurrent", CurrentSetTab.class)); 
-        
+						this, "tabcurrent", CurrentSetTab.class));
+
         Tab tab1 = ab.newTab().setText("Sets")
         		.setTabListener(new TabListener<SetsTab>(
                         this, "tabsets", SetsTab.class));
@@ -246,10 +240,16 @@ public class MainActivity extends FragmentActivity {
 		Tab tab2 = ab.newTab().setText("Songs")
 				.setTabListener(new TabListener<SongsTab>(
                         this, "tabsongs", SongsTab.class));
-		
+
 		ab.addTab(tab3);
 		ab.addTab(tab1);
 		ab.addTab(tab2);
+
+        GradientDrawable bd = new GradientDrawable(
+                GradientDrawable.Orientation.LEFT_RIGHT,
+                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
+        bd.setCornerRadius(0f);
+        ab.setBackgroundDrawable(bd);
     }
     
     /**

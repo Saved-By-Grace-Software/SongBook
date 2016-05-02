@@ -50,6 +50,7 @@ public class SongBookThemeTextView extends TextView {
             boolean useShadow = a.getBoolean(R.styleable.SongBookThemeTextView_useShadow, false);
             boolean isTitle = a.getBoolean(R.styleable.SongBookThemeTextView_isTitle, false);
             boolean isSpinner = a.getBoolean(R.styleable.SongBookThemeTextView_isSpinner, false);
+            boolean isSection = a.getBoolean(R.styleable.SongBookThemeTextView_isSection, false);
 
             if (isTitle) {
                 // Set the color to the current theme color
@@ -70,6 +71,9 @@ public class SongBookThemeTextView extends TextView {
                     // Set shadow color
                     setShadowLayer(SHADOW_RADIUS, SHADOW_DX, SHADOW_DY, songBookTheme.getTitleFontShadowColor());
                 }
+            } else if (isSection) {
+                setBackgroundColor(songBookTheme.getSectionHeaderColor());
+                setTextColor(songBookTheme.getTitleFontColor());
             } else {
                 // Set the color to the current theme color
                 setTextColor(songBookTheme.getMainFontColor());

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.sbgsoft.songbook.views.SongBookThemeTextView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:themetv="http://schemas.android.com/apk/res-auto"
     android:id="@+id/group_spinner_item_text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textColor="@color/defaultTextColor"
     android:textSize="@dimen/fileSpinnerTextSize"
     android:background="@android:color/transparent"
-    android:shadowColor="@color/TransparentGrey" 
-	android:shadowDx="2"
-	android:shadowDy="2" 
-	android:shadowRadius="1" />
+	themetv:useShadow="false"
+	themetv:isSpinner="false" />
