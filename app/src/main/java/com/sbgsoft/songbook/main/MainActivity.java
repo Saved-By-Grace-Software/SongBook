@@ -36,7 +36,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.pdf.PdfDocument;
 import android.graphics.pdf.PdfDocument.Page;
@@ -47,14 +46,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Layout;
 import android.text.SpannableStringBuilder;
@@ -117,7 +118,7 @@ import com.sbgsoft.songbook.views.SongBookThemeTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
 
     //region Class Variables
 	// *****************************************************************************
@@ -125,7 +126,6 @@ public class MainActivity extends FragmentActivity {
 	// * Class Variables
 	// * 
 	// *****************************************************************************
-	private static int currentTab = 1;
 	private static String currentSongGroup = SongsTab.ALL_SONGS_LABEL;
 	private static String currentSetGroup = SetsTab.ALL_SETS_LABEL;
 	
@@ -134,8 +134,7 @@ public class MainActivity extends FragmentActivity {
 	public Fragment currSetFragment;
 	public Fragment setsFragment;
 	public Fragment songsFragment;
-	
-	FragmentTransaction transaction;
+
 	private String importFilePath = "";
 	private int setsCurrentScrollPosition = 0;
 	private int setsCurrentScrollOffset = 0;
@@ -191,65 +190,29 @@ public class MainActivity extends FragmentActivity {
         SongBookTheme theme = dbAdapter.getCurrentSettings().getSongBookTheme();
 
         // Apply the background color
-        View layout = findViewById(R.id.main_linear_layout);
+        View layout = findViewById(R.id.tabanim_maincontent);
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
                 new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom()});
         gd.setCornerRadius(0f);
         layout.setBackground(gd);
 
-        // Create the tab objects
-        setsFragment = new SetsTab();
-        songsFragment = new SongsTab();
-        currSetFragment = new CurrentSetTab();
-        
-        PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
-        mPagerAdapter.addFragment(currSetFragment);
-        mPagerAdapter.addFragment(setsFragment);
-        mPagerAdapter.addFragment(songsFragment);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.tabanim_toolbar);
+        setSupportActionBar(toolbar);
+        //etSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mPagerAdapter);
-		mViewPager.setOffscreenPageLimit(3);
-		
-		mViewPager.setOnPageChangeListener(
-	            new ViewPager.SimpleOnPageChangeListener() {
-	                @Override
-	                public void onPageSelected(int position) {
-	                    // When swiping between pages, select the
-	                    // corresponding tab.
-	                    getActionBar().setSelectedNavigationItem(position);
-	                    currentTab = position;
-	                }
-	            });
-        
-        ActionBar ab = getActionBar();
-        ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        ab.setDisplayShowTitleEnabled(true);
-        ab.setDisplayShowHomeEnabled(true);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.tabanim_viewpager);
+        setupViewPager(viewPager);
 
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabanim_tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
-        Tab tab3 = ab.newTab().setText("Current Set")
-				.setTabListener(new TabListener<CurrentSetTab>(
-						this, "tabcurrent", CurrentSetTab.class));
+//        GradientDrawable bd = new GradientDrawable(
+//                GradientDrawable.Orientation.LEFT_RIGHT,
+//                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
+//        bd.setCornerRadius(0f);
+//        ab.setBackgroundDrawable(bd);
 
-        Tab tab1 = ab.newTab().setText("Sets")
-        		.setTabListener(new TabListener<SetsTab>(
-                        this, "tabsets", SetsTab.class));
-
-		Tab tab2 = ab.newTab().setText("Songs")
-				.setTabListener(new TabListener<SongsTab>(
-                        this, "tabsongs", SongsTab.class));
-
-		ab.addTab(tab3);
-		ab.addTab(tab1);
-		ab.addTab(tab2);
-
-        GradientDrawable bd = new GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT,
-                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
-        bd.setCornerRadius(0f);
-        ab.setBackgroundDrawable(bd);
     }
     
     /**
@@ -619,7 +582,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStop(){
        super.onStop();
-       currentTab = mViewPager.getCurrentItem();
     }
     
     /**
@@ -637,7 +599,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onPause() {
     	super.onPause();
-        currentTab = mViewPager.getCurrentItem();
     }
     
     /**
@@ -646,7 +607,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStart() {
     	super.onStart();
-        mViewPager.setCurrentItem(currentTab);
     }
     
     /**
@@ -655,7 +615,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     public void onResume() {
     	super.onResume();
-        mViewPager.setCurrentItem(currentTab);
     }
     
     /**
@@ -738,6 +697,24 @@ public class MainActivity extends FragmentActivity {
 
 
     //region Other Functions
+
+    /**
+     * Initializes the view pager
+     * @param viewPager
+     */
+    private void setupViewPager(ViewPager viewPager) {
+        // Create the tab objects
+        setsFragment = new SetsTab();
+        songsFragment = new SongsTab();
+        currSetFragment = new CurrentSetTab();
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(songsFragment, "Songs");
+        adapter.addFrag(currSetFragment, "Current Set");
+        adapter.addFrag(setsFragment, "Sets");
+        viewPager.setAdapter(adapter);
+    }
+
     /**
      * Shows the about box with app information
      */
@@ -1076,7 +1053,7 @@ public class MainActivity extends FragmentActivity {
         SongBookTheme theme = dbAdapter.getCurrentSettings().getSongBookTheme();
 
         // Apply the background color
-        View layout = findViewById(R.id.main_linear_layout);
+        View layout = findViewById(R.id.tabanim_maincontent);
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
                 new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom()});
@@ -1289,7 +1266,7 @@ public class MainActivity extends FragmentActivity {
                     fillSetsListView();
                     fillCurrentSetListView();
                 }
-	    		
+
 	    		// Set the current tab
 	        	currentTab = 2;
 	        	
@@ -1510,7 +1487,7 @@ public class MainActivity extends FragmentActivity {
 	    			// Update current set list
 	    			fillCurrentSetListView();
 	    		}
-	    		
+
 	    		// Set the current tab
 	        	currentTab = 2;
 			}
@@ -1551,7 +1528,7 @@ public class MainActivity extends FragmentActivity {
 	    		fillCurrentSetListView();
 	    		fillSetGroupsSpinner();
 	    		fillSetsListView();
-	        	
+
 	        	// Set the current tab
 	        	currentTab = 2;
 			}
@@ -2371,7 +2348,7 @@ public class MainActivity extends FragmentActivity {
 	    		//songsAdapter.notifyDataSetChanged();
 	    		fillSongGroupsSpinner();
 	    		fillSongsListView();
-	        	
+
 	        	// Set the current tab
 	        	currentTab = 3;
 			}
