@@ -134,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
 	public Fragment currSetFragment;
 	public Fragment setsFragment;
 	public Fragment songsFragment;
+    static TabLayout tabLayout;
+    static Toolbar toolbar;
 
 	private String importFilePath = "";
 	private int setsCurrentScrollPosition = 0;
@@ -197,30 +199,26 @@ public class MainActivity extends AppCompatActivity {
         gd.setCornerRadius(0f);
         layout.setBackground(gd);
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.tabanim_toolbar);
+        // Set up the toolbar
+        toolbar = (Toolbar) findViewById(R.id.tabanim_toolbar);
+        //toolbar.setLogo(R.drawable.ic_launcher);
+        toolbar.setBackgroundColor(theme.getSectionHeaderColor());
         setSupportActionBar(toolbar);
-        //etSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // Set up the view pager
         final ViewPager viewPager = (ViewPager) findViewById(R.id.tabanim_viewpager);
         setupViewPager(viewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabanim_tabs);
+        // Create the tab layout
+        tabLayout = (TabLayout) findViewById(R.id.tabanim_tabs);
         tabLayout.setupWithViewPager(viewPager);
-
+        tabLayout.setBackgroundColor(theme.getSectionHeaderColor());
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
+                // Enable changing tab on click
                 viewPager.setCurrentItem(tab.getPosition());
-
-                switch (tab.getPosition()) {
-                    case 0:
-                        break;
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                }
             }
 
             @Override
@@ -233,12 +231,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-//        GradientDrawable bd = new GradientDrawable(
-//                GradientDrawable.Orientation.LEFT_RIGHT,
-//                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
-//        bd.setCornerRadius(0f);
-//        ab.setBackgroundDrawable(bd);
     }
     
     /**
@@ -1086,12 +1078,8 @@ public class MainActivity extends AppCompatActivity {
         layout.setBackground(gd);
 
         // Set titlebar background
-        ActionBar bar = getActionBar();
-        GradientDrawable bd = new GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT,
-                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
-        bd.setCornerRadius(0f);
-        bar.setBackgroundDrawable(bd);
+        toolbar.setBackgroundColor(theme.getSectionHeaderColor());
+        tabLayout.setBackgroundColor(theme.getSectionHeaderColor());
 
         // Apply the list font colors
         fillSetsListView();
