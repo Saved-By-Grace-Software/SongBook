@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 	// *****************************************************************************
 	private static String currentSongGroup = SongsTab.ALL_SONGS_LABEL;
 	private static String currentSetGroup = SetsTab.ALL_SETS_LABEL;
-	
+
 	public static DBAdapter dbAdapter;
 	static ViewPager mViewPager;
 	public Fragment currSetFragment;
@@ -207,12 +207,38 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabanim_tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                viewPager.setCurrentItem(tab.getPosition());
+
+                switch (tab.getPosition()) {
+                    case 0:
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
 //        GradientDrawable bd = new GradientDrawable(
 //                GradientDrawable.Orientation.LEFT_RIGHT,
 //                new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom(), theme.getBackgroundTop()});
 //        bd.setCornerRadius(0f);
 //        ab.setBackgroundDrawable(bd);
-
     }
     
     /**
@@ -697,9 +723,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     //region Other Functions
-
     /**
-     * Initializes the view pager
+     * Sets up the view pager
      * @param viewPager
      */
     private void setupViewPager(ViewPager viewPager) {
@@ -710,8 +735,8 @@ public class MainActivity extends AppCompatActivity {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(songsFragment, "Songs");
-        adapter.addFrag(currSetFragment, "Current Set");
         adapter.addFrag(setsFragment, "Sets");
+        adapter.addFrag(currSetFragment, "Current Set");
         viewPager.setAdapter(adapter);
     }
 
@@ -1266,9 +1291,6 @@ public class MainActivity extends AppCompatActivity {
                     fillSetsListView();
                     fillCurrentSetListView();
                 }
-
-	    		// Set the current tab
-	        	currentTab = 2;
 	        	
 	        	// Add the set to a group
 	        	addSetToGroup(setName);
@@ -1278,8 +1300,7 @@ public class MainActivity extends AppCompatActivity {
     	// Set negative button of the dialog
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Set the current tab
-	        	currentTab = 2;
+	    		// Do Nothing
 	    	}
     	});
 
@@ -1374,16 +1395,12 @@ public class MainActivity extends AppCompatActivity {
 
                 // Update set list view
                 fillSetsListView();
-
-                // Set the current tab
-                currentTab = 2;
             }
         });
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // Set the current tab
-                currentTab = 2;
+                // Do Nothing
             }
         });
 
@@ -1487,17 +1504,13 @@ public class MainActivity extends AppCompatActivity {
 	    			// Update current set list
 	    			fillCurrentSetListView();
 	    		}
-
-	    		// Set the current tab
-	        	currentTab = 2;
 			}
     	});
 
     	// Set negative button of the dialog
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Set the current tab
-	        	currentTab = 2;
+	    		// Do Nothing
 	    	}
     	});
 
@@ -1528,16 +1541,12 @@ public class MainActivity extends AppCompatActivity {
 	    		fillCurrentSetListView();
 	    		fillSetGroupsSpinner();
 	    		fillSetsListView();
-
-	        	// Set the current tab
-	        	currentTab = 2;
 			}
     	});
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Set the current tab
-	        	currentTab = 2;
+	    		// Do Nothing
 	    	}
     	});
 
@@ -1567,16 +1576,12 @@ public class MainActivity extends AppCompatActivity {
                 fillSetGroupsSpinner();
                 fillSetsListView();
                 fillCurrentSetListView();
-
-                // Set the current tab
-                currentTab = 2;
             }
         });
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // Set the current tab
-                currentTab = 2;
+                // Do Nothing
             }
         });
 
@@ -1963,10 +1968,6 @@ public class MainActivity extends AppCompatActivity {
                     int numResults = fillSetsListView(setSearch);
                     fillSetGroupsSpinner(true, numResults);
 
-                    // Set the sets tab as the current
-                    currentTab = 1;
-                    mViewPager.setCurrentItem(currentTab);
-
                     // Close the dialog
                     dialog.dismiss();
                 }
@@ -2094,9 +2095,6 @@ public class MainActivity extends AppCompatActivity {
                             }
 
                         }
-
-                        // Set the current tab
-                        currentTab = 3;
 
                         // Add the song to a group
                         addSongToGroup(songName);
@@ -2348,16 +2346,12 @@ public class MainActivity extends AppCompatActivity {
 	    		//songsAdapter.notifyDataSetChanged();
 	    		fillSongGroupsSpinner();
 	    		fillSongsListView();
-
-	        	// Set the current tab
-	        	currentTab = 3;
 			}
     	});
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Set the current tab
-	        	currentTab = 3;
+	    		// Do Nothing
 	    	}
     	});
 
@@ -2392,16 +2386,12 @@ public class MainActivity extends AppCompatActivity {
 	    		fillCurrentSetListView();
 	    		fillSetGroupsSpinner();
 	    		fillSetsListView();
-	        	
-	        	// Set the current tab
-	        	currentTab = 3;
 			}
     	});
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Set the current tab
-	        	currentTab = 3;
+	    		// Do Nothing
 	    	}
     	});
 
@@ -2437,16 +2427,12 @@ public class MainActivity extends AppCompatActivity {
                 // Refresh the song and current set view
                 fillSongGroupsSpinner();
                 fillCurrentSetListView();
-
-                // Set the current tab
-                currentTab = 3;
             }
         });
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // Set the current tab
-                currentTab = 3;
+                // Do Nothing
             }
         });
 
@@ -3238,10 +3224,6 @@ public class MainActivity extends AppCompatActivity {
                     int numResults = fillSongsListView(songSearch);
                     fillSongGroupsSpinner(true, numResults);
 
-                    // Set the songs tab as the current
-                    currentTab = 3;
-                    mViewPager.setCurrentItem(currentTab);
-
                     // Close the dialog
                     dialog.dismiss();
                 }
@@ -3700,8 +3682,7 @@ public class MainActivity extends AppCompatActivity {
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Set the current tab
-	        	currentTab = 3;
+	    		// Do Nothing
 	    	}
     	});
 
@@ -3920,16 +3901,12 @@ public class MainActivity extends AppCompatActivity {
 		    	// Refresh the set group spinner and set list
 	    		fillSetGroupsSpinner();
 	    		setsAdapter.notifyDataSetChanged();
-	        	
-	        	// Set the current tab
-	        	currentTab = 2;
 			}
     	});
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
-	    		// Set the current tab
-	        	currentTab = 2;
+	    		// Do Nothing
 	    	}
     	});
 
