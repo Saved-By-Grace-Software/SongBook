@@ -3335,15 +3335,16 @@ public class MainActivity extends AppCompatActivity {
                 title.setText(dbAdapter.getCurrentSetName());
 
                 // Add the set link
-                TextView link = ((TextView) findViewById(R.id.current_set_tab_link));
-                link.setMovementMethod(LinkMovementMethod.getInstance());
                 String setLink = dbAdapter.getSetLink(currentSetName);
-                if (setLink.length() > 25)
-                    setLink = "<a href=\"" + setLink + "\">" + setLink.substring(0, 25) + "...</a>";
-                else
-                    setLink = "<a href=\"" + setLink + "\">" + setLink + "</a>";
-                link.setText(Html.fromHtml(setLink));
-
+                if (setLink != null) {
+                    TextView link = ((TextView) findViewById(R.id.current_set_tab_link));
+                    link.setMovementMethod(LinkMovementMethod.getInstance());
+                    if (setLink.length() > 25)
+                        setLink = "<a href=\"" + setLink + "\">" + setLink.substring(0, 25) + "...</a>";
+                    else
+                        setLink = "<a href=\"" + setLink + "\">" + setLink + "</a>";
+                    link.setText(Html.fromHtml(setLink));
+                }
             }
         }
     }
