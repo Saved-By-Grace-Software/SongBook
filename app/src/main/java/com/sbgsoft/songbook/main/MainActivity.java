@@ -206,19 +206,19 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Set up the view pager
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.tabanim_viewpager);
-        setupViewPager(viewPager);
+        mViewPager = (ViewPager) findViewById(R.id.tabanim_viewpager);
+        setupViewPager(mViewPager);
 
         // Create the tab layout
         tabLayout = (TabLayout) findViewById(R.id.tabanim_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(mViewPager);
         tabLayout.setBackgroundColor(theme.getSectionHeaderColor());
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
                 // Enable changing tab on click
-                viewPager.setCurrentItem(tab.getPosition());
+                mViewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -730,6 +730,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFrag(setsFragment, "Sets");
         adapter.addFrag(currSetFragment, "Current Set");
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(3);
     }
 
     /**
@@ -1646,28 +1647,30 @@ public class MainActivity extends AppCompatActivity {
     	
     	// Set up the list view and adapter
         ListView lv = ((ListView)findViewById(R.id.sets_list));
-        lv.setEmptyView(findViewById(R.id.empty_sets));
-        setsAdapter = new ItemArrayAdapter(setsFragment.getActivity(), setsList);
+        if (lv != null) {
+            lv.setEmptyView(findViewById(R.id.empty_sets));
+            setsAdapter = new ItemArrayAdapter(setsFragment.getActivity(), setsList);
 
-        // Set the on click listener for each item
-        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-                // Get the set to show
-                String setName = setsList.get(position).getName();
+            // Set the on click listener for each item
+            lv.setOnItemClickListener(new ListView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> a, View v, int position, long row) {
+                    // Get the set to show
+                    String setName = setsList.get(position).getName();
 
-                // Set the current set and show it
-                dbAdapter.setCurrentSet(setName);
-                mViewPager.setCurrentItem(0, true);
-                fillCurrentSetListView();
-            }
-        });
+                    // Set the current set and show it
+                    dbAdapter.setCurrentSet(setName);
+                    mViewPager.setCurrentItem(2, true);
+                    fillCurrentSetListView();
+                }
+            });
 
-        // Register the context menu and set the adapter
-        registerForContextMenu(lv);
-        lv.setAdapter(setsAdapter);
-        
-        // Scroll to the previous scroll position
-        lv.setSelectionFromTop(setsCurrentScrollPosition, setsCurrentScrollOffset);
+            // Register the context menu and set the adapter
+            registerForContextMenu(lv);
+            lv.setAdapter(setsAdapter);
+
+            // Scroll to the previous scroll position
+            lv.setSelectionFromTop(setsCurrentScrollPosition, setsCurrentScrollOffset);
+        }
 
         return ret;
     }
@@ -2512,43 +2515,45 @@ public class MainActivity extends AppCompatActivity {
 
     	// Set up the list view and adapter
     	ListView lv = ((ListView)findViewById(R.id.songs_list));
-        lv.setEmptyView(findViewById(R.id.empty_songs));
-        songsAdapter = new ItemArrayAdapter(songsFragment.getActivity(), songsList);
+        if (lv != null) {
+            lv.setEmptyView(findViewById(R.id.empty_songs));
+            songsAdapter = new ItemArrayAdapter(songsFragment.getActivity(), songsList);
 
-        // Set the on click listener for each item
-        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-                // Get the song to show
-                SongItem song = (SongItem) songsList.get(position);
+            // Set the on click listener for each item
+            lv.setOnItemClickListener(new ListView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> a, View v, int position, long row) {
+                    // Get the song to show
+                    SongItem song = (SongItem) songsList.get(position);
 
-                // Get the updated time information
-                song.setBpm(dbAdapter.getSongBpm(song.getName()));
-                song.setTimeSignature(dbAdapter.getSongTimeSignature(song.getName()).toString());
+                    // Get the updated time information
+                    song.setBpm(dbAdapter.getSongBpm(song.getName()));
+                    song.setTimeSignature(dbAdapter.getSongTimeSignature(song.getName()).toString());
 
-                try {
-                    FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
-                    song.setText(ChordProParser.ParseSongFile(getApplicationContext(), song, song.getKey(), fis, true, false));
+                    try {
+                        FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
+                        song.setText(ChordProParser.ParseSongFile(getApplicationContext(), song, song.getKey(), fis, true, false));
 
-                    // Show the song activity
-                    SongActivity songA = new SongActivity();
-                    Intent showSong = new Intent(v.getContext(), songA.getClass());
-                    showSong.putExtra(StaticVars.SONG_ITEM_KEY, (Parcelable) song);
-                    startActivity(showSong);
+                        // Show the song activity
+                        SongActivity songA = new SongActivity();
+                        Intent showSong = new Intent(v.getContext(), songA.getClass());
+                        showSong.putExtra(StaticVars.SONG_ITEM_KEY, (Parcelable) song);
+                        startActivity(showSong);
 
-                } catch (FileNotFoundException e) {
-                    Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
-                } catch (IOException e) {
-                    Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+                    } catch (FileNotFoundException e) {
+                        Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
 
-        // Register the context menu and add the adapter
-        registerForContextMenu(lv);
-        lv.setAdapter(songsAdapter);
+            // Register the context menu and add the adapter
+            registerForContextMenu(lv);
+            lv.setAdapter(songsAdapter);
 
-        // Scroll to the previous scroll position
-        lv.setSelectionFromTop(songsCurrentScrollPosition, songsCurrentScrollOffset);
+            // Scroll to the previous scroll position
+            lv.setSelectionFromTop(songsCurrentScrollPosition, songsCurrentScrollOffset);
+        }
 
         return ret;
     }
@@ -3276,68 +3281,70 @@ public class MainActivity extends AppCompatActivity {
     	
     	// Set up the list view and adapter
         ListView lv = ((ListView)findViewById(R.id.current_list));
-        lv.setEmptyView(findViewById(R.id.empty_current));
-        currSetAdapter = new ItemArrayAdapter(this, currSetList);
-        
-        // Set the on click listener for each item
-        lv.setOnItemClickListener(new ListView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-            	// Create a new SetItem to pass
-            	SetItem setItem = new SetItem();
-            	
-            	// Loop through each song in the current set and add it to the array
-            	for (Item i : currSetList) {
-            		SongItem currSong = (SongItem)i;
+        if (lv != null) {
+            lv.setEmptyView(findViewById(R.id.empty_current));
+            currSetAdapter = new ItemArrayAdapter(this, currSetList);
 
-                    // Get the updated time information
-                    currSong.setBpm(dbAdapter.getSongBpm(currSong.getName()));
-                    currSong.setTimeSignature(dbAdapter.getSongTimeSignature(currSong.getName()).toString());
-            		
-            		// Set song text
-            		try {
-	            		FileInputStream fis = openFileInput(dbAdapter.getSongFile(currSong.getName()));
-	            		currSong.setKey(dbAdapter.getSongKey(currSong.getName()));
-	            		currSong.setText(ChordProParser.ParseSongFile(getApplicationContext(), currSong, dbAdapter.getSongKeyForSet(dbAdapter.getCurrentSetName(), currSong.getName()), fis, true, false));
-	            		
-	            		setItem.songs.add(currSong);      
-            		} catch (FileNotFoundException e) {
-            			Toast.makeText(getBaseContext(), "Could not open one of the song files!", Toast.LENGTH_LONG).show();
-    					return;
-            		} catch (IOException e) {
-    					Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
-    				}
-            	}
-            	
-            	// Show the set activity
-            	SetActivity set = new SetActivity();
-            	Intent showSet = new Intent(v.getContext(), set.getClass());
-            	showSet.putExtra(StaticVars.CURRENT_SONG_KEY, position);
-            	showSet.putExtra(StaticVars.SET_SONGS_KEY, setItem);
-                startActivity(showSet);
+            // Set the on click listener for each item
+            lv.setOnItemClickListener(new ListView.OnItemClickListener() {
+                public void onItemClick(AdapterView<?> a, View v, int position, long row) {
+                    // Create a new SetItem to pass
+                    SetItem setItem = new SetItem();
+
+                    // Loop through each song in the current set and add it to the array
+                    for (Item i : currSetList) {
+                        SongItem currSong = (SongItem) i;
+
+                        // Get the updated time information
+                        currSong.setBpm(dbAdapter.getSongBpm(currSong.getName()));
+                        currSong.setTimeSignature(dbAdapter.getSongTimeSignature(currSong.getName()).toString());
+
+                        // Set song text
+                        try {
+                            FileInputStream fis = openFileInput(dbAdapter.getSongFile(currSong.getName()));
+                            currSong.setKey(dbAdapter.getSongKey(currSong.getName()));
+                            currSong.setText(ChordProParser.ParseSongFile(getApplicationContext(), currSong, dbAdapter.getSongKeyForSet(dbAdapter.getCurrentSetName(), currSong.getName()), fis, true, false));
+
+                            setItem.songs.add(currSong);
+                        } catch (FileNotFoundException e) {
+                            Toast.makeText(getBaseContext(), "Could not open one of the song files!", Toast.LENGTH_LONG).show();
+                            return;
+                        } catch (IOException e) {
+                            Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    // Show the set activity
+                    SetActivity set = new SetActivity();
+                    Intent showSet = new Intent(v.getContext(), set.getClass());
+                    showSet.putExtra(StaticVars.CURRENT_SONG_KEY, position);
+                    showSet.putExtra(StaticVars.SET_SONGS_KEY, setItem);
+                    startActivity(showSet);
+                }
+            });
+
+            // Register the context menu and add the adapter
+            registerForContextMenu(lv);
+            lv.setAdapter(currSetAdapter);
+
+            // Update the current set title bar
+            String currentSetName = dbAdapter.getCurrentSetName();
+            if (currentSetName != "") {
+                // Append the current set name to the title
+                TextView title = ((TextView) findViewById(R.id.current_set_tab_title));
+                title.setText(dbAdapter.getCurrentSetName());
+
+                // Add the set link
+                TextView link = ((TextView) findViewById(R.id.current_set_tab_link));
+                link.setMovementMethod(LinkMovementMethod.getInstance());
+                String setLink = dbAdapter.getSetLink(currentSetName);
+                if (setLink.length() > 25)
+                    setLink = "<a href=\"" + setLink + "\">" + setLink.substring(0, 25) + "...</a>";
+                else
+                    setLink = "<a href=\"" + setLink + "\">" + setLink + "</a>";
+                link.setText(Html.fromHtml(setLink));
+
             }
-    	});
-      
-        // Register the context menu and add the adapter
-        registerForContextMenu(lv);
-        lv.setAdapter(currSetAdapter);
-
-        // Update the current set title bar
-        String currentSetName = dbAdapter.getCurrentSetName();
-        if (currentSetName != "") {
-            // Append the current set name to the title
-            TextView title = ((TextView)findViewById(R.id.current_set_tab_title));
-            title.setText(dbAdapter.getCurrentSetName());
-
-            // Add the set link
-            TextView link = ((TextView)findViewById(R.id.current_set_tab_link));
-            link.setMovementMethod(LinkMovementMethod.getInstance());
-            String setLink = dbAdapter.getSetLink(currentSetName);
-            if (setLink.length() > 25)
-                setLink = "<a href=\"" + setLink + "\">" + setLink.substring(0, 25) + "...</a>";
-            else
-                setLink = "<a href=\"" + setLink + "\">" + setLink + "</a>";
-            link.setText(Html.fromHtml(setLink));
-
         }
     }
     //endregion
@@ -4495,99 +4502,7 @@ public class MainActivity extends AppCompatActivity {
         	Toast.makeText(getBaseContext(), "Your import was cancelled!", Toast.LENGTH_LONG).show();
     	}
     }
-    
-    /**
-     * Tab Listener class for displaying each tab
-     * @author SamIAm
-     *
-     * @param <T>
-     */
-    public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
-        private Fragment mFragment;
-        private final Activity mActivity;
-        private final String mTag;
-        private final Class<T> mClass;
 
-        /** Constructor used each time a new tab is created.
-          * @param activity  The host Activity, used to instantiate the fragment
-          * @param tag  The identifier tag for the fragment
-          * @param clz  The fragment's Class, used to instantiate the fragment
-          */
-        public TabListener(Activity activity, String tag, Class<T> clz) {
-            mActivity = activity;
-            mTag = tag;
-            mClass = clz;
-        }
-
-        /* The following are each of the ActionBar.TabListener callbacks */
-
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {
-            // Check if the fragment is already initialized
-            if (mFragment == null) {
-                // If not, instantiate and add it to the activity
-                mFragment = Fragment.instantiate(mActivity, mClass.getName());
-                ft.add(android.R.id.content, mFragment, mTag);
-            } else {
-                // If it exists, simply attach it in order to show it
-                ft.attach(mFragment);
-            }
-        }
-
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-            if (mFragment != null) {
-                // Detach the fragment, because another one is being attached
-                ft.detach(mFragment);
-            }
-        }
-
-        public void onTabReselected(Tab tab, FragmentTransaction ft) {
-            // User selected the already selected tab. Usually do nothing.
-        }
-
-		public void onTabReselected(Tab arg0,
-				android.app.FragmentTransaction arg1) {
-			
-		}
-
-		public void onTabSelected(Tab arg0, android.app.FragmentTransaction arg1) {
-			mViewPager.setCurrentItem(arg0.getPosition());
-		}
-
-		public void onTabUnselected(Tab arg0,
-				android.app.FragmentTransaction arg1) {
-			
-		}
-    }
-    
-    /**
-     * Page adapter for switching between tabs
-     * @author SamIAm
-     *
-     */
-    public class PagerAdapter extends FragmentPagerAdapter {
-
-        private final ArrayList<Fragment> mFragments = new ArrayList<Fragment>();
-
-        public PagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        public void addFragment(Fragment fragment) {
-            mFragments.add(fragment);
-            notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-            return mFragments.size();
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragments.get(position);
-        }
-    }
-    
     /**
      * Comparator for case insensitive sorting
      * @author SamIAm
