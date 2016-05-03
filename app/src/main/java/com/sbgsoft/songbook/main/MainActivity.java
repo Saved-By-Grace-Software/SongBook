@@ -55,6 +55,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Layout;
@@ -2514,7 +2515,7 @@ public class MainActivity extends AppCompatActivity {
     	ret = setSongsList(songSearch);
 
     	// Set up the list view and adapter
-    	ListView lv = ((ListView)findViewById(R.id.songs_list));
+    	RecyclerView lv = ((RecyclerView)findViewById(R.id.songs_list));
         if (lv != null) {
             lv.setEmptyView(findViewById(R.id.empty_songs));
             songsAdapter = new ItemArrayAdapter(songsFragment.getActivity(), songsList);
