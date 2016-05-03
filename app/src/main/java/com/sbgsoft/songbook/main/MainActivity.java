@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         // Set up the toolbar
         toolbar = (Toolbar) findViewById(R.id.tabanim_toolbar);
         //toolbar.setLogo(R.drawable.ic_launcher);
-        toolbar.setBackgroundColor(theme.getSectionHeaderColor());
+        toolbar.setBackgroundColor(theme.getToolbarColor());
         setSupportActionBar(toolbar);
 
         // Set up the view pager
@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         // Create the tab layout
         tabLayout = (TabLayout) findViewById(R.id.tabanim_tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        tabLayout.setBackgroundColor(theme.getSectionHeaderColor());
+        tabLayout.setBackgroundColor(theme.getToolbarColor());
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -1079,8 +1079,8 @@ public class MainActivity extends AppCompatActivity {
         layout.setBackground(gd);
 
         // Set titlebar background
-        toolbar.setBackgroundColor(theme.getSectionHeaderColor());
-        tabLayout.setBackgroundColor(theme.getSectionHeaderColor());
+        toolbar.setBackgroundColor(theme.getToolbarColor());
+        tabLayout.setBackgroundColor(theme.getToolbarColor());
 
         // Apply the list font colors
         fillSetsListView();
