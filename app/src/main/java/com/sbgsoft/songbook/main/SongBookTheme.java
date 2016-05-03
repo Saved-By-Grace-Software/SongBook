@@ -358,7 +358,7 @@ public class SongBookTheme {
     private static final int YELLOW_MAIN_FONT = 0xFF000000;
     private static final int YELLOW_MAIN_FONT_SHADOW = 0xFF424242;
     private static final int YELLOW_TITLE_FONT = 0xFF000000;
-    private static final int YELLOW_TITLE_FONT_SHADOW = 0x00000000;
+    private static final int YELLOW_TITLE_FONT_SHADOW = 0x779E9E9E;
     private static final int YELLOW_SPINNER_FONT = 0xFF424242;
     private static final int YELLOW_SEPARATOR_BAR = 0xFF000000;
     private static final int YELLOW_SECTION_HEADER = 0x77424242;
