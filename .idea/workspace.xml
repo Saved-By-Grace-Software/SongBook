@@ -23,13 +23,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0b814f9b-14c2-4a07-9dcd-088d3dc0bab9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/items/Item.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/items/Item.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/items/SetItem.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/items/SetItem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetsTab.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetsTab.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values-sw600dp/dimens.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values-sw600dp/dimens.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values-sw700dp/dimens.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values-sw700dp/dimens.xml" />
     </list>
     <ignored path="Songbook.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -178,6 +173,7 @@
                 <element signature="docComment;method#deleteSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#deleteSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#setSetsList#0;class#MainActivity#0" expanded="false" />
+                <element signature="method#setSetsList#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#fillSetsListView#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#fillSetsListView#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#fillSetsListView#1;class#MainActivity#0" expanded="false" />
@@ -361,15 +357,18 @@
       <file leaf-file-name="SetsTab.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetsTab.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.30375427">
-              <caret line="89" column="44" selection-start-line="89" selection-start-column="44" selection-end-line="89" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.7849829">
+              <caret line="233" column="17" selection-start-line="233" selection-start-column="17" selection-end-line="233" selection-end-column="17" />
               <folding>
                 <element signature="method#reColorSeparatorBar#0;class#SetsTab#0" expanded="false" />
                 <element signature="docComment;method#refreshSetsTab#0;class#SetsTab#0" expanded="false" />
                 <element signature="docComment;method#getSetsList#0;class#SetsTab#0" expanded="false" />
                 <element signature="method#getSetsList#0;class#SetsTab#0" expanded="false" />
+                <element signature="docComment;method#refillSetsList#0;class#SetsTab#0" expanded="false" />
+                <element signature="e#5260#5285#0" expanded="false" />
                 <element signature="method#disableOffsetForOlderAndroid#0;class#SetsTab#0" expanded="false" />
                 <element signature="docComment;method#getSetGroupsList#0;class#SetsTab#0" expanded="false" />
+                <element signature="method#getSetGroupsList#0;class#SetsTab#0" expanded="false" />
                 <element signature="docComment;method#fillSetGroupsSpinner#0;class#SetsTab#0" expanded="false" />
               </folding>
             </state>
@@ -380,7 +379,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="41" column="18" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="18" />
+              <caret line="60" column="31" selection-start-line="60" selection-start-column="31" selection-end-line="60" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#478#479#0" expanded="true" />
@@ -2089,10 +2088,10 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/sets_card.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values-sw600dp/dimens.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values-sw700dp/dimens.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/items/SetItem.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/items/Item.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetsTab.java" />
       </list>
     </option>
@@ -3886,20 +3885,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="41" column="18" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="18" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#478#479#0" expanded="true" />
-            <element signature="e#506#507#0" expanded="true" />
-            <element signature="e#1051#1052#0" expanded="true" />
-            <element signature="e#1086#1087#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3997,6 +3982,7 @@
             <element signature="docComment;method#deleteSet#0;class#MainActivity#0" expanded="false" />
             <element signature="method#deleteSet#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#setSetsList#0;class#MainActivity#0" expanded="false" />
+            <element signature="method#setSetsList#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#fillSetsListView#0;class#MainActivity#0" expanded="false" />
             <element signature="method#fillSetsListView#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#fillSetsListView#1;class#MainActivity#0" expanded="false" />
@@ -4176,17 +4162,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="60" column="31" selection-start-line="60" selection-start-column="31" selection-end-line="60" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#478#479#0" expanded="true" />
+            <element signature="e#506#507#0" expanded="true" />
+            <element signature="e#1051#1052#0" expanded="true" />
+            <element signature="e#1086#1087#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetsTab.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.30375427">
-          <caret line="89" column="44" selection-start-line="89" selection-start-column="44" selection-end-line="89" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.7849829">
+          <caret line="233" column="17" selection-start-line="233" selection-start-column="17" selection-end-line="233" selection-end-column="17" />
           <folding>
             <element signature="method#reColorSeparatorBar#0;class#SetsTab#0" expanded="false" />
             <element signature="docComment;method#refreshSetsTab#0;class#SetsTab#0" expanded="false" />
             <element signature="docComment;method#getSetsList#0;class#SetsTab#0" expanded="false" />
             <element signature="method#getSetsList#0;class#SetsTab#0" expanded="false" />
+            <element signature="docComment;method#refillSetsList#0;class#SetsTab#0" expanded="false" />
+            <element signature="e#5260#5285#0" expanded="false" />
             <element signature="method#disableOffsetForOlderAndroid#0;class#SetsTab#0" expanded="false" />
             <element signature="docComment;method#getSetGroupsList#0;class#SetsTab#0" expanded="false" />
+            <element signature="method#getSetGroupsList#0;class#SetsTab#0" expanded="false" />
             <element signature="docComment;method#fillSetGroupsSpinner#0;class#SetsTab#0" expanded="false" />
           </folding>
         </state>

@@ -49,4 +49,15 @@ public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
         mSets.remove(position);
         notifyItemRemoved(position);
     }
+
+    public void clear() {
+        mSets.clear();
+        notifyDataSetChanged();
+    }
+
+    public void refill(List<SetItem> newSets) {
+        mSets.clear();
+        mSets.addAll(newSets);
+        notifyDataSetChanged();
+    }
 }

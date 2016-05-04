@@ -149,6 +149,14 @@ public class SetsTab extends Fragment {
 
         return sets;
     }
+
+    /**
+     * Refills the sets list
+     */
+    private void refillSetsList() {
+        ArrayList<SetItem> sets = getSetsList(null);
+        adapter.refill(sets);
+    }
     //endregion
 
     //region Helper Functions
@@ -202,7 +210,7 @@ public class SetsTab extends Fragment {
         ArrayAdapter<String> setGroupsAdapter;
 
         // Set the groups list
-        ArrayList<String> setGroupsList = getSetGroupsList(showSearchResults);
+        final ArrayList<String> setGroupsList = getSetGroupsList(showSearchResults);
 
         // Create the spinner adapter
         if (showSearchResults)
@@ -211,38 +219,34 @@ public class SetsTab extends Fragment {
             setGroupsAdapter = new SetGroupArrayAdapter(mView.getContext(), setGroupsList);
         final Spinner groupSpinner = (Spinner) mView.findViewById(R.id.set_group_spinner);
 
-//        // Set the on click listener for each item
-//        groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-//            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
-//                // Get the selected item and populate the sets list
-//                String groupName = setGroupsList.get(position);
-//
-//                // If the selection has actually changed
-//                if (!currentSetGroup.equals(groupName)) {
-//                    // Reset the scroll positions
-//                    setsCurrentScrollPosition = 0;
-//                    setsCurrentScrollOffset = 0;
-//
-//                    // Remove the search results option from the spinner
-//                    if (!groupName.equals(StaticVars.searchResultsText) &&
-//                            setGroupsList.get(0).equals(StaticVars.searchResultsText))
-//                        setGroupsList.remove(0);
-//                }
-//
-//                // Refill song list (if not on search results)
-//                currentSetGroup = groupName;
-//                if (groupName != StaticVars.searchResultsText) {
-//                    fillSetsListView();
-//                }
-//
-//                // Set the sort by spinner back to default
-//                ((Spinner)findViewById(R.id.set_sort_spinner)).setSelection(0);
-//            }
-//
-//            public void onNothingSelected(AdapterView<?> arg0) {
-//                // Nothing was clicked so ignore it
-//            }
-//        });
+        // Set the on click listener for each item
+        groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+                // Get the selected item and populate the sets list
+                String groupName = setGroupsList.get(position);
+
+                // If the selection has actually changed
+                if (!currentSetGroup.equals(groupName)) {
+                    // Remove the search results option from the spinner
+                    if (!groupName.equals(StaticVars.searchResultsText) &&
+                            setGroupsList.get(0).equals(StaticVars.searchResultsText))
+                        setGroupsList.remove(0);
+                }
+
+                // Refill song list (if not on search results)
+                currentSetGroup = groupName;
+                if (groupName != StaticVars.searchResultsText) {
+                    refillSetsList();
+                }
+
+                // Set the sort by spinner back to default
+                ((Spinner)mView.findViewById(R.id.set_sort_spinner)).setSelection(0);
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // Nothing was clicked so ignore it
+            }
+        });
 
         groupSpinner.setAdapter(setGroupsAdapter);
     }
