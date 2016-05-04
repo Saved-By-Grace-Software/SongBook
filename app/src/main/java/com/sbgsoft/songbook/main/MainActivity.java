@@ -3351,6 +3351,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    public void showCurrentSet(String setName) {
+        Toast.makeText(this, "You clicked: " + setName, Toast.LENGTH_LONG).show();
+    }
     //endregion
 
 

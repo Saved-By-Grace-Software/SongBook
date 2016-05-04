@@ -8,13 +8,11 @@ import android.view.ViewGroup;
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.Item;
 import com.sbgsoft.songbook.items.SetItem;
+import com.sbgsoft.songbook.main.MainActivity;
 
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by SamIAm on 5/4/2016.
- */
 public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
 
     public enum SortType {
@@ -24,15 +22,17 @@ public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
     }
 
     private List<SetItem> mSets;
+    private MainActivity mMainActivity;
 
-    public SetItemAdapter(List<SetItem> sets) {
+    public SetItemAdapter(List<SetItem> sets, MainActivity mainActivity) {
         mSets = sets;
+        mMainActivity = mainActivity;
     }
 
     @Override
     public SetItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.sets_card, parent, false);
-        return new SetItemViewHolder(itemView);
+        return new SetItemViewHolder(itemView, mMainActivity);
     }
 
     @Override

@@ -56,7 +56,8 @@ public class SetsTab extends Fragment {
         setsRecyclerView.setLayoutManager(llm);
 
         // Specify the adapter for the recycler view
-        adapter = new SetItemAdapter(sets);
+        MainActivity mainActivity = (MainActivity)getActivity();
+        adapter = new SetItemAdapter(sets, mainActivity);
         setsRecyclerView.setAdapter(adapter);
 
         // Theme setup
