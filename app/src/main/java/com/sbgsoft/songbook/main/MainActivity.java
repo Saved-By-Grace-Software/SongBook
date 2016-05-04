@@ -55,6 +55,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Layout;
@@ -1636,6 +1638,66 @@ public class MainActivity extends AppCompatActivity {
     	}
 
         return ret;
+    }
+
+    /**
+     * Sets the sets array list
+     */
+    public ArrayList<SetItem> getSetsList(SetSearchCriteria setSearch) {
+        int ret;
+        Cursor c;
+
+        // Determine if we are searching or using the song group
+        if (setSearch == null)
+            c = dbAdapter.getSets(currentSetGroup);
+        else
+            c = dbAdapter.getSetsSearch(setSearch);
+
+        c.moveToFirst();
+        ret = c.getCount();
+
+        // Clear the ArrayList
+        ArrayList<SetItem> sets = new ArrayList<>();
+
+        // Display error message for searching
+        if (c.getCount() <= 0 && setSearch != null)
+            Toast.makeText(getApplicationContext(), "No sets match that search", Toast.LENGTH_LONG).show();
+
+        // Populate the ArrayList
+        while (!c.isAfterLast()) {
+            // Get the strings from the cursor
+            String setName = c.getString(c.getColumnIndex(DBStrings.TBLSETS_NAME));
+            String setLink = c.getString(c.getColumnIndex(DBStrings.TBLSETS_LINK));
+            String setDate = c.getString(c.getColumnIndex(DBStrings.TBLSETS_DATE));
+            String[] datesplit = setDate.split("-");
+            setDate = datesplit[1] + "/" + datesplit[2] + "/" + datesplit[0];
+
+            // Create a new set item
+            SetItem tmp = new SetItem(setName, setDate, setLink);
+            tmp.selfPopulateSongsList();
+
+            // Add the set item
+            sets.add(tmp);
+
+            // Move to the next song
+            c.moveToNext();
+        }
+        c.close();
+
+        // Sort the array list
+        switch(setsListSortByIndex) {
+            case 0: // Date - Recent
+                Collections.sort(setsList, new SetItemComparableDateReverse());
+                break;
+            case 1: // Date - Oldest
+                Collections.sort(setsList, new SetItemComparableDate());
+                break;
+            case 2: // Title
+                Collections.sort(setsList, new ItemComparableName());
+                break;
+        }
+
+        return sets;
     }
 
     /**
