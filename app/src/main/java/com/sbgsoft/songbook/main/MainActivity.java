@@ -1092,7 +1092,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Apply spinner color
         fillSetGroupsSpinner();
-        fillSetSortSpinner();
+        //fillSetSortSpinner();
         fillSongGroupsSpinner();
         fillSongSortSpinner();
 
@@ -3923,31 +3923,6 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Fills the song sort spinner
      */
-    public void fillSetSortSpinner() {
-    	// Create the spinner adapter
-    	setSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, StaticVars.setSortBy);
-    	setSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
-    	final Spinner sortSpinner = (Spinner) findViewById(R.id.set_sort_spinner);
-    	
-    	// Set the on click listener for each item
-    	sortSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
-            	sortSets(position);
-            }
-            
-            public void onNothingSelected(AdapterView<?> arg0) {
-            	// Nothing was clicked so ignore it
-            }
-        });
-    	
-    	
-    	// Set the adapter
-    	sortSpinner.setAdapter(setSortAdapter);
-    }
-    
-    /**
-     * Fills the song sort spinner
-     */
     public void fillSongSortSpinner() {
     	// Create the spinner adapter
     	songSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, StaticVars.songSortBy);
@@ -4036,26 +4011,6 @@ public class MainActivity extends AppCompatActivity {
 	        	songsAdapter.notifyDataSetChanged();
 	    		break;
     	}
-    }
-    
-    /**
-     * Sorts the set list by the selected item
-     * @param sortByPosition The position in the song sort array list
-     */
-    private void sortSets(int sortByPosition) {
-    	ArrayList<SetItem> temp = new ArrayList<SetItem>();
-    	
-    	// Remove section items
-    	for (Item i : setsList) {
-    		if (!i.getClass().equals(SectionItem.class))
-    			temp.add((SetItem)i);
-    	}
-    	
-    	// Set the sort index
-		setsListSortByIndex = sortByPosition;
-		
-		// Refill the sets list
-		fillSetsListView();
     }
     //endregion
 

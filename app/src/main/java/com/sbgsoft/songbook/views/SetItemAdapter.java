@@ -6,14 +6,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.items.Item;
 import com.sbgsoft.songbook.items.SetItem;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by SamIAm on 5/4/2016.
  */
 public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
+
+    public enum SortType {
+        DateRecent,
+        DateOldest,
+        Title
+    }
 
     private List<SetItem> mSets;
 
@@ -58,6 +66,25 @@ public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
     public void refill(List<SetItem> newSets) {
         mSets.clear();
         mSets.addAll(newSets);
+        notifyDataSetChanged();
+    }
+
+    public void sort(SortType sortType) {
+        // Sort the array list
+        switch(sortType) {
+            case DateRecent: // Date - Recent
+                Collections.sort(mSets, new SetItem.SetItemComparableDateReverse());
+                break;
+            case DateOldest: // Date - Oldest
+                Collections.sort(mSets, new SetItem.SetItemComparableDate());
+                break;
+            default:
+            case Title: // Title
+                Collections.sort(mSets, new Item.ItemComparableName());
+                break;
+        }
+
+        // Notify data set change
         notifyDataSetChanged();
     }
 }

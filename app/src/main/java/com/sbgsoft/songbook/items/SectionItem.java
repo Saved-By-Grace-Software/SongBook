@@ -5,7 +5,6 @@ public class SectionItem implements Item {
 	
 	/**
 	 * Constructor
-	 * @param songName
 	 */
 	public SectionItem(String sectionName) {
 		name = sectionName;

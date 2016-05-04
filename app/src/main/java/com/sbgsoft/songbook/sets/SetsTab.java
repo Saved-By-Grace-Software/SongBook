@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.db.DBStrings;
 import com.sbgsoft.songbook.items.Item;
+import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SetItem;
 import com.sbgsoft.songbook.items.SetSearchCriteria;
 import com.sbgsoft.songbook.main.MainActivity;
@@ -33,7 +34,7 @@ public class SetsTab extends Fragment {
 
     public SetItemAdapter adapter;
     private View mView;
-    private int setsListSortByIndex = 0;
+    private SetItemAdapter.SortType setsListCurrentSort = SetItemAdapter.SortType.DateRecent;
 	
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -64,7 +65,10 @@ public class SetsTab extends Fragment {
 
         // Populate the set spinners
         fillSetGroupsSpinner(false, -1);
-//        mainActivity.fillSetSortSpinner();
+        fillSetSortSpinner();
+
+        // Sort the sets
+        sortSets(setsListCurrentSort.ordinal());
 
 		return mView;
 	}
@@ -133,19 +137,6 @@ public class SetsTab extends Fragment {
             c.moveToNext();
         }
         c.close();
-
-        // Sort the array list
-        switch(setsListSortByIndex) {
-            case 0: // Date - Recent
-                Collections.sort(sets, new SetItem.SetItemComparableDateReverse());
-                break;
-            case 1: // Date - Oldest
-                Collections.sort(sets, new SetItem.SetItemComparableDate());
-                break;
-            case 2: // Title
-                Collections.sort(sets, new Item.ItemComparableName());
-                break;
-        }
 
         return sets;
     }
@@ -249,6 +240,41 @@ public class SetsTab extends Fragment {
         });
 
         groupSpinner.setAdapter(setGroupsAdapter);
+    }
+    //endregion
+
+    //region Sort Spinner Functions
+    /**
+     * Fills the song sort spinner
+     */
+    public void fillSetSortSpinner() {
+        // Create the spinner adapter
+        ArrayAdapter<String> setSortAdapter = new ArrayAdapter<>(mView.getContext(), R.layout.group_spinner_item, StaticVars.setSortBy);
+        setSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
+        final Spinner sortSpinner = (Spinner) mView.findViewById(R.id.set_sort_spinner);
+
+        // Set the on click listener for each item
+        sortSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+                sortSets(position);
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // Nothing was clicked so ignore it
+            }
+        });
+
+        // Set the adapter
+        sortSpinner.setAdapter(setSortAdapter);
+    }
+
+    /**
+     * Sorts the set list by the selected item
+     * @param sortByPosition The position in the song sort array list
+     */
+    private void sortSets(int sortByPosition) {
+        setsListCurrentSort = SetItemAdapter.SortType.values()[sortByPosition];
+        adapter.sort(setsListCurrentSort);
     }
     //endregion
 }
