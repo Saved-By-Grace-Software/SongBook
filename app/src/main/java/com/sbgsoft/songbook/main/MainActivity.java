@@ -1627,77 +1627,17 @@ public class MainActivity extends AppCompatActivity {
     	// Sort the array list
     	switch(setsListSortByIndex) {
 	    	case 0: // Date - Recent
-	    		Collections.sort(setsList, new SetItemComparableDateReverse());
+	    		Collections.sort(setsList, new SetItem.SetItemComparableDateReverse());
 	    		break;
 	    	case 1: // Date - Oldest
-	    		Collections.sort(setsList, new SetItemComparableDate());
+	    		Collections.sort(setsList, new SetItem.SetItemComparableDate());
 	    		break;
 	    	case 2: // Title
-	    		Collections.sort(setsList, new ItemComparableName());
+	    		Collections.sort(setsList, new Item.ItemComparableName());
 	    		break;
     	}
 
         return ret;
-    }
-
-    /**
-     * Sets the sets array list
-     */
-    public ArrayList<SetItem> getSetsList(SetSearchCriteria setSearch) {
-        int ret;
-        Cursor c;
-
-        // Determine if we are searching or using the song group
-        if (setSearch == null)
-            c = dbAdapter.getSets(currentSetGroup);
-        else
-            c = dbAdapter.getSetsSearch(setSearch);
-
-        c.moveToFirst();
-        ret = c.getCount();
-
-        // Clear the ArrayList
-        ArrayList<SetItem> sets = new ArrayList<>();
-
-        // Display error message for searching
-        if (c.getCount() <= 0 && setSearch != null)
-            Toast.makeText(getApplicationContext(), "No sets match that search", Toast.LENGTH_LONG).show();
-
-        // Populate the ArrayList
-        while (!c.isAfterLast()) {
-            // Get the strings from the cursor
-            String setName = c.getString(c.getColumnIndex(DBStrings.TBLSETS_NAME));
-            String setLink = c.getString(c.getColumnIndex(DBStrings.TBLSETS_LINK));
-            String setDate = c.getString(c.getColumnIndex(DBStrings.TBLSETS_DATE));
-            String[] datesplit = setDate.split("-");
-            setDate = datesplit[1] + "/" + datesplit[2] + "/" + datesplit[0];
-
-            // Create a new set item
-            SetItem tmp = new SetItem(setName, setDate, setLink);
-            tmp.selfPopulateSongsList();
-
-            // Add the set item
-            sets.add(tmp);
-
-            // Move to the next song
-            c.moveToNext();
-        }
-        c.close();
-
-        // Sort the array list
-        switch(setsListSortByIndex) {
-            case 0: // Date - Recent
-                Collections.sort(setsList, new SetItemComparableDateReverse());
-                break;
-            case 1: // Date - Oldest
-                Collections.sort(setsList, new SetItemComparableDate());
-                break;
-            case 2: // Title
-                Collections.sort(setsList, new ItemComparableName());
-                break;
-        }
-
-        return sets;
     }
 
     /**
@@ -2542,7 +2482,7 @@ public class MainActivity extends AppCompatActivity {
     	c.close();
     	
     	// Sort the array list
-    	Collections.sort(temp, new ItemComparableName());
+    	Collections.sort(temp, new Item.ItemComparableName());
     	
     	// Clear the current ArrayList
     	songsList.clear();
@@ -4573,7 +4513,7 @@ public class MainActivity extends AppCompatActivity {
      *
      */
     @SuppressLint("DefaultLocale")
-	public class SortIgnoreCase implements Comparator<Object> {
+	public static class SortIgnoreCase implements Comparator<Object> {
         public int compare(Object o1, Object o2) {
             int ret;
 
@@ -4602,18 +4542,6 @@ public class MainActivity extends AppCompatActivity {
     	 
         public int compare(Item o1, Item o2) {
             return ((SongItem)o1).getAuthor().compareToIgnoreCase(((SongItem)o2).getAuthor());
-        }
-    }
-    
-    /**
-     * Comparator for Song Items by author
-     * @author SamIAm
-     *
-     */
-    public static class ItemComparableName implements Comparator<Item>{
-    	 
-        public int compare(Item o1, Item o2) {
-            return o1.getName().compareToIgnoreCase(o2.getName());
         }
     }
     
@@ -4650,184 +4578,6 @@ public class MainActivity extends AppCompatActivity {
         		return 0;
         	else
         		return -1;
-        }
-    }
-    
-    /**
-     * Comparator for Set Items by date
-     * Oldest date is first
-     * @author SamIAm
-     *
-     */
-    public static class SetItemComparableDate implements Comparator<Item>{
-    	 
-        public int compare(Item o1, Item o2) {
-        	int ret = -1;
-        	
-        	String[] split1 = ((SetItem)o1).getDate().split("/");
-        	String[] split2 = ((SetItem)o2).getDate().split("/");
-        	
-        	if (split1.length == 3 && split2.length == 3)
-        	{
-        		try
-        		{
-	        		// Parse date 1
-	        		int month1 = Integer.parseInt(split1[0].trim());
-	        		int day1 = Integer.parseInt(split1[1].trim());
-	        		int year1 = Integer.parseInt(split1[2].trim());
-	        		
-	        		// Parse date 2
-	        		int month2 = Integer.parseInt(split2[0].trim());
-	        		int day2 = Integer.parseInt(split2[1].trim());
-	        		int year2 = Integer.parseInt(split2[2].trim());
-	        		
-	        		// Compare years
-	        		if (year1 < year2)
-	        		{
-	        			// o1 is earlier than o2
-	        			ret = -1;
-	        		}
-	        		else if (year1 > year2)
-	        		{
-	        			// o1 is later than o2
-	        			ret = 1;
-	        		}
-	        		else
-	        		{
-	        			// Years are the same, compare months
-	        			if (month1 < month2)
-	        			{
-	        				// o1 is earlier than o2
-	            			ret = -1;
-	        			}
-	            		else if (month1 > month2)
-	            		{
-	            			// o1 is later than o2
-	            			ret = 1;
-	            		}
-	            		else 
-	            		{
-	            			// Years & Months are the same, compare days
-	            			if (day1 < day2)
-	            			{
-	            				// o1 is less than o2
-	            				ret = -1;
-	            			}
-	            			else if (day1 > day2)
-	            			{
-	            				// o1 is later than o2
-	            				ret = 1;
-	            			}
-	            			else
-	            			{
-	            				// o1 and o2 are the same
-	            				ret = 0;
-	            			}
-	            		}
-	        		}
-        		} 
-        		catch (NumberFormatException e)
-        		{
-        			// Could not parse date correctly
-            		ret = ((SetItem)o1).getDate().compareToIgnoreCase(((SetItem)o2).getDate());
-        		}
-        	}
-        	else
-        	{
-        		// Could not parse date correctly
-        		ret = ((SetItem)o1).getDate().compareToIgnoreCase(((SetItem)o2).getDate());
-        	}
-        	
-        	return ret;
-        }
-    }
-    
-    /**
-     * Comparator for Set Items by date
-     * Most recent date is first
-     * @author SamIAm
-     *
-     */
-    public static class SetItemComparableDateReverse implements Comparator<Item>{
-    	 
-        public int compare(Item o1, Item o2) {
-        	int ret = -1;
-        	
-        	String[] split1 = ((SetItem)o1).getDate().split("/");
-        	String[] split2 = ((SetItem)o2).getDate().split("/");
-        	
-        	if (split1.length == 3 && split2.length == 3)
-        	{
-        		try
-        		{
-	        		// Parse date 1
-	        		int month1 = Integer.parseInt(split1[0].trim());
-	        		int day1 = Integer.parseInt(split1[1].trim());
-	        		int year1 = Integer.parseInt(split1[2].trim());
-	        		
-	        		// Parse date 2
-	        		int month2 = Integer.parseInt(split2[0].trim());
-	        		int day2 = Integer.parseInt(split2[1].trim());
-	        		int year2 = Integer.parseInt(split2[2].trim());
-	        		
-	        		// Compare years
-	        		if (year1 < year2)
-	        		{
-	        			// o1 is earlier than o2
-	        			ret = 1;
-	        		}
-	        		else if (year1 > year2)
-	        		{
-	        			// o1 is later than o2
-	        			ret = -1;
-	        		}
-	        		else
-	        		{
-	        			// Years are the same, compare months
-	        			if (month1 < month2)
-	        			{
-	        				// o1 is earlier than o2
-	            			ret = 1;
-	        			}
-	            		else if (month1 > month2)
-	            		{
-	            			// o1 is later than o2
-	            			ret = -1;
-	            		}
-	            		else 
-	            		{
-	            			// Years & Months are the same, compare days
-	            			if (day1 < day2)
-	            			{
-	            				// o1 is less than o2
-	            				ret = 1;
-	            			}
-	            			else if (day1 > day2)
-	            			{
-	            				// o1 is later than o2
-	            				ret = -1;
-	            			}
-	            			else
-	            			{
-	            				// o1 and o2 are the same
-	            				ret = 0;
-	            			}
-	            		}
-	        		}
-        		} 
-        		catch (NumberFormatException e)
-        		{
-        			// Could not parse date correctly
-            		ret = ((SetItem)o1).getDate().compareToIgnoreCase(((SetItem)o2).getDate());
-        		}
-        	}
-        	else
-        	{
-        		// Could not parse date correctly
-        		ret = ((SetItem)o1).getDate().compareToIgnoreCase(((SetItem)o2).getDate());
-        	}
-        	
-        	return ret;
         }
     }
     //endregion

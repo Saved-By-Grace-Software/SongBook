@@ -38,4 +38,15 @@ public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
     public int getItemCount() {
         return mSets.size();
     }
+
+    public void add(SetItem item) {
+        mSets.add(item);
+        notifyItemInserted(mSets.indexOf(item));
+    }
+
+    public void remove(SetItem item) {
+        int position = mSets.indexOf(item);
+        mSets.remove(position);
+        notifyItemRemoved(position);
+    }
 }

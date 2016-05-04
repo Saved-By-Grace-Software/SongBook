@@ -1,6 +1,7 @@
 package com.sbgsoft.songbook.items;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import com.sbgsoft.songbook.db.DBStrings;
 import com.sbgsoft.songbook.main.MainActivity;
@@ -118,4 +119,182 @@ public class SetItem implements Item, Parcelable {
     	// Close the cursor
     	c.close();
 	}
+
+    /**
+     * Comparator for Set Items by date
+     * Oldest date is first
+     * @author SamIAm
+     *
+     */
+    public static class SetItemComparableDate implements Comparator<Item> {
+
+        public int compare(Item o1, Item o2) {
+            int ret = -1;
+
+            String[] split1 = ((SetItem)o1).getDate().split("/");
+            String[] split2 = ((SetItem)o2).getDate().split("/");
+
+            if (split1.length == 3 && split2.length == 3)
+            {
+                try
+                {
+                    // Parse date 1
+                    int month1 = Integer.parseInt(split1[0].trim());
+                    int day1 = Integer.parseInt(split1[1].trim());
+                    int year1 = Integer.parseInt(split1[2].trim());
+
+                    // Parse date 2
+                    int month2 = Integer.parseInt(split2[0].trim());
+                    int day2 = Integer.parseInt(split2[1].trim());
+                    int year2 = Integer.parseInt(split2[2].trim());
+
+                    // Compare years
+                    if (year1 < year2)
+                    {
+                        // o1 is earlier than o2
+                        ret = -1;
+                    }
+                    else if (year1 > year2)
+                    {
+                        // o1 is later than o2
+                        ret = 1;
+                    }
+                    else
+                    {
+                        // Years are the same, compare months
+                        if (month1 < month2)
+                        {
+                            // o1 is earlier than o2
+                            ret = -1;
+                        }
+                        else if (month1 > month2)
+                        {
+                            // o1 is later than o2
+                            ret = 1;
+                        }
+                        else
+                        {
+                            // Years & Months are the same, compare days
+                            if (day1 < day2)
+                            {
+                                // o1 is less than o2
+                                ret = -1;
+                            }
+                            else if (day1 > day2)
+                            {
+                                // o1 is later than o2
+                                ret = 1;
+                            }
+                            else
+                            {
+                                // o1 and o2 are the same
+                                ret = 0;
+                            }
+                        }
+                    }
+                }
+                catch (NumberFormatException e)
+                {
+                    // Could not parse date correctly
+                    ret = ((SetItem)o1).getDate().compareToIgnoreCase(((SetItem)o2).getDate());
+                }
+            }
+            else
+            {
+                // Could not parse date correctly
+                ret = ((SetItem)o1).getDate().compareToIgnoreCase(((SetItem)o2).getDate());
+            }
+
+            return ret;
+        }
+    }
+
+    /**
+     * Comparator for Set Items by date
+     * Most recent date is first
+     * @author SamIAm
+     *
+     */
+    public static class SetItemComparableDateReverse implements Comparator<Item>{
+
+        public int compare(Item o1, Item o2) {
+            int ret = -1;
+
+            String[] split1 = ((SetItem)o1).getDate().split("/");
+            String[] split2 = ((SetItem)o2).getDate().split("/");
+
+            if (split1.length == 3 && split2.length == 3)
+            {
+                try
+                {
+                    // Parse date 1
+                    int month1 = Integer.parseInt(split1[0].trim());
+                    int day1 = Integer.parseInt(split1[1].trim());
+                    int year1 = Integer.parseInt(split1[2].trim());
+
+                    // Parse date 2
+                    int month2 = Integer.parseInt(split2[0].trim());
+                    int day2 = Integer.parseInt(split2[1].trim());
+                    int year2 = Integer.parseInt(split2[2].trim());
+
+                    // Compare years
+                    if (year1 < year2)
+                    {
+                        // o1 is earlier than o2
+                        ret = 1;
+                    }
+                    else if (year1 > year2)
+                    {
+                        // o1 is later than o2
+                        ret = -1;
+                    }
+                    else
+                    {
+                        // Years are the same, compare months
+                        if (month1 < month2)
+                        {
+                            // o1 is earlier than o2
+                            ret = 1;
+                        }
+                        else if (month1 > month2)
+                        {
+                            // o1 is later than o2
+                            ret = -1;
+                        }
+                        else
+                        {
+                            // Years & Months are the same, compare days
+                            if (day1 < day2)
+                            {
+                                // o1 is less than o2
+                                ret = 1;
+                            }
+                            else if (day1 > day2)
+                            {
+                                // o1 is later than o2
+                                ret = -1;
+                            }
+                            else
+                            {
+                                // o1 and o2 are the same
+                                ret = 0;
+                            }
+                        }
+                    }
+                }
+                catch (NumberFormatException e)
+                {
+                    // Could not parse date correctly
+                    ret = ((SetItem)o1).getDate().compareToIgnoreCase(((SetItem)o2).getDate());
+                }
+            }
+            else
+            {
+                // Could not parse date correctly
+                ret = ((SetItem)o1).getDate().compareToIgnoreCase(((SetItem)o2).getDate());
+            }
+
+            return ret;
+        }
+    }
 }
