@@ -5,9 +5,10 @@
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="4dp"
     android:layout_margin="5dp"
-    card_view:cardBackgroundColor="@color/TranslucentWhite">
+    android:foreground="?android:attr/selectableItemBackground"
+    card_view:cardBackgroundColor="@color/TranslucentWhite"
+    card_view:cardCornerRadius="4dp">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
