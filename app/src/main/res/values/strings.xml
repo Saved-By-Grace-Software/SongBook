@@ -163,24 +163,75 @@
         <item>Import Song</item>
         <item>Find Song</item>
         <item>Delete All Songs</item>
+        <item>Back</item>
     </string-array>
     <!-- Keep them in order as the titles are in -->
     <array name="songs_nav_icons">
         <item>@drawable/ic_create_white_24dp</item>
-        <item>@drawable/ic_import_export_white_24dp</item>
+        <item>@drawable/ic_file_download_white_24dp</item>
         <item>@drawable/ic_search_white_24dp</item>
+        <item>@drawable/ic_delete_sweep_white_24dp</item>
+        <item>@drawable/ic_arrow_back_white_24dp</item>
+    </array>
+
+    <!-- Navigation Drawer Set Items -->
+    <string-array name="sets_nav_menu">
+        <item>Create Set</item>
+        <item>Import Set</item>
+        <item>Find Set</item>
+        <item>Delete All Sets</item>
+        <item>Back</item>
+    </string-array>
+    <!-- Keep them in order as the titles are in -->
+    <array name="sets_nav_icons">
+        <item>@drawable/ic_create_white_24dp</item>
+        <item>@drawable/ic_file_download_white_24dp</item>
+        <item>@drawable/ic_search_white_24dp</item>
+        <item>@drawable/ic_delete_sweep_white_24dp</item>
+        <item>@drawable/ic_arrow_back_white_24dp</item>
+    </array>
+
+    <!-- Navigation Drawer Song Group Items -->
+    <string-array name="songgrp_nav_menu">
+        <item>Create Song Group</item>
+        <item>Delete Song Group</item>
+        <item>Delete All Song Groups</item>
+        <item>Back</item>
+    </string-array>
+    <!-- Keep them in order as the titles are in -->
+    <array name="songgrp_nav_icons">
+        <item>@drawable/ic_create_white_24dp</item>
         <item>@drawable/ic_delete_forever_white_24dp</item>
+        <item>@drawable/ic_delete_sweep_white_24dp</item>
+        <item>@drawable/ic_arrow_back_white_24dp</item>
+    </array>
+
+    <!-- Navigation Drawer Set Group Items -->
+    <string-array name="setgrp_nav_menu">
+        <item>Create Set Group</item>
+        <item>Delete Set Group</item>
+        <item>Delete All Set Groups</item>
+        <item>Back</item>
+    </string-array>
+    <!-- Keep them in order as the titles are in -->
+    <array name="setgrp_nav_icons">
+        <item>@drawable/ic_create_white_24dp</item>
+        <item>@drawable/ic_delete_forever_white_24dp</item>
+        <item>@drawable/ic_delete_sweep_white_24dp</item>
+        <item>@drawable/ic_arrow_back_white_24dp</item>
     </array>
 
     <!-- Navigation Drawer Import Export Items -->
     <string-array name="impexp_nav_menu">
         <item>Import Database</item>
         <item>Export Database</item>
+        <item>Back</item>
     </string-array>
     <!-- Keep them in order as the titles are in -->
     <array name="impexp_nav_icons">
         <item>@drawable/ic_file_download_white_24dp</item>
         <item>@drawable/ic_file_upload_white_24dp</item>
+        <item>@drawable/ic_arrow_back_white_24dp</item>
     </array>
 
     <!-- Time Signature String Array -->

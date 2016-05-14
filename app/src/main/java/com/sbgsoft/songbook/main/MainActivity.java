@@ -252,6 +252,9 @@ public class MainActivity extends AppCompatActivity {
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
+
+				// Reset the lists
+				setMainNavDrawerItems();
             }
 
             /** Called when a drawer has settled in a completely open state. */
@@ -831,6 +834,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Decide what to do with each menu item
         switch (item) {
+            //region Songs Menu
             case "Songs\u2026":
                 // Show the songs submenu
                 setNavDrawerItems(R.array.songs_nav_menu, R.array.songs_nav_icons);
@@ -871,10 +875,120 @@ public class MainActivity extends AppCompatActivity {
 
                 deleteAllSongs();
                 break;
+            //endregion
+
+            //region Sets Menu
             case "Sets\u2026":
-            case "Song Groups\u2026":
-            case "Set Groups\u2026":
+                // Show the songs submenu
+                setNavDrawerItems(R.array.sets_nav_menu, R.array.sets_nav_icons);
                 break;
+            case "Create Set":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                createSet();
+                break;
+            case "Import Set":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                permissionRequiredFunction(StaticVars.PERMISSIONS_SET_IMPORT);
+                break;
+            case "Find Set":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                findSetDialog();
+                break;
+            case "Delete All Sets":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                deleteAllSets();
+                break;
+            //endregion
+
+            //region Song Groups Menu
+            case "Song Groups\u2026":
+                // Show the song groups submenu
+                setNavDrawerItems(R.array.songgrp_nav_menu, R.array.songgrp_nav_icons);
+                break;
+            case "Create Song Group":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                createSongGroup();
+                break;
+            case "Delete Song Group":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                deleteSongGroup();
+                break;
+            case "Delete All Song Groups":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                deleteAllSongGroups();
+                break;
+            //endregion
+
+            //region Set Groups Menu
+            case "Set Groups\u2026":
+                // Show the set groups submenu
+                setNavDrawerItems(R.array.setgrp_nav_menu, R.array.setgrp_nav_icons);
+                break;
+            case "Create Set Group":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                createSetGroup();
+                break;
+            case "Delete Set Group":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                deleteSetGroup();
+                break;
+            case "Delete All Set Groups":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                deleteAllSetGroups();
+                break;
+            //endregion
+
+            //region Import Export Menu
             case "Import/Export":
                 // Show the import/export submenu
                 setNavDrawerItems(R.array.impexp_nav_menu, R.array.impexp_nav_icons);
@@ -897,6 +1011,9 @@ public class MainActivity extends AppCompatActivity {
 
                 permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_EXPORT);
                 break;
+            //endregion
+
+            //region Other Menus
             case "Settings":
                 // Close the app drawer before taking action
                 mDrawerLayout.closeDrawer(Gravity.LEFT);
@@ -915,6 +1032,12 @@ public class MainActivity extends AppCompatActivity {
 
                 showAboutBox();
                 break;
+            case "Back":
+                // Go back to the main menu
+                setMainNavDrawerItems();
+                break;
+            //endregion
+
             default:
                 break;
         }
