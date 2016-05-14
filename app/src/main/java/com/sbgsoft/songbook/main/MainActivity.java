@@ -49,6 +49,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -131,6 +133,9 @@ public class MainActivity extends AppCompatActivity {
 	public Fragment songsFragment;
     static TabLayout tabLayout;
     static Toolbar toolbar;
+
+	private DrawerLayout mDrawerLayout;
+    ActionBarDrawerToggle actionBarDrawerToggle;
 
 	private String importFilePath = "";
 	private int setsCurrentScrollPosition = 0;
@@ -227,6 +232,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        // Set up the app drawer
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.app_name,R.string.app_name);
+        mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
     }
     
     /**
