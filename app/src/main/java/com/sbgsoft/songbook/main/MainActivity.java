@@ -876,6 +876,26 @@ public class MainActivity extends AppCompatActivity {
             case "Set Groups\u2026":
                 break;
             case "Import/Export":
+                // Show the import/export submenu
+                setNavDrawerItems(R.array.impexp_nav_menu, R.array.impexp_nav_icons);
+                break;
+            case "Import Database":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_IMPORT);
+                break;
+            case "Export Database":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_EXPORT);
                 break;
             case "Settings":
                 // Close the app drawer before taking action

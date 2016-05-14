@@ -157,7 +157,7 @@
         <item>@drawable/ic_launcher</item>
     </array>
 
-    <!-- Navigation Drawer Main Items -->
+    <!-- Navigation Drawer Song Items -->
     <string-array name="songs_nav_menu">
         <item>Create Song</item>
         <item>Import Song</item>
@@ -170,6 +170,17 @@
         <item>@drawable/ic_import_export_white_24dp</item>
         <item>@drawable/ic_search_white_24dp</item>
         <item>@drawable/ic_delete_forever_white_24dp</item>
+    </array>
+
+    <!-- Navigation Drawer Import Export Items -->
+    <string-array name="impexp_nav_menu">
+        <item>Import Database</item>
+        <item>Export Database</item>
+    </string-array>
+    <!-- Keep them in order as the titles are in -->
+    <array name="impexp_nav_icons">
+        <item>@drawable/ic_file_download_white_24dp</item>
+        <item>@drawable/ic_file_upload_white_24dp</item>
     </array>
 
     <!-- Time Signature String Array -->
