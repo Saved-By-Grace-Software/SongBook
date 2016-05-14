@@ -30,6 +30,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -65,6 +66,7 @@ import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -135,7 +137,10 @@ public class MainActivity extends AppCompatActivity {
     static Toolbar toolbar;
 
 	private DrawerLayout mDrawerLayout;
-    ActionBarDrawerToggle actionBarDrawerToggle;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private ListView mDrawerList;
+    private ArrayList<NavDrawerItem> mNavDrawerItems;
+    private NavDrawerListAdapter mNavDrawerAdapter;
 
 	private String importFilePath = "";
 	private int setsCurrentScrollPosition = 0;
@@ -182,11 +187,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         // Set up the database
         dbAdapter = new DBAdapter(this);
         dbAdapter.open();
+
+        // Set the main view
+        setContentView(R.layout.activity_main);
 
         // Get the current theme from the database
         SongBookTheme theme = dbAdapter.getCurrentSettings().getSongBookTheme();
@@ -233,13 +240,54 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Set up the app drawer
+        // Set up the navigation drawer
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                mDrawerLayout,
+                toolbar,
+                R.string.app_name,
+                R.string.app_name)
+        {
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+            }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout,toolbar,R.string.app_name,R.string.app_name);
-        mDrawerLayout.setDrawerListener(actionBarDrawerToggle);
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+
+        // Set the navigation drawer icon
+        mDrawerToggle.setDrawerIndicatorEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        // Add items to the drawer
+        mNavDrawerItems = new ArrayList<>();
+        setMainNavDrawerItems();
+
+        // Set up the drawer list
+        mNavDrawerAdapter = new NavDrawerListAdapter(getApplicationContext(), mNavDrawerItems);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList.setAdapter(mNavDrawerAdapter);
+
+        // Add listener for clicks
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                navMenuItemClicked(position);
+            }
+        });
     }
     
     /**
@@ -248,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
     	getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
     
     /**
@@ -740,6 +788,116 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFrag(currSetFragment, "Current Set");
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
+    }
+
+    /**
+     * Sets the initial items for the nav drawer
+     */
+    private void setNavDrawerItems(int stringArrayId, int iconArrayId) {
+        // Make sure we aren't null
+        if (mNavDrawerItems != null) {
+            // Clear the current list
+            mNavDrawerItems.clear();
+
+            // Get the list items
+            String[] options = getResources().getStringArray(stringArrayId);
+            TypedArray navMenuIcons = getResources().obtainTypedArray(iconArrayId);
+
+            // Add them to the list
+            for (int i = 0; i < options.length; i++) {
+                mNavDrawerItems.add(new NavDrawerItem(options[i], navMenuIcons.getResourceId(i, -1)));
+            }
+
+            // Notify the adapter of changes
+            if (mNavDrawerAdapter != null)
+                mNavDrawerAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * Sets the main nav drawer items
+     */
+    private void setMainNavDrawerItems() {
+        setNavDrawerItems(R.array.main_nav_menu, R.array.main_nav_icons);
+    }
+
+    /**
+     * Handles a click on the navigation drawer menu
+     * @param position
+     */
+    public void navMenuItemClicked(int position) {
+        // Get the item clicked on
+        String item = mNavDrawerItems.get(position).getTitle();
+
+        // Decide what to do with each menu item
+        switch (item) {
+            case "Songs\u2026":
+                // Show the songs submenu
+                setNavDrawerItems(R.array.songs_nav_menu, R.array.songs_nav_icons);
+                break;
+            case "Create Song":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                createSong();
+                break;
+            case "Import Song":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                permissionRequiredFunction(StaticVars.PERMISSIONS_SONG_IMPORT);
+                break;
+            case "Find Song":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                findSongDialog();
+                break;
+            case "Delete All Songs":
+                // Reset the nav drawer items
+                setMainNavDrawerItems();
+
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                deleteAllSongs();
+                break;
+            case "Sets\u2026":
+            case "Song Groups\u2026":
+            case "Set Groups\u2026":
+                break;
+            case "Import/Export":
+                break;
+            case "Settings":
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                showSettingsPage();
+                break;
+            case "How To\u2026":
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                showHowTos();
+                break;
+            case "About SongBook":
+                // Close the app drawer before taking action
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                showAboutBox();
+                break;
+            default:
+                break;
+        }
     }
 
     /**

@@ -134,6 +134,44 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
+    <!-- Navigation Drawer Main Items -->
+    <string-array name="main_nav_menu">
+        <item>Songs&#8230;</item>
+        <item>Sets&#8230;</item>
+        <item>Song Groups&#8230;</item>
+        <item>Set Groups&#8230;</item>
+        <item>Import/Export</item>
+        <item>Settings</item>
+        <item>How To&#8230;</item>
+        <item>About SongBook</item>
+    </string-array>
+    <!-- Keep them in order as the titles are in -->
+    <array name="main_nav_icons">
+        <item>@drawable/ic_music_note_white_24dp</item>
+        <item>@drawable/ic_music_video_white_24dp</item>
+        <item>@drawable/ic_queue_music_white_24dp</item>
+        <item>@drawable/ic_library_music_white_24dp</item>
+        <item>@drawable/ic_import_export_white_24dp</item>
+        <item>@drawable/ic_settings_white_24dp</item>
+        <item>@drawable/ic_info_white_24dp</item>
+        <item>@drawable/ic_launcher</item>
+    </array>
+
+    <!-- Navigation Drawer Main Items -->
+    <string-array name="songs_nav_menu">
+        <item>Create Song</item>
+        <item>Import Song</item>
+        <item>Find Song</item>
+        <item>Delete All Songs</item>
+    </string-array>
+    <!-- Keep them in order as the titles are in -->
+    <array name="songs_nav_icons">
+        <item>@drawable/ic_create_white_24dp</item>
+        <item>@drawable/ic_import_export_white_24dp</item>
+        <item>@drawable/ic_search_white_24dp</item>
+        <item>@drawable/ic_delete_forever_white_24dp</item>
+    </array>
+
     <!-- Time Signature String Array -->
     <string-array name="time_signatures">
         <item>1/4</item>
