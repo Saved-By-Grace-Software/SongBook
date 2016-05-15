@@ -24,6 +24,7 @@
     <list default="true" id="0b814f9b-14c2-4a07-9dcd-088d3dc0bab9" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/NavDrawerListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/NavDrawerListAdapter.java" />
     </list>
     <ignored path="Songbook.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -77,8 +78,8 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.28668943">
-              <caret line="764" column="52" selection-start-line="764" selection-start-column="52" selection-end-line="764" selection-end-column="52" />
+            <state vertical-scroll-proportion="0.7764505">
+              <caret line="1381" column="98" selection-start-line="1381" selection-start-column="98" selection-end-line="1381" selection-end-column="98" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4522#4546#0" expanded="false" />
@@ -129,7 +130,6 @@
                 <element signature="docComment;method#setupViewPager#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#setupViewPager#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#setupNavDrawer#0;class#MainActivity#0" expanded="false" />
-                <element signature="method#setupNavDrawer#0;class#MainActivity#0" expanded="false" />
                 <element signature="e#24869#24886#0" expanded="true" />
                 <element signature="e#24904#24921#0" expanded="true" />
                 <element signature="docComment;method#setNavDrawerItems#0;class#MainActivity#0" expanded="false" />
@@ -137,21 +137,23 @@
                 <element signature="docComment;method#setMainNavDrawerItems#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#setMainNavDrawerItems#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#navMenuItemClicked#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#28346#28365#0" expanded="false" />
-                <element signature="e#29949#29967#0" expanded="false" />
-                <element signature="e#31540#31565#0" expanded="false" />
-                <element signature="e#32826#32850#0" expanded="false" />
-                <element signature="e#34101#34128#0" expanded="false" />
-                <element signature="e#35135#35155#0" expanded="false" />
+                <element signature="method#navMenuItemClicked#0;class#MainActivity#0" expanded="false" />
+                <element signature="e#28307#28326#0" expanded="false" />
+                <element signature="e#29910#29928#0" expanded="false" />
+                <element signature="e#31501#31526#0" expanded="false" />
+                <element signature="e#32787#32811#0" expanded="false" />
+                <element signature="e#34062#34089#0" expanded="false" />
+                <element signature="e#35096#35116#0" expanded="false" />
+                <element signature="docComment;method#showAboutBox#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#showAboutBox#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#36760#36788#0" expanded="true" />
-                <element signature="e#37025#37058#0" expanded="true" />
-                <element signature="e#37222#37255#0" expanded="true" />
+                <element signature="e#36721#36749#0" expanded="true" />
+                <element signature="e#36986#37019#0" expanded="true" />
+                <element signature="e#37183#37216#0" expanded="true" />
                 <element signature="docComment;method#showHowTos#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#showHowTos#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#41958#41980#0" expanded="false" />
-                <element signature="class#42610:42792" expanded="false" />
-                <element signature="method#onClick#0;class#42610:42792" expanded="false" />
+                <element signature="e#41919#41941#0" expanded="false" />
+                <element signature="class#42571:42753" expanded="false" />
+                <element signature="method#onClick#0;class#42571:42753" expanded="false" />
                 <element signature="docComment;method#permissionRequiredFunction#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#permissionRequiredFunction#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#executePermReqFunction#0;class#MainActivity#0" expanded="false" />
@@ -161,23 +163,23 @@
                 <element signature="docComment;method#showSettingsPage#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#showSettingsPage#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#loadTheme#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#53783#53805#0" expanded="false" />
+                <element signature="e#54074#54096#0" expanded="false" />
                 <element signature="docComment;method#createSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#createSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#selectSetSongs#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#selectSetSongs#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#57869:59075" expanded="false" />
-                <element signature="method#onItemSelected#0;class#57869:59075" expanded="false" />
-                <element signature="method#onNothingSelected#0;class#57869:59075" expanded="false" />
+                <element signature="class#58160:59366" expanded="false" />
+                <element signature="method#onItemSelected#0;class#58160:59366" expanded="false" />
+                <element signature="method#onNothingSelected#0;class#58160:59366" expanded="false" />
                 <element signature="docComment;method#addSetToGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#addSetToGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#removeSetFromGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#removeSetFromGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#updateSetSongs#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#updateSetSongs#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#66148:67418" expanded="false" />
-                <element signature="method#onItemSelected#0;class#66148:67418" expanded="false" />
-                <element signature="method#onNothingSelected#0;class#66148:67418" expanded="false" />
+                <element signature="class#66439:67709" expanded="false" />
+                <element signature="method#onItemSelected#0;class#66439:67709" expanded="false" />
+                <element signature="method#onNothingSelected#0;class#66439:67709" expanded="false" />
                 <element signature="docComment;method#deleteAllSets#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#deleteAllSets#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#deleteSet#0;class#MainActivity#0" expanded="false" />
@@ -195,46 +197,46 @@
                 <element signature="method#saveSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#shareSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#shareSet#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#80717#80759#0" expanded="true" />
-                <element signature="e#80770#80815#0" expanded="true" />
-                <element signature="e#80825#80871#0" expanded="true" />
-                <element signature="e#80881#80922#0" expanded="true" />
-                <element signature="e#80933#80977#0" expanded="true" />
-                <element signature="e#80987#81032#0" expanded="true" />
-                <element signature="e#81054#81097#0" expanded="true" />
-                <element signature="e#81150#81192#0" expanded="true" />
-                <element signature="e#81203#81248#0" expanded="true" />
-                <element signature="e#81258#81299#0" expanded="true" />
-                <element signature="e#81310#81354#0" expanded="true" />
-                <element signature="e#81376#81419#0" expanded="true" />
-                <element signature="e#81718#81760#0" expanded="true" />
-                <element signature="e#81888#81933#0" expanded="true" />
-                <element signature="e#82055#82101#0" expanded="true" />
-                <element signature="e#82224#82265#0" expanded="true" />
-                <element signature="e#82391#82435#0" expanded="true" />
-                <element signature="e#82555#82600#0" expanded="true" />
-                <element signature="e#82730#82773#0" expanded="true" />
+                <element signature="e#81008#81050#0" expanded="true" />
+                <element signature="e#81061#81106#0" expanded="true" />
+                <element signature="e#81116#81162#0" expanded="true" />
+                <element signature="e#81172#81213#0" expanded="true" />
+                <element signature="e#81224#81268#0" expanded="true" />
+                <element signature="e#81278#81323#0" expanded="true" />
+                <element signature="e#81345#81388#0" expanded="true" />
+                <element signature="e#81441#81483#0" expanded="true" />
+                <element signature="e#81494#81539#0" expanded="true" />
+                <element signature="e#81549#81590#0" expanded="true" />
+                <element signature="e#81601#81645#0" expanded="true" />
+                <element signature="e#81667#81710#0" expanded="true" />
+                <element signature="e#82009#82051#0" expanded="true" />
+                <element signature="e#82179#82224#0" expanded="true" />
+                <element signature="e#82346#82392#0" expanded="true" />
+                <element signature="e#82515#82556#0" expanded="true" />
+                <element signature="e#82682#82726#0" expanded="true" />
+                <element signature="e#82846#82891#0" expanded="true" />
+                <element signature="e#83021#83064#0" expanded="true" />
                 <element signature="docComment;method#reorderSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#reorderSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#findSetDialog#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#findSetDialog#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#85654#85677#0" expanded="false" />
+                <element signature="e#85945#85968#0" expanded="false" />
                 <element signature="docComment;method#createSong#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#createSong#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#addSongToGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#addSongToGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#addSongToSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#addSongToSet#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#96684:97942" expanded="false" />
-                <element signature="method#onItemSelected#0;class#96684:97942" expanded="false" />
-                <element signature="method#onNothingSelected#0;class#96684:97942" expanded="false" />
-                <element signature="class#98560:98673" expanded="false" />
+                <element signature="class#96975:98233" expanded="false" />
+                <element signature="method#onItemSelected#0;class#96975:98233" expanded="false" />
+                <element signature="method#onNothingSelected#0;class#96975:98233" expanded="false" />
+                <element signature="class#98851:98964" expanded="false" />
                 <element signature="docComment;method#addSongToCurrentSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#addSongToCurrentSet#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#100060:100174" expanded="false" />
+                <element signature="class#100351:100465" expanded="false" />
                 <element signature="docComment;method#removeSongFromGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#removeSongFromGroup#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#101200#101224#0" expanded="false" />
+                <element signature="e#101491#101515#0" expanded="false" />
                 <element signature="docComment;method#deleteAllSongs#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#deleteAllSongs#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#deleteSong#0;class#MainActivity#0" expanded="false" />
@@ -254,93 +256,93 @@
                 <element signature="method#saveSong#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#shareSong#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#shareSong#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#119478#119521#0" expanded="true" />
-                <element signature="e#119532#119578#0" expanded="true" />
-                <element signature="e#119588#119635#0" expanded="true" />
-                <element signature="e#119645#119687#0" expanded="true" />
-                <element signature="e#119698#119743#0" expanded="true" />
-                <element signature="e#119753#119799#0" expanded="true" />
-                <element signature="e#119852#119895#0" expanded="true" />
-                <element signature="e#119906#119952#0" expanded="true" />
-                <element signature="e#119962#120004#0" expanded="true" />
-                <element signature="e#120015#120060#0" expanded="true" />
-                <element signature="e#120672#120715#0" expanded="true" />
-                <element signature="e#121862#121908#0" expanded="true" />
-                <element signature="e#122047#122094#0" expanded="true" />
-                <element signature="e#123236#123278#0" expanded="true" />
-                <element signature="e#124428#124473#0" expanded="true" />
-                <element signature="e#124616#124662#0" expanded="true" />
+                <element signature="e#119769#119812#0" expanded="true" />
+                <element signature="e#119823#119869#0" expanded="true" />
+                <element signature="e#119879#119926#0" expanded="true" />
+                <element signature="e#119936#119978#0" expanded="true" />
+                <element signature="e#119989#120034#0" expanded="true" />
+                <element signature="e#120044#120090#0" expanded="true" />
+                <element signature="e#120143#120186#0" expanded="true" />
+                <element signature="e#120197#120243#0" expanded="true" />
+                <element signature="e#120253#120295#0" expanded="true" />
+                <element signature="e#120306#120351#0" expanded="true" />
+                <element signature="e#120963#121006#0" expanded="true" />
+                <element signature="e#122153#122199#0" expanded="true" />
+                <element signature="e#122338#122385#0" expanded="true" />
+                <element signature="e#123527#123569#0" expanded="true" />
+                <element signature="e#124719#124764#0" expanded="true" />
+                <element signature="e#124907#124953#0" expanded="true" />
                 <element signature="docComment;method#saveSongAsPdf#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#saveSongAsPdf#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#setSongKeyForSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#setSongKeyForSet#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#showSongStats#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#showSongStats#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#131667:131780" expanded="false" />
+                <element signature="class#131958:132071" expanded="false" />
                 <element signature="docComment;method#isValidKey#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#isValidKey#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#findSongDialog#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#findSongDialog#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#134039#134069#0" expanded="false" />
+                <element signature="e#134330#134360#0" expanded="false" />
                 <element signature="docComment;method#setCurrentSetList#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#setCurrentSetList#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#fillCurrentSetListView#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#fillCurrentSetListView#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#139456#139485#0" expanded="false" />
+                <element signature="e#139747#139776#0" expanded="false" />
                 <element signature="docComment;method#setSongGroupsList#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#setSongGroupsList#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#setSongGroupsList#1;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#fillSongGroupsSpinner#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#fillSongGroupsSpinner#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#141352:142717" expanded="false" />
-                <element signature="method#onItemSelected#0;class#141352:142717" expanded="false" />
-                <element signature="method#onNothingSelected#0;class#141352:142717" expanded="false" />
+                <element signature="class#141643:143008" expanded="false" />
+                <element signature="method#onItemSelected#0;class#141643:143008" expanded="false" />
+                <element signature="method#onNothingSelected#0;class#141643:143008" expanded="false" />
                 <element signature="docComment;method#fillSongGroupsSpinner#1;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#createSongGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#createSongGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#addSongsToGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#addSongsToGroup#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#146573:147843" expanded="false" />
-                <element signature="method#onItemSelected#0;class#146573:147843" expanded="false" />
-                <element signature="method#onNothingSelected#0;class#146573:147843" expanded="false" />
+                <element signature="class#146864:148134" expanded="false" />
+                <element signature="method#onItemSelected#0;class#146864:148134" expanded="false" />
+                <element signature="method#onNothingSelected#0;class#146864:148134" expanded="false" />
                 <element signature="docComment;method#deleteSongGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#deleteSongGroup#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#150568:150688" expanded="false" />
+                <element signature="class#150859:150979" expanded="false" />
                 <element signature="docComment;method#deleteAllSongGroups#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#deleteAllSongGroups#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#151683#151711#0" expanded="false" />
+                <element signature="e#151974#152002#0" expanded="false" />
                 <element signature="docComment;method#setSetGroupsList#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#setSetGroupsList#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#setSetGroupsList#1;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#fillSetGroupsSpinner#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#fillSetGroupsSpinner#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#153506:154876" expanded="false" />
-                <element signature="method#onItemSelected#0;class#153506:154876" expanded="false" />
-                <element signature="method#onNothingSelected#0;class#153506:154876" expanded="false" />
+                <element signature="class#153797:155167" expanded="false" />
+                <element signature="method#onItemSelected#0;class#153797:155167" expanded="false" />
+                <element signature="method#onNothingSelected#0;class#153797:155167" expanded="false" />
                 <element signature="docComment;method#fillSetGroupsSpinner#1;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#createSetGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#createSetGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#deleteSetGroup#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#deleteSetGroup#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#158167:158287" expanded="false" />
+                <element signature="class#158458:158578" expanded="false" />
                 <element signature="docComment;method#deleteAllSetGroups#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#deleteAllSetGroups#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#159232#159258#0" expanded="false" />
+                <element signature="e#159523#159549#0" expanded="false" />
                 <element signature="docComment;method#fillSetSortSpinner#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#fillSetSortSpinner#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#159972:160295" expanded="false" />
-                <element signature="method#onItemSelected#0;class#159972:160295" expanded="false" />
-                <element signature="method#onNothingSelected#0;class#159972:160295" expanded="false" />
+                <element signature="class#160263:160586" expanded="false" />
+                <element signature="method#onItemSelected#0;class#160263:160586" expanded="false" />
+                <element signature="method#onNothingSelected#0;class#160263:160586" expanded="false" />
                 <element signature="docComment;method#fillSongSortSpinner#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#fillSongSortSpinner#0;class#MainActivity#0" expanded="false" />
-                <element signature="class#160891:161215" expanded="false" />
-                <element signature="method#onItemSelected#0;class#160891:161215" expanded="false" />
-                <element signature="method#onNothingSelected#0;class#160891:161215" expanded="false" />
+                <element signature="class#161182:161506" expanded="false" />
+                <element signature="method#onItemSelected#0;class#161182:161506" expanded="false" />
+                <element signature="method#onNothingSelected#0;class#161182:161506" expanded="false" />
                 <element signature="docComment;method#sortSongs#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#sortSongs#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#sortSets#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#sortSets#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#164228#164262#0" expanded="false" />
+                <element signature="e#164519#164553#0" expanded="false" />
                 <element signature="docComment;method#selectExportFolder#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#selectExportFolder#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#exportAll#0;class#MainActivity#0" expanded="false" />
@@ -351,7 +353,7 @@
                 <element signature="method#selectImportFile#0;class#MainActivity#0" expanded="false" />
                 <element signature="docComment;method#importFile#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#importFile#0;class#MainActivity#0" expanded="false" />
-                <element signature="e#173158#173174#0" expanded="false" />
+                <element signature="e#173449#173465#0" expanded="false" />
                 <element signature="class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#ImportDBParams#0;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
                 <element signature="method#ImportDBParams#1;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
@@ -383,6 +385,31 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="NavDrawerListAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/NavDrawerListAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="59" column="97" selection-start-line="59" selection-start-column="97" selection-end-line="59" selection-end-column="97" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="nav_drawer_item.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/nav_drawer_item.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-7.109091">
+              <caret line="25" column="35" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="nav_drawer_header.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/nav_drawer_header.xml">
           <provider selected="true" editor-type-id="text-editor">
@@ -397,36 +424,6 @@
           </provider>
           <provider editor-type-id="android-designer">
             <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dimens.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.730769">
-              <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dimens.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values-sw600dp/dimens.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-17.653847">
-              <caret line="27" column="30" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="dimens.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values-sw700dp/dimens.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.807693">
-              <caret line="27" column="30" selection-start-line="27" selection-start-column="30" selection-end-line="27" selection-end-column="30" />
-              <folding />
-            </state>
           </provider>
         </entry>
       </file>
@@ -2064,7 +2061,6 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/app_drawer.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/NavDrawerItem.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/NavDrawerListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/nav_drawer_item.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
@@ -2074,6 +2070,7 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/color.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/nav_drawer_header.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/NavDrawerListAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
       </list>
     </option>
@@ -3564,54 +3561,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/NavDrawerItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.029010238">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-          <folding>
-            <element signature="e#283#284#0" expanded="true" />
-            <element signature="e#316#317#0" expanded="true" />
-            <element signature="e#343#344#0" expanded="true" />
-            <element signature="e#375#376#0" expanded="true" />
-            <element signature="e#416#417#0" expanded="true" />
-            <element signature="e#450#451#0" expanded="true" />
-            <element signature="e#486#487#0" expanded="true" />
-            <element signature="e#518#519#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-6.5283017">
           <caret line="218" column="52" selection-start-line="218" selection-start-column="52" selection-end-line="218" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/nav_drawer_item.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.92727274">
-          <caret line="3" column="59" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/NavDrawerListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="30" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SongBookThemeTextView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8259386">
-          <caret line="79" column="62" selection-start-line="79" selection-start-column="62" selection-end-line="79" selection-end-column="62" />
           <folding />
         </state>
       </provider>
@@ -3673,6 +3626,51 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4517857">
+          <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/NavDrawerItem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="27" column="5" selection-start-line="27" selection-start-column="5" selection-end-line="27" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/nav_drawer_item.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.109091">
+          <caret line="25" column="35" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SongBookThemeTextView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.62286687">
+          <caret line="90" column="16" selection-start-line="90" selection-start-column="16" selection-end-line="90" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/NavDrawerListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="59" column="97" selection-start-line="59" selection-start-column="97" selection-end-line="59" selection-end-column="97" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/nav_drawer_header.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-4.327273">
@@ -3688,18 +3686,10 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.730769">
-          <caret line="20" column="46" selection-start-line="20" selection-start-column="46" selection-end-line="20" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.28668943">
-          <caret line="764" column="52" selection-start-line="764" selection-start-column="52" selection-end-line="764" selection-end-column="52" />
+        <state vertical-scroll-proportion="0.7764505">
+          <caret line="1381" column="98" selection-start-line="1381" selection-start-column="98" selection-end-line="1381" selection-end-column="98" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#4522#4546#0" expanded="false" />
@@ -3750,7 +3740,6 @@
             <element signature="docComment;method#setupViewPager#0;class#MainActivity#0" expanded="false" />
             <element signature="method#setupViewPager#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#setupNavDrawer#0;class#MainActivity#0" expanded="false" />
-            <element signature="method#setupNavDrawer#0;class#MainActivity#0" expanded="false" />
             <element signature="e#24869#24886#0" expanded="true" />
             <element signature="e#24904#24921#0" expanded="true" />
             <element signature="docComment;method#setNavDrawerItems#0;class#MainActivity#0" expanded="false" />
@@ -3758,21 +3747,23 @@
             <element signature="docComment;method#setMainNavDrawerItems#0;class#MainActivity#0" expanded="false" />
             <element signature="method#setMainNavDrawerItems#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#navMenuItemClicked#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#28346#28365#0" expanded="false" />
-            <element signature="e#29949#29967#0" expanded="false" />
-            <element signature="e#31540#31565#0" expanded="false" />
-            <element signature="e#32826#32850#0" expanded="false" />
-            <element signature="e#34101#34128#0" expanded="false" />
-            <element signature="e#35135#35155#0" expanded="false" />
+            <element signature="method#navMenuItemClicked#0;class#MainActivity#0" expanded="false" />
+            <element signature="e#28307#28326#0" expanded="false" />
+            <element signature="e#29910#29928#0" expanded="false" />
+            <element signature="e#31501#31526#0" expanded="false" />
+            <element signature="e#32787#32811#0" expanded="false" />
+            <element signature="e#34062#34089#0" expanded="false" />
+            <element signature="e#35096#35116#0" expanded="false" />
+            <element signature="docComment;method#showAboutBox#0;class#MainActivity#0" expanded="false" />
             <element signature="method#showAboutBox#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#36760#36788#0" expanded="true" />
-            <element signature="e#37025#37058#0" expanded="true" />
-            <element signature="e#37222#37255#0" expanded="true" />
+            <element signature="e#36721#36749#0" expanded="true" />
+            <element signature="e#36986#37019#0" expanded="true" />
+            <element signature="e#37183#37216#0" expanded="true" />
             <element signature="docComment;method#showHowTos#0;class#MainActivity#0" expanded="false" />
             <element signature="method#showHowTos#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#41958#41980#0" expanded="false" />
-            <element signature="class#42610:42792" expanded="false" />
-            <element signature="method#onClick#0;class#42610:42792" expanded="false" />
+            <element signature="e#41919#41941#0" expanded="false" />
+            <element signature="class#42571:42753" expanded="false" />
+            <element signature="method#onClick#0;class#42571:42753" expanded="false" />
             <element signature="docComment;method#permissionRequiredFunction#0;class#MainActivity#0" expanded="false" />
             <element signature="method#permissionRequiredFunction#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#executePermReqFunction#0;class#MainActivity#0" expanded="false" />
@@ -3782,23 +3773,23 @@
             <element signature="docComment;method#showSettingsPage#0;class#MainActivity#0" expanded="false" />
             <element signature="method#showSettingsPage#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#loadTheme#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#53783#53805#0" expanded="false" />
+            <element signature="e#54074#54096#0" expanded="false" />
             <element signature="docComment;method#createSet#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createSet#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#selectSetSongs#0;class#MainActivity#0" expanded="false" />
             <element signature="method#selectSetSongs#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#57869:59075" expanded="false" />
-            <element signature="method#onItemSelected#0;class#57869:59075" expanded="false" />
-            <element signature="method#onNothingSelected#0;class#57869:59075" expanded="false" />
+            <element signature="class#58160:59366" expanded="false" />
+            <element signature="method#onItemSelected#0;class#58160:59366" expanded="false" />
+            <element signature="method#onNothingSelected#0;class#58160:59366" expanded="false" />
             <element signature="docComment;method#addSetToGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="method#addSetToGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#removeSetFromGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="method#removeSetFromGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#updateSetSongs#0;class#MainActivity#0" expanded="false" />
             <element signature="method#updateSetSongs#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#66148:67418" expanded="false" />
-            <element signature="method#onItemSelected#0;class#66148:67418" expanded="false" />
-            <element signature="method#onNothingSelected#0;class#66148:67418" expanded="false" />
+            <element signature="class#66439:67709" expanded="false" />
+            <element signature="method#onItemSelected#0;class#66439:67709" expanded="false" />
+            <element signature="method#onNothingSelected#0;class#66439:67709" expanded="false" />
             <element signature="docComment;method#deleteAllSets#0;class#MainActivity#0" expanded="false" />
             <element signature="method#deleteAllSets#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#deleteSet#0;class#MainActivity#0" expanded="false" />
@@ -3816,46 +3807,46 @@
             <element signature="method#saveSet#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#shareSet#0;class#MainActivity#0" expanded="false" />
             <element signature="method#shareSet#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#80717#80759#0" expanded="true" />
-            <element signature="e#80770#80815#0" expanded="true" />
-            <element signature="e#80825#80871#0" expanded="true" />
-            <element signature="e#80881#80922#0" expanded="true" />
-            <element signature="e#80933#80977#0" expanded="true" />
-            <element signature="e#80987#81032#0" expanded="true" />
-            <element signature="e#81054#81097#0" expanded="true" />
-            <element signature="e#81150#81192#0" expanded="true" />
-            <element signature="e#81203#81248#0" expanded="true" />
-            <element signature="e#81258#81299#0" expanded="true" />
-            <element signature="e#81310#81354#0" expanded="true" />
-            <element signature="e#81376#81419#0" expanded="true" />
-            <element signature="e#81718#81760#0" expanded="true" />
-            <element signature="e#81888#81933#0" expanded="true" />
-            <element signature="e#82055#82101#0" expanded="true" />
-            <element signature="e#82224#82265#0" expanded="true" />
-            <element signature="e#82391#82435#0" expanded="true" />
-            <element signature="e#82555#82600#0" expanded="true" />
-            <element signature="e#82730#82773#0" expanded="true" />
+            <element signature="e#81008#81050#0" expanded="true" />
+            <element signature="e#81061#81106#0" expanded="true" />
+            <element signature="e#81116#81162#0" expanded="true" />
+            <element signature="e#81172#81213#0" expanded="true" />
+            <element signature="e#81224#81268#0" expanded="true" />
+            <element signature="e#81278#81323#0" expanded="true" />
+            <element signature="e#81345#81388#0" expanded="true" />
+            <element signature="e#81441#81483#0" expanded="true" />
+            <element signature="e#81494#81539#0" expanded="true" />
+            <element signature="e#81549#81590#0" expanded="true" />
+            <element signature="e#81601#81645#0" expanded="true" />
+            <element signature="e#81667#81710#0" expanded="true" />
+            <element signature="e#82009#82051#0" expanded="true" />
+            <element signature="e#82179#82224#0" expanded="true" />
+            <element signature="e#82346#82392#0" expanded="true" />
+            <element signature="e#82515#82556#0" expanded="true" />
+            <element signature="e#82682#82726#0" expanded="true" />
+            <element signature="e#82846#82891#0" expanded="true" />
+            <element signature="e#83021#83064#0" expanded="true" />
             <element signature="docComment;method#reorderSet#0;class#MainActivity#0" expanded="false" />
             <element signature="method#reorderSet#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#findSetDialog#0;class#MainActivity#0" expanded="false" />
             <element signature="method#findSetDialog#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#85654#85677#0" expanded="false" />
+            <element signature="e#85945#85968#0" expanded="false" />
             <element signature="docComment;method#createSong#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createSong#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#addSongToGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="method#addSongToGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#addSongToSet#0;class#MainActivity#0" expanded="false" />
             <element signature="method#addSongToSet#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#96684:97942" expanded="false" />
-            <element signature="method#onItemSelected#0;class#96684:97942" expanded="false" />
-            <element signature="method#onNothingSelected#0;class#96684:97942" expanded="false" />
-            <element signature="class#98560:98673" expanded="false" />
+            <element signature="class#96975:98233" expanded="false" />
+            <element signature="method#onItemSelected#0;class#96975:98233" expanded="false" />
+            <element signature="method#onNothingSelected#0;class#96975:98233" expanded="false" />
+            <element signature="class#98851:98964" expanded="false" />
             <element signature="docComment;method#addSongToCurrentSet#0;class#MainActivity#0" expanded="false" />
             <element signature="method#addSongToCurrentSet#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#100060:100174" expanded="false" />
+            <element signature="class#100351:100465" expanded="false" />
             <element signature="docComment;method#removeSongFromGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="method#removeSongFromGroup#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#101200#101224#0" expanded="false" />
+            <element signature="e#101491#101515#0" expanded="false" />
             <element signature="docComment;method#deleteAllSongs#0;class#MainActivity#0" expanded="false" />
             <element signature="method#deleteAllSongs#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#deleteSong#0;class#MainActivity#0" expanded="false" />
@@ -3875,93 +3866,93 @@
             <element signature="method#saveSong#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#shareSong#0;class#MainActivity#0" expanded="false" />
             <element signature="method#shareSong#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#119478#119521#0" expanded="true" />
-            <element signature="e#119532#119578#0" expanded="true" />
-            <element signature="e#119588#119635#0" expanded="true" />
-            <element signature="e#119645#119687#0" expanded="true" />
-            <element signature="e#119698#119743#0" expanded="true" />
-            <element signature="e#119753#119799#0" expanded="true" />
-            <element signature="e#119852#119895#0" expanded="true" />
-            <element signature="e#119906#119952#0" expanded="true" />
-            <element signature="e#119962#120004#0" expanded="true" />
-            <element signature="e#120015#120060#0" expanded="true" />
-            <element signature="e#120672#120715#0" expanded="true" />
-            <element signature="e#121862#121908#0" expanded="true" />
-            <element signature="e#122047#122094#0" expanded="true" />
-            <element signature="e#123236#123278#0" expanded="true" />
-            <element signature="e#124428#124473#0" expanded="true" />
-            <element signature="e#124616#124662#0" expanded="true" />
+            <element signature="e#119769#119812#0" expanded="true" />
+            <element signature="e#119823#119869#0" expanded="true" />
+            <element signature="e#119879#119926#0" expanded="true" />
+            <element signature="e#119936#119978#0" expanded="true" />
+            <element signature="e#119989#120034#0" expanded="true" />
+            <element signature="e#120044#120090#0" expanded="true" />
+            <element signature="e#120143#120186#0" expanded="true" />
+            <element signature="e#120197#120243#0" expanded="true" />
+            <element signature="e#120253#120295#0" expanded="true" />
+            <element signature="e#120306#120351#0" expanded="true" />
+            <element signature="e#120963#121006#0" expanded="true" />
+            <element signature="e#122153#122199#0" expanded="true" />
+            <element signature="e#122338#122385#0" expanded="true" />
+            <element signature="e#123527#123569#0" expanded="true" />
+            <element signature="e#124719#124764#0" expanded="true" />
+            <element signature="e#124907#124953#0" expanded="true" />
             <element signature="docComment;method#saveSongAsPdf#0;class#MainActivity#0" expanded="false" />
             <element signature="method#saveSongAsPdf#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#setSongKeyForSet#0;class#MainActivity#0" expanded="false" />
             <element signature="method#setSongKeyForSet#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#showSongStats#0;class#MainActivity#0" expanded="false" />
             <element signature="method#showSongStats#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#131667:131780" expanded="false" />
+            <element signature="class#131958:132071" expanded="false" />
             <element signature="docComment;method#isValidKey#0;class#MainActivity#0" expanded="false" />
             <element signature="method#isValidKey#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#findSongDialog#0;class#MainActivity#0" expanded="false" />
             <element signature="method#findSongDialog#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#134039#134069#0" expanded="false" />
+            <element signature="e#134330#134360#0" expanded="false" />
             <element signature="docComment;method#setCurrentSetList#0;class#MainActivity#0" expanded="false" />
             <element signature="method#setCurrentSetList#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#fillCurrentSetListView#0;class#MainActivity#0" expanded="false" />
             <element signature="method#fillCurrentSetListView#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#139456#139485#0" expanded="false" />
+            <element signature="e#139747#139776#0" expanded="false" />
             <element signature="docComment;method#setSongGroupsList#0;class#MainActivity#0" expanded="false" />
             <element signature="method#setSongGroupsList#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#setSongGroupsList#1;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#fillSongGroupsSpinner#0;class#MainActivity#0" expanded="false" />
             <element signature="method#fillSongGroupsSpinner#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#141352:142717" expanded="false" />
-            <element signature="method#onItemSelected#0;class#141352:142717" expanded="false" />
-            <element signature="method#onNothingSelected#0;class#141352:142717" expanded="false" />
+            <element signature="class#141643:143008" expanded="false" />
+            <element signature="method#onItemSelected#0;class#141643:143008" expanded="false" />
+            <element signature="method#onNothingSelected#0;class#141643:143008" expanded="false" />
             <element signature="docComment;method#fillSongGroupsSpinner#1;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#createSongGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createSongGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#addSongsToGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="method#addSongsToGroup#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#146573:147843" expanded="false" />
-            <element signature="method#onItemSelected#0;class#146573:147843" expanded="false" />
-            <element signature="method#onNothingSelected#0;class#146573:147843" expanded="false" />
+            <element signature="class#146864:148134" expanded="false" />
+            <element signature="method#onItemSelected#0;class#146864:148134" expanded="false" />
+            <element signature="method#onNothingSelected#0;class#146864:148134" expanded="false" />
             <element signature="docComment;method#deleteSongGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="method#deleteSongGroup#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#150568:150688" expanded="false" />
+            <element signature="class#150859:150979" expanded="false" />
             <element signature="docComment;method#deleteAllSongGroups#0;class#MainActivity#0" expanded="false" />
             <element signature="method#deleteAllSongGroups#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#151683#151711#0" expanded="false" />
+            <element signature="e#151974#152002#0" expanded="false" />
             <element signature="docComment;method#setSetGroupsList#0;class#MainActivity#0" expanded="false" />
             <element signature="method#setSetGroupsList#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#setSetGroupsList#1;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#fillSetGroupsSpinner#0;class#MainActivity#0" expanded="false" />
             <element signature="method#fillSetGroupsSpinner#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#153506:154876" expanded="false" />
-            <element signature="method#onItemSelected#0;class#153506:154876" expanded="false" />
-            <element signature="method#onNothingSelected#0;class#153506:154876" expanded="false" />
+            <element signature="class#153797:155167" expanded="false" />
+            <element signature="method#onItemSelected#0;class#153797:155167" expanded="false" />
+            <element signature="method#onNothingSelected#0;class#153797:155167" expanded="false" />
             <element signature="docComment;method#fillSetGroupsSpinner#1;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#createSetGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="method#createSetGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#deleteSetGroup#0;class#MainActivity#0" expanded="false" />
             <element signature="method#deleteSetGroup#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#158167:158287" expanded="false" />
+            <element signature="class#158458:158578" expanded="false" />
             <element signature="docComment;method#deleteAllSetGroups#0;class#MainActivity#0" expanded="false" />
             <element signature="method#deleteAllSetGroups#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#159232#159258#0" expanded="false" />
+            <element signature="e#159523#159549#0" expanded="false" />
             <element signature="docComment;method#fillSetSortSpinner#0;class#MainActivity#0" expanded="false" />
             <element signature="method#fillSetSortSpinner#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#159972:160295" expanded="false" />
-            <element signature="method#onItemSelected#0;class#159972:160295" expanded="false" />
-            <element signature="method#onNothingSelected#0;class#159972:160295" expanded="false" />
+            <element signature="class#160263:160586" expanded="false" />
+            <element signature="method#onItemSelected#0;class#160263:160586" expanded="false" />
+            <element signature="method#onNothingSelected#0;class#160263:160586" expanded="false" />
             <element signature="docComment;method#fillSongSortSpinner#0;class#MainActivity#0" expanded="false" />
             <element signature="method#fillSongSortSpinner#0;class#MainActivity#0" expanded="false" />
-            <element signature="class#160891:161215" expanded="false" />
-            <element signature="method#onItemSelected#0;class#160891:161215" expanded="false" />
-            <element signature="method#onNothingSelected#0;class#160891:161215" expanded="false" />
+            <element signature="class#161182:161506" expanded="false" />
+            <element signature="method#onItemSelected#0;class#161182:161506" expanded="false" />
+            <element signature="method#onNothingSelected#0;class#161182:161506" expanded="false" />
             <element signature="docComment;method#sortSongs#0;class#MainActivity#0" expanded="false" />
             <element signature="method#sortSongs#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#sortSets#0;class#MainActivity#0" expanded="false" />
             <element signature="method#sortSets#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#164228#164262#0" expanded="false" />
+            <element signature="e#164519#164553#0" expanded="false" />
             <element signature="docComment;method#selectExportFolder#0;class#MainActivity#0" expanded="false" />
             <element signature="method#selectExportFolder#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#exportAll#0;class#MainActivity#0" expanded="false" />
@@ -3972,7 +3963,7 @@
             <element signature="method#selectImportFile#0;class#MainActivity#0" expanded="false" />
             <element signature="docComment;method#importFile#0;class#MainActivity#0" expanded="false" />
             <element signature="method#importFile#0;class#MainActivity#0" expanded="false" />
-            <element signature="e#173158#173174#0" expanded="false" />
+            <element signature="e#173449#173465#0" expanded="false" />
             <element signature="class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
             <element signature="method#ImportDBParams#0;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />
             <element signature="method#ImportDBParams#1;class#ImportDBParams#0;class#MainActivity#0" expanded="false" />

@@ -707,6 +707,9 @@ public class MainActivity extends AppCompatActivity {
         // Set up the drawer list
         mNavDrawerAdapter = new NavDrawerListAdapter(getApplicationContext(), mNavDrawerItems);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        LayoutInflater inflater = getLayoutInflater();
+        View listHeaderView = inflater.inflate(R.layout.nav_drawer_header, null, false);
+        mDrawerList.addHeaderView(listHeaderView);
         mDrawerList.setAdapter(mNavDrawerAdapter);
 
         // Add listener for clicks
@@ -716,11 +719,6 @@ public class MainActivity extends AppCompatActivity {
                 navMenuItemClicked(position);
             }
         });
-
-        // Add the drawer header view
-        LayoutInflater inflater = getLayoutInflater();
-        View listHeaderView = inflater.inflate(R.layout.nav_drawer_header, null, false);
-        mDrawerList.addHeaderView(listHeaderView);
     }
 
     /**
@@ -1375,8 +1373,13 @@ public class MainActivity extends AppCompatActivity {
         ((SongsTab)songsFragment).reColorSeparatorBar();
         ((CurrentSetTab)currSetFragment).reColorSeparatorBar();
 
-        // Reload the navigation drawer
+        // Update the navigation drawer list colors
+        mNavDrawerAdapter.resetTheme();
         setMainNavDrawerItems();
+
+        // Update the navigation drawer header colors
+        SongBookThemeTextView headerTitle = (SongBookThemeTextView)mDrawerList.findViewById(R.id.nav_drawer_header_text);
+        headerTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
     }
     //endregion
 

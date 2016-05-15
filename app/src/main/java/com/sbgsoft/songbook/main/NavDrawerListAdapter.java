@@ -10,16 +10,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.views.SongBookThemeTextView;
 
 import java.util.ArrayList;
 
 public class NavDrawerListAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<NavDrawerItem> navDrawerItems;
+    private SongBookTheme mTheme;
 
     public NavDrawerListAdapter(Context context, ArrayList<NavDrawerItem> navDrawerItems){
         this.context = context;
         this.navDrawerItems = navDrawerItems;
+        resetTheme();
     }
 
     @Override
@@ -45,12 +48,21 @@ public class NavDrawerListAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.nav_drawer_item, null);
         }
 
+        // Get the views
         ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
-        TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
+        SongBookThemeTextView txtTitle = (SongBookThemeTextView) convertView.findViewById(R.id.title);
 
+        // Set the view info
         imgIcon.setImageResource(navDrawerItems.get(position).getIcon());
         txtTitle.setText(navDrawerItems.get(position).getTitle());
 
+        // Set the text color to match the theme
+        txtTitle.setCustomText(mTheme.getTitleFontColor(), true, mTheme.getTitleFontShadowColor());
+
         return convertView;
+    }
+
+    public void resetTheme() {
+        mTheme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
     }
 }
