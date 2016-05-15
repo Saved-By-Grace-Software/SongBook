@@ -721,10 +721,6 @@ public class MainActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         View listHeaderView = inflater.inflate(R.layout.nav_drawer_header, null, false);
         mDrawerList.addHeaderView(listHeaderView);
-
-        // Set the drawer header background color
-        LinearLayout headerLayout = (LinearLayout)findViewById(R.id.nav_drawer_header_layout);
-        headerLayout.setBackgroundColor(getResources().getColor(R.color.navDrawerHeader));
     }
 
     /**
@@ -1373,6 +1369,9 @@ public class MainActivity extends AppCompatActivity {
         ((SetsTab)setsFragment).reColorSeparatorBar();
         ((SongsTab)songsFragment).reColorSeparatorBar();
         ((CurrentSetTab)currSetFragment).reColorSeparatorBar();
+
+        // Reload the navigation drawer
+        setMainNavDrawerItems();
     }
     //endregion
 

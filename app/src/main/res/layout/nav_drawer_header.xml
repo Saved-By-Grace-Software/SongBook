@@ -5,13 +5,7 @@
     android:id="@+id/nav_drawer_header_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/navDrawerOuterMargin"
-        android:src="@drawable/ic_launcher"/>
+    android:orientation="horizontal">
 
     <com.sbgsoft.songbook.views.SongBookThemeTextView
         android:id="@+id/nav_drawer_header_text"
