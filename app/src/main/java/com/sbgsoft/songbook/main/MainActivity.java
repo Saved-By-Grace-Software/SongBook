@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Set up the navigation drawer
-        setupNavDrawer(theme);
+        setupNavDrawer();
     }
     
     /**
@@ -665,7 +665,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Create and setup the navigation drawer
      */
-    private void setupNavDrawer(SongBookTheme theme) {
+    private void setupNavDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -760,216 +760,221 @@ public class MainActivity extends AppCompatActivity {
      */
     public void navMenuItemClicked(int position) {
         // Get the item clicked on
-        String item = mNavDrawerItems.get(position).getTitle();
+        if (position == 0) {
+            // Close the drawer
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        } else if (position > 0 && position < mNavDrawerItems.size() + 1) {
+            String item = mNavDrawerItems.get(position - 1).getTitle();
 
-        // Decide what to do with each menu item
-        switch (item) {
-            //region Songs Menu
-            case "Songs\u2026":
-                // Show the songs submenu
-                setNavDrawerItems(R.array.songs_nav_menu, R.array.songs_nav_icons);
-                break;
-            case "Create Song":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+            // Decide what to do with each menu item
+            switch (item) {
+                //region Songs Menu
+                case "Songs\u2026":
+                    // Show the songs submenu
+                    setNavDrawerItems(R.array.songs_nav_menu, R.array.songs_nav_icons);
+                    break;
+                case "Create Song":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                createSong();
-                break;
-            case "Import Song":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                    createSong();
+                    break;
+                case "Import Song":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                permissionRequiredFunction(StaticVars.PERMISSIONS_SONG_IMPORT);
-                break;
-            case "Find Song":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                    permissionRequiredFunction(StaticVars.PERMISSIONS_SONG_IMPORT);
+                    break;
+                case "Find Song":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                findSongDialog();
-                break;
-            case "Delete All Songs":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                    findSongDialog();
+                    break;
+                case "Delete All Songs":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                deleteAllSongs();
-                break;
-            //endregion
+                    deleteAllSongs();
+                    break;
+                //endregion
 
-            //region Sets Menu
-            case "Sets\u2026":
-                // Show the songs submenu
-                setNavDrawerItems(R.array.sets_nav_menu, R.array.sets_nav_icons);
-                break;
-            case "Create Set":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                //region Sets Menu
+                case "Sets\u2026":
+                    // Show the songs submenu
+                    setNavDrawerItems(R.array.sets_nav_menu, R.array.sets_nav_icons);
+                    break;
+                case "Create Set":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                createSet();
-                break;
-            case "Import Set":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                    createSet();
+                    break;
+                case "Import Set":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                permissionRequiredFunction(StaticVars.PERMISSIONS_SET_IMPORT);
-                break;
-            case "Find Set":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                    permissionRequiredFunction(StaticVars.PERMISSIONS_SET_IMPORT);
+                    break;
+                case "Find Set":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                findSetDialog();
-                break;
-            case "Delete All Sets":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                    findSetDialog();
+                    break;
+                case "Delete All Sets":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                deleteAllSets();
-                break;
-            //endregion
+                    deleteAllSets();
+                    break;
+                //endregion
 
-            //region Song Groups Menu
-            case "Song Groups\u2026":
-                // Show the song groups submenu
-                setNavDrawerItems(R.array.songgrp_nav_menu, R.array.songgrp_nav_icons);
-                break;
-            case "Create Song Group":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                //region Song Groups Menu
+                case "Song Groups\u2026":
+                    // Show the song groups submenu
+                    setNavDrawerItems(R.array.songgrp_nav_menu, R.array.songgrp_nav_icons);
+                    break;
+                case "Create Song Group":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                createSongGroup();
-                break;
-            case "Delete Song Group":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                    createSongGroup();
+                    break;
+                case "Delete Song Group":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                deleteSongGroup();
-                break;
-            case "Delete All Song Groups":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                    deleteSongGroup();
+                    break;
+                case "Delete All Song Groups":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                deleteAllSongGroups();
-                break;
-            //endregion
+                    deleteAllSongGroups();
+                    break;
+                //endregion
 
-            //region Set Groups Menu
-            case "Set Groups\u2026":
-                // Show the set groups submenu
-                setNavDrawerItems(R.array.setgrp_nav_menu, R.array.setgrp_nav_icons);
-                break;
-            case "Create Set Group":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                //region Set Groups Menu
+                case "Set Groups\u2026":
+                    // Show the set groups submenu
+                    setNavDrawerItems(R.array.setgrp_nav_menu, R.array.setgrp_nav_icons);
+                    break;
+                case "Create Set Group":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                createSetGroup();
-                break;
-            case "Delete Set Group":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                    createSetGroup();
+                    break;
+                case "Delete Set Group":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                deleteSetGroup();
-                break;
-            case "Delete All Set Groups":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                    deleteSetGroup();
+                    break;
+                case "Delete All Set Groups":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                deleteAllSetGroups();
-                break;
-            //endregion
+                    deleteAllSetGroups();
+                    break;
+                //endregion
 
-            //region Import Export Menu
-            case "Import/Export":
-                // Show the import/export submenu
-                setNavDrawerItems(R.array.impexp_nav_menu, R.array.impexp_nav_icons);
-                break;
-            case "Import Database":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                //region Import Export Menu
+                case "Import/Export":
+                    // Show the import/export submenu
+                    setNavDrawerItems(R.array.impexp_nav_menu, R.array.impexp_nav_icons);
+                    break;
+                case "Import Database":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_IMPORT);
-                break;
-            case "Export Database":
-                // Reset the nav drawer items
-                setMainNavDrawerItems();
+                    permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_IMPORT);
+                    break;
+                case "Export Database":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
 
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_EXPORT);
-                break;
-            //endregion
+                    permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_EXPORT);
+                    break;
+                //endregion
 
-            //region Other Menus
-            case "Settings":
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                //region Other Menus
+                case "Settings":
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                showSettingsPage();
-                break;
-            case "How To\u2026":
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    showSettingsPage();
+                    break;
+                case "How To\u2026":
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                showHowTos();
-                break;
-            case "About SongBook":
-                // Close the app drawer before taking action
-                mDrawerLayout.closeDrawer(Gravity.LEFT);
+                    showHowTos();
+                    break;
+                case "About SongBook":
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                showAboutBox();
-                break;
-            case "Back":
-                // Go back to the main menu
-                setMainNavDrawerItems();
-                break;
-            //endregion
+                    showAboutBox();
+                    break;
+                case "Back":
+                    // Go back to the main menu
+                    setMainNavDrawerItems();
+                    break;
+                //endregion
 
-            default:
-                break;
+                default:
+                    break;
+            }
         }
     }
 
