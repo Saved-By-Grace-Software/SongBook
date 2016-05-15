@@ -80,6 +80,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -241,56 +242,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Set up the navigation drawer
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(
-                this,
-                mDrawerLayout,
-                toolbar,
-                R.string.app_name,
-                R.string.app_name)
-        {
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-
-				// Reset the lists
-				setMainNavDrawerItems();
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-            }
-        };
-
-        // Set the navigation drawer icon
-        mDrawerToggle.setDrawerIndicatorEnabled(false);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDrawerLayout.openDrawer(Gravity.LEFT);
-            }
-        });
-
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        // Add items to the drawer
-        mNavDrawerItems = new ArrayList<>();
-        setMainNavDrawerItems();
-
-        // Set up the drawer list
-        mNavDrawerAdapter = new NavDrawerListAdapter(getApplicationContext(), mNavDrawerItems);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerList.setAdapter(mNavDrawerAdapter);
-
-        // Add listener for clicks
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                navMenuItemClicked(position);
-            }
-        });
+        setupNavDrawer(theme);
     }
     
     /**
@@ -708,6 +660,71 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFrag(currSetFragment, "Current Set");
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(3);
+    }
+
+    /**
+     * Create and setup the navigation drawer
+     */
+    private void setupNavDrawer(SongBookTheme theme) {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                mDrawerLayout,
+                toolbar,
+                R.string.app_name,
+                R.string.app_name)
+        {
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+
+                // Reset the lists
+                setMainNavDrawerItems();
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+
+        // Set the navigation drawer icon
+        mDrawerToggle.setDrawerIndicatorEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        // Add items to the drawer
+        mNavDrawerItems = new ArrayList<>();
+        setMainNavDrawerItems();
+
+        // Set up the drawer list
+        mNavDrawerAdapter = new NavDrawerListAdapter(getApplicationContext(), mNavDrawerItems);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList.setAdapter(mNavDrawerAdapter);
+
+        // Add listener for clicks
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                navMenuItemClicked(position);
+            }
+        });
+
+        // Add the drawer header view
+        LayoutInflater inflater = getLayoutInflater();
+        View listHeaderView = inflater.inflate(R.layout.nav_drawer_header, null, false);
+        mDrawerList.addHeaderView(listHeaderView);
+
+        // Set the drawer header background color
+        LinearLayout headerLayout = (LinearLayout)findViewById(R.id.nav_drawer_header_layout);
+        headerLayout.setBackgroundColor(getResources().getColor(R.color.navDrawerHeader));
     }
 
     /**
