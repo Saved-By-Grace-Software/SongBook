@@ -80,7 +80,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -244,7 +243,55 @@ public class MainActivity extends AppCompatActivity {
         // Set up the navigation drawer
         setupNavDrawer();
     }
-    
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean ret = false;
+
+        // Get the item that was selected
+        int id = item.getItemId();
+
+        // Check for which option was selected
+        if (id == R.id.action_settings) {
+            showSettingsPage();
+            ret = true;
+        } else if (id == R.id.action_search) {
+            // Get the current page
+            int currPage = mViewPager.getCurrentItem();
+
+            switch (currPage) {
+                case 1:
+                    // Sets page
+                    findSetDialog();
+                    break;
+                case 2:
+                    // Current set page
+                    findSongDialog();
+                    mViewPager.setCurrentItem(0);
+                    break;
+                case 0:
+                default:
+                    // Default to songs search
+                    findSongDialog();
+                    break;
+            }
+
+            ret = true;
+        }
+
+        if (ret)
+            return ret;
+        else
+            return super.onOptionsItemSelected(item);
+    }
+
     /**
      * Creates the context menu
      */
@@ -1191,22 +1238,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
-    }
-
-    /**
-     * Opens the search dialog for songs
-     * @param v
-     */
-    public void onSongSearchClick(View v) {
-        findSongDialog();
-    }
-
-    /**
-     * Opens the search dialog for sets
-     * @param v
-     */
-    public void onSetSearchClick(View v) {
-        findSetDialog();
     }
 
     /**

@@ -10,14 +10,14 @@
     
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="58dp"
+        android:layout_height="@dimen/tabTitleHeight"
         android:orientation="horizontal" >
 
         <com.sbgsoft.songbook.views.SongBookThemeTextView
             android:id="@+id/current_set_tab_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/currentSetTitleTextSize"
+            android:textSize="@dimen/tabTitleTextSize"
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:textStyle="bold"
