@@ -21,8 +21,6 @@ import java.util.Map;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -32,6 +30,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -49,11 +48,10 @@ import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -70,6 +68,7 @@ import android.text.util.Linkify;
 import android.util.DisplayMetrics;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -139,6 +138,12 @@ public class MainActivity extends AppCompatActivity {
     static TabLayout tabLayout;
     static Toolbar toolbar;
 
+	private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private ListView mDrawerList;
+    private ArrayList<NavDrawerItem> mNavDrawerItems;
+    private NavDrawerListAdapter mNavDrawerAdapter;
+
 	private String importFilePath = "";
 	private int setsCurrentScrollPosition = 0;
 	private int setsCurrentScrollOffset = 0;
@@ -184,11 +189,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
         // Set up the database
         dbAdapter = new DBAdapter(this);
         dbAdapter.open();
+
+        // Set the main view
+        setContentView(R.layout.activity_main);
 
         // Get the current theme from the database
         SongBookTheme theme = dbAdapter.getCurrentSettings().getSongBookTheme();
@@ -234,91 +241,59 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        // Set up the navigation drawer
+        setupNavDrawer();
     }
-    
-    /**
-     * Creates the options menu
-     */
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-    	getMenuInflater().inflate(R.menu.menu_main, menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-    
-    /**
-     * Event Handling for Individual menu item selected
-     * Identify single menu item by it's id
-     * */
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-    	// Determine which menu item was selected
-    	switch (item.getItemId())
-        {
-	        case R.id.menu_sets_create:
-	        	// Create a new set and refresh the list view
-	        	createSet();
-	            return true;
-	        case R.id.menu_sets_clear:
-	        	// Delete all sets and refresh the list view
-	        	deleteAllSets();
-	        	return true;
-            case R.id.menu_sets_import:
-                permissionRequiredFunction(StaticVars.PERMISSIONS_SET_IMPORT);
-                return true;
-            case R.id.menu_sets_find:
-                findSetDialog();
-                return true;
-	        case R.id.menu_songs_clear:
-	        	deleteAllSongs();
-	        	return true;
-	        case R.id.menu_songs_create:
-	        	createSong();
-	        	return true;
-	        case R.id.menu_songs_import:
-                permissionRequiredFunction(StaticVars.PERMISSIONS_SONG_IMPORT);
-	        	return true;
-            case R.id.menu_songs_find:
-                findSongDialog();
-                return true;
-	        case R.id.menu_song_groups_create:
-	        	createSongGroup();
-	        	return true;
-	        case R.id.menu_song_groups_delete:
-	        	deleteSongGroup();
-	        	return true;
-	        case R.id.menu_song_groups_delete_all:
-	        	deleteAllSongGroups();
-	        	return true;
-	        case R.id.menu_set_groups_create:
-	        	createSetGroup();
-	        	return true;
-	        case R.id.menu_set_groups_delete:
-	        	deleteSetGroup();
-	        	return true;
-	        case R.id.menu_set_groups_delete_all:
-	        	deleteAllSetGroups();
-	        	return true;
-	        case R.id.menu_backup_export:
-                permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_EXPORT);
-	        	return true;
-	        case R.id.menu_backup_import:
-                permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_IMPORT);
-	        	return true;
-            case R.id.menu_about_howto:
-                showHowTos();
-                return true;
-	        case R.id.menu_about_about:
-	        	showAboutBox();
-	        	return true;
-            case R.id.menu_settings:
-                showSettingsPage();
-                return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean ret = false;
+
+        // Get the item that was selected
+        int id = item.getItemId();
+
+        // Check for which option was selected
+        if (id == R.id.action_settings) {
+            showSettingsPage();
+            ret = true;
+        } else if (id == R.id.action_search) {
+            // Get the current page
+            int currPage = mViewPager.getCurrentItem();
+
+            switch (currPage) {
+                case 1:
+                    // Sets page
+                    findSetDialog();
+                    break;
+                case 2:
+                    // Current set page
+                    findSongDialog();
+                    mViewPager.setCurrentItem(0);
+                    break;
+                case 0:
+                default:
+                    // Default to songs search
+                    findSongDialog();
+                    break;
+            }
+
+            ret = true;
         }
+
+        if (ret)
+            return ret;
+        else
+            return super.onOptionsItemSelected(item);
     }
-    
+
     /**
      * Creates the context menu
      */
@@ -737,6 +712,320 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Create and setup the navigation drawer
+     */
+    private void setupNavDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,
+                mDrawerLayout,
+                toolbar,
+                R.string.app_name,
+                R.string.app_name)
+        {
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+
+                // Reset the lists
+                setMainNavDrawerItems();
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+
+        // Set the navigation drawer icon
+        mDrawerToggle.setDrawerIndicatorEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.ic_menu_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(Gravity.LEFT);
+            }
+        });
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        // Add items to the drawer
+        mNavDrawerItems = new ArrayList<>();
+        setMainNavDrawerItems();
+
+        // Set up the drawer list
+        mNavDrawerAdapter = new NavDrawerListAdapter(getApplicationContext(), mNavDrawerItems);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        LayoutInflater inflater = getLayoutInflater();
+        View listHeaderView = inflater.inflate(R.layout.nav_drawer_header, null, false);
+        mDrawerList.addHeaderView(listHeaderView);
+        mDrawerList.setAdapter(mNavDrawerAdapter);
+
+        // Add listener for clicks
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                navMenuItemClicked(position);
+            }
+        });
+    }
+
+    /**
+     * Sets the initial items for the nav drawer
+     */
+    private void setNavDrawerItems(int stringArrayId, int iconArrayId) {
+        // Make sure we aren't null
+        if (mNavDrawerItems != null) {
+            // Clear the current list
+            mNavDrawerItems.clear();
+
+            // Get the list items
+            String[] options = getResources().getStringArray(stringArrayId);
+            TypedArray navMenuIcons = getResources().obtainTypedArray(iconArrayId);
+
+            // Add them to the list
+            for (int i = 0; i < options.length; i++) {
+                mNavDrawerItems.add(new NavDrawerItem(options[i], navMenuIcons.getResourceId(i, -1)));
+            }
+
+            // Notify the adapter of changes
+            if (mNavDrawerAdapter != null)
+                mNavDrawerAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * Sets the main nav drawer items
+     */
+    private void setMainNavDrawerItems() {
+        setNavDrawerItems(R.array.main_nav_menu, R.array.main_nav_icons);
+    }
+
+    /**
+     * Handles a click on the navigation drawer menu
+     * @param position
+     */
+    public void navMenuItemClicked(int position) {
+        // Get the item clicked on
+        if (position == 0) {
+            // Close the drawer
+            mDrawerLayout.closeDrawer(Gravity.LEFT);
+        } else if (position > 0 && position < mNavDrawerItems.size() + 1) {
+            String item = mNavDrawerItems.get(position - 1).getTitle();
+
+            // Decide what to do with each menu item
+            switch (item) {
+                //region Songs Menu
+                case "Songs\u2026":
+                    // Show the songs submenu
+                    setNavDrawerItems(R.array.songs_nav_menu, R.array.songs_nav_icons);
+                    break;
+                case "Create Song":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    createSong();
+                    break;
+                case "Import Song":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    permissionRequiredFunction(StaticVars.PERMISSIONS_SONG_IMPORT);
+                    break;
+                case "Find Song":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    findSongDialog();
+                    break;
+                case "Delete All Songs":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    deleteAllSongs();
+                    break;
+                //endregion
+
+                //region Sets Menu
+                case "Sets\u2026":
+                    // Show the songs submenu
+                    setNavDrawerItems(R.array.sets_nav_menu, R.array.sets_nav_icons);
+                    break;
+                case "Create Set":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    createSet();
+                    break;
+                case "Import Set":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    permissionRequiredFunction(StaticVars.PERMISSIONS_SET_IMPORT);
+                    break;
+                case "Find Set":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    findSetDialog();
+                    break;
+                case "Delete All Sets":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    deleteAllSets();
+                    break;
+                //endregion
+
+                //region Song Groups Menu
+                case "Song Groups\u2026":
+                    // Show the song groups submenu
+                    setNavDrawerItems(R.array.songgrp_nav_menu, R.array.songgrp_nav_icons);
+                    break;
+                case "Create Song Group":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    createSongGroup();
+                    break;
+                case "Delete Song Group":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    deleteSongGroup();
+                    break;
+                case "Delete All Song Groups":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    deleteAllSongGroups();
+                    break;
+                //endregion
+
+                //region Set Groups Menu
+                case "Set Groups\u2026":
+                    // Show the set groups submenu
+                    setNavDrawerItems(R.array.setgrp_nav_menu, R.array.setgrp_nav_icons);
+                    break;
+                case "Create Set Group":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    createSetGroup();
+                    break;
+                case "Delete Set Group":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    deleteSetGroup();
+                    break;
+                case "Delete All Set Groups":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    deleteAllSetGroups();
+                    break;
+                //endregion
+
+                //region Import Export Menu
+                case "Import/Export":
+                    // Show the import/export submenu
+                    setNavDrawerItems(R.array.impexp_nav_menu, R.array.impexp_nav_icons);
+                    break;
+                case "Import Database":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_IMPORT);
+                    break;
+                case "Export Database":
+                    // Reset the nav drawer items
+                    setMainNavDrawerItems();
+
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_EXPORT);
+                    break;
+                //endregion
+
+                //region Other Menus
+                case "Settings":
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    showSettingsPage();
+                    break;
+                case "How To\u2026":
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    showHowTos();
+                    break;
+                case "About SongBook":
+                    // Close the app drawer before taking action
+                    mDrawerLayout.closeDrawer(Gravity.LEFT);
+
+                    showAboutBox();
+                    break;
+                case "Back":
+                    // Go back to the main menu
+                    setMainNavDrawerItems();
+                    break;
+                //endregion
+
+                default:
+                    break;
+            }
+        }
+    }
+
+    /**
      * Shows the about box with app information
      */
     public void showAboutBox() {
@@ -954,22 +1243,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Opens the search dialog for songs
-     * @param v
-     */
-    public void onSongSearchClick(View v) {
-        findSongDialog();
-    }
-
-    /**
-     * Opens the search dialog for sets
-     * @param v
-     */
-    public void onSetSearchClick(View v) {
-        findSetDialog();
-    }
-
-    /**
      * Shows the settings page
      */
     public void showSettingsPage() {
@@ -1132,6 +1405,14 @@ public class MainActivity extends AppCompatActivity {
         ((SetsTab)setsFragment).reColorSeparatorBar();
         ((SongsTab)songsFragment).reColorSeparatorBar();
         ((CurrentSetTab)currSetFragment).reColorSeparatorBar();
+
+        // Update the navigation drawer list colors
+        mNavDrawerAdapter.resetTheme();
+        setMainNavDrawerItems();
+
+        // Update the navigation drawer header colors
+        SongBookThemeTextView headerTitle = (SongBookThemeTextView)mDrawerList.findViewById(R.id.nav_drawer_header_text);
+        headerTitle.setCustomText(theme.getTitleFontColor(), true, theme.getTitleFontShadowColor());
     }
     //endregion
 

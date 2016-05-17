@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:themetv="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_drawer_header_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <com.sbgsoft.songbook.views.SongBookThemeTextView
+        android:id="@+id/nav_drawer_header_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_margin="@dimen/navDrawerOuterMargin"
+        android:text="@string/app_name"
+        android:textSize="@dimen/navDrawerTitleTextSize"
+        android:textColor="@color/white"
+        themetv:useShadow="true"
+        themetv:isTitle="true"/>
+
+</LinearLayout>
