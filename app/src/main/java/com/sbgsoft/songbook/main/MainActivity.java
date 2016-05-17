@@ -115,6 +115,7 @@ import com.sbgsoft.songbook.songs.SongsTab;
 import com.sbgsoft.songbook.songs.TextFileImporter;
 import com.sbgsoft.songbook.songs.TimeSignature;
 import com.sbgsoft.songbook.views.AutoFitTextView;
+import com.sbgsoft.songbook.views.SetItemAdapter;
 import com.sbgsoft.songbook.views.SongBookThemeTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
@@ -516,10 +517,13 @@ public class MainActivity extends AppCompatActivity {
                 return true;
     		case StaticVars.REORDER_SET:
     			// Get the set selected
-    			setName = setsList.get(info.position).getName();
+    			//setName = setsList.get(info.position).getName();
+                setName = item.getTitle().toString();
+
+                Toast.makeText(this, "Set: " + item.getTitle().toString(), Toast.LENGTH_LONG);
 
                 // Trigger reordering of the set
-                reorderSet(setName);
+                //reorderSet(setName);
 
             	return true;
     		case StaticVars.EDIT_SET:
@@ -1683,7 +1687,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Updates the songs for the set
      */
-    private void updateSetSongs(final String setName) {
+    public void updateSetSongs(final String setName) {
     	Cursor c = dbAdapter.getSongs(SongsTab.ALL_SONGS_LABEL);
     	
     	// Clear the previous song lists
@@ -1829,15 +1833,10 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Prompts the user to confirm then deletes the specified set
      */
-    private void deleteSet(final String setName) {
-    	// Remember the current scroll position
-    	ListView lv = ((ListView)findViewById(R.id.sets_list));
-    	setsCurrentScrollPosition = lv.getFirstVisiblePosition();
-    	setsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
-    	
+    public void deleteSet(final String setName) {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-    	alert.setTitle("Delete Song?!");
+    	alert.setTitle("Delete Set?!");
     	alert.setMessage("Are you sure you want to delete '" + setName + "'???");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -1970,7 +1969,7 @@ public class MainActivity extends AppCompatActivity {
      * Edits the set name and date
      * @param setName The set to edit
      */
-    private void editSetAtt(final String setName) {
+    public void editSetAtt(final String setName) {
     	// Remember the current scroll position
     	ListView lv = ((ListView)findViewById(R.id.sets_list));
     	setsCurrentScrollPosition = lv.getFirstVisiblePosition();
@@ -2189,7 +2188,7 @@ public class MainActivity extends AppCompatActivity {
      * Calls the reorder activity for the specified set
      * @param setName The set to reorder
      */
-    private void reorderSet(String setName) {
+    public void reorderSet(String setName) {
         // Get the set songs
         Cursor c = dbAdapter.getSetSongs(setName);
         String[] setSongs = new String[c.getCount()];
