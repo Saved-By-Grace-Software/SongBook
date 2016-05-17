@@ -2,63 +2,86 @@
 <android.support.v7.widget.CardView
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:themetv="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardBackgroundColor="@color/TranslucentWhite"
+    card_view:cardBackgroundColor="@android:color/transparent"
     card_view:cardCornerRadius="4dp">
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:themetv="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/cardSideMargin"
         android:layout_marginRight="@dimen/cardSideMargin"
         android:layout_marginTop="@dimen/cardTopBottomMargin"
         android:layout_marginBottom="@dimen/cardTopBottomMargin"
-        android:orientation="vertical"
         android:gravity="top">
-
-        <com.sbgsoft.songbook.views.SongBookThemeTextView
-            android:id="@+id/sets_row_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="true"
-            android:textSize="@dimen/listMainTextSize"
-            themetv:useShadow="true" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="7dp" >
+            android:layout_marginLeft="@dimen/cardSideMargin"
+            android:layout_marginRight="@dimen/cardSideMargin"
+            android:layout_marginTop="@dimen/cardTopBottomMargin"
+            android:layout_marginBottom="@dimen/cardTopBottomMargin"
+            android:layout_alignParentLeft="true"
+            android:orientation="vertical"
+            android:gravity="top">
 
             <com.sbgsoft.songbook.views.SongBookThemeTextView
-                android:layout_width="wrap_content"
+                android:id="@+id/sets_row_text"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/sets_row_date_text"
                 android:includeFontPadding="true"
-                android:textSize="@dimen/listSubTextSize"
-                android:textStyle="bold|italic"
-                android:paddingLeft="20dp"
-                android:paddingRight="7dp"
-                themetv:useShadow="false"/>
+                android:textSize="@dimen/listMainTextSize"
+                themetv:useShadow="true" />
 
-            <com.sbgsoft.songbook.views.SongBookThemeTextView
-                android:id="@+id/sets_row_date"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:includeFontPadding="true"
-                android:textSize="@dimen/listSubTextSize"
-                android:textStyle="italic"
-                android:paddingRight="7dp"
-                themetv:useShadow="false"/>
+                android:orientation="horizontal"
+                android:padding="7dp" >
+
+                <com.sbgsoft.songbook.views.SongBookThemeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sets_row_date_text"
+                    android:includeFontPadding="true"
+                    android:textSize="@dimen/listSubTextSize"
+                    android:textStyle="bold|italic"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="7dp"
+                    themetv:useShadow="false"/>
+
+                <com.sbgsoft.songbook.views.SongBookThemeTextView
+                    android:id="@+id/sets_row_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="true"
+                    android:textSize="@dimen/listSubTextSize"
+                    android:textStyle="italic"
+                    android:paddingRight="7dp"
+                    themetv:useShadow="false"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/set_more_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="@dimen/cardSideMargin"
+            android:layout_marginTop="@dimen/cardTopBottomMargin"
+            android:src="@drawable/ic_more_vert_black_24dp"/>
+
+    </RelativeLayout>
+
+
 
 </android.support.v7.widget.CardView>
