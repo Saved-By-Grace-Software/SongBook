@@ -3633,8 +3633,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+	/**
+	 * Shows the current set
+	 * @param setName The set to show
+     */
     public void showCurrentSet(String setName) {
-        Toast.makeText(this, "You clicked: " + setName, Toast.LENGTH_SHORT).show();
+        // Set the current set and show it
+        dbAdapter.setCurrentSet(setName);
+        mViewPager.setCurrentItem(2, true);
+        fillCurrentSetListView();
     }
     //endregion
 
