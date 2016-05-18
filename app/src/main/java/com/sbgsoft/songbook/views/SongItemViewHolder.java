@@ -27,6 +27,8 @@ public class SongItemViewHolder extends RecyclerView.ViewHolder implements View.
     public SongItemViewHolder(View v, final MainActivity mainActivity) {
         super(v);
         vSongName = (SongBookThemeTextView)v.findViewById(R.id.songs_row_text);
+        vSongArtist = (SongBookThemeTextView)v.findViewById(R.id.songs_row_author);
+        vSongKey = (SongBookThemeTextView)v.findViewById(R.id.songs_row_key);
         vContextMenuButton = (ImageView)v.findViewById(R.id.song_more_button);
 
         mMainActivity = mainActivity;

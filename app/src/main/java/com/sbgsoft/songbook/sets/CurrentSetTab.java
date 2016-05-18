@@ -57,7 +57,7 @@ public class CurrentSetTab extends Fragment {
 	}
 
     //region Current Set List Functions
-    public ArrayList<SongItem> getCurrentSetList() {
+    private ArrayList<SongItem> getCurrentSetList() {
         Cursor c = MainActivity.dbAdapter.getCurrentSetSongs();
         c.moveToFirst();
 
@@ -88,6 +88,25 @@ public class CurrentSetTab extends Fragment {
         c.close();
 
         return songs;
+    }
+
+    public void refillCurrentSetList(boolean forceRedraw) {
+        // Get the list and refill the adapter
+        ArrayList<SongItem> songs = getCurrentSetList();
+        adapter.refill(songs);
+
+        // Redraw the list
+        if (forceRedraw) {
+            currentSetRecyclerView.setAdapter(null);
+            currentSetRecyclerView.setLayoutManager(null);
+            currentSetRecyclerView.setAdapter(adapter);
+            currentSetRecyclerView.setLayoutManager(recyclerViewLayoutManager);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    public void refillCurrentSetList() {
+        refillCurrentSetList(false);
     }
     //endregion
 

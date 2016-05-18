@@ -3451,8 +3451,8 @@ public class MainActivity extends AppCompatActivity {
     public void showCurrentSet(String setName) {
         // Set the current set and show it
         dbAdapter.setCurrentSet(setName);
+        ((CurrentSetTab)currSetFragment).refillCurrentSetList();
         mViewPager.setCurrentItem(2, true);
-        fillCurrentSetListView();
     }
     //endregion
 
