@@ -1905,11 +1905,6 @@ public class MainActivity extends AppCompatActivity {
      * @param setName The set to edit
      */
     public void editSetAtt(final String setName) {
-    	// Remember the current scroll position
-    	ListView lv = ((ListView)findViewById(R.id.sets_list));
-    	setsCurrentScrollPosition = lv.getFirstVisiblePosition();
-    	setsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
-    	
     	// Create the alert dialog
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
     	alert.setTitle("Edit Set");
@@ -1944,7 +1939,7 @@ public class MainActivity extends AppCompatActivity {
                     dbAdapter.updateSetAttributes(setName, newSetName, setDate, setLink);
 
                     // Refresh set and current set list
-                    fillSetsListView();
+					((SetsTab)setsFragment).refillSetsList();
                     fillCurrentSetListView();
                 } else
                     Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
