@@ -1212,7 +1212,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Apply the list font colors
         ((SetsTab)setsFragment).refillSetsList(true);
-        fillCurrentSetListView();
+        ((CurrentSetTab)currSetFragment).refillCurrentSetList(true);
         fillSongsListView();
 
         // Apply spinner color
