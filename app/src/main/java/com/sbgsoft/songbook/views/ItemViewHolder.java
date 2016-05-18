@@ -5,14 +5,19 @@ import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.main.MainActivity;
+import com.sbgsoft.songbook.main.SongBookTheme;
 
 /**
  * Created by SamIAm on 5/18/2016.
  */
 public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener , MenuItem.OnMenuItemClickListener {
+    protected RelativeLayout vSongItemLayout;
+    protected RelativeLayout vSectionItemLayout;
+    protected SongBookThemeTextView vSectionName;
     protected SongBookThemeTextView vSongName;
     protected SongBookThemeTextView vSongArtist;
     protected SongBookThemeTextView vSongKey;
@@ -21,10 +26,13 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
 
     public ItemViewHolder(View v, final MainActivity mainActivity) {
         super(v);
+        vSongItemLayout = (RelativeLayout)v.findViewById(R.id.song_item_layout);
+        vSectionItemLayout = (RelativeLayout)v.findViewById(R.id.section_item_layout);
+        vSectionName = (SongBookThemeTextView)v.findViewById(R.id.songs_row_section);
         vSongName = (SongBookThemeTextView)v.findViewById(R.id.songs_row_text);
         vSongArtist = (SongBookThemeTextView)v.findViewById(R.id.songs_row_author);
         vSongKey = (SongBookThemeTextView)v.findViewById(R.id.songs_row_key);
-        vContextMenuButton = (ImageView)v.findViewById(R.id.set_more_button);
+        vContextMenuButton = (ImageView)v.findViewById(R.id.song_more_button);
 
         mMainActivity = mainActivity;
 

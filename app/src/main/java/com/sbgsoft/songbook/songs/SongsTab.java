@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.db.DBStrings;
 import com.sbgsoft.songbook.items.Item;
+import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.items.SongSearchCriteria;
 import com.sbgsoft.songbook.main.MainActivity;
@@ -21,6 +22,7 @@ import com.sbgsoft.songbook.views.ItemAdapter;
 import com.sbgsoft.songbook.views.SongItemAdapter;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class SongsTab extends Fragment {
 	public static final String ALL_SONGS_LABEL = "All Songs";
@@ -69,7 +71,7 @@ public class SongsTab extends Fragment {
 
     //region Song List Functions
     private ArrayList<Item> getSongsList(SongSearchCriteria songSearch) {
-        ArrayList<Item> songs = new ArrayList<>();
+        ArrayList<Item> temp = new ArrayList<>();
         Cursor c;
 
         // Determine if we are searching or using the song group
@@ -100,7 +102,7 @@ public class SongsTab extends Fragment {
             songItem.setSongLink(c.getString(c.getColumnIndex(DBStrings.TBLSONG_LINK)));
 
             // Add the song item
-            songs.add(songItem);
+            temp.add(songItem);
 
             // Move to the next song
             c.moveToNext();
@@ -108,24 +110,27 @@ public class SongsTab extends Fragment {
 
         c.close();
 
-//        // Add section headers
-//        for (int i = 0; i < temp.size(); i++) {
-//            if (i != 0) {
-//                if (Character.toLowerCase(temp.get(i).getName().charAt(0)) !=
-//                        Character.toLowerCase(temp.get(i-1).getName().charAt(0))) {
-//                    // This is the first item with that letter, add the separator
-//                    songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase(Locale.US)));
-//                }
-//            }
-//            else {
-//                // First item, add section
-//                songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase(Locale.US)));
-//            }
-//
-//            songsList.add(temp.get(i));
-//        }
+        // Create the song list
+        ArrayList<Item> songsList = new ArrayList<>();
 
-        return songs;
+        // Add section headers
+        for (int i = 0; i < temp.size(); i++) {
+            if (i != 0) {
+                if (Character.toLowerCase(temp.get(i).getName().charAt(0)) !=
+                        Character.toLowerCase(temp.get(i-1).getName().charAt(0))) {
+                    // This is the first item with that letter, add the separator
+                    songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase(Locale.US)));
+                }
+            }
+            else {
+                // First item, add section
+                songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase(Locale.US)));
+            }
+
+            songsList.add(temp.get(i));
+        }
+
+        return songsList;
     }
     //endregion
 

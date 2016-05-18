@@ -12,6 +12,7 @@
     card_view:cardCornerRadius="6dp">
 
     <RelativeLayout
+        android:id="@+id/song_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/cardSideMargin"
@@ -100,6 +101,29 @@
             android:layout_marginTop="@dimen/cardTopBottomMargin"
             android:layout_marginBottom="@dimen/cardTopBottomMargin"
             android:src="@drawable/ic_more_vert_black_24dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/section_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/cardSideMargin"
+        android:layout_marginRight="@dimen/cardSideMargin"
+        android:layout_marginTop="@dimen/cardTopBottomMargin"
+        android:layout_marginBottom="@dimen/cardTopBottomMargin"
+        android:gravity="top"
+        android:visibility="gone">
+
+        <com.sbgsoft.songbook.views.SongBookThemeTextView
+            android:id="@+id/songs_row_section"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="true"
+            android:paddingLeft="5dp"
+            android:textSize="@dimen/listRowHeaderTextSize"
+            themetv:useShadow="true"
+            themetv:isSection="true" />
 
     </RelativeLayout>
 

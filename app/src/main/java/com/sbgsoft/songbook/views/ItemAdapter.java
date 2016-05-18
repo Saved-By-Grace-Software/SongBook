@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by SamIAm on 5/18/2016.
  */
-public class ItemAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     private List<Item> mItems;
     private MainActivity mMainActivity;
 
@@ -26,21 +26,35 @@ public class ItemAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     }
 
     @Override
-    public SongItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.songs_card, parent, false);
-        return new SongItemViewHolder(itemView, mMainActivity);
+        return new ItemViewHolder(itemView, mMainActivity);
     }
 
     @Override
-    public void onBindViewHolder(SongItemViewHolder holder, int position) {
+    public void onBindViewHolder(ItemViewHolder holder, int position) {
         Item item = mItems.get(position);
 
         // Section Item
         if(item.getClass().equals(SectionItem.class)) {
+            // Show the section item layout
+            holder.vSectionItemLayout.setVisibility(View.VISIBLE);
 
+            // Hide the song item layout
+            holder.vSongItemLayout.setVisibility(View.GONE);
+
+            // Set the data
+            holder.vSectionName.setText(item.getName());
         }
         // Song Item
         else if(item.getClass().equals(SongItem.class)) {
+            // Hide the section item layout
+            holder.vSectionItemLayout.setVisibility(View.GONE);
+
+            // Show the song item layout
+            holder.vSongItemLayout.setVisibility(View.VISIBLE);
+
+            // Set the data
             holder.vSongName.setText(item.getName());
             holder.vSongArtist.setText(((SongItem)item).getAuthor());
             holder.vSongKey.setText(((SongItem)item).getKey());
