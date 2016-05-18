@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -1447,7 +1448,7 @@ public class MainActivity extends AppCompatActivity {
             	addSongsDialogMap.put(song, !addSongsDialogMap.get(song));
             }
         });
-    	songsAD = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, addSongsDialogList);
+    	songsAD = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, addSongsDialogList);
     	songsLV.setAdapter(songsAD);
     	
     	// Fill the group spinner
@@ -1500,7 +1501,7 @@ public class MainActivity extends AppCompatActivity {
 	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
 	    		else {
                     // Refresh set and current set list
-                    fillSetsListView();
+					((SetsTab)setsFragment).refillSetsList();
                     fillCurrentSetListView();
                 }
 	        	
