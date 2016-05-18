@@ -1738,7 +1738,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Refresh set and current set list
 					((SetsTab)setsFragment).refillSetsList();
-                    fillCurrentSetListView();
+                    ((CurrentSetTab)currSetFragment).refillCurrentSetList();
                 } else
                     Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
             }

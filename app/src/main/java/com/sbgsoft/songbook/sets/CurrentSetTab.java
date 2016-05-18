@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.db.DBStrings;
@@ -49,6 +52,9 @@ public class CurrentSetTab extends Fragment {
         MainActivity mainActivity = (MainActivity)getActivity();
         adapter = new SongItemAdapter(songs, mainActivity);
         currentSetRecyclerView.setAdapter(adapter);
+
+        // Setup the title bar
+        setTitleBar();
 
         // Theme setup
         reColorSeparatorBar();
@@ -103,6 +109,9 @@ public class CurrentSetTab extends Fragment {
             currentSetRecyclerView.setLayoutManager(recyclerViewLayoutManager);
             adapter.notifyDataSetChanged();
         }
+
+        // Set the title bar
+        setTitleBar();
     }
 
     public void refillCurrentSetList() {
@@ -116,6 +125,30 @@ public class CurrentSetTab extends Fragment {
      */
     public SongItem getSongItem(String songName) {
         return adapter.get(songName);
+    }
+
+    private void setTitleBar() {
+        String setName = MainActivity.dbAdapter.getCurrentSetName();
+
+        // Update the current set title
+        if (setName != "") {
+
+            // Append the current set name to the title
+            TextView title = ((TextView) mView.findViewById(R.id.current_set_tab_title));
+            title.setText(setName);
+
+            // Add the set link
+            String setLink = MainActivity.dbAdapter.getSetLink(setName);
+            if (setLink != null) {
+                TextView link = ((TextView) mView.findViewById(R.id.current_set_tab_link));
+                link.setMovementMethod(LinkMovementMethod.getInstance());
+                if (setLink.length() > 25)
+                    setLink = "<a href=\"" + setLink + "\">" + setLink.substring(0, 25) + "...</a>";
+                else
+                    setLink = "<a href=\"" + setLink + "\">" + setLink + "</a>";
+                link.setText(Html.fromHtml(setLink));
+            }
+        }
     }
     //endregion
 
