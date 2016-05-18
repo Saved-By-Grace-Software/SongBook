@@ -1584,12 +1584,7 @@ public class MainActivity extends AppCompatActivity {
      * @param setName The set to remove
      * @param groupName The group to remove the song from
      */
-    private void removeSetFromGroup(final String setName, final String groupName) {
-    	// Remember the current scroll position
-    	ListView lv = ((ListView)findViewById(R.id.sets_list));
-    	setsCurrentScrollPosition = lv.getFirstVisiblePosition();
-    	setsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
-    	
+    public void removeSetFromGroup(final String setName, final String groupName) {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Remove Set From Group?!");
@@ -1601,7 +1596,7 @@ public class MainActivity extends AppCompatActivity {
                 dbAdapter.removeSetFromGroup(setName, groupName);
 
                 // Update set list view
-                fillSetsListView();
+				((SetsTab)setsFragment).refillSetsList();
             }
         });
 

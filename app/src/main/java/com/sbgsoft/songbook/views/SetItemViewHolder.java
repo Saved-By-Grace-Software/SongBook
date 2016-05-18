@@ -107,16 +107,15 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements View.O
                 mMainActivity.addSetToGroup(setName);
                 return true;
             case StaticVars.SET_GROUPS_DEL:
-//                // Get the current group
-//                Spinner s1 = (Spinner)mMainActivity.findViewById(R.id.set_group_spinner);
-//                int position1 = s1.getSelectedItemPosition();
-//                groupName = setGroupsList.get(position1);
-//
-//                // Remove the song from the group
-//                if (!groupName.equals(SetsTab.ALL_SETS_LABEL))
-//                    removeSetFromGroup(setName, groupName);
-//                else
-//                    Toast.makeText(getBaseContext(), "Cannot remove set from " + SetsTab.ALL_SETS_LABEL + " group", Toast.LENGTH_LONG).show();
+                // Get the current group
+                Spinner s1 = (Spinner)mMainActivity.findViewById(R.id.set_group_spinner);
+                String groupName = s1.getSelectedItem().toString();
+
+                // Remove the song from the group
+                if (!groupName.equals(SetsTab.ALL_SETS_LABEL))
+                    mMainActivity.removeSetFromGroup(setName, groupName);
+                else
+                    Toast.makeText(mMainActivity, "Cannot remove set from " + SetsTab.ALL_SETS_LABEL + " group", Toast.LENGTH_LONG).show();
                 return true;
             case StaticVars.SHARE_SET:
                 // Email the song
