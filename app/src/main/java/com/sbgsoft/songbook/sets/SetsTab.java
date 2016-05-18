@@ -36,8 +36,7 @@ public class SetsTab extends Fragment {
     private View mView;
     private RecyclerView setsRecyclerView;
     private LinearLayoutManager recyclerViewLayoutManager;
-    private SetItemAdapter.SortType setsListCurrentSort = SetItemAdapter.SortType.DateRecent;
-	
+
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -47,7 +46,7 @@ public class SetsTab extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mView = inflater.inflate(R.layout.tab_sets, container, false);
 
-        // Get the set list
+        // Get the set list and do the default sort
         ArrayList<SetItem> sets = getSetsList(null);
 
         // Set up the sets recycler view
@@ -69,7 +68,7 @@ public class SetsTab extends Fragment {
         fillSetGroupsSpinner(false, -1);
         fillSetSortSpinner();
 
-        // Sort the sets, default to set date recent
+        // Set default sort
         sortSets(0);
 
 		return mView;
@@ -139,6 +138,11 @@ public class SetsTab extends Fragment {
         return refillSetsList(false, null);
     }
 
+    /**
+     * Refills the sets list
+     * @param forceRedraw Determines whether or not to redraw the list
+     * @return
+     */
     public int refillSetsList(boolean forceRedraw) {
         return refillSetsList(forceRedraw, null);
     }
@@ -152,6 +156,12 @@ public class SetsTab extends Fragment {
         return refillSetsList(false, setSearch);
     }
 
+    /**
+     * Refills the set list
+     * @param forceRedraw Determines whether or not to redraw the list
+     * @param setSearch The search criteria for filling the list
+     * @return
+     */
     private int refillSetsList(boolean forceRedraw, SetSearchCriteria setSearch) {
         int ret;
 
@@ -172,7 +182,6 @@ public class SetsTab extends Fragment {
         ret = sets.size();
         return ret;
     }
-
 
     /**
      * Gets the set item by its name
@@ -290,10 +299,9 @@ public class SetsTab extends Fragment {
 
     /**
      * Sorts the set list by the selected item
-     * @param sortByPosition The position in the song sort array list
      */
-    private void sortSets(int sortByPosition) {
-        setsListCurrentSort = SetItemAdapter.SortType.values()[sortByPosition];
+    private void sortSets(int sortPosition) {
+        SetItemAdapter.SortType setsListCurrentSort = SetItemAdapter.SortType.values()[sortPosition];
         adapter.sort(setsListCurrentSort);
     }
     //endregion

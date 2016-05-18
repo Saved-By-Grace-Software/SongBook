@@ -23,6 +23,7 @@ public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
 
     private List<SetItem> mSets;
     private MainActivity mMainActivity;
+    private SortType currentSortType;
 
     public SetItemAdapter(List<SetItem> sets, MainActivity mainActivity) {
         mSets = sets;
@@ -50,6 +51,8 @@ public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
     public void add(SetItem item) {
         mSets.add(item);
         notifyItemInserted(mSets.indexOf(item));
+        sort();
+        notifyDataSetChanged();
     }
 
     public void remove(SetItem item) {
@@ -80,12 +83,18 @@ public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
     public void refill(List<SetItem> newSets) {
         mSets.clear();
         mSets.addAll(newSets);
+        sort();
         notifyDataSetChanged();
     }
 
     public void sort(SortType sortType) {
+        currentSortType = sortType;
+        sort();
+    }
+
+    private void sort() {
         // Sort the array list
-        switch(sortType) {
+        switch(currentSortType) {
             case DateRecent: // Date - Recent
                 Collections.sort(mSets, new SetItem.SetItemComparableDateReverse());
                 break;
