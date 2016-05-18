@@ -115,7 +115,6 @@ import com.sbgsoft.songbook.songs.SongsTab;
 import com.sbgsoft.songbook.songs.TextFileImporter;
 import com.sbgsoft.songbook.songs.TimeSignature;
 import com.sbgsoft.songbook.views.AutoFitTextView;
-import com.sbgsoft.songbook.views.SetItemAdapter;
 import com.sbgsoft.songbook.views.SongBookThemeTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
@@ -1845,9 +1844,9 @@ public class MainActivity extends AppCompatActivity {
                 dbAdapter.deleteSet(setName);
 
                 // Refresh set and current set list
-                fillSetGroupsSpinner();
-                fillSetsListView();
-                fillCurrentSetListView();
+				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
+				((SetsTab)setsFragment).refillSetsList();
+				fillCurrentSetListView();
             }
         });
 

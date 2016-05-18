@@ -62,14 +62,13 @@ public class SetsTab extends Fragment {
 
         // Theme setup
         reColorSeparatorBar();
-        disableOffsetForOlderAndroid();
 
         // Populate the set spinners
         fillSetGroupsSpinner(false, -1);
         fillSetSortSpinner();
 
-        // Sort the sets
-        sortSets(setsListCurrentSort.ordinal());
+        // Sort the sets, default to set date recent
+        sortSets(0);
 
 		return mView;
 	}
@@ -82,17 +81,6 @@ public class SetsTab extends Fragment {
         // Color the separator bars
         View setBar = mView.findViewById(R.id.set_separator_bar);
         setBar.setBackgroundColor(theme.getSeparatorBarColor());
-    }
-
-    /**
-     * Refreshes the sets tab with the latest sets and spinners
-     */
-    public void refreshSetsTab() {
-        // TODO: refresh the data list in the SetItemAdapter
-
-        // TODO: refill the set group spinner
-
-        // TODO: refill the set sort spinner
     }
     //endregion
 
@@ -145,23 +133,9 @@ public class SetsTab extends Fragment {
     /**
      * Refills the sets list
      */
-    private void refillSetsList() {
+    public void refillSetsList() {
         ArrayList<SetItem> sets = getSetsList(null);
         adapter.refill(sets);
-    }
-    //endregion
-
-    //region Helper Functions
-    private void disableOffsetForOlderAndroid() {
-        // If android 4 or below
-        if (Build.VERSION.SDK_INT < 21) {
-            // Disable the spinner offset
-            Spinner groupSpinner = (Spinner)mView.findViewById(R.id.set_group_spinner);
-            groupSpinner.setDropDownVerticalOffset(0);
-
-            Spinner sortSpinner = (Spinner)mView.findViewById(R.id.set_sort_spinner);
-            sortSpinner.setDropDownVerticalOffset(0);
-        }
     }
     //endregion
 
@@ -198,7 +172,7 @@ public class SetsTab extends Fragment {
     /**
      * Fills the group list spinner
      */
-    private void fillSetGroupsSpinner(final boolean showSearchResults, final int numSearchResults) {
+    public void fillSetGroupsSpinner(final boolean showSearchResults, final int numSearchResults) {
         ArrayAdapter<String> setGroupsAdapter;
 
         // Set the groups list
@@ -225,7 +199,7 @@ public class SetsTab extends Fragment {
                         setGroupsList.remove(0);
                 }
 
-                // Refill song list (if not on search results)
+                // Refill set list (if not on search results)
                 currentSetGroup = groupName;
                 if (groupName != StaticVars.searchResultsText) {
                     refillSetsList();
