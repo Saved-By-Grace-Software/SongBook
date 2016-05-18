@@ -3422,6 +3422,37 @@ public class MainActivity extends AppCompatActivity {
         showSet.putExtra(StaticVars.SET_SONGS_KEY, setItem);
         startActivity(showSet);
     }
+
+    /**
+     * Removes the specified song from the specified set
+     * @param songName
+     * @param setName
+     */
+    public void removeSongFromSet(final String songName, final String setName, final int songOrder) {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Remove Song?!");
+        alert.setMessage("Are you sure you want to remove '" + songName + "' from the set '" + setName + "'?");
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Remove the song from the set
+                dbAdapter.removeSongFromSet(setName, songName, songOrder);
+
+                // Refresh the current set list
+                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                //Do nothing
+            }
+        });
+
+        alert.show();
+    }
     //endregion
 
 

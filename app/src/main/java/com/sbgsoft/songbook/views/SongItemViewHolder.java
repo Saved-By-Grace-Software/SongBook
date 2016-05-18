@@ -1,7 +1,5 @@
 package com.sbgsoft.songbook.views;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -9,14 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
-import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
-import com.sbgsoft.songbook.sets.SetsTab;
 import com.sbgsoft.songbook.songs.EditSongRawActivity;
 
 /**
@@ -82,6 +76,7 @@ public class SongItemViewHolder extends RecyclerView.ViewHolder implements View.
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         String songName = vSongName.getText().toString();
+        String setName;
 
         switch (item.getItemId()) {
             case StaticVars.EDIT_SONG_CS:
@@ -107,41 +102,14 @@ public class SongItemViewHolder extends RecyclerView.ViewHolder implements View.
 
                 return true;
             case StaticVars.SET_SONG_KEY_CS:
-                String setName = MainActivity.dbAdapter.getCurrentSetName();
+                setName = MainActivity.dbAdapter.getCurrentSetName();
 
                 mMainActivity.setSongKeyForSet(setName, songName);
 
                 return true;
             case StaticVars.REMOVE_SONG_FROM_SET:
-//                // Get the set name and song name
-//                songName = currSetList.get(info.position).getName();
-//                setName = dbAdapter.getCurrentSetName();
-//                final String fsongName = songName;
-//                final String fsetName = setName;
-//                final int fsongOrder = info.position;
-//
-//                alert = new AlertDialog.Builder(this);
-//
-//                alert.setTitle("Remove Song?!");
-//                alert.setMessage("Are you sure you want to remove '" + songName + "' from the set '" + setName + "'?");
-//
-//                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int whichButton) {
-//                        // Remove the song from the set
-//                        dbAdapter.removeSongFromSet(fsetName, fsongName, fsongOrder);
-//
-//                        // Refresh the current set list
-//                        fillCurrentSetListView();
-//                    }
-//                });
-//
-//                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int whichButton) {
-//                        //Do nothing
-//                    }
-//                });
-//
-//                alert.show();
+                setName = MainActivity.dbAdapter.getCurrentSetName();
+                mMainActivity.removeSongFromSet(songName, setName, getAdapterPosition());
 
                 return true;
             case StaticVars.SONG_STATS_CS:
