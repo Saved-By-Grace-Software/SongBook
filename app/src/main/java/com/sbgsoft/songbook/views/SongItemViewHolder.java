@@ -85,17 +85,16 @@ public class SongItemViewHolder extends RecyclerView.ViewHolder implements View.
 
         switch (item.getItemId()) {
             case StaticVars.EDIT_SONG_CS:
-//                // Get the song name
-//                final String editSongCSName = currSetList.get(info.position).getName();
-//                final String editSongCSFile = ((SongItem)currSetList.get(info.position)).getSongFile();
-//
-//                // Create the edit activity intent
-//                i = new Intent(getBaseContext(), EditSongRawActivity.class);
-//                i.putExtra(StaticVars.SONG_NAME_KEY, editSongCSName);
-//                i.putExtra(StaticVars.SONG_FILE_KEY, editSongCSFile);
-//
-//                // Start the activity
-//                startActivity(i);
+                // Get the song file name
+                String songFileName = MainActivity.dbAdapter.getSongFile(songName);
+
+                // Create the edit activity intent
+                Intent i = new Intent(mMainActivity, EditSongRawActivity.class);
+                i.putExtra(StaticVars.SONG_NAME_KEY, songName);
+                i.putExtra(StaticVars.SONG_FILE_KEY, songFileName);
+
+                // Start the activity
+                mMainActivity.startActivity(i);
                 return true;
             case StaticVars.EDIT_SONG_ATT_CS:
 //                // Get the song name
