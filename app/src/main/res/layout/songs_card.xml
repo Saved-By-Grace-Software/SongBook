@@ -3,7 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:themetv="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/set_card_view"
+    android:id="@+id/song_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
@@ -20,22 +20,19 @@
         android:layout_marginBottom="@dimen/cardTopBottomMargin"
         android:gravity="top">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/cardSideMargin"
-            android:layout_marginRight="@dimen/cardSideMargin"
-            android:layout_marginTop="@dimen/cardTopBottomMargin"
-            android:layout_marginBottom="@dimen/cardTopBottomMargin"
-            android:layout_alignParentLeft="true"
-            android:orientation="vertical"
-            android:gravity="top">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                      xmlns:themetv="http://schemas.android.com/apk/res-auto"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:orientation="vertical"
+                      android:gravity="top">
 
             <com.sbgsoft.songbook.views.SongBookThemeTextView
-                android:id="@+id/sets_row_text"
-                android:layout_width="match_parent"
+                android:id="@+id/songs_row_text"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:includeFontPadding="true"
+                android:paddingLeft="15dp"
                 android:textSize="@dimen/listMainTextSize"
                 themetv:useShadow="true" />
 
@@ -43,12 +40,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="7dp" >
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="25dp" >
 
                 <com.sbgsoft.songbook.views.SongBookThemeTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/sets_row_date_text"
+                    android:text="@string/songs_row_author_text"
                     android:includeFontPadding="true"
                     android:textSize="@dimen/listSubTextSize"
                     android:textStyle="bold|italic"
@@ -57,7 +56,28 @@
                     themetv:useShadow="false"/>
 
                 <com.sbgsoft.songbook.views.SongBookThemeTextView
-                    android:id="@+id/sets_row_date"
+                    android:id="@+id/songs_row_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="true"
+                    android:textSize="@dimen/listSubTextSize"
+                    android:textStyle="italic"
+                    android:paddingRight="7dp"
+                    themetv:useShadow="false"/>
+
+                <com.sbgsoft.songbook.views.SongBookThemeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/songs_row_key_text"
+                    android:includeFontPadding="true"
+                    android:textSize="@dimen/listSubTextSize"
+                    android:textStyle="bold|italic"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="7dp"
+                    themetv:useShadow="false"/>
+
+                <com.sbgsoft.songbook.views.SongBookThemeTextView
+                    android:id="@+id/songs_row_key"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="true"
@@ -71,7 +91,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/set_more_button"
+            android:id="@+id/song_more_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

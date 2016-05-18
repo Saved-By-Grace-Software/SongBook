@@ -39,22 +39,6 @@ public class ItemArrayAdapter extends ArrayAdapter<Item> {
 				final TextView sectionView = (TextView) v.findViewById(R.id.songs_row_section);
 				sectionView.setText(si.getName());
 			}
-			else if (i.getClass().equals(SetItem.class)) {
-				SetItem si = (SetItem)i;
-				
-				// Get the strings from the cursor
-		    	String setName = si.getName();
-		    	String setDate = si.getDate();
-		    	
-		    	// Get the text views
-		    	v = vi.inflate(R.layout.sets_row, null);
-		    	TextView setNameTV = (TextView)v.findViewById(R.id.sets_row_text);
-		    	TextView setDateTV = (TextView)v.findViewById(R.id.sets_row_date);		
-				
-		    	// Set the text view text
-		    	setNameTV.setText(setName);
-		    	setDateTV.setText(setDate + " ");
-			}
 			else if (i.getClass().equals(SongItem.class)) {
 				SongItem si = (SongItem)i;
 				

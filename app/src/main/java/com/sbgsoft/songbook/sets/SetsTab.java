@@ -46,7 +46,7 @@ public class SetsTab extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mView = inflater.inflate(R.layout.tab_sets, container, false);
 
-        // Get the set list and do the default sort
+        // Get the set list
         ArrayList<SetItem> sets = getSetsList(null);
 
         // Set up the sets recycler view

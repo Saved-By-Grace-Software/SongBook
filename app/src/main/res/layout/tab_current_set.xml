@@ -49,11 +49,11 @@
         android:id="@+id/currset_separator_bar"
         android:layout_width="fill_parent"
         android:layout_height="3dip"/>
-    
-    <ListView android:id="@+id/current_list"
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/current_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dip"/>
+        android:layout_height="match_parent" />
     
   	<TextView android:id="@+id/empty_current"
         android:layout_width="match_parent"
