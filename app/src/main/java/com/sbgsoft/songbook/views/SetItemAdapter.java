@@ -58,6 +58,20 @@ public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
         notifyItemRemoved(position);
     }
 
+    public SetItem get(String setName) {
+        SetItem ret= null;
+
+        // Loop through the list to find the specified set
+        for (SetItem s : mSets) {
+            if (s.getName().equals(setName)) {
+                ret = s;
+                break;
+            }
+        }
+
+        return ret;
+    }
+
     public void clear() {
         mSets.clear();
         notifyDataSetChanged();

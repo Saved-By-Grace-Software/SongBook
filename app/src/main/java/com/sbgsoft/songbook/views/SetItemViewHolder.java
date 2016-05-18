@@ -119,7 +119,7 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements View.O
                 return true;
             case StaticVars.SHARE_SET:
                 // Email the song
-                //mMainActivity.shareSet(setI);
+                mMainActivity.shareSet(setName);
                 return true;
             case StaticVars.DELETE_SET:
                 // Delete the set

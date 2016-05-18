@@ -2044,7 +2044,10 @@ public class MainActivity extends AppCompatActivity {
      * Emails the set with the songs as attachments
      * @param setItem The set item object
      */
-    private void shareSet(final SetItem setItem) {
+    public void shareSet(String setName) {
+		// Get the set item
+		final SetItem setItem = ((SetsTab)setsFragment).getSetItem(setName);
+
     	// Create the options array
     	final CharSequence[] options;
     	

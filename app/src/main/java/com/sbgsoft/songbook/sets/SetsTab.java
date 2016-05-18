@@ -137,6 +137,15 @@ public class SetsTab extends Fragment {
         ArrayList<SetItem> sets = getSetsList(null);
         adapter.refill(sets);
     }
+
+    /**
+     * Gets the set item by its name
+     * @param setName
+     * @return
+     */
+    public SetItem getSetItem(String setName) {
+        return adapter.get(setName);
+    }
     //endregion
 
     //region Group Spinner Functions
