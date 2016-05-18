@@ -102,11 +102,8 @@ public class SongItemViewHolder extends RecyclerView.ViewHolder implements View.
 
                 return true;
             case StaticVars.SHARE_SONG_CS:
-//                // Get the song name
-//                songI = (SongItem)currSetList.get(info.position);
-//
-//                // Email the song
-//                shareSong(songI);
+                // Email the song
+                mMainActivity.shareSong(songName);
 
                 return true;
             case StaticVars.SET_SONG_KEY_CS:

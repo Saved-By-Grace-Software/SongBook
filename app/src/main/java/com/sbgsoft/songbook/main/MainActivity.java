@@ -362,10 +362,10 @@ public class MainActivity extends AppCompatActivity {
 
     		case StaticVars.SHARE_SONG:
     			// Get the song name
-    			songI = (SongItem)songsList.get(info.position);
+                songName = songsList.get(info.position).getName();
     			
     			// Email the song
-    			shareSong(songI);
+    			shareSong(songName);
     			
     			return true;
 
@@ -2846,7 +2846,10 @@ public class MainActivity extends AppCompatActivity {
      * @param songItem The SongItem
      * @param songName The song name
      */
-    public void shareSong(final SongItem songItem) {    	
+    public void shareSong(String songName) {
+        final SongItem songItem;
+        songItem = dbAdapter.getSong(songName);
+
     	// Create the options array
     	final CharSequence[] options;
     	

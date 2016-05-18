@@ -108,6 +108,15 @@ public class CurrentSetTab extends Fragment {
     public void refillCurrentSetList() {
         refillCurrentSetList(false);
     }
+
+    /**
+     * Gets the song item by its name
+     * @param songName
+     * @return
+     */
+    public SongItem getSongItem(String songName) {
+        return adapter.get(songName);
+    }
     //endregion
 
     public void reColorSeparatorBar() {

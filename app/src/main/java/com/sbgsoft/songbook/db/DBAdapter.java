@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.sbgsoft.songbook.items.SetSearchCriteria;
 import com.sbgsoft.songbook.items.Settings;
+import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.items.SongSearchCriteria;
 import com.sbgsoft.songbook.main.SongBookTheme;
 import com.sbgsoft.songbook.main.StaticVars;
@@ -678,6 +679,49 @@ public class DBAdapter {
 		}
 		return mDb.rawQuery(query, null);
 	}
+
+    /**
+     * Gets the song item by song name
+     * @param songName The song name to lookup
+     * @return
+     */
+    public SongItem getSong(String songName) {
+        SongItem ret = new SongItem();
+
+        String query = "SELECT " +
+                DBStrings.TBLSONG_ID + " as _id, " +
+                DBStrings.TBLSONG_NAME + ", " +
+                DBStrings.TBLSONG_AUTHOR + ", " +
+                DBStrings.TBLSONG_BPM + ", " +
+                DBStrings.TBLSONG_TIME + ", " +
+                DBStrings.TBLSONG_KEY + ", " +
+                DBStrings.TBLSONG_LINK + ", " +
+                DBStrings.TBLSONG_FILE +
+                " FROM " +
+                DBStrings.SONGS_TABLE +
+                " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'";
+
+        try {
+            Cursor c = mDb.rawQuery(query, null);
+            c.moveToFirst();
+
+            // Set the song item values
+            ret.setName(c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME)));
+            ret.setAuthor(c.getString(c.getColumnIndex(DBStrings.TBLSONG_AUTHOR)));
+            ret.setSetKey(c.getString(c.getColumnIndex(DBStrings.TBLSLOOKUP_KEY)));
+            ret.setFile(c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE)));
+            ret.setBpm(c.getInt(c.getColumnIndex(DBStrings.TBLSONG_BPM)));
+            ret.setTimeSignature(c.getString(c.getColumnIndex(DBStrings.TBLSONG_TIME)));
+            ret.setKey(c.getString(c.getColumnIndex(DBStrings.TBLSONG_KEY)));
+            ret.setSongLink(c.getString(c.getColumnIndex(DBStrings.TBLSONG_LINK)));
+
+            c.close();
+        } catch (IndexOutOfBoundsException e) {
+        } catch (SQLiteException s) {
+        }
+
+        return ret;
+    }
 
     /**
      * Gets all existing song names that meet the search criteria
