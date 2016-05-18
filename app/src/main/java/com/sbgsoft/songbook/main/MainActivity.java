@@ -4631,8 +4631,8 @@ public class MainActivity extends AppCompatActivity {
     		fillSongGroupsSpinner();
         	fillSongGroupsSpinner();
         	fillSongsListView();
-        	fillSetGroupsSpinner();
-        	fillSetsListView();
+			((SetsTab)setsFragment).refillSetsList();
+			((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
         	fillCurrentSetListView();
         	
         	// Close the progress dialog
