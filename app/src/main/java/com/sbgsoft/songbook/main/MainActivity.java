@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
 	// * 
 	// *****************************************************************************
 	private static String currentSongGroup = SongsTab.ALL_SONGS_LABEL;
-	private static String currentSetGroup = SetsTab.ALL_SETS_LABEL;
 
 	public static DBAdapter dbAdapter;
 	static ViewPager mViewPager;
@@ -153,10 +152,6 @@ public class MainActivity extends AppCompatActivity {
 	private ArrayAdapter<Item> songsAdapter;
 	private ArrayList<String> songGroupsList = new ArrayList<String>();
 	private ArrayAdapter<String> songGroupsAdapter;
-	private ArrayList<Item> currSetList = new ArrayList<Item>();
-	private ArrayAdapter<Item> currSetAdapter;
-	private ArrayList<String> setGroupsList = new ArrayList<String>();
-	private ArrayAdapter<String> setGroupsAdapter;
 	private ArrayAdapter<String> songSortAdapter;
 	
 	private Map<String, Boolean> addSongsDialogMap = new HashMap<String, Boolean>();
@@ -509,7 +504,7 @@ public class MainActivity extends AppCompatActivity {
         		}
         		
         		// Refresh the current set view
-        		fillCurrentSetListView();
+                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
         	}
         } 
 
@@ -1414,7 +1409,7 @@ public class MainActivity extends AppCompatActivity {
 	    		else {
                     // Refresh set and current set list
 					((SetsTab)setsFragment).refillSetsList();
-                    fillCurrentSetListView();
+                    ((CurrentSetTab)currSetFragment).refillCurrentSetList();
                 }
 	        	
 	        	// Add the set to a group
@@ -1617,7 +1612,7 @@ public class MainActivity extends AppCompatActivity {
 	    			Toast.makeText(getApplicationContext(), "Failed to update set!", Toast.LENGTH_LONG).show();
 	    		else {
 	    			// Update current set list
-	    			fillCurrentSetListView();
+                    ((CurrentSetTab)currSetFragment).refillCurrentSetList();
 	    		}
 			}
     	});
@@ -1653,7 +1648,7 @@ public class MainActivity extends AppCompatActivity {
 	    		dbAdapter.deleteAllSets();
 	    		
 	    		// Refresh song, set and current set lists
-	    		fillCurrentSetListView();
+                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
 				((SetsTab)setsFragment).refillSetsList();
 				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
 			}
@@ -1685,7 +1680,7 @@ public class MainActivity extends AppCompatActivity {
                 // Refresh set and current set list
 				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
 				((SetsTab)setsFragment).refillSetsList();
-				fillCurrentSetListView();
+                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
             }
         });
 
@@ -2229,7 +2224,9 @@ public class MainActivity extends AppCompatActivity {
     	setsLV.setAdapter(setsAD);
     	
     	// Fill the group spinner
-    	setSetGroupsList();
+        ArrayList<String> setGroups = ((SetsTab)setsFragment).getSetGroupsList(false);
+        ArrayAdapter<String> setGroupsAdapter;
+        setGroupsAdapter = new SetGroupArrayAdapter(this, setGroups);
     	setGroupSP.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
             	// Get the selected group
@@ -2274,7 +2271,7 @@ public class MainActivity extends AppCompatActivity {
 	    		}
 	    		
 	    		// Refresh the current set list
-	    		fillCurrentSetListView();
+                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
 			}
     	});
 
@@ -2315,7 +2312,7 @@ public class MainActivity extends AppCompatActivity {
 	    		dbAdapter.addSongToSet(currentSet, songName);
 				
 	    		// Refresh the current set list
-	    		fillCurrentSetListView();
+                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
 			}
     	});
 
@@ -2388,8 +2385,8 @@ public class MainActivity extends AppCompatActivity {
 	    		// Refresh song, set and current set lists
 	    		fillSongsListView();
 	    		fillSongGroupsSpinner();
-	    		fillCurrentSetListView();
-	    		fillSetGroupsSpinner();
+                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
+                ((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
                 ((SetsTab)setsFragment).refillSetsList();
 			}
     	});
@@ -2431,7 +2428,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Refresh the song and current set view
                 fillSongGroupsSpinner();
-                fillCurrentSetListView();
+                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
             }
         });
 
@@ -3252,118 +3249,6 @@ public class MainActivity extends AppCompatActivity {
     // * Current Set Functions
     // * 
     // *****************************************************************************
-    /**
-     * Fills the current set array list
-     */
-    public void setCurrentSetList() {
-    	Cursor c = dbAdapter.getCurrentSetSongs();
-    	c.moveToFirst();
-    	
-    	// Clear the ArrayList
-    	currSetList.clear();
-    	
-    	// Populate the ArrayList
-    	while (!c.isAfterLast()) {
-            // Create the song item
-            SongItem songItem = new SongItem();
-
-            // Set the song item values
-            songItem.setName(c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME)));
-            songItem.setAuthor(c.getString(c.getColumnIndex(DBStrings.TBLSONG_AUTHOR)));
-            songItem.setSetKey(c.getString(c.getColumnIndex(DBStrings.TBLSLOOKUP_KEY)));
-            songItem.setFile(c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE)));
-            songItem.setBpm(c.getInt(c.getColumnIndex(DBStrings.TBLSONG_BPM)));
-            songItem.setTimeSignature(c.getString(c.getColumnIndex(DBStrings.TBLSONG_TIME)));
-            songItem.setKey(dbAdapter.getSongKey(c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME))));
-            songItem.setSongLink(c.getString(c.getColumnIndex(DBStrings.TBLSONG_LINK)));
-
-            // Add the song item
-            currSetList.add(songItem);
-        	
-        	// Move to the next song
-        	c.moveToNext();
-    	}
-    	c.close();
-    }
-    
-    /**
-     * Fills the current set list
-     * @param v The view for the list
-     */
-    public void fillCurrentSetListView() {
-    	// Fill the current set array list
-    	setCurrentSetList();
-    	
-    	// Set up the list view and adapter
-        ListView lv = ((ListView)findViewById(R.id.current_list));
-        if (lv != null) {
-            lv.setEmptyView(findViewById(R.id.empty_current));
-            currSetAdapter = new ItemArrayAdapter(this, currSetList);
-
-            // Set the on click listener for each item
-            lv.setOnItemClickListener(new ListView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-                    // Create a new SetItem to pass
-                    SetItem setItem = new SetItem();
-
-                    // Loop through each song in the current set and add it to the array
-                    for (Item i : currSetList) {
-                        SongItem currSong = (SongItem) i;
-
-                        // Get the updated time information
-                        currSong.setBpm(dbAdapter.getSongBpm(currSong.getName()));
-                        currSong.setTimeSignature(dbAdapter.getSongTimeSignature(currSong.getName()).toString());
-
-                        // Set song text
-                        try {
-                            FileInputStream fis = openFileInput(dbAdapter.getSongFile(currSong.getName()));
-                            currSong.setKey(dbAdapter.getSongKey(currSong.getName()));
-                            currSong.setText(ChordProParser.ParseSongFile(getApplicationContext(), currSong, dbAdapter.getSongKeyForSet(dbAdapter.getCurrentSetName(), currSong.getName()), fis, true, false));
-
-                            setItem.songs.add(currSong);
-                        } catch (FileNotFoundException e) {
-                            Toast.makeText(getBaseContext(), "Could not open one of the song files!", Toast.LENGTH_LONG).show();
-                            return;
-                        } catch (IOException e) {
-                            Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    // Show the set activity
-                    SetActivity set = new SetActivity();
-                    Intent showSet = new Intent(v.getContext(), set.getClass());
-                    showSet.putExtra(StaticVars.CURRENT_SONG_KEY, position);
-                    showSet.putExtra(StaticVars.SET_SONGS_KEY, setItem);
-                    startActivity(showSet);
-                }
-            });
-
-            // Register the context menu and add the adapter
-            registerForContextMenu(lv);
-            lv.setAdapter(currSetAdapter);
-
-            // Update the current set title bar
-            String currentSetName = dbAdapter.getCurrentSetName();
-            if (currentSetName != "") {
-                // Append the current set name to the title
-                TextView title = ((TextView) findViewById(R.id.current_set_tab_title));
-                title.setText(dbAdapter.getCurrentSetName());
-
-                // Add the set link
-                String setLink = dbAdapter.getSetLink(currentSetName);
-                if (setLink != null) {
-                    TextView link = ((TextView) findViewById(R.id.current_set_tab_link));
-                    link.setMovementMethod(LinkMovementMethod.getInstance());
-                    if (setLink.length() > 25)
-                        setLink = "<a href=\"" + setLink + "\">" + setLink.substring(0, 25) + "...</a>";
-                    else
-                        setLink = "<a href=\"" + setLink + "\">" + setLink + "</a>";
-                    link.setText(Html.fromHtml(setLink));
-                }
-            }
-        }
-    }
-
 	/**
 	 * Shows the current set in the current set tab
 	 * @param setName The set to show
@@ -3798,94 +3683,6 @@ public class MainActivity extends AppCompatActivity {
     // * Set Group Functions
     // * 
     // *****************************************************************************
-    /**
-     * Sets the set group array list
-     */
-    public void setSetGroupsList(boolean showSearchResults) {
-    	// Query the database
-    	Cursor c = dbAdapter.getSetGroupNames();
-    	
-    	// Clear the existing groups list
-    	setGroupsList.clear();
-    	
-    	// Populate the groups
-    	c.moveToFirst();
-    	while (!c.isAfterLast()) {
-    		setGroupsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETGROUPS_NAME)));
-    		c.moveToNext();
-    	}
-    	c.close();
-    	
-    	// Sort the list alphabetically
-    	Collections.sort(setGroupsList, new SortIgnoreCase());
-
-        // Add search results field
-        if (showSearchResults) {
-            setGroupsList.add(0, StaticVars.searchResultsText);
-        }
-    }
-
-    /**
-     * Fills the set groups list with no search results
-     */
-    public void setSetGroupsList() {
-        setSetGroupsList(false);
-    }
-    
-    /**
-     * Fills the group list spinner
-     * @param v
-     */
-    public void fillSetGroupsSpinner(final boolean showSearchResults, final int numSearchResults) {
-    	// Set the groups list
-    	setSetGroupsList(showSearchResults);
-
-        // Create the spinner adapter
-        if (showSearchResults)
-            setGroupsAdapter = new SetGroupArrayAdapter(this, setGroupsList, numSearchResults);
-        else
-            setGroupsAdapter = new SetGroupArrayAdapter(this, setGroupsList);
-        final Spinner groupSpinner = (Spinner) findViewById(R.id.set_group_spinner);
-    	
-    	// Set the on click listener for each item
-    	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
-                // Get the selected item and populate the sets list
-                String groupName = setGroupsList.get(position);
-
-                // If the selection has actually changed
-                if (!currentSetGroup.equals(groupName)) {
-                    // Remove the search results option from the spinner
-                    if (!groupName.equals(StaticVars.searchResultsText) &&
-                            setGroupsList.get(0).equals(StaticVars.searchResultsText))
-                        setGroupsList.remove(0);
-                }
-
-                // Refill song list (if not on search results)
-                currentSetGroup = groupName;
-                if (groupName != StaticVars.searchResultsText) {
-					((SetsTab)setsFragment).refillSetsList();
-                }
-            	
-            	// Set the sort by spinner back to default
-            	((Spinner)findViewById(R.id.set_sort_spinner)).setSelection(0);
-            }
-            
-            public void onNothingSelected(AdapterView<?> arg0) {
-            	// Nothing was clicked so ignore it
-            }
-        });
-    	
-    	groupSpinner.setAdapter(setGroupsAdapter);
-    }
-
-    /**
-     * Fills the set groups with no search results
-     */
-    public void fillSetGroupsSpinner() {
-        fillSetGroupsSpinner(false, -1);
-    }
-    
     /**
      * Creates a new set group
      */
@@ -4514,13 +4311,12 @@ public class MainActivity extends AppCompatActivity {
     	@Override
     	protected void onPostExecute(ImportDBParams result) {
     		// Refresh all the lists
-    		fillSetGroupsSpinner();
     		fillSongGroupsSpinner();
         	fillSongGroupsSpinner();
         	fillSongsListView();
 			((SetsTab)setsFragment).refillSetsList();
 			((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
-        	fillCurrentSetListView();
+            ((CurrentSetTab)currSetFragment).refillCurrentSetList();
         	
         	// Close the progress dialog
         	progressDialog.dismiss();
@@ -4544,13 +4340,12 @@ public class MainActivity extends AppCompatActivity {
             }
     		
     		// Refresh all the lists
-    		fillSetGroupsSpinner();
     		fillSongGroupsSpinner();
         	fillSongGroupsSpinner();
         	fillSongsListView();
-        	fillSetGroupsSpinner();
+            ((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
             ((SetsTab)setsFragment).refillSetsList();
-        	fillCurrentSetListView();
+            ((CurrentSetTab)currSetFragment).refillCurrentSetList();
         	
         	// Close the progress dialog
         	progressDialog.dismiss();

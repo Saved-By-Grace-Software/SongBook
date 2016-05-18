@@ -197,7 +197,7 @@ public class SetsTab extends Fragment {
     /**
      * Sets the set group array list
      */
-    private ArrayList<String> getSetGroupsList(boolean showSearchResults) {
+    public ArrayList<String> getSetGroupsList(boolean showSearchResults) {
         // Query the database
         Cursor c = MainActivity.dbAdapter.getSetGroupNames();
 
