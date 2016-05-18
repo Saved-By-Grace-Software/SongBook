@@ -65,15 +65,24 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements View.O
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
         menu.setHeaderTitle("Sets Menu");
-        MenuItem test = menu.add(Menu.NONE, StaticVars.DELETE_SET, StaticVars.DELETE_SET, R.string.cmenu_sets_delete);
-        menu.add(Menu.NONE, StaticVars.EDIT_SET, StaticVars.EDIT_SET, R.string.cmenu_sets_edit);
-        menu.add(Menu.NONE, StaticVars.EDIT_SET_ATT, StaticVars.EDIT_SET_ATT, R.string.cmenu_sets_edit_att);
-        menu.add(Menu.NONE, StaticVars.REORDER_SET, StaticVars.REORDER_SET, R.string.cmenu_sets_reorder);
-        menu.add(Menu.NONE, StaticVars.SET_GROUPS_ADD, StaticVars.SET_GROUPS_ADD, R.string.cmenu_set_group_add);
-        menu.add(Menu.NONE, StaticVars.SET_GROUPS_DEL, StaticVars.SET_GROUPS_DEL, R.string.cmenu_set_group_delete);
-        menu.add(Menu.NONE, StaticVars.SHARE_SET, StaticVars.SHARE_SET, R.string.cmenu_sets_share);
 
-        test.setOnMenuItemClickListener(this);
+        // Add the menu items
+        MenuItem edit = menu.add(Menu.NONE, StaticVars.EDIT_SET, StaticVars.EDIT_SET, R.string.cmenu_sets_edit);
+        MenuItem editAtt = menu.add(Menu.NONE, StaticVars.EDIT_SET_ATT, StaticVars.EDIT_SET_ATT, R.string.cmenu_sets_edit_att);
+        MenuItem reorder = menu.add(Menu.NONE, StaticVars.REORDER_SET, StaticVars.REORDER_SET, R.string.cmenu_sets_reorder);
+        MenuItem groupAdd = menu.add(Menu.NONE, StaticVars.SET_GROUPS_ADD, StaticVars.SET_GROUPS_ADD, R.string.cmenu_set_group_add);
+        MenuItem groupDel = menu.add(Menu.NONE, StaticVars.SET_GROUPS_DEL, StaticVars.SET_GROUPS_DEL, R.string.cmenu_set_group_delete);
+        MenuItem share = menu.add(Menu.NONE, StaticVars.SHARE_SET, StaticVars.SHARE_SET, R.string.cmenu_sets_share);
+        MenuItem delete = menu.add(Menu.NONE, StaticVars.DELETE_SET, StaticVars.DELETE_SET, R.string.cmenu_sets_delete);
+
+        // Add this as the listener
+        edit.setOnMenuItemClickListener(this);
+        editAtt.setOnMenuItemClickListener(this);
+        reorder.setOnMenuItemClickListener(this);
+        groupAdd.setOnMenuItemClickListener(this);
+        groupDel.setOnMenuItemClickListener(this);
+        share.setOnMenuItemClickListener(this);
+        delete.setOnMenuItemClickListener(this);
     }
 
     @Override
@@ -81,15 +90,6 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements View.O
         String setName = vSetName.getText().toString();
 
         switch (item.getItemId()) {
-            case StaticVars.DELETE_SET:
-                // Delete the set
-                mMainActivity.deleteSet(setName);
-                return true;
-            case StaticVars.REORDER_SET:
-                // Trigger reordering of the set
-                mMainActivity.reorderSet(setName);
-
-                return true;
             case StaticVars.EDIT_SET:
                 // Show the dialog to edit songs
                 mMainActivity.updateSetSongs(setName);
@@ -97,12 +97,36 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements View.O
             case StaticVars.EDIT_SET_ATT:
                 // Update the set attributes
                 mMainActivity.editSetAtt(setName);
-
+                return true;
+            case StaticVars.REORDER_SET:
+                // Trigger reordering of the set
+                mMainActivity.reorderSet(setName);
+                return true;
+            case StaticVars.SET_GROUPS_ADD:
+                // Edit the songs groups
+                mMainActivity.addSetToGroup(setName);
+                return true;
+            case StaticVars.SET_GROUPS_DEL:
+//                // Get the current group
+//                Spinner s1 = (Spinner)mMainActivity.findViewById(R.id.set_group_spinner);
+//                int position1 = s1.getSelectedItemPosition();
+//                groupName = setGroupsList.get(position1);
+//
+//                // Remove the song from the group
+//                if (!groupName.equals(SetsTab.ALL_SETS_LABEL))
+//                    removeSetFromGroup(setName, groupName);
+//                else
+//                    Toast.makeText(getBaseContext(), "Cannot remove set from " + SetsTab.ALL_SETS_LABEL + " group", Toast.LENGTH_LONG).show();
                 return true;
             case StaticVars.SHARE_SET:
                 // Email the song
                 //mMainActivity.shareSet(setI);
                 return true;
+            case StaticVars.DELETE_SET:
+                // Delete the set
+                mMainActivity.deleteSet(setName);
+                return true;
+
         }
         return true;
     }

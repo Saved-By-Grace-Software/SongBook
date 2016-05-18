@@ -507,70 +507,6 @@ public class MainActivity extends AppCompatActivity {
     				Toast.makeText(getBaseContext(), "Cannot remove song from " + SongsTab.ALL_SONGS_LABEL + " group", Toast.LENGTH_LONG).show();
     			
     			return true;
-    		case StaticVars.DELETE_SET:
-    			// Get the set selected
-            	setName = setsList.get(info.position).getName();
-            	
-            	// Delete the set
-                deleteSet(setName);
-                return true;
-    		case StaticVars.REORDER_SET:
-    			// Get the set selected
-    			//setName = setsList.get(info.position).getName();
-                setName = item.getTitle().toString();
-
-                Toast.makeText(this, "Set: " + item.getTitle().toString(), Toast.LENGTH_LONG);
-
-                // Trigger reordering of the set
-                //reorderSet(setName);
-
-            	return true;
-    		case StaticVars.EDIT_SET:
-    			// Get the set selected
-    			setName = setsList.get(info.position).getName();
-            	
-            	// Show the dialog to edit songs
-            	updateSetSongs(setName);
-            	return true;
-    		case StaticVars.EDIT_SET_ATT:
-    			// Get the set selected
-    			setName = setsList.get(info.position).getName();
-            	
-            	// Update the set attributes
-            	editSetAtt(setName);
-            	
-            	return true;
-    		case StaticVars.SHARE_SET:
-    			// Get the song name
-    			setI = (SetItem)setsList.get(info.position);
-    			
-    			// Email the song
-    			shareSet(setI);
-    			return true;
-    		case StaticVars.SET_GROUPS_ADD:
-    			// Get the song name
-    			setName = setsList.get(info.position).getName();
-    			
-    			// Edit the songs groups
-    			addSetToGroup(setName);
-    			
-    			return true;
-    		case StaticVars.SET_GROUPS_DEL:
-    			// Get the song name
-    			setName = setsList.get(info.position).getName();
-    			
-    			// Get the current group
-    			Spinner s1 = (Spinner)findViewById(R.id.set_group_spinner);
-    			int position1 = s1.getSelectedItemPosition();
-    			groupName = setGroupsList.get(position1);
-    			
-    			// Remove the song from the group
-    			if (!groupName.equals(SetsTab.ALL_SETS_LABEL))
-    				removeSetFromGroup(setName, groupName);
-    			else
-    				Toast.makeText(getBaseContext(), "Cannot remove set from " + SetsTab.ALL_SETS_LABEL + " group", Toast.LENGTH_LONG).show();
-    			
-    			return true;
     	}
     	return false;
     }
@@ -1594,7 +1530,7 @@ public class MainActivity extends AppCompatActivity {
      * Adds the song to a group
      * @param setName The song to add
      */
-    private void addSetToGroup(final String setName) {
+    public void addSetToGroup(final String setName) {
     	// Remember the current scroll position
     	ListView lv = ((ListView)findViewById(R.id.sets_list));
     	setsCurrentScrollPosition = lv.getFirstVisiblePosition();
@@ -1725,7 +1661,7 @@ public class MainActivity extends AppCompatActivity {
             	addSongsDialogMap.put(song, !addSongsDialogMap.get(song));
             }
         });
-    	songsAD = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, addSongsDialogList);
+    	songsAD = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, addSongsDialogList);
     	songsLV.setAdapter(songsAD);
     	
     	// Fill the group spinner
