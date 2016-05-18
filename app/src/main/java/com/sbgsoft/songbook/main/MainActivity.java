@@ -2596,14 +2596,9 @@ public class MainActivity extends AppCompatActivity {
      * Edits the song name, author and key
      * @param songName The song to edit
      */
-    private void editSongAtt(final String songName) {
-    	// Remember the current scroll position
-    	ListView lv = ((ListView)findViewById(R.id.songs_list));
-    	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
-    	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
-    	
+    public void editSongAtt(final String songName) {
     	CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
-    	alert.setTitle("Add Song");
+    	alert.setTitle("Song Attributes");
 
     	// Set the dialog view to gather user input
     	LayoutInflater inflater = getLayoutInflater();
@@ -2670,7 +2665,7 @@ public class MainActivity extends AppCompatActivity {
                 // Refresh lists
                 fillSongsListView();
                 ((SetsTab)setsFragment).refillSetsList();
-                fillCurrentSetListView();
+                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
 
                 // Close the dialog
                 dialog.dismiss();

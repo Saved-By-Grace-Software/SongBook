@@ -97,11 +97,8 @@ public class SongItemViewHolder extends RecyclerView.ViewHolder implements View.
                 mMainActivity.startActivity(i);
                 return true;
             case StaticVars.EDIT_SONG_ATT_CS:
-//                // Get the song name
-//                songName = currSetList.get(info.position).getName();
-//
-//                // Show the edit dialog
-//                editSongAtt(songName);
+                // Show the edit dialog
+                mMainActivity.editSongAtt(songName);
 
                 return true;
             case StaticVars.SHARE_SONG_CS:
