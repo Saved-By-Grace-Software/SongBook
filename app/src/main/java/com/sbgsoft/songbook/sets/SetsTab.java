@@ -30,7 +30,7 @@ import java.util.Collections;
 
 public class SetsTab extends Fragment {
 	public static final String ALL_SETS_LABEL = "All Sets";
-    private static String currentSetGroup = SetsTab.ALL_SETS_LABEL;
+    private static String currentSetGroup = ALL_SETS_LABEL;
 
     public SetItemAdapter adapter;
     private View mView;

@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.items.Item;
+import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 
@@ -14,12 +16,12 @@ import java.util.List;
 /**
  * Created by SamIAm on 5/18/2016.
  */
-public class SongItemAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
-    private List<SongItem> mSongs;
+public class ItemAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
+    private List<Item> mItems;
     private MainActivity mMainActivity;
 
-    public SongItemAdapter(List<SongItem> sets, MainActivity mainActivity) {
-        mSongs = sets;
+    public ItemAdapter(List<Item> sets, MainActivity mainActivity) {
+        mItems = sets;
         mMainActivity = mainActivity;
     }
 
@@ -31,34 +33,42 @@ public class SongItemAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
 
     @Override
     public void onBindViewHolder(SongItemViewHolder holder, int position) {
-        SongItem item = mSongs.get(position);
-        holder.vSongName.setText(item.getName());
-        holder.vSongArtist.setText(item.getAuthor());
-        holder.vSongKey.setText(item.getSetKey());
+        Item item = mItems.get(position);
+
+        // Section Item
+        if(item.getClass().equals(SectionItem.class)) {
+
+        }
+        // Song Item
+        else if(item.getClass().equals(SongItem.class)) {
+            holder.vSongName.setText(item.getName());
+            holder.vSongArtist.setText(((SongItem)item).getAuthor());
+            holder.vSongKey.setText(((SongItem)item).getKey());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mSongs.size();
+        return mItems.size();
     }
 
-    public void add(SongItem item) {
-        mSongs.add(item);
-        notifyItemInserted(mSongs.indexOf(item));
+    public void add(Item item) {
+        mItems.add(item);
+        notifyItemInserted(mItems.indexOf(item));
     }
 
-    public void remove(SongItem item) {
-        int position = mSongs.indexOf(item);
-        mSongs.remove(position);
+    public void remove(Item item) {
+        int position = mItems.indexOf(item);
+        mItems.remove(position);
         notifyItemRemoved(position);
     }
 
-    public SongItem get(String setName) {
-        SongItem ret= null;
+    public Item get(String itemName) {
+        Item ret= null;
 
         // Loop through the list to find the specified set
-        for (SongItem s : mSongs) {
-            if (s.getName().equals(setName)) {
+        for (Item s : mItems) {
+            if (s.getName().equals(itemName)) {
                 ret = s;
                 break;
             }
@@ -68,13 +78,13 @@ public class SongItemAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
     }
 
     public void clear() {
-        mSongs.clear();
+        mItems.clear();
         notifyDataSetChanged();
     }
 
-    public void refill(List<SongItem> newSongs) {
-        mSongs.clear();
-        mSongs.addAll(newSongs);
+    public void refill(List<Item> newSets) {
+        mItems.clear();
+        mItems.addAll(newSets);
         notifyDataSetChanged();
     }
 }
