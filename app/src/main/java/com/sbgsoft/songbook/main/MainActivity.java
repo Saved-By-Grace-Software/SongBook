@@ -3087,7 +3087,10 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Sets the song key for the set
      */
-    private void setSongKeyForSet(final String setName, final SongItem songI) {
+    public void setSongKeyForSet(final String setName, String songName) {
+        // Get the song item
+        final SongItem songItem = dbAdapter.getSong(songName);
+
     	// Create the key array
 		CharSequence[] keys = StaticVars.songKeys.toArray(new CharSequence[StaticVars.songKeys.size() + 1]);
 		keys[StaticVars.songKeys.size()] = "Original Key";
@@ -3099,10 +3102,10 @@ public class MainActivity extends AppCompatActivity {
     		public void onClick (DialogInterface dialog, int whichItem) {
     			// Set the new song key for the set
     			if (whichItem < StaticVars.songKeys.size())
-    				dbAdapter.setSongKeyForSet(setName, songI.getName(), StaticVars.songKeys.get(whichItem));
+    				dbAdapter.setSongKeyForSet(setName, songItem.getName(), StaticVars.songKeys.get(whichItem));
     			
     			// Refresh current set list
-    			fillCurrentSetListView();
+                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
 
                 // Refresh sets list
                 ((SetsTab)setsFragment).refillSetsList();

@@ -107,10 +107,9 @@ public class SongItemViewHolder extends RecyclerView.ViewHolder implements View.
 
                 return true;
             case StaticVars.SET_SONG_KEY_CS:
-//                songI = (SongItem)currSetList.get(info.position);
-//                setName = dbAdapter.getCurrentSetName();
-//
-//                setSongKeyForSet(setName, songI);
+                String setName = MainActivity.dbAdapter.getCurrentSetName();
+
+                mMainActivity.setSongKeyForSet(setName, songName);
 
                 return true;
             case StaticVars.REMOVE_SONG_FROM_SET:
