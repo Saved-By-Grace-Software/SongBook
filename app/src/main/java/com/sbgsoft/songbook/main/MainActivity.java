@@ -306,17 +306,6 @@ public class MainActivity extends AppCompatActivity {
     		menu.add(Menu.NONE, StaticVars.SHARE_SONG, StaticVars.SHARE_SONG, R.string.cmenu_songs_share);
     		menu.add(Menu.NONE, StaticVars.SONG_STATS, StaticVars.SONG_STATS, R.string.cmenu_songs_stats);
     	}
-    	// Sets context menu
-    	else if (v.getId() == R.id.sets_list) {
-    		menu.setHeaderTitle("Sets Menu");
-    		menu.add(Menu.NONE, StaticVars.DELETE_SET, StaticVars.DELETE_SET, R.string.cmenu_sets_delete);
-    		menu.add(Menu.NONE, StaticVars.EDIT_SET, StaticVars.EDIT_SET, R.string.cmenu_sets_edit);
-    		menu.add(Menu.NONE, StaticVars.EDIT_SET_ATT, StaticVars.EDIT_SET_ATT, R.string.cmenu_sets_edit_att);
-    		menu.add(Menu.NONE, StaticVars.REORDER_SET, StaticVars.REORDER_SET, R.string.cmenu_sets_reorder);
-    		menu.add(Menu.NONE, StaticVars.SET_GROUPS_ADD, StaticVars.SET_GROUPS_ADD, R.string.cmenu_set_group_add);
-    		menu.add(Menu.NONE, StaticVars.SET_GROUPS_DEL, StaticVars.SET_GROUPS_DEL, R.string.cmenu_set_group_delete);
-    		menu.add(Menu.NONE, StaticVars.SHARE_SET, StaticVars.SHARE_SET, R.string.cmenu_sets_share);
-    	}
     	// Current Set context menu
     	else if (v.getId() == R.id.current_list) {
     		menu.setHeaderTitle("Current Set Menu");
@@ -361,19 +350,7 @@ public class MainActivity extends AppCompatActivity {
                 // Start the activity
                 startActivity(i);
                 return true;
-    		case StaticVars.EDIT_SONG_CS:
-    			// Get the song name
-    			final String editSongCSName = currSetList.get(info.position).getName();
-    			final String editSongCSFile = ((SongItem)currSetList.get(info.position)).getSongFile();
-    		
-    			// Create the edit activity intent
-            	i = new Intent(getBaseContext(), EditSongRawActivity.class);
-                i.putExtra(StaticVars.SONG_NAME_KEY, editSongCSName);
-                i.putExtra(StaticVars.SONG_FILE_KEY, editSongCSFile);
-                
-                // Start the activity
-                startActivity(i);
-                return true;
+
     		case StaticVars.EDIT_SONG_ATT:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
@@ -382,14 +359,7 @@ public class MainActivity extends AppCompatActivity {
     			editSongAtt(songName);
     			
                 return true;
-    		case StaticVars.EDIT_SONG_ATT_CS:
-    			// Get the song name
-    			songName = currSetList.get(info.position).getName();
-                    
-				// Show the edit dialog
-    			editSongAtt(songName);
-    			
-                return true;
+
     		case StaticVars.SHARE_SONG:
     			// Get the song name
     			songI = (SongItem)songsList.get(info.position);
@@ -398,53 +368,9 @@ public class MainActivity extends AppCompatActivity {
     			shareSong(songI);
     			
     			return true;
-    		case StaticVars.SHARE_SONG_CS:
-    			// Get the song name
-    			songI = (SongItem)currSetList.get(info.position);
-    			
-    			// Email the song
-    			shareSong(songI);
-    			
-    			return true;
-    		case StaticVars.SET_SONG_KEY_CS:
-    			songI = (SongItem)currSetList.get(info.position);
-    			setName = dbAdapter.getCurrentSetName();
-    			
-    			setSongKeyForSet(setName, songI);
-    			
-    			return true;
-    		case StaticVars.REMOVE_SONG_FROM_SET:
-    			// Get the set name and song name
-    			songName = currSetList.get(info.position).getName();
-    			setName = dbAdapter.getCurrentSetName();
-    			final String fsongName = songName;
-    			final String fsetName = setName;
-                final int fsongOrder = info.position;
-    			
-    			alert = new AlertDialog.Builder(this);
 
-    	    	alert.setTitle("Remove Song?!");
-    	    	alert.setMessage("Are you sure you want to remove '" + songName + "' from the set '" + setName + "'?");
 
-    	    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-    		    	public void onClick(DialogInterface dialog, int whichButton) {
-    		    		// Remove the song from the set
-    	    			dbAdapter.removeSongFromSet(fsetName, fsongName, fsongOrder);
-    	    			
-    	    			// Refresh the current set list
-    	    			fillCurrentSetListView();
-    				}
-    	    	});
 
-    	    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-    		    	public void onClick(DialogInterface dialog, int whichButton) {
-    		    		//Do nothing
-    		    	}
-    	    	});
-
-    	    	alert.show();
-    	    	
-    			return true;
     		case StaticVars.ADD_SONG_SET:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
@@ -469,14 +395,7 @@ public class MainActivity extends AppCompatActivity {
     			showSongStats(songName);
     			
     			return true;
-    		case StaticVars.SONG_STATS_CS:
-    			// Get the song name
-    			songName = currSetList.get(info.position).getName();
-    			
-    			// Show the song stats dialog
-    			showSongStats(songName);
-    			
-    			return true;
+
     		case StaticVars.SONG_GROUPS_ADD:
     			// Get the song name
     			songName = songsList.get(info.position).getName();
@@ -3199,7 +3118,7 @@ public class MainActivity extends AppCompatActivity {
      * Shows the song statistics dialog
      * @param songName The song to give stats for
      */
-    private void showSongStats(String songName) {
+    public void showSongStats(String songName) {
     	// Create the dialog
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
     	alert.setTitle("'" + songName + "' Statistics");
