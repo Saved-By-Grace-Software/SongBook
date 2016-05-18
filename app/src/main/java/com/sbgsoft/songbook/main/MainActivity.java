@@ -1531,11 +1531,6 @@ public class MainActivity extends AppCompatActivity {
      * @param setName The song to add
      */
     public void addSetToGroup(final String setName) {
-    	// Remember the current scroll position
-    	ListView lv = ((ListView)findViewById(R.id.sets_list));
-    	setsCurrentScrollPosition = lv.getFirstVisiblePosition();
-    	setsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
-    	
     	// Get the list of group names
     	Cursor c = dbAdapter.getSetGroupNames();
     	
@@ -1575,9 +1570,9 @@ public class MainActivity extends AppCompatActivity {
                         dbAdapter.addSetToGroup(setName, groupNames[i].toString());
                 }
 
-                // Refresh song list
-                fillSetsListView();
-                fillSetGroupsSpinner();
+                // Refresh sets list
+				((SetsTab)setsFragment).refillSetsList();
+				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
             }
         });
 
@@ -3974,10 +3969,6 @@ public class MainActivity extends AppCompatActivity {
 
                 // If the selection has actually changed
                 if (!currentSetGroup.equals(groupName)) {
-                    // Reset the scroll positions
-                    setsCurrentScrollPosition = 0;
-                    setsCurrentScrollOffset = 0;
-
                     // Remove the search results option from the spinner
                     if (!groupName.equals(StaticVars.searchResultsText) &&
                             setGroupsList.get(0).equals(StaticVars.searchResultsText))
@@ -3987,7 +3978,7 @@ public class MainActivity extends AppCompatActivity {
                 // Refill song list (if not on search results)
                 currentSetGroup = groupName;
                 if (groupName != StaticVars.searchResultsText) {
-                    fillSetsListView();
+					((SetsTab)setsFragment).refillSetsList();
                 }
             	
             	// Set the sort by spinner back to default
