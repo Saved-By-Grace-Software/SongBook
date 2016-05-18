@@ -2163,8 +2163,8 @@ public class MainActivity extends AppCompatActivity {
                     setSearch.setNameSearchText = searchText;
 
                     // Fill the songs tab with the search data
-                    int numResults = fillSetsListView(setSearch);
-                    fillSetGroupsSpinner(true, numResults);
+                    int numResults = ((SetsTab)setsFragment).refillSetsList(setSearch);
+                    ((SetsTab)setsFragment).fillSetGroupsSpinner(true, numResults);
 
                     // Close the dialog
                     dialog.dismiss();

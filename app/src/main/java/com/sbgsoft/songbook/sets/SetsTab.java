@@ -73,7 +73,7 @@ public class SetsTab extends Fragment {
 		return mView;
 	}
 
-    //region Public Functions
+    //region Helper Functions
     public void reColorSeparatorBar() {
         // Get the current theme from the database
         SongBookTheme theme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
@@ -133,9 +133,33 @@ public class SetsTab extends Fragment {
     /**
      * Refills the sets list
      */
-    public void refillSetsList() {
+    public int refillSetsList() {
+        int ret;
+
+        // Get the sets list and refill the adapter
         ArrayList<SetItem> sets = getSetsList(null);
         adapter.refill(sets);
+
+        // Return the number of sets
+        ret = sets.size();
+        return ret;
+    }
+
+    /**
+     * Refills the sets list with the specified search criteria
+     * @param setSearch
+     * @return
+     */
+    public int refillSetsList(SetSearchCriteria setSearch) {
+        int ret;
+
+        // Get the sets list and refill the adapter
+        ArrayList<SetItem> sets = getSetsList(setSearch);
+        adapter.refill(sets);
+
+        // Return the number of sets
+        ret = sets.size();
+        return ret;
     }
 
     /**
