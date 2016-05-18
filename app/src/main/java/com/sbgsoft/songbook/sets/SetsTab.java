@@ -34,6 +34,8 @@ public class SetsTab extends Fragment {
 
     public SetItemAdapter adapter;
     private View mView;
+    private RecyclerView setsRecyclerView;
+    private LinearLayoutManager recyclerViewLayoutManager;
     private SetItemAdapter.SortType setsListCurrentSort = SetItemAdapter.SortType.DateRecent;
 	
 	@Override
@@ -49,11 +51,11 @@ public class SetsTab extends Fragment {
         ArrayList<SetItem> sets = getSetsList(null);
 
         // Set up the sets recycler view
-        RecyclerView setsRecyclerView = (RecyclerView)mView.findViewById(R.id.sets_list);
+        setsRecyclerView = (RecyclerView)mView.findViewById(R.id.sets_list);
         setsRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(mView.getContext());
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        setsRecyclerView.setLayoutManager(llm);
+        recyclerViewLayoutManager = new LinearLayoutManager(mView.getContext());
+        recyclerViewLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        setsRecyclerView.setLayoutManager(recyclerViewLayoutManager);
 
         // Specify the adapter for the recycler view
         MainActivity mainActivity = (MainActivity)getActivity();
@@ -134,15 +136,11 @@ public class SetsTab extends Fragment {
      * Refills the sets list
      */
     public int refillSetsList() {
-        int ret;
+        return refillSetsList(false, null);
+    }
 
-        // Get the sets list and refill the adapter
-        ArrayList<SetItem> sets = getSetsList(null);
-        adapter.refill(sets);
-
-        // Return the number of sets
-        ret = sets.size();
-        return ret;
+    public int refillSetsList(boolean forceRedraw) {
+        return refillSetsList(forceRedraw, null);
     }
 
     /**
@@ -151,16 +149,30 @@ public class SetsTab extends Fragment {
      * @return
      */
     public int refillSetsList(SetSearchCriteria setSearch) {
+        return refillSetsList(false, setSearch);
+    }
+
+    private int refillSetsList(boolean forceRedraw, SetSearchCriteria setSearch) {
         int ret;
 
         // Get the sets list and refill the adapter
         ArrayList<SetItem> sets = getSetsList(setSearch);
         adapter.refill(sets);
 
+        // Redraw the list
+        if (forceRedraw) {
+            setsRecyclerView.setAdapter(null);
+            setsRecyclerView.setLayoutManager(null);
+            setsRecyclerView.setAdapter(adapter);
+            setsRecyclerView.setLayoutManager(recyclerViewLayoutManager);
+            adapter.notifyDataSetChanged();
+        }
+
         // Return the number of sets
         ret = sets.size();
         return ret;
     }
+
 
     /**
      * Gets the set item by its name

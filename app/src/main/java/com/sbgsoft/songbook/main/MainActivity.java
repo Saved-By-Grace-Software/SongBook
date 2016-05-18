@@ -1299,13 +1299,13 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setBackgroundColor(theme.getToolbarColor());
 
         // Apply the list font colors
-        fillSetsListView();
+        ((SetsTab)setsFragment).refillSetsList(true);
         fillCurrentSetListView();
         fillSongsListView();
 
         // Apply spinner color
-        fillSetGroupsSpinner();
-        //fillSetSortSpinner();
+        ((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
+        ((SetsTab)setsFragment).fillSetSortSpinner();
         fillSongGroupsSpinner();
         fillSongSortSpinner();
 
