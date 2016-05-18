@@ -20,19 +20,21 @@
         android:layout_marginBottom="@dimen/cardTopBottomMargin"
         android:gravity="top">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                      xmlns:themetv="http://schemas.android.com/apk/res-auto"
-                      android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:orientation="vertical"
-                      android:gravity="top">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/cardSideMargin"
+            android:layout_marginRight="@dimen/cardSideMargin"
+            android:layout_marginTop="@dimen/cardTopBottomMargin"
+            android:layout_marginBottom="@dimen/cardTopBottomMargin"
+            android:orientation="vertical"
+            android:gravity="top">
 
             <com.sbgsoft.songbook.views.SongBookThemeTextView
                 android:id="@+id/songs_row_text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:includeFontPadding="true"
-                android:paddingLeft="15dp"
                 android:textSize="@dimen/listMainTextSize"
                 themetv:useShadow="true" />
 
@@ -40,8 +42,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:paddingLeft="25dp" >
 
                 <com.sbgsoft.songbook.views.SongBookThemeTextView
@@ -51,7 +51,6 @@
                     android:includeFontPadding="true"
                     android:textSize="@dimen/listSubTextSize"
                     android:textStyle="bold|italic"
-                    android:paddingLeft="20dp"
                     android:paddingRight="7dp"
                     themetv:useShadow="false"/>
 
@@ -97,7 +96,9 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="@dimen/cardSideMargin"
+            android:layout_marginLeft="@dimen/cardSideMargin"
             android:layout_marginTop="@dimen/cardTopBottomMargin"
+            android:layout_marginBottom="@dimen/cardTopBottomMargin"
             android:src="@drawable/ic_more_vert_black_24dp"/>
 
     </RelativeLayout>
