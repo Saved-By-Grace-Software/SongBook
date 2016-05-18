@@ -57,7 +57,7 @@ public class CurrentSetTab extends Fragment {
 	}
 
     //region Current Set List Functions
-    private ArrayList<SongItem> getCurrentSetList() {
+    public ArrayList<SongItem> getCurrentSetList() {
         Cursor c = MainActivity.dbAdapter.getCurrentSetSongs();
         c.moveToFirst();
 

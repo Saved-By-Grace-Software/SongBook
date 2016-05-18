@@ -3445,7 +3445,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 	/**
-	 * Shows the current set
+	 * Shows the current set in the current set tab
 	 * @param setName The set to show
      */
     public void showCurrentSet(String setName) {
@@ -3453,6 +3453,54 @@ public class MainActivity extends AppCompatActivity {
         dbAdapter.setCurrentSet(setName);
         ((CurrentSetTab)currSetFragment).refillCurrentSetList();
         mViewPager.setCurrentItem(2, true);
+    }
+
+    /**
+     * Loads the current set songs to be shown
+     * @param startSongName Name of the song to start showing
+     */
+    public void viewCurrentSet(String startSongName) {
+        int position = 0;
+
+        // Create a new SetItem to pass
+        SetItem setItem = new SetItem();
+
+        // Get the current set songs
+        ArrayList<SongItem> currSetList = ((CurrentSetTab)currSetFragment).getCurrentSetList();
+
+        // Loop through each song in the current set and add it to the array
+        for (int i = 0; i < currSetList.size(); i++) {
+            SongItem currSong = currSetList.get(i);
+
+            // Get the updated time information
+            currSong.setBpm(dbAdapter.getSongBpm(currSong.getName()));
+            currSong.setTimeSignature(dbAdapter.getSongTimeSignature(currSong.getName()).toString());
+
+            // Check for start position
+            if (currSong.getName().equals(startSongName))
+                position = i;
+
+            // Set song text
+            try {
+                FileInputStream fis = openFileInput(dbAdapter.getSongFile(currSong.getName()));
+                currSong.setKey(dbAdapter.getSongKey(currSong.getName()));
+                currSong.setText(ChordProParser.ParseSongFile(getApplicationContext(), currSong, dbAdapter.getSongKeyForSet(dbAdapter.getCurrentSetName(), currSong.getName()), fis, true, false));
+
+                setItem.songs.add(currSong);
+            } catch (FileNotFoundException e) {
+                Toast.makeText(getBaseContext(), "Could not open one of the song files!", Toast.LENGTH_LONG).show();
+                return;
+            } catch (IOException e) {
+                Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        // Show the set activity
+        SetActivity set = new SetActivity();
+        Intent showSet = new Intent(this, set.getClass());
+        showSet.putExtra(StaticVars.CURRENT_SONG_KEY, position);
+        showSet.putExtra(StaticVars.SET_SONGS_KEY, setItem);
+        startActivity(showSet);
     }
     //endregion
 

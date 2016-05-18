@@ -36,7 +36,7 @@ public class SongItemViewHolder extends RecyclerView.ViewHolder implements View.
         // Single click listener
         v.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                //mMainActivity.showCurrentSet(vSongName.getText().toString());
+                mMainActivity.viewCurrentSet(vSongName.getText().toString());
             }
         });
 
