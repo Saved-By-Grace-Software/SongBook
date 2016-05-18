@@ -1742,8 +1742,8 @@ public class MainActivity extends AppCompatActivity {
 	    		
 	    		// Refresh song, set and current set lists
 	    		fillCurrentSetListView();
-	    		fillSetGroupsSpinner();
-	    		fillSetsListView();
+				((SetsTab)setsFragment).refillSetsList();
+				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
 			}
     	});
 
