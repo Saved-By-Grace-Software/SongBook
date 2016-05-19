@@ -2172,12 +2172,7 @@ public class MainActivity extends AppCompatActivity {
      * Adds the song to a set
      * @param songName The song to add
      */
-    private void addSongToCurrentSet(final String songName) {
-    	// Remember the current scroll position
-    	ListView lv = ((ListView)findViewById(R.id.songs_list));
-    	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
-    	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
-    	
+    public void addSongToCurrentSet(final String songName) {
     	// Get the current set
     	final String currentSet = dbAdapter.getCurrentSetName();
    
@@ -2189,7 +2184,8 @@ public class MainActivity extends AppCompatActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    		dbAdapter.addSongToSet(currentSet, songName);
 				
-	    		// Refresh the current set list
+	    		// Refresh the current set and set list
+                ((SetsTab)setsFragment).refillSetsList();
                 ((CurrentSetTab)currSetFragment).refillCurrentSetList();
 			}
     	});
