@@ -172,44 +172,50 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
 
     //region Sort Helper Functions
     private void addTitleSectionHeaders(ArrayList<Item> items) {
-        // First item, add section
-        items.add(0, new SectionItem(items.get(0).getName().substring(0, 1).toUpperCase(Locale.US)));
+        if(items.size() > 0) {
+            // First item, add section
+            items.add(0, new SectionItem(items.get(0).getName().substring(0, 1).toUpperCase(Locale.US)));
 
-        for (int i = 2; i < items.size(); i++) {
-            if (Character.toLowerCase(items.get(i).getName().charAt(0)) !=
-                    Character.toLowerCase(items.get(i-1).getName().charAt(0))) {
-                // This is the first item with that letter, add the separator
-                items.add(i, new SectionItem(items.get(i).getName().substring(0, 1).toUpperCase(Locale.US)));
-                i++;
+            for (int i = 2; i < items.size(); i++) {
+                if (Character.toLowerCase(items.get(i).getName().charAt(0)) !=
+                        Character.toLowerCase(items.get(i - 1).getName().charAt(0))) {
+                    // This is the first item with that letter, add the separator
+                    items.add(i, new SectionItem(items.get(i).getName().substring(0, 1).toUpperCase(Locale.US)));
+                    i++;
+                }
             }
         }
     }
 
     private void addAuthorSectionHeaders(ArrayList<Item> items) {
-        // First item, add section
-        items.add(0, new SectionItem(((SongItem)items.get(0)).getAuthor().substring(0, 1).toUpperCase(Locale.US)));
+        if(items.size() > 0) {
+            // First item, add section
+            items.add(0, new SectionItem(((SongItem) items.get(0)).getAuthor().substring(0, 1).toUpperCase(Locale.US)));
 
-        // Add the rest of the sections
-        for (int i = 2; i < items.size(); i++) {
-            if (Character.toLowerCase(((SongItem)items.get(i)).getAuthor().charAt(0)) !=
-                    Character.toLowerCase(((SongItem)items.get(i-1)).getAuthor().charAt(0))) {
-                // This is the first item with that letter, add the separator
-                items.add(i, new SectionItem(((SongItem)items.get(i)).getAuthor().substring(0, 1).toUpperCase(Locale.US)));
-                i++;
+            // Add the rest of the sections
+            for (int i = 2; i < items.size(); i++) {
+                if (Character.toLowerCase(((SongItem) items.get(i)).getAuthor().charAt(0)) !=
+                        Character.toLowerCase(((SongItem) items.get(i - 1)).getAuthor().charAt(0))) {
+                    // This is the first item with that letter, add the separator
+                    items.add(i, new SectionItem(((SongItem) items.get(i)).getAuthor().substring(0, 1).toUpperCase(Locale.US)));
+                    i++;
+                }
             }
         }
     }
 
     private void addKeySectionHeaders(ArrayList<Item> items) {
-        // First item, add section
-        items.add(0, new SectionItem(((SongItem)items.get(0)).getKey()));
+        if(items.size() > 0) {
+            // First item, add section
+            items.add(0, new SectionItem(((SongItem) items.get(0)).getKey()));
 
-        // Add the rest of the sections
-        for (int i = 2; i < items.size(); i++) {
-            if (!((SongItem)items.get(i)).getKey().equals(((SongItem)items.get(i-1)).getKey())) {
-                // This is the first item with that key, add the separator
-                items.add(i, new SectionItem(((SongItem)items.get(i)).getKey()));
-                i++;
+            // Add the rest of the sections
+            for (int i = 2; i < items.size(); i++) {
+                if (!((SongItem) items.get(i)).getKey().equals(((SongItem) items.get(i - 1)).getKey())) {
+                    // This is the first item with that key, add the separator
+                    items.add(i, new SectionItem(((SongItem) items.get(i)).getKey()));
+                    i++;
+                }
             }
         }
     }

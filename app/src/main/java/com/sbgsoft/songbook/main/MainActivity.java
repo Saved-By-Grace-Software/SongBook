@@ -283,24 +283,6 @@ public class MainActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Responds to context menu click
-     */
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-    	String setName, songName, groupName;
-    	Intent i;
-    	SongItem songI;
-    	SetItem setI;
-    	AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
-    	AlertDialog.Builder alert;
-    	
-    	switch (item.getItemId()) {
-
-    	}
-    	return false;
-    }
-    
 	/**
      * Called when the activity is stopped
      */
@@ -2041,6 +2023,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Refresh song group list
+                ((SongsTab)songsFragment).refillSongsList();
                 ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0);
             }
         });
@@ -2246,8 +2229,8 @@ public class MainActivity extends AppCompatActivity {
 	    		}
 	    		
 	    		// Refresh song, set and current set lists
-	    		fillSongsListView();
-	    		fillSongGroupsSpinner();
+                ((SongsTab)songsFragment).refillSongsList();
+                ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0);
                 ((CurrentSetTab)currSetFragment).refillCurrentSetList();
                 ((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
                 ((SetsTab)setsFragment).refillSetsList();
@@ -2299,7 +2282,7 @@ public class MainActivity extends AppCompatActivity {
 
     	alert.show();
     }
-    
+
     /**
      * Sets the current song list for the specified group
      * @param songSearch The search criteria
@@ -2324,7 +2307,7 @@ public class MainActivity extends AppCompatActivity {
         // Display error message for searching
         if (c.getCount() <= 0 && songSearch != null)
             Toast.makeText(getApplicationContext(), "No songs match that search", Toast.LENGTH_LONG).show();
-    	
+
     	// Populate the ArrayList
     	while (!c.isAfterLast()) {
             // Create the song item
@@ -2341,23 +2324,23 @@ public class MainActivity extends AppCompatActivity {
 
         	// Add the song item
         	temp.add(songItem);
-        	
+
         	// Move to the next song
         	c.moveToNext();
     	}
-    	
+
     	c.close();
-    	
+
     	// Sort the array list
     	Collections.sort(temp, new Item.ItemComparableName());
-    	
+
     	// Clear the current ArrayList
     	songsList.clear();
-    	
+
     	// Add section headers
     	for (int i = 0; i < temp.size(); i++) {
     		if (i != 0) {
-    			if (Character.toLowerCase(temp.get(i).getName().charAt(0)) != 
+    			if (Character.toLowerCase(temp.get(i).getName().charAt(0)) !=
     					Character.toLowerCase(temp.get(i-1).getName().charAt(0))) {
     				// This is the first item with that letter, add the separator
     				songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase(Locale.US)));
@@ -2367,13 +2350,13 @@ public class MainActivity extends AppCompatActivity {
     			// First item, add section
     			songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase(Locale.US)));
     		}
-    		
+
     		songsList.add(temp.get(i));
     	}
 
         return ret;
     }
-    
+
     /**
      * Fills the songs list
      */
@@ -4195,9 +4178,9 @@ public class MainActivity extends AppCompatActivity {
     	@Override
     	protected void onPostExecute(ImportDBParams result) {
     		// Refresh all the lists
-    		fillSongGroupsSpinner();
-        	fillSongGroupsSpinner();
-        	fillSongsListView();
+            ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0);
+            ((SongsTab)songsFragment).fillSongSortSpinner();
+            ((SongsTab)songsFragment).refillSongsList();
 			((SetsTab)setsFragment).refillSetsList();
 			((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
             ((CurrentSetTab)currSetFragment).refillCurrentSetList();
