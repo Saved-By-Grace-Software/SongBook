@@ -100,24 +100,18 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
         String songName = vSongName.getText().toString();
 
         switch (item.getItemId()) {
-            case StaticVars.DELETE_SONG:
-                // Delete the song
-                mMainActivity.deleteSong(songName);
-                return true;
-
             case StaticVars.EDIT_SONG:
-//                // Get the song name
-//                final String editSongName = songsList.get(info.position).getName();
-//                final String editSongFile = ((SongItem)songsList.get(info.position)).getSongFile();
-//
-//                // Create the edit activity intent
-//                i = new Intent(getBaseContext(), EditSongRawActivity.class);
-//                i.putExtra(StaticVars.SONG_NAME_KEY, editSongName);
-//                i.putExtra(StaticVars.SONG_FILE_KEY, editSongFile);
-//
-//                // Start the activity
-//                startActivity(i);
-//                return true;
+                // Get the song file
+                String songFile = MainActivity.dbAdapter.getSongFile(songName);
+
+                // Create the edit activity intent
+                Intent i = new Intent(mView.getContext(), EditSongRawActivity.class);
+                i.putExtra(StaticVars.SONG_NAME_KEY, songName);
+                i.putExtra(StaticVars.SONG_FILE_KEY, songFile);
+
+                // Start the activity
+                mMainActivity.startActivity(i);
+                return true;
 
             case StaticVars.EDIT_SONG_ATT:
 //                // Get the song name
@@ -125,14 +119,6 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
 //
 //                // Show the edit dialog
 //                editSongAtt(songName);
-//                return true;
-
-            case StaticVars.SHARE_SONG:
-//                // Get the song name
-//                songName = songsList.get(info.position).getName();
-//
-//                // Email the song
-//                shareSong(songName);
 //                return true;
 
             case StaticVars.ADD_SONG_SET:
@@ -149,14 +135,6 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
 //
 //                // Edit the songs groups
 //                addSongToCurrentSet(songName);
-//                return true;
-
-            case StaticVars.SONG_STATS:
-//                // Get the song name
-//                songName = songsList.get(info.position).getName();
-//
-//                // Show the song stats dialog
-//                showSongStats(songName);
 //                return true;
 
             case StaticVars.SONG_GROUPS_ADD:
@@ -181,6 +159,27 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
 //                    removeSongFromGroup(songName, groupName);
 //                else
 //                    Toast.makeText(getBaseContext(), "Cannot remove song from " + SongsTab.ALL_SONGS_LABEL + " group", Toast.LENGTH_LONG).show();
+                return true;
+
+            case StaticVars.SONG_STATS:
+//                // Get the song name
+//                songName = songsList.get(info.position).getName();
+//
+//                // Show the song stats dialog
+//                showSongStats(songName);
+//                return true;
+
+            case StaticVars.SHARE_SONG:
+//                // Get the song name
+//                songName = songsList.get(info.position).getName();
+//
+//                // Email the song
+//                shareSong(songName);
+//                return true;
+
+            case StaticVars.DELETE_SONG:
+                // Delete the song
+                mMainActivity.deleteSong(songName);
                 return true;
         }
 
