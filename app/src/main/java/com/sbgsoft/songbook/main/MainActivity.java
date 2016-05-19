@@ -1999,12 +1999,7 @@ public class MainActivity extends AppCompatActivity {
      * Adds the song to a group
      * @param songName The song to add
      */
-    private void addSongToGroup(final String songName) {
-    	// Remember the current scroll position
-    	ListView lv = ((ListView)findViewById(R.id.songs_list));
-    	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
-    	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
-    	
+    public void addSongToGroup(final String songName) {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSongGroupNames();
     	
@@ -2045,8 +2040,8 @@ public class MainActivity extends AppCompatActivity {
                         dbAdapter.addSongToGroup(songName, groupNames[i].toString());
                 }
 
-                // Refresh song list
-                fillSongGroupsSpinner();
+                // Refresh song group list
+                ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0);
             }
         });
 

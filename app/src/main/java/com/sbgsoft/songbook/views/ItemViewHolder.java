@@ -129,11 +129,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
                 return true;
 
             case StaticVars.SONG_GROUPS_ADD:
-//                // Get the song name
-//                songName = songsList.get(info.position).getName();
-//
-//                // Edit the songs groups
-//                addSongToGroup(songName);
+                // Edit the songs groups
+                mMainActivity.addSongToGroup(songName);
                 return true;
 
             case StaticVars.SONG_GROUPS_DEL:
