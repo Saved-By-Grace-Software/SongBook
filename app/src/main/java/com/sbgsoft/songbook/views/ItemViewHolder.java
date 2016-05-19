@@ -114,12 +114,9 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
                 return true;
 
             case StaticVars.EDIT_SONG_ATT:
-//                // Get the song name
-//                songName = songsList.get(info.position).getName();
-//
-//                // Show the edit dialog
-//                editSongAtt(songName);
-//                return true;
+                // Show the edit dialog
+                mMainActivity.editSongAtt(songName);
+                return true;
 
             case StaticVars.ADD_SONG_SET:
 //                // Get the song name

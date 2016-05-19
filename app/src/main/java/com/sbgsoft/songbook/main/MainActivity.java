@@ -2538,7 +2538,7 @@ public class MainActivity extends AppCompatActivity {
                         linkET.getText().toString(), bpm);
 
                 // Refresh lists
-                fillSongsListView();
+                ((SongsTab)songsFragment).refillSongsList();
                 ((SetsTab)setsFragment).refillSetsList();
                 ((CurrentSetTab)currSetFragment).refillCurrentSetList();
 
