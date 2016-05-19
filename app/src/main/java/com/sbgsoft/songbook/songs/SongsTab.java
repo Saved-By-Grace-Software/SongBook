@@ -36,6 +36,7 @@ public class SongsTab extends Fragment {
     private ItemAdapter adapter;
     private RecyclerView songsRecyclerView;
     private LinearLayoutManager recyclerViewLayoutManager;
+    private int currentSongGroupSpinnerPosition = 0;
 
     //region Fragment Functions
 	@Override
@@ -227,6 +228,14 @@ public class SongsTab extends Fragment {
      * @param showSearchResults To show or not to show
      */
     public void fillSongGroupsSpinner(final boolean showSearchResults, final int numSearchResults) {
+        fillSongGroupsSpinner(showSearchResults, numSearchResults, false);
+    }
+
+    /**
+     * Fills the group list spinner
+     * @param showSearchResults To show or not to show
+     */
+    public void fillSongGroupsSpinner(final boolean showSearchResults, final int numSearchResults, boolean stayInCurrentGroup) {
         ArrayAdapter<String> songGroupsAdapter;
 
         // Get the groups list
@@ -255,6 +264,7 @@ public class SongsTab extends Fragment {
 
                 // Refill song list (if not on search results)
                 currentSongGroup = groupName;
+                currentSongGroupSpinnerPosition = position;
                 if (groupName != StaticVars.searchResultsText) {
                     refillSongsList();
                 }
@@ -270,6 +280,10 @@ public class SongsTab extends Fragment {
 
         // Set the adapter
         groupSpinner.setAdapter(songGroupsAdapter);
+
+        // Set the selected group
+        if (stayInCurrentGroup)
+            groupSpinner.setSelection(currentSongGroupSpinnerPosition);
     }
     //endregion
 

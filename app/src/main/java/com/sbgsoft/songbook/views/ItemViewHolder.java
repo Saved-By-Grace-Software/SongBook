@@ -134,19 +134,20 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
                 return true;
 
             case StaticVars.SONG_GROUPS_DEL:
-//                // Get the song name
-//                songName = songsList.get(info.position).getName();
-//
-//                // Get the current group
-//                Spinner s = (Spinner)findViewById(R.id.song_group_spinner);
-//                int position = s.getSelectedItemPosition();
-//                groupName = songGroupsList.get(position);
-//
-//                // Remove the song from the group
-//                if (!groupName.equals(SongsTab.ALL_SONGS_LABEL))
-//                    removeSongFromGroup(songName, groupName);
-//                else
-//                    Toast.makeText(getBaseContext(), "Cannot remove song from " + SongsTab.ALL_SONGS_LABEL + " group", Toast.LENGTH_LONG).show();
+                // Get the current group
+                Spinner s = (Spinner)mMainActivity.findViewById(R.id.song_group_spinner);
+                String groupName = s.getSelectedItem().toString();
+                int currSelection = s.getSelectedItemPosition();
+
+                // Remove the song from the group
+                if (!groupName.equals(SongsTab.ALL_SONGS_LABEL))
+                    mMainActivity.removeSongFromGroup(songName, groupName);
+                else
+                    Toast.makeText(mView.getContext(), "Cannot remove song from " + SongsTab.ALL_SONGS_LABEL + " group", Toast.LENGTH_LONG).show();
+
+                // Go back to the current group
+                s.setSelection(currSelection);
+
                 return true;
 
             case StaticVars.SONG_STATS:

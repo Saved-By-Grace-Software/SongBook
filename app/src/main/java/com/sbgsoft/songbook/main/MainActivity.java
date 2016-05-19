@@ -2197,12 +2197,7 @@ public class MainActivity extends AppCompatActivity {
      * @param songName The song to remove
      * @param groupName The group to remove the song from
      */
-    private void removeSongFromGroup(final String songName, final String groupName) {
-    	// Remember the current scroll position
-    	ListView lv = ((ListView)findViewById(R.id.songs_list));
-    	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
-    	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
-    	
+    public void removeSongFromGroup(final String songName, final String groupName) {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Remove Song From Group?!");
@@ -2213,10 +2208,9 @@ public class MainActivity extends AppCompatActivity {
 	    		// Remove song from the group
 	    		dbAdapter.removeSongFromGroup(songName, groupName);
 	    		
-	    		// Refresh the song list
-	    		//songsAdapter.notifyDataSetChanged();
-	    		fillSongGroupsSpinner();
-	    		fillSongsListView();
+	    		// Refresh the song lists
+                ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0, true);
+                ((SongsTab)songsFragment).refillSongsList();
 			}
     	});
 
