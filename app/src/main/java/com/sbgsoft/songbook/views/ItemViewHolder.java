@@ -1,5 +1,6 @@
 package com.sbgsoft.songbook.views;
 
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.MenuItem;
@@ -15,19 +16,20 @@ import com.sbgsoft.songbook.main.SongBookTheme;
  * Created by SamIAm on 5/18/2016.
  */
 public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener , MenuItem.OnMenuItemClickListener {
-    protected RelativeLayout vSongItemLayout;
-    protected RelativeLayout vSectionItemLayout;
+    protected CardView vSongItemCardView;
+    protected CardView vSectionItemCardView;
     protected SongBookThemeTextView vSectionName;
     protected SongBookThemeTextView vSongName;
     protected SongBookThemeTextView vSongArtist;
     protected SongBookThemeTextView vSongKey;
     protected ImageView vContextMenuButton;
     private MainActivity mMainActivity;
+    private View mView;
 
     public ItemViewHolder(View v, final MainActivity mainActivity) {
         super(v);
-        vSongItemLayout = (RelativeLayout)v.findViewById(R.id.song_item_layout);
-        vSectionItemLayout = (RelativeLayout)v.findViewById(R.id.section_item_layout);
+        vSongItemCardView = (CardView)v.findViewById(R.id.song_card_view);
+        vSectionItemCardView = (CardView)v.findViewById(R.id.section_card_view);
         vSectionName = (SongBookThemeTextView)v.findViewById(R.id.songs_row_section);
         vSongName = (SongBookThemeTextView)v.findViewById(R.id.songs_row_text);
         vSongArtist = (SongBookThemeTextView)v.findViewById(R.id.songs_row_author);
@@ -35,6 +37,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
         vContextMenuButton = (ImageView)v.findViewById(R.id.song_more_button);
 
         mMainActivity = mainActivity;
+        mView = v;
 
         // Single click listener
         v.setOnClickListener(new View.OnClickListener() {
@@ -123,5 +126,11 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
 //
 //        }
         return true;
+    }
+
+    public void setCardBackground(int bgColor) {
+        CardView section = (CardView)mView.findViewById(R.id.section_card_view);
+        if (section != null)
+            section.setCardBackgroundColor(bgColor);
     }
 }

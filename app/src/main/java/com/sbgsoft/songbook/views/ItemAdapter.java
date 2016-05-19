@@ -10,6 +10,7 @@ import com.sbgsoft.songbook.items.Item;
 import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
+import com.sbgsoft.songbook.main.SongBookTheme;
 
 import java.util.List;
 
@@ -38,21 +39,25 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         // Section Item
         if(item.getClass().equals(SectionItem.class)) {
             // Show the section item layout
-            holder.vSectionItemLayout.setVisibility(View.VISIBLE);
+            holder.vSectionItemCardView.setVisibility(View.VISIBLE);
 
             // Hide the song item layout
-            holder.vSongItemLayout.setVisibility(View.GONE);
+            holder.vSongItemCardView.setVisibility(View.GONE);
 
             // Set the data
             holder.vSectionName.setText(item.getName());
+
+            // Set the background
+            SongBookTheme theme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
+            holder.setCardBackground(theme.getSectionHeaderColor());
         }
         // Song Item
         else if(item.getClass().equals(SongItem.class)) {
             // Hide the section item layout
-            holder.vSectionItemLayout.setVisibility(View.GONE);
+            holder.vSectionItemCardView.setVisibility(View.GONE);
 
             // Show the song item layout
-            holder.vSongItemLayout.setVisibility(View.VISIBLE);
+            holder.vSongItemCardView.setVisibility(View.VISIBLE);
 
             // Set the data
             holder.vSongName.setText(item.getName());
