@@ -17,14 +17,12 @@ import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.db.DBStrings;
 import com.sbgsoft.songbook.items.Item;
 import com.sbgsoft.songbook.items.SectionItem;
-import com.sbgsoft.songbook.items.SetItem;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.items.SongSearchCriteria;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.views.ItemAdapter;
-import com.sbgsoft.songbook.views.SongItemAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,6 +67,7 @@ public class SongsTab extends Fragment {
 
         // Populate the song spinners
         fillSongSortSpinner();
+        fillSongGroupsSpinner(false, 0);
 
         // Set default sort
 
@@ -138,6 +137,139 @@ public class SongsTab extends Fragment {
         }
 
         return songsList;
+    }
+
+    /**
+     * Refills the songs list
+     */
+    public int refillSongsList() {
+        return refillSongsList(false, null);
+    }
+
+    /**
+     * Refills the songs list
+     * @param forceRedraw Determines whether or not to redraw the list
+     * @return
+     */
+    public int refillSongsList(boolean forceRedraw) {
+        return refillSongsList(forceRedraw, null);
+    }
+
+    /**
+     * Refills the songs list with the specified search criteria
+     * @param songSearch
+     * @return
+     */
+    public int refillSongsList(SongSearchCriteria songSearch) {
+        return refillSongsList(false, songSearch);
+    }
+
+    /**
+     * Refills the set list
+     * @param forceRedraw Determines whether or not to redraw the list
+     * @param setSearch The search criteria for filling the list
+     * @return
+     */
+    private int refillSongsList(boolean forceRedraw, SongSearchCriteria songSearch) {
+        int ret;
+
+        // Get the sets list and refill the adapter
+        ArrayList<Item> songs = getSongsList(songSearch);
+        adapter.refill(songs);
+
+        // Redraw the list
+        if (forceRedraw) {
+            songsRecyclerView.setAdapter(null);
+            songsRecyclerView.setLayoutManager(null);
+            songsRecyclerView.setAdapter(adapter);
+            songsRecyclerView.setLayoutManager(recyclerViewLayoutManager);
+            adapter.notifyDataSetChanged();
+        }
+
+        // Return the number of sets
+        ret = songs.size();
+        return ret;
+    }
+    //endregion
+
+    //region Group Spinner Functions
+    /**
+     * Populates the song groups array list
+     */
+    public ArrayList<String> getSongGroupsList(boolean showSearchResults) {
+        // Query the database
+        Cursor c = MainActivity.dbAdapter.getSongGroupNames();
+
+        // Clear the existing groups list
+        ArrayList<String> songGroups = new ArrayList<>();
+
+        // Populate the groups
+        c.moveToFirst();
+        while (!c.isAfterLast()) {
+            songGroups.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME)));
+            c.moveToNext();
+        }
+        c.close();
+
+        // Sort the list alphabetically
+        Collections.sort(songGroups, new MainActivity.SortIgnoreCase());
+
+        // Add search results field
+        if (showSearchResults) {
+            songGroups.add(0, StaticVars.searchResultsText);
+        }
+
+        return songGroups;
+    }
+
+    /**
+     * Fills the group list spinner
+     * @param showSearchResults To show or not to show
+     */
+    public void fillSongGroupsSpinner(final boolean showSearchResults, final int numSearchResults) {
+        ArrayAdapter<String> songGroupsAdapter;
+
+        // Get the groups list
+        final ArrayList<String> songGroupsList = getSongGroupsList(showSearchResults);
+
+        // Create the spinner adapter
+        if (showSearchResults)
+            songGroupsAdapter = new SongGroupArrayAdapter(mView.getContext(), songGroupsList, numSearchResults);
+        else
+            songGroupsAdapter = new SongGroupArrayAdapter(mView.getContext(), songGroupsList);
+        final Spinner groupSpinner = (Spinner) mView.findViewById(R.id.song_group_spinner);
+
+        // Set the on click listener for each item
+        groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+                // Get the selected item and populate the songs list
+                String groupName = songGroupsList.get(position);
+
+                // If the selection has actually changed
+                if (!currentSongGroup.equals(groupName)) {
+                    // Remove the search results option from the spinner
+                    if (!groupName.equals(StaticVars.searchResultsText) &&
+                            songGroupsList.get(0).equals(StaticVars.searchResultsText))
+                        songGroupsList.remove(0);
+                }
+
+                // Refill song list (if not on search results)
+                currentSongGroup = groupName;
+                if (groupName != StaticVars.searchResultsText) {
+                    refillSongsList();
+                }
+
+                // Set the sort by spinner back to default
+                ((Spinner) mView.findViewById(R.id.song_sort_spinner)).setSelection(0);
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // Nothing was clicked so ignore it
+            }
+        });
+
+        // Set the adapter
+        groupSpinner.setAdapter(songGroupsAdapter);
     }
     //endregion
 
