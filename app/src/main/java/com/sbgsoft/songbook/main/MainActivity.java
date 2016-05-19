@@ -2057,12 +2057,7 @@ public class MainActivity extends AppCompatActivity {
      * Adds the song to a set
      * @param songName The song to add
      */
-    private void addSongToSet(final String songName) {
-    	// Remember the current scroll position
-    	ListView lv = ((ListView)findViewById(R.id.songs_list));
-    	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
-    	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
-    	
+    public void addSongToSet(final String songName) {
     	// Get the list of group names
     	Cursor c = dbAdapter.getSets(SetsTab.ALL_SETS_LABEL);
     	
@@ -2152,7 +2147,8 @@ public class MainActivity extends AppCompatActivity {
 	    				dbAdapter.addSongToSet(s, songName);
 	    		}
 	    		
-	    		// Refresh the current set list
+	    		// Refresh the set lists
+                ((SetsTab)setsFragment).refillSetsList();
                 ((CurrentSetTab)currSetFragment).refillCurrentSetList();
 			}
     	});
