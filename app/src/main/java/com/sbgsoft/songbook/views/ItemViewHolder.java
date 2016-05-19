@@ -40,7 +40,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
         mView = v;
 
         // Single click listener
-        v.setOnClickListener(new View.OnClickListener() {
+        vSongItemCardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
                 //mMainActivity.showCurrentSet(vSetName.getText().toString());
             }
@@ -56,7 +56,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
         });
 
         // Long press context menu
-        v.setOnCreateContextMenuListener(this);
+        vSongItemCardView.setOnCreateContextMenuListener(this);
     }
 
     @Override
