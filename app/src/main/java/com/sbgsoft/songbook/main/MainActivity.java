@@ -1072,13 +1072,13 @@ public class MainActivity extends AppCompatActivity {
         // Apply the list font colors
         ((SetsTab)setsFragment).refillSetsList(true);
         ((CurrentSetTab)currSetFragment).refillCurrentSetList(true);
-        fillSongsListView();
+        ((SongsTab)songsFragment).refillSongsList(true);
 
         // Apply spinner color
         ((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
         ((SetsTab)setsFragment).fillSetSortSpinner();
-        fillSongGroupsSpinner();
-        fillSongSortSpinner();
+        ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0, true);
+        ((SongsTab)songsFragment).fillSongSortSpinner();
 
         // Update the set tab spinner labels
         SongBookThemeTextView setSortByLabel = ((SongBookThemeTextView)findViewById(R.id.set_sort_label));
