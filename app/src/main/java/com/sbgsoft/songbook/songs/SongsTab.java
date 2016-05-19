@@ -8,20 +8,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.db.DBStrings;
 import com.sbgsoft.songbook.items.Item;
 import com.sbgsoft.songbook.items.SectionItem;
+import com.sbgsoft.songbook.items.SetItem;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.items.SongSearchCriteria;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
+import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.views.ItemAdapter;
 import com.sbgsoft.songbook.views.SongItemAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 public class SongsTab extends Fragment {
@@ -62,6 +68,7 @@ public class SongsTab extends Fragment {
         reColorSeparatorBar();
 
         // Populate the song spinners
+        fillSongSortSpinner();
 
         // Set default sort
 
@@ -70,7 +77,7 @@ public class SongsTab extends Fragment {
     //endregion
 
     //region Song List Functions
-    private ArrayList<Item> getSongsList(SongSearchCriteria songSearch) {
+    public ArrayList<Item> getSongsList(SongSearchCriteria songSearch) {
         ArrayList<Item> temp = new ArrayList<>();
         Cursor c;
 
@@ -134,6 +141,40 @@ public class SongsTab extends Fragment {
     }
     //endregion
 
+    //region Sort Spinner Functions
+    /**
+     * Fills the song sort spinner
+     */
+    public void fillSongSortSpinner() {
+        // Create the spinner adapter
+        ArrayAdapter<String> songSortAdapter = new ArrayAdapter<>(mView.getContext(), R.layout.group_spinner_item, StaticVars.songSortBy);
+        songSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
+        final Spinner sortSpinner = (Spinner) mView.findViewById(R.id.song_sort_spinner);
+
+        // Set the on click listener for each item
+        sortSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+                // Sort the songs and scroll to the top
+                sortSongs(position);
+                recyclerViewLayoutManager.scrollToPosition(0);
+            }
+
+            public void onNothingSelected(AdapterView<?> arg0) {
+                // Nothing was clicked so ignore it
+            }
+        });
+
+        // Set the adapter
+        sortSpinner.setAdapter(songSortAdapter);
+    }
+
+    private void sortSongs(int sortPosition) {
+        ItemAdapter.SortType songListCurrentSort = ItemAdapter.SortType.values()[sortPosition];
+        adapter.sort(songListCurrentSort);
+    }
+    //endregion
+
+    //region Helper Functions
     public void reColorSeparatorBar() {
         // Get the current theme from the database
         SongBookTheme theme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
@@ -142,4 +183,5 @@ public class SongsTab extends Fragment {
         View setBar = mView.findViewById(R.id.song_separator_bar);
         setBar.setBackgroundColor(theme.getSeparatorBarColor());
     }
+    //endregion
 }

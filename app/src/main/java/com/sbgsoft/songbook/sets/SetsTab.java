@@ -261,6 +261,9 @@ public class SetsTab extends Fragment {
 
                 // Set the sort by spinner back to default
                 ((Spinner)mView.findViewById(R.id.set_sort_spinner)).setSelection(0);
+
+                // Scroll back to the top
+                recyclerViewLayoutManager.scrollToPosition(0);
             }
 
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -285,7 +288,9 @@ public class SetsTab extends Fragment {
         // Set the on click listener for each item
         sortSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+                // Sort the sets and scroll to the top
                 sortSets(position);
+                recyclerViewLayoutManager.scrollToPosition(0);
             }
 
             public void onNothingSelected(AdapterView<?> arg0) {

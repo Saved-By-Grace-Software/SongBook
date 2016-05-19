@@ -3884,7 +3884,7 @@ public class MainActivity extends AppCompatActivity {
 	    		break;
 	    	case 1: //Author
 	    		// Sort the temp list
-	    		Collections.sort(temp, new SongItemComparableAuthor());
+	    		Collections.sort(temp, new SongItem.SongItemComparableAuthor());
 	    		
 	    		// Reset the songs list and add sections
 	    		songsList.clear();
@@ -3908,7 +3908,7 @@ public class MainActivity extends AppCompatActivity {
 	        	songsAdapter.notifyDataSetChanged();
 	    		break;
 	    	case 2: //Key
-	    		Collections.sort(temp, new SongItemComparableKey());
+	    		Collections.sort(temp, new SongItem.SongItemComparableKey());
 	    		
 	    		// Reset the songs list and add sections
 	    		songsList.clear();
@@ -4403,54 +4403,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             return ret;
-        }
-    }
-    
-    /**
-     * Comparator for Song Items by author
-     * @author SamIAm
-     *
-     */
-    public static class SongItemComparableAuthor implements Comparator<Item>{
-    	 
-        public int compare(Item o1, Item o2) {
-            return ((SongItem)o1).getAuthor().compareToIgnoreCase(((SongItem)o2).getAuthor());
-        }
-    }
-    
-    /**
-     * Comparator for Song Items by key
-     * @author SamIAm
-     *
-     */
-    public static class SongItemComparableKey implements Comparator<Item>{
-    	 
-        public int compare(Item o1, Item o2) {
-        	// Get the song keys
-        	String key1 = ((SongItem)o1).getKey();
-        	String key2 = ((SongItem)o2).getKey();
-        	
-        	// Translate any special keys
-        	if (StaticVars.songKeyMap.containsKey(key1))
-        		key1 = StaticVars.songKeyMap.get(key1);
-        	if (StaticVars.songKeyMap.containsKey(key2))
-        		key2 = StaticVars.songKeyMap.get(key2);
-        	
-        	// Do a special compare for 'unknown'
-        	if (key1.equals(StaticVars.UNKNOWN) && key2.equals(StaticVars.UNKNOWN))
-        		return 0;
-        	else if (key1.equals(StaticVars.UNKNOWN) && !key2.equals(StaticVars.UNKNOWN))
-        		return 1;
-        	else if (!key1.equals(StaticVars.UNKNOWN) && key2.equals(StaticVars.UNKNOWN))
-        		return -1;
-        	
-        	// Compare the keys
-        	if (StaticVars.songKeys.indexOf(key1) > StaticVars.songKeys.indexOf(key2))
-        		return 1;
-        	else if (StaticVars.songKeys.indexOf(key1) == StaticVars.songKeys.indexOf(key2))
-        		return 0;
-        	else
-        		return -1;
         }
     }
     //endregion

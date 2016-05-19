@@ -1,9 +1,12 @@
 package com.sbgsoft.songbook.items;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.sbgsoft.songbook.main.StaticVars;
 
 public class SongItem implements Item, Parcelable, Serializable {
 	private static final long serialVersionUID = -152686405814171985L;
@@ -214,4 +217,52 @@ public class SongItem implements Item, Parcelable, Serializable {
     public String getSongLink() { return songLink; }
 
     public void setSongLink(String songLink) { this.songLink = songLink; }
+
+    /**
+     * Comparator for Song Items by author
+     * @author SamIAm
+     *
+     */
+    public static class SongItemComparableAuthor implements Comparator<Item> {
+
+        public int compare(Item o1, Item o2) {
+            return ((SongItem)o1).getAuthor().compareToIgnoreCase(((SongItem)o2).getAuthor());
+        }
+    }
+
+    /**
+     * Comparator for Song Items by key
+     * @author SamIAm
+     *
+     */
+    public static class SongItemComparableKey implements Comparator<Item>{
+
+        public int compare(Item o1, Item o2) {
+            // Get the song keys
+            String key1 = ((SongItem)o1).getKey();
+            String key2 = ((SongItem)o2).getKey();
+
+            // Translate any special keys
+            if (StaticVars.songKeyMap.containsKey(key1))
+                key1 = StaticVars.songKeyMap.get(key1);
+            if (StaticVars.songKeyMap.containsKey(key2))
+                key2 = StaticVars.songKeyMap.get(key2);
+
+            // Do a special compare for 'unknown'
+            if (key1.equals(StaticVars.UNKNOWN) && key2.equals(StaticVars.UNKNOWN))
+                return 0;
+            else if (key1.equals(StaticVars.UNKNOWN) && !key2.equals(StaticVars.UNKNOWN))
+                return 1;
+            else if (!key1.equals(StaticVars.UNKNOWN) && key2.equals(StaticVars.UNKNOWN))
+                return -1;
+
+            // Compare the keys
+            if (StaticVars.songKeys.indexOf(key1) > StaticVars.songKeys.indexOf(key2))
+                return 1;
+            else if (StaticVars.songKeys.indexOf(key1) == StaticVars.songKeys.indexOf(key2))
+                return 0;
+            else
+                return -1;
+        }
+    }
 }
