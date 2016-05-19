@@ -1,16 +1,24 @@
 package com.sbgsoft.songbook.views;
 
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
+import com.sbgsoft.songbook.main.StaticVars;
+import com.sbgsoft.songbook.songs.EditSongRawActivity;
+import com.sbgsoft.songbook.songs.SongsTab;
 
 /**
  * Created by SamIAm on 5/18/2016.
@@ -50,8 +58,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
         vContextMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //mMainActivity.registerForContextMenu(vContextMenuButton);
-                //mMainActivity.openContextMenu(vContextMenuButton);
+                mMainActivity.registerForContextMenu(vContextMenuButton);
+                mMainActivity.openContextMenu(vContextMenuButton);
             }
         });
 
@@ -62,69 +70,120 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
-//        menu.setHeaderTitle("Sets Menu");
-//
-//        // Add the menu items
-//        MenuItem edit = menu.add(Menu.NONE, StaticVars.EDIT_SET, StaticVars.EDIT_SET, R.string.cmenu_sets_edit);
-//        MenuItem editAtt = menu.add(Menu.NONE, StaticVars.EDIT_SET_ATT, StaticVars.EDIT_SET_ATT, R.string.cmenu_sets_edit_att);
-//        MenuItem reorder = menu.add(Menu.NONE, StaticVars.REORDER_SET, StaticVars.REORDER_SET, R.string.cmenu_sets_reorder);
-//        MenuItem groupAdd = menu.add(Menu.NONE, StaticVars.SET_GROUPS_ADD, StaticVars.SET_GROUPS_ADD, R.string.cmenu_set_group_add);
-//        MenuItem groupDel = menu.add(Menu.NONE, StaticVars.SET_GROUPS_DEL, StaticVars.SET_GROUPS_DEL, R.string.cmenu_set_group_delete);
-//        MenuItem share = menu.add(Menu.NONE, StaticVars.SHARE_SET, StaticVars.SHARE_SET, R.string.cmenu_sets_share);
-//        MenuItem delete = menu.add(Menu.NONE, StaticVars.DELETE_SET, StaticVars.DELETE_SET, R.string.cmenu_sets_delete);
-//
-//        // Add this as the listener
-//        edit.setOnMenuItemClickListener(this);
-//        editAtt.setOnMenuItemClickListener(this);
-//        reorder.setOnMenuItemClickListener(this);
-//        groupAdd.setOnMenuItemClickListener(this);
-//        groupDel.setOnMenuItemClickListener(this);
-//        share.setOnMenuItemClickListener(this);
-//        delete.setOnMenuItemClickListener(this);
+        menu.setHeaderTitle("Song Menu");
+
+        // Add the menu items
+        MenuItem edit = menu.add(Menu.NONE, StaticVars.EDIT_SONG, StaticVars.EDIT_SONG, R.string.cmenu_songs_edit);
+        MenuItem editAtt = menu.add(Menu.NONE, StaticVars.EDIT_SONG_ATT, StaticVars.EDIT_SONG_ATT, R.string.cmenu_songs_edit_att);
+        MenuItem delete = menu.add(Menu.NONE, StaticVars.DELETE_SONG, StaticVars.DELETE_SONG, R.string.cmenu_songs_delete);
+        MenuItem addSongSet = menu.add(Menu.NONE, StaticVars.ADD_SONG_SET, StaticVars.ADD_SONG_SET, R.string.cmenu_song_add_set);
+        MenuItem addSongCurrSet = menu.add(Menu.NONE, StaticVars.ADD_SONG_CURR_SET, StaticVars.ADD_SONG_CURR_SET, R.string.cmenu_song_add_curr_set);
+        MenuItem addSongGroup = menu.add(Menu.NONE, StaticVars.SONG_GROUPS_ADD, StaticVars.SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
+        MenuItem remSongGroup = menu.add(Menu.NONE, StaticVars.SONG_GROUPS_DEL, StaticVars.SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
+        MenuItem share = menu.add(Menu.NONE, StaticVars.SHARE_SONG, StaticVars.SHARE_SONG, R.string.cmenu_songs_share);
+        MenuItem stats = menu.add(Menu.NONE, StaticVars.SONG_STATS, StaticVars.SONG_STATS, R.string.cmenu_songs_stats);
+
+        // Add this as the listener
+        edit.setOnMenuItemClickListener(this);
+        editAtt.setOnMenuItemClickListener(this);
+        delete.setOnMenuItemClickListener(this);
+        addSongSet.setOnMenuItemClickListener(this);
+        addSongCurrSet.setOnMenuItemClickListener(this);
+        addSongGroup.setOnMenuItemClickListener(this);
+        remSongGroup.setOnMenuItemClickListener(this);
+        share.setOnMenuItemClickListener(this);
+        stats.setOnMenuItemClickListener(this);
     }
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-//        String setName = vSetName.getText().toString();
+        String songName = vSongName.getText().toString();
+
+        switch (item.getItemId()) {
+            case StaticVars.DELETE_SONG:
+                // Delete the song
+                mMainActivity.deleteSong(songName);
+                return true;
+
+            case StaticVars.EDIT_SONG:
+//                // Get the song name
+//                final String editSongName = songsList.get(info.position).getName();
+//                final String editSongFile = ((SongItem)songsList.get(info.position)).getSongFile();
 //
-//        switch (item.getItemId()) {
-//            case StaticVars.EDIT_SET:
-//                // Show the dialog to edit songs
-//                mMainActivity.updateSetSongs(setName);
+//                // Create the edit activity intent
+//                i = new Intent(getBaseContext(), EditSongRawActivity.class);
+//                i.putExtra(StaticVars.SONG_NAME_KEY, editSongName);
+//                i.putExtra(StaticVars.SONG_FILE_KEY, editSongFile);
+//
+//                // Start the activity
+//                startActivity(i);
 //                return true;
-//            case StaticVars.EDIT_SET_ATT:
-//                // Update the set attributes
-//                mMainActivity.editSetAtt(setName);
+
+            case StaticVars.EDIT_SONG_ATT:
+//                // Get the song name
+//                songName = songsList.get(info.position).getName();
+//
+//                // Show the edit dialog
+//                editSongAtt(songName);
 //                return true;
-//            case StaticVars.REORDER_SET:
-//                // Trigger reordering of the set
-//                mMainActivity.reorderSet(setName);
+
+            case StaticVars.SHARE_SONG:
+//                // Get the song name
+//                songName = songsList.get(info.position).getName();
+//
+//                // Email the song
+//                shareSong(songName);
 //                return true;
-//            case StaticVars.SET_GROUPS_ADD:
+
+            case StaticVars.ADD_SONG_SET:
+//                // Get the song name
+//                songName = songsList.get(info.position).getName();
+//
 //                // Edit the songs groups
-//                mMainActivity.addSetToGroup(setName);
+//                addSongToSet(songName);
 //                return true;
-//            case StaticVars.SET_GROUPS_DEL:
+
+            case StaticVars.ADD_SONG_CURR_SET:
+//                // Get the song name
+//                songName = songsList.get(info.position).getName();
+//
+//                // Edit the songs groups
+//                addSongToCurrentSet(songName);
+//                return true;
+
+            case StaticVars.SONG_STATS:
+//                // Get the song name
+//                songName = songsList.get(info.position).getName();
+//
+//                // Show the song stats dialog
+//                showSongStats(songName);
+//                return true;
+
+            case StaticVars.SONG_GROUPS_ADD:
+//                // Get the song name
+//                songName = songsList.get(info.position).getName();
+//
+//                // Edit the songs groups
+//                addSongToGroup(songName);
+                return true;
+
+            case StaticVars.SONG_GROUPS_DEL:
+//                // Get the song name
+//                songName = songsList.get(info.position).getName();
+//
 //                // Get the current group
-//                Spinner s1 = (Spinner)mMainActivity.findViewById(R.id.set_group_spinner);
-//                String groupName = s1.getSelectedItem().toString();
+//                Spinner s = (Spinner)findViewById(R.id.song_group_spinner);
+//                int position = s.getSelectedItemPosition();
+//                groupName = songGroupsList.get(position);
 //
 //                // Remove the song from the group
-//                if (!groupName.equals(SetsTab.ALL_SETS_LABEL))
-//                    mMainActivity.removeSetFromGroup(setName, groupName);
+//                if (!groupName.equals(SongsTab.ALL_SONGS_LABEL))
+//                    removeSongFromGroup(songName, groupName);
 //                else
-//                    Toast.makeText(mMainActivity, "Cannot remove set from " + SetsTab.ALL_SETS_LABEL + " group", Toast.LENGTH_LONG).show();
-//                return true;
-//            case StaticVars.SHARE_SET:
-//                // Email the song
-//                mMainActivity.shareSet(setName);
-//                return true;
-//            case StaticVars.DELETE_SET:
-//                // Delete the set
-//                mMainActivity.deleteSet(setName);
-//                return true;
-//
-//        }
+//                    Toast.makeText(getBaseContext(), "Cannot remove song from " + SongsTab.ALL_SONGS_LABEL + " group", Toast.LENGTH_LONG).show();
+                return true;
+        }
+
         return true;
     }
 

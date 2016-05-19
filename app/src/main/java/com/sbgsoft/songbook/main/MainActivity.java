@@ -284,36 +284,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates the context menu
-     */
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-    	// Songs context menu
-    	if (v.getId() == R.id.songs_list) {
-    		menu.setHeaderTitle("Song Menu");
-    		menu.add(Menu.NONE, StaticVars.EDIT_SONG, StaticVars.EDIT_SONG, R.string.cmenu_songs_edit);
-    		menu.add(Menu.NONE, StaticVars.EDIT_SONG_ATT, StaticVars.EDIT_SONG_ATT, R.string.cmenu_songs_edit_att);
-    		menu.add(Menu.NONE, StaticVars.DELETE_SONG, StaticVars.DELETE_SONG, R.string.cmenu_songs_delete);
-    		menu.add(Menu.NONE, StaticVars.ADD_SONG_SET, StaticVars.ADD_SONG_SET, R.string.cmenu_song_add_set);
-    		menu.add(Menu.NONE, StaticVars.ADD_SONG_CURR_SET, StaticVars.ADD_SONG_CURR_SET, R.string.cmenu_song_add_curr_set);
-    		menu.add(Menu.NONE, StaticVars.SONG_GROUPS_ADD, StaticVars.SONG_GROUPS_ADD, R.string.cmenu_song_group_add);
-    		menu.add(Menu.NONE, StaticVars.SONG_GROUPS_DEL, StaticVars.SONG_GROUPS_DEL, R.string.cmenu_song_group_delete);
-    		menu.add(Menu.NONE, StaticVars.SHARE_SONG, StaticVars.SHARE_SONG, R.string.cmenu_songs_share);
-    		menu.add(Menu.NONE, StaticVars.SONG_STATS, StaticVars.SONG_STATS, R.string.cmenu_songs_stats);
-    	}
-    	// Current Set context menu
-    	else if (v.getId() == R.id.current_list) {
-    		menu.setHeaderTitle("Current Set Menu");
-    		menu.add(Menu.NONE, StaticVars.EDIT_SONG_CS, StaticVars.EDIT_SONG_CS, R.string.cmenu_songs_edit);
-    		menu.add(Menu.NONE, StaticVars.EDIT_SONG_ATT_CS, StaticVars.EDIT_SONG_ATT_CS, R.string.cmenu_songs_edit_att);
-    		menu.add(Menu.NONE, StaticVars.SET_SONG_KEY_CS, StaticVars.SET_SONG_KEY_CS, R.string.cmenu_sets_set_song_key);
-    		menu.add(Menu.NONE, StaticVars.SHARE_SONG_CS, StaticVars.SHARE_SONG_CS, R.string.cmenu_songs_share);
-    		menu.add(Menu.NONE, StaticVars.REMOVE_SONG_FROM_SET, StaticVars.REMOVE_SONG_FROM_SET, R.string.cmenu_sets_remove_song);
-    		menu.add(Menu.NONE, StaticVars.SONG_STATS_CS, StaticVars.SONG_STATS_CS, R.string.cmenu_songs_stats);
-    	}
-    }
-    
-    /**
      * Responds to context menu click
      */
     @Override
@@ -326,95 +296,7 @@ public class MainActivity extends AppCompatActivity {
     	AlertDialog.Builder alert;
     	
     	switch (item.getItemId()) {
-    		case StaticVars.DELETE_SONG:
-    			// Get the song name and delete it
-				songName = songsList.get(info.position).getName();
-                deleteSong(songName);
-            	
-                return true;
-    		case StaticVars.EDIT_SONG:
-    			// Get the song name
-    			final String editSongName = songsList.get(info.position).getName();
-    			final String editSongFile = ((SongItem)songsList.get(info.position)).getSongFile();
-    			
-    			// Create the edit activity intent
-            	i = new Intent(getBaseContext(), EditSongRawActivity.class);
-                i.putExtra(StaticVars.SONG_NAME_KEY, editSongName);
-                i.putExtra(StaticVars.SONG_FILE_KEY, editSongFile);
-                
-                // Start the activity
-                startActivity(i);
-                return true;
 
-    		case StaticVars.EDIT_SONG_ATT:
-    			// Get the song name
-    			songName = songsList.get(info.position).getName();
-                    
-				// Show the edit dialog
-    			editSongAtt(songName);
-    			
-                return true;
-
-    		case StaticVars.SHARE_SONG:
-    			// Get the song name
-                songName = songsList.get(info.position).getName();
-    			
-    			// Email the song
-    			shareSong(songName);
-    			
-    			return true;
-
-
-
-    		case StaticVars.ADD_SONG_SET:
-    			// Get the song name
-    			songName = songsList.get(info.position).getName();
-    			
-    			// Edit the songs groups
-    			addSongToSet(songName);
-    			
-    			return true;
-    		case StaticVars.ADD_SONG_CURR_SET:
-    			// Get the song name
-    			songName = songsList.get(info.position).getName();
-    			
-    			// Edit the songs groups
-    			addSongToCurrentSet(songName);
-    			
-    			return true;
-    		case StaticVars.SONG_STATS:
-    			// Get the song name
-    			songName = songsList.get(info.position).getName();
-    			
-    			// Show the song stats dialog
-    			showSongStats(songName);
-    			
-    			return true;
-
-    		case StaticVars.SONG_GROUPS_ADD:
-    			// Get the song name
-    			songName = songsList.get(info.position).getName();
-    			
-    			// Edit the songs groups
-    			addSongToGroup(songName);
-    			
-    			return true;
-    		case StaticVars.SONG_GROUPS_DEL:
-    			// Get the song name
-    			songName = songsList.get(info.position).getName();
-    			
-    			// Get the current group
-    			Spinner s = (Spinner)findViewById(R.id.song_group_spinner);
-    			int position = s.getSelectedItemPosition();
-    			groupName = songGroupsList.get(position);
-    			
-    			// Remove the song from the group
-    			if (!groupName.equals(SongsTab.ALL_SONGS_LABEL))
-    				removeSongFromGroup(songName, groupName);
-    			else
-    				Toast.makeText(getBaseContext(), "Cannot remove song from " + SongsTab.ALL_SONGS_LABEL + " group", Toast.LENGTH_LONG).show();
-    			
-    			return true;
     	}
     	return false;
     }
@@ -2403,7 +2285,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Prompts the user to confirm then deletes the specified song
      */
-    private void deleteSong(final String songName) {
+    public void deleteSong(final String songName) {
     	// Remember the current scroll position
     	ListView lv = ((ListView)findViewById(R.id.songs_list));
     	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
