@@ -42,7 +42,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
         // Single click listener
         vSongItemCardView.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                //mMainActivity.showCurrentSet(vSetName.getText().toString());
+                mMainActivity.showSong(vSongName.getText().toString());
             }
         });
 

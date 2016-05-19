@@ -3240,6 +3240,31 @@ public class MainActivity extends AppCompatActivity {
 
         alert.show();
     }
+
+    /**
+     * Shows the specified song
+     * @param songName
+     */
+    public void showSong(String songName) {
+        // Get the song to show
+        SongItem song = dbAdapter.getSong(songName);
+
+        try {
+            FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
+            song.setText(ChordProParser.ParseSongFile(getApplicationContext(), song, song.getKey(), fis, true, false));
+
+            // Show the song activity
+            SongActivity songA = new SongActivity();
+            Intent showSong = new Intent(getApplicationContext(), songA.getClass());
+            showSong.putExtra(StaticVars.SONG_ITEM_KEY, (Parcelable) song);
+            startActivity(showSong);
+
+        } catch (FileNotFoundException e) {
+            Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+        }
+    }
     //endregion
 
 
