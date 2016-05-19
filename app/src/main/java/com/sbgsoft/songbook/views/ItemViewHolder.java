@@ -151,12 +151,9 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
                 return true;
 
             case StaticVars.SONG_STATS:
-//                // Get the song name
-//                songName = songsList.get(info.position).getName();
-//
-//                // Show the song stats dialog
-//                showSongStats(songName);
-//                return true;
+                // Show the song stats dialog
+                mMainActivity.showSongStats(songName);
+                return true;
 
             case StaticVars.SHARE_SONG:
 //                // Get the song name
