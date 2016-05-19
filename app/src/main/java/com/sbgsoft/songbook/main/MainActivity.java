@@ -2286,11 +2286,6 @@ public class MainActivity extends AppCompatActivity {
      * Prompts the user to confirm then deletes the specified song
      */
     public void deleteSong(final String songName) {
-    	// Remember the current scroll position
-    	ListView lv = ((ListView)findViewById(R.id.songs_list));
-    	songsCurrentScrollPosition = lv.getFirstVisiblePosition();
-    	songsCurrentScrollOffset = (lv.getChildAt(0) == null) ? 0 : lv.getChildAt(0).getTop();
-    	
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
     	alert.setTitle("Delete Song?!");
@@ -2309,7 +2304,8 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Refresh the song and current set view
-                fillSongGroupsSpinner();
+                ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0);
+                ((SongsTab)songsFragment).refillSongsList();
                 ((CurrentSetTab)currSetFragment).refillCurrentSetList();
             }
         });
