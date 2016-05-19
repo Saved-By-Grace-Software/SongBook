@@ -5,73 +5,88 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dialogBoxSideMargin"
-        android:layout_marginRight="@dimen/dialogBoxSideMargin"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="2dp"
-        android:text="@string/add_set_name"
-        android:textSize="@dimen/defaultDialogTextSize"
-        android:paddingTop="5dp" />
-
-    <EditText
-        android:id="@+id/add_set_name"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dialogBoxSideMargin"
-        android:layout_marginRight="@dimen/dialogBoxSideMargin"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="5dp"
-        android:inputType="text"
-        android:maxLines="1"
-        android:textSize="@dimen/defaultDialogTextSize" >
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
 
-        <requestFocus />
-    </EditText>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dialogBoxSideMargin"
-        android:layout_marginRight="@dimen/dialogBoxSideMargin"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="2dp"
-        android:text="@string/add_set_link"
-        android:textSize="@dimen/defaultDialogTextSize" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dialogBoxSideMargin"
+                android:layout_marginRight="@dimen/dialogBoxSideMargin"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
+                android:text="@string/add_set_name"
+                android:textSize="@dimen/defaultDialogTextSize"
+                android:paddingTop="5dp" />
 
-    <EditText
-        android:id="@+id/add_set_link"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dialogBoxSideMargin"
-        android:layout_marginRight="@dimen/dialogBoxSideMargin"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="5dp"
-        android:inputType="text"
-        android:maxLines="1"
-        android:textSize="@dimen/defaultDialogTextSize" />
+            <EditText
+                android:id="@+id/add_set_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dialogBoxSideMargin"
+                android:layout_marginRight="@dimen/dialogBoxSideMargin"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="5dp"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textSize="@dimen/defaultDialogTextSize" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dialogBoxSideMargin"
-        android:layout_marginRight="@dimen/dialogBoxSideMargin"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="2dp"
-        android:text="@string/add_set_date"
-        android:textSize="@dimen/defaultDialogTextSize"
-        android:paddingTop="25dp" />
+                <requestFocus />
+            </EditText>
 
-    <DatePicker
-        android:id="@+id/add_set_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dialogBoxSideMargin"
-        android:layout_marginRight="@dimen/dialogBoxSideMargin"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="10dp"
-        android:calendarViewShown="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dialogBoxSideMargin"
+                android:layout_marginRight="@dimen/dialogBoxSideMargin"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="2dp"
+                android:text="@string/add_set_link"
+                android:textSize="@dimen/defaultDialogTextSize" />
+
+            <EditText
+                android:id="@+id/add_set_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dialogBoxSideMargin"
+                android:layout_marginRight="@dimen/dialogBoxSideMargin"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="5dp"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textSize="@dimen/defaultDialogTextSize" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dialogBoxSideMargin"
+                android:layout_marginRight="@dimen/dialogBoxSideMargin"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="2dp"
+                android:text="@string/add_set_date"
+                android:textSize="@dimen/defaultDialogTextSize"
+                android:paddingTop="25dp" />
+
+            <DatePicker
+                android:id="@+id/add_set_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dialogBoxSideMargin"
+                android:layout_marginRight="@dimen/dialogBoxSideMargin"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="10dp"
+                android:calendarViewShown="true" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
