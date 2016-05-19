@@ -128,8 +128,6 @@ public class MainActivity extends AppCompatActivity {
 	// * Class Variables
 	// * 
 	// *****************************************************************************
-	private static String currentSongGroup = SongsTab.ALL_SONGS_LABEL;
-
 	public static DBAdapter dbAdapter;
 	static ViewPager mViewPager;
 	public Fragment currSetFragment;
@@ -145,14 +143,6 @@ public class MainActivity extends AppCompatActivity {
     private NavDrawerListAdapter mNavDrawerAdapter;
 
 	private String importFilePath = "";
-	private int songsCurrentScrollPosition = 0;
-	private int songsCurrentScrollOffset = 0;
-	
-	private ArrayList<Item> songsList = new ArrayList<Item>();
-	private ArrayAdapter<Item> songsAdapter;
-	private ArrayList<String> songGroupsList = new ArrayList<String>();
-	private ArrayAdapter<String> songGroupsAdapter;
-	private ArrayAdapter<String> songSortAdapter;
 	
 	private Map<String, Boolean> addSongsDialogMap = new HashMap<String, Boolean>();
 	private ArrayList<String> addSongsDialogList = new ArrayList<String>();
@@ -282,14 +272,6 @@ public class MainActivity extends AppCompatActivity {
         else
             return super.onOptionsItemSelected(item);
     }
-
-	/**
-     * Called when the activity is stopped
-     */
-    @Override
-    protected void onStop(){
-       super.onStop();
-    }
     
     /**
      * Called when the activity is destroyed
@@ -298,30 +280,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
     	super.onDestroy();
         dbAdapter.close();
-    }
-    
-    /**
-     * Called when the activity is paused
-     */
-    @Override
-    protected void onPause() {
-    	super.onPause();
-    }
-    
-    /**
-     * Called when the activity is started    
-     */
-    @Override
-    protected void onStart() {
-    	super.onStart();
-    }
-    
-    /**
-     * Called when the activity is resumed
-     */
-    @Override
-    public void onResume() {
-    	super.onResume();
     }
     
     /**
@@ -1221,9 +1179,10 @@ public class MainActivity extends AppCompatActivity {
         });
     	songsAD = new ArrayAdapter<>(this, android.R.layout.simple_list_item_multiple_choice, addSongsDialogList);
     	songsLV.setAdapter(songsAD);
-    	
-    	// Fill the group spinner
-    	setSongGroupsList();
+
+        // Fill the group spinner
+        ArrayList<String> songGroups = ((SongsTab)songsFragment).getSongGroupsList(false);
+        ArrayAdapter<String> songsGroupsAdapter = new SetGroupArrayAdapter(this, songGroups);
     	songGroupSP.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
             	// Get the selected group
@@ -1255,7 +1214,7 @@ public class MainActivity extends AppCompatActivity {
             	// Nothing was clicked so ignore it
             }
         });
-    	songGroupSP.setAdapter(songGroupsAdapter);
+    	songGroupSP.setAdapter(songsGroupsAdapter);
     	
     	// Set positive button of the dialog
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -1427,7 +1386,8 @@ public class MainActivity extends AppCompatActivity {
     	songsLV.setAdapter(songsAD);
     	
     	// Fill the group spinner
-    	setSongGroupsList();
+        ArrayList<String> songGroups = ((SongsTab)songsFragment).getSongGroupsList(false);
+        ArrayAdapter<String> songsGroupsAdapter = new SetGroupArrayAdapter(this, songGroups);
     	songGroupSP.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
             	// Get the selected group
@@ -1459,7 +1419,7 @@ public class MainActivity extends AppCompatActivity {
             	// Nothing was clicked so ignore it
             }
         });
-    	songGroupSP.setAdapter(songGroupsAdapter);
+    	songGroupSP.setAdapter(songsGroupsAdapter);
     	
     	// Set positive button of the dialog
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -2282,141 +2242,6 @@ public class MainActivity extends AppCompatActivity {
 
     	alert.show();
     }
-
-    /**
-     * Sets the current song list for the specified group
-     * @param songSearch The search criteria
-     * @return the number of items in the song list
-     */
-    public int setSongsList(SongSearchCriteria songSearch) {
-        int ret;
-
-    	ArrayList<Item> temp = new ArrayList<Item>();
-        Cursor c;
-
-        // Determine if we are searching or using the song group
-        if (songSearch == null)
-    	    c = dbAdapter.getSongs(currentSongGroup);
-        else
-            c = dbAdapter.getSongsSearch(songSearch);
-
-        // Move to the first and get the count
-        c.moveToFirst();
-        ret = c.getCount();
-
-        // Display error message for searching
-        if (c.getCount() <= 0 && songSearch != null)
-            Toast.makeText(getApplicationContext(), "No songs match that search", Toast.LENGTH_LONG).show();
-
-    	// Populate the ArrayList
-    	while (!c.isAfterLast()) {
-            // Create the song item
-            SongItem songItem = new SongItem();
-
-    		// Set the song item values
-        	songItem.setName(c.getString(c.getColumnIndex(DBStrings.TBLSONG_NAME)));
-            songItem.setAuthor(c.getString(c.getColumnIndex(DBStrings.TBLSONG_AUTHOR)));
-            songItem.setKey(c.getString(c.getColumnIndex(DBStrings.TBLSONG_KEY)));
-            songItem.setFile(c.getString(c.getColumnIndex(DBStrings.TBLSONG_FILE)));
-            songItem.setBpm(c.getInt(c.getColumnIndex(DBStrings.TBLSONG_BPM)));
-            songItem.setTimeSignature(c.getString(c.getColumnIndex(DBStrings.TBLSONG_TIME)));
-            songItem.setSongLink(c.getString(c.getColumnIndex(DBStrings.TBLSONG_LINK)));
-
-        	// Add the song item
-        	temp.add(songItem);
-
-        	// Move to the next song
-        	c.moveToNext();
-    	}
-
-    	c.close();
-
-    	// Sort the array list
-    	Collections.sort(temp, new Item.ItemComparableName());
-
-    	// Clear the current ArrayList
-    	songsList.clear();
-
-    	// Add section headers
-    	for (int i = 0; i < temp.size(); i++) {
-    		if (i != 0) {
-    			if (Character.toLowerCase(temp.get(i).getName().charAt(0)) !=
-    					Character.toLowerCase(temp.get(i-1).getName().charAt(0))) {
-    				// This is the first item with that letter, add the separator
-    				songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase(Locale.US)));
-    			}
-    		}
-    		else {
-    			// First item, add section
-    			songsList.add(new SectionItem(temp.get(i).getName().substring(0, 1).toUpperCase(Locale.US)));
-    		}
-
-    		songsList.add(temp.get(i));
-    	}
-
-        return ret;
-    }
-
-    /**
-     * Fills the songs list
-     */
-    public int fillSongsListView(SongSearchCriteria songSearch) {
-        int ret;
-
-    	// Fill the songs array list
-    	ret = setSongsList(songSearch);
-
-    	// Set up the list view and adapter
-    	ListView lv = ((ListView)findViewById(R.id.songs_list));
-        if (lv != null) {
-            lv.setEmptyView(findViewById(R.id.empty_songs));
-            songsAdapter = new ItemArrayAdapter(songsFragment.getActivity(), songsList);
-
-            // Set the on click listener for each item
-            lv.setOnItemClickListener(new ListView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> a, View v, int position, long row) {
-                    // Get the song to show
-                    SongItem song = (SongItem) songsList.get(position);
-
-                    // Get the updated time information
-                    song.setBpm(dbAdapter.getSongBpm(song.getName()));
-                    song.setTimeSignature(dbAdapter.getSongTimeSignature(song.getName()).toString());
-
-                    try {
-                        FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
-                        song.setText(ChordProParser.ParseSongFile(getApplicationContext(), song, song.getKey(), fis, true, false));
-
-                        // Show the song activity
-                        SongActivity songA = new SongActivity();
-                        Intent showSong = new Intent(v.getContext(), songA.getClass());
-                        showSong.putExtra(StaticVars.SONG_ITEM_KEY, (Parcelable) song);
-                        startActivity(showSong);
-
-                    } catch (FileNotFoundException e) {
-                        Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
-                    } catch (IOException e) {
-                        Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-
-            // Register the context menu and add the adapter
-            registerForContextMenu(lv);
-            lv.setAdapter(songsAdapter);
-
-            // Scroll to the previous scroll position
-            lv.setSelectionFromTop(songsCurrentScrollPosition, songsCurrentScrollOffset);
-        }
-
-        return ret;
-    }
-
-    /**
-     * Fills the songs list with no search parameters
-     */
-    public void fillSongsListView() {
-        fillSongsListView(null);
-    }
         
     /**
      * Imports a song text file into the db
@@ -3068,8 +2893,8 @@ public class MainActivity extends AppCompatActivity {
                     songSearch.songNameSearchText = searchText;
 
                     // Fill the songs tab with the search data
-                    int numResults = fillSongsListView(songSearch);
-                    fillSongGroupsSpinner(true, numResults);
+                    int numResults = ((SongsTab)songsFragment).refillSongsList(songSearch);
+                    ((SongsTab)songsFragment).fillSongGroupsSpinner(true, numResults);
 
                     // Close the dialog
                     dialog.dismiss();
@@ -3215,105 +3040,6 @@ public class MainActivity extends AppCompatActivity {
     // * 
     // *****************************************************************************
     /**
-     * Populates the song groups array list
-     */
-    public void setSongGroupsList(boolean showSearchResults) {
-    	// Query the database
-    	Cursor c = dbAdapter.getSongGroupNames();
-    	
-    	// Clear the existing groups list
-    	songGroupsList.clear();
-    	
-    	// Populate the groups
-    	c.moveToFirst();
-    	while (!c.isAfterLast()) {
-    		songGroupsList.add(c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONGGROUPS_NAME)));
-    		c.moveToNext();
-    	}
-    	c.close();
-    	
-    	// Sort the list alphabetically
-    	Collections.sort(songGroupsList, new SortIgnoreCase());
-
-        // Add search results field
-        if (showSearchResults) {
-            songGroupsList.add(0, StaticVars.searchResultsText);
-        }
-    }
-
-    /**
-     * Sets the song groups list with no search results display
-     */
-    public void setSongGroupsList() {
-        setSongGroupsList(false);
-    }
-    
-    /**
-     * Fills the group list spinner
-     * @param showSearchResults To show or not to show
-     */
-    public void fillSongGroupsSpinner(final boolean showSearchResults, final int numSearchResults) {
-    	// Set the groups list
-    	setSongGroupsList(showSearchResults);
-        
-    	// Create the spinner adapter
-        if (showSearchResults)
-    	    songGroupsAdapter = new SongGroupArrayAdapter(this, songGroupsList, numSearchResults);
-        else
-            songGroupsAdapter = new SongGroupArrayAdapter(this, songGroupsList);
-    	final Spinner groupSpinner = (Spinner) findViewById(R.id.song_group_spinner);
-    	
-    	// Set the on click listener for each item
-    	groupSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
-                // Get the selected item and populate the songs list
-                String groupName = songGroupsList.get(position);
-
-                // If the selection has actually changed
-                if (!currentSongGroup.equals(groupName)) {
-                    // Reset the scroll positions
-                    songsCurrentScrollPosition = 0;
-                    songsCurrentScrollOffset = 0;
-
-                    // Remove the search results option from the spinner
-                    if (!groupName.equals(StaticVars.searchResultsText) &&
-                            songGroupsList.get(0).equals(StaticVars.searchResultsText))
-                        songGroupsList.remove(0);
-                }
-
-                // Refill song list (if not on search results)
-                currentSongGroup = groupName;
-                if (groupName != StaticVars.searchResultsText) {
-                    fillSongsListView();
-                }
-
-                // Set the sort by spinner back to default
-                ((Spinner) findViewById(R.id.song_sort_spinner)).setSelection(0);
-            }
-
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // Nothing was clicked so ignore it
-            }
-        });
-    	
-    	// Set the adapter
-    	groupSpinner.setAdapter(songGroupsAdapter);
-    	
-    	// Set the selected item to the current group
-        if (showSearchResults)
-            groupSpinner.setSelection(0);
-        else
-            groupSpinner.setSelection(songGroupsList.indexOf(currentSongGroup));
-    }
-
-    /**
-     * Displays the song groups w/o the search results display
-     */
-    public void fillSongGroupsSpinner() {
-        fillSongGroupsSpinner(false, -1);
-    }
-    
-    /**
      * Creates a new song group
      */
     private void createSongGroup() {
@@ -3339,7 +3065,7 @@ public class MainActivity extends AppCompatActivity {
 	    			Toast.makeText(getApplicationContext(), "Cannot create a song group with no name!", Toast.LENGTH_LONG).show();
 	    		
 	    		// Refresh the song list and song group spinner
-	    		fillSongGroupsSpinner();
+                ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0);
 			}
     	});
 
@@ -3397,7 +3123,8 @@ public class MainActivity extends AppCompatActivity {
     	songsLV.setAdapter(songsAD);
     	
     	// Fill the group spinner
-    	setSongGroupsList();
+        ArrayList<String> songGroups = ((SongsTab)songsFragment).getSongGroupsList(false);
+        ArrayAdapter<String> songsGroupsAdapter = new SetGroupArrayAdapter(this, songGroups);
     	songGroupSP.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
             	// Get the selected group
@@ -3429,7 +3156,7 @@ public class MainActivity extends AppCompatActivity {
             	// Nothing was clicked so ignore it
             }
         });
-    	songGroupSP.setAdapter(songGroupsAdapter);
+    	songGroupSP.setAdapter(songsGroupsAdapter);
     	
     	// Set positive button of the dialog
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -3495,8 +3222,8 @@ public class MainActivity extends AppCompatActivity {
 				    		dbAdapter.deleteSongGroup(groupName);
 							
 				    		// Refresh the song list and song group spinner
-				    		fillSongGroupsSpinner();
-				    		songsAdapter.notifyDataSetChanged();
+                            ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0);
+                            ((SongsTab)songsFragment).refillSongsList();
 						}
 			    	});
 
@@ -3525,11 +3252,10 @@ public class MainActivity extends AppCompatActivity {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 				// Delete song from database
 		    	dbAdapter.deleteAllSongGroups();
-		    	currentSongGroup = SongsTab.ALL_SONGS_LABEL;
 	    		
 		    	// Refresh the song list and song group spinner
-	    		fillSongGroupsSpinner();
-	    		songsAdapter.notifyDataSetChanged();
+                ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0);
+                ((SongsTab)songsFragment).refillSongsList();
 			}
     	});
 
@@ -3672,107 +3398,6 @@ public class MainActivity extends AppCompatActivity {
     	});
 
     	alert.show();
-    }
-    //endregion
-
-
-    //region Sorting Functions
-    // *****************************************************************************
-    // * 
-    // * Sorting Functions
-    // * 
-    // *****************************************************************************
-    /**
-     * Fills the song sort spinner
-     */
-    public void fillSongSortSpinner() {
-    	// Create the spinner adapter
-    	songSortAdapter = new ArrayAdapter<String>(this, R.layout.group_spinner_item, StaticVars.songSortBy);
-    	songSortAdapter.setDropDownViewResource( R.layout.group_spinner_dropdown_item );
-    	final Spinner sortSpinner = (Spinner) findViewById(R.id.song_sort_spinner);
-    	
-    	// Set the on click listener for each item
-    	sortSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
-            	sortSongs(position);
-            }
-            
-            public void onNothingSelected(AdapterView<?> arg0) {
-            	// Nothing was clicked so ignore it
-            }
-        });
-    	
-    	// Set the adapter
-    	sortSpinner.setAdapter(songSortAdapter);
-    }
-    
-    /**
-     * Sorts the song list by the selected item
-     * @param sortByPosition The position in the song sort array list
-     */
-    private void sortSongs(int sortByPosition) {
-    	ArrayList<Item> temp = new ArrayList<Item>();
-    	
-    	// Remove section items
-    	for (Item i : songsList) {
-    		if (!i.getClass().equals(SectionItem.class))
-    			temp.add((SongItem)i);
-    	}
-    	
-    	// Sort the array list
-    	switch(sortByPosition) {
-	    	case 0: //Title
-	    		fillSongsListView();
-	    		break;
-	    	case 1: //Author
-	    		// Sort the temp list
-	    		Collections.sort(temp, new SongItem.SongItemComparableAuthor());
-	    		
-	    		// Reset the songs list and add sections
-	    		songsList.clear();
-	        	for (int i = 0; i < temp.size(); i++) {
-	        		if (i != 0) {
-	        			if (Character.toLowerCase(((SongItem)temp.get(i)).getAuthor().charAt(0)) != 
-	        					Character.toLowerCase(((SongItem)temp.get(i-1)).getAuthor().charAt(0))) {
-	        				// This is the first item with that letter, add the separator
-	        				songsList.add(new SectionItem(((SongItem)temp.get(i)).getAuthor().substring(0, 1).toUpperCase(Locale.US)));
-	        			}
-	        		}
-	        		else {
-	        			// First item, add section
-	        			songsList.add(new SectionItem(((SongItem)temp.get(i)).getAuthor().substring(0, 1).toUpperCase(Locale.US)));
-	        		}
-	        		
-	        		songsList.add(temp.get(i));
-	        	}
-	        	
-	        	// Update the UI
-	        	songsAdapter.notifyDataSetChanged();
-	    		break;
-	    	case 2: //Key
-	    		Collections.sort(temp, new SongItem.SongItemComparableKey());
-	    		
-	    		// Reset the songs list and add sections
-	    		songsList.clear();
-	        	for (int i = 0; i < temp.size(); i++) {
-	        		if (i != 0) {
-	        			if (!((SongItem)temp.get(i)).getKey().equals(((SongItem)temp.get(i-1)).getKey())) {
-	        				// This is the first item with that key, add the separator
-	        				songsList.add(new SectionItem(((SongItem)temp.get(i)).getKey()));
-	        			}
-	        		}
-	        		else {
-	        			// First item, add section
-	        			songsList.add(new SectionItem(((SongItem)temp.get(i)).getKey()));
-	        		}
-	        		
-	        		songsList.add(temp.get(i));
-	        	}
-	        	
-	        	// Update the UI
-	        	songsAdapter.notifyDataSetChanged();
-	    		break;
-    	}
     }
     //endregion
 
@@ -4207,9 +3832,9 @@ public class MainActivity extends AppCompatActivity {
             }
     		
     		// Refresh all the lists
-    		fillSongGroupsSpinner();
-        	fillSongGroupsSpinner();
-        	fillSongsListView();
+            ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0);
+            ((SongsTab)songsFragment).fillSongSortSpinner();
+            ((SongsTab)songsFragment).refillSongsList();
             ((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
             ((SetsTab)setsFragment).refillSetsList();
             ((CurrentSetTab)currSetFragment).refillCurrentSetList();
