@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -37,8 +38,6 @@ public class SongsTab extends Fragment {
     private RecyclerView songsRecyclerView;
     private LinearLayoutManager recyclerViewLayoutManager;
     private int currentSongGroupSpinnerPosition = 0;
-    private LayoutInflater mInflater;
-    private ViewGroup mContainer;
 
     //region Fragment Functions
 	@Override
@@ -49,9 +48,6 @@ public class SongsTab extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mView = inflater.inflate(R.layout.tab_songs, container, false);
-
-        mInflater = inflater;
-        mContainer = container;
 
         // Get the songs list
         ArrayList<Item> songs = getSongsList(null);
@@ -331,32 +327,6 @@ public class SongsTab extends Fragment {
         // Color the separator bars
         View setBar = mView.findViewById(R.id.song_separator_bar);
         setBar.setBackgroundColor(theme.getSeparatorBarColor());
-    }
-
-    public void redrawLayout() {
-        mView = mInflater.inflate(R.layout.tab_songs, mContainer, false);
-
-        // Get the songs list
-        ArrayList<Item> songs = getSongsList(null);
-
-        // Set up the songs recycler view
-        songsRecyclerView = (RecyclerView)mView.findViewById(R.id.songs_list);
-        songsRecyclerView.setHasFixedSize(true);
-        recyclerViewLayoutManager = new LinearLayoutManager(mView.getContext());
-        recyclerViewLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        songsRecyclerView.setLayoutManager(recyclerViewLayoutManager);
-
-        // Specify the adapter for the recycler view
-        MainActivity mainActivity = (MainActivity)getActivity();
-        adapter = new ItemAdapter(songs, mainActivity);
-        songsRecyclerView.setAdapter(adapter);
-
-        // Theme setup
-        reColorSeparatorBar();
-
-        // Populate the song spinners
-        fillSongSortSpinner();
-        fillSongGroupsSpinner(false, 0);
     }
     //endregion
 }

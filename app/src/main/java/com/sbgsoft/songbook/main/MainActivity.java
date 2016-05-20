@@ -17,7 +17,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -55,8 +54,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.Layout;
@@ -68,10 +65,7 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -96,9 +90,6 @@ import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.db.DBAdapter;
 import com.sbgsoft.songbook.db.DBStrings;
 import com.sbgsoft.songbook.files.OpenFile;
-import com.sbgsoft.songbook.items.Item;
-import com.sbgsoft.songbook.items.ItemArrayAdapter;
-import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SetItem;
 import com.sbgsoft.songbook.items.SetSearchCriteria;
 import com.sbgsoft.songbook.items.Settings;
@@ -111,9 +102,7 @@ import com.sbgsoft.songbook.sets.SetGroupArrayAdapter;
 import com.sbgsoft.songbook.sets.SetsTab;
 import com.sbgsoft.songbook.songs.ChordDisplay;
 import com.sbgsoft.songbook.songs.ChordProParser;
-import com.sbgsoft.songbook.songs.EditSongRawActivity;
 import com.sbgsoft.songbook.songs.SongActivity;
-import com.sbgsoft.songbook.songs.SongGroupArrayAdapter;
 import com.sbgsoft.songbook.songs.SongsTab;
 import com.sbgsoft.songbook.songs.TextFileImporter;
 import com.sbgsoft.songbook.songs.TimeSignature;
@@ -143,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView mDrawerList;
     private ArrayList<NavDrawerItem> mNavDrawerItems;
     private NavDrawerListAdapter mNavDrawerAdapter;
+    private ViewGroup.LayoutParams tabLayoutLP;
 
 	private String importFilePath = "";
 	
@@ -182,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         SongBookTheme theme = dbAdapter.getCurrentSettings().getSongBookTheme();
 
         // Apply the background color
-        View layout = findViewById(R.id.tabanim_maincontent);
+        View layout = findViewById(R.id.drawer_layout);
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
                 new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom()});
@@ -222,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        tabLayoutLP = tabLayout.getLayoutParams();
 
         // Set up the navigation drawer
         setupNavDrawer();
@@ -279,20 +270,18 @@ public class MainActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-//        // Checks the orientation of the screen
-//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-//            Toast toast = Toast.makeText(this, "landscape", Toast.LENGTH_SHORT);
-//            toast.setGravity(Gravity.CENTER, 0, 0);
-//            toast.show();
-//
-//            ((SongsTab)songsFragment).redrawLayout();
-//        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-//            Toast toast = Toast.makeText(this, "portrait", Toast.LENGTH_SHORT);
-//            toast.setGravity(Gravity.CENTER, 0, 0);
-//            toast.show();
-//
-//            ((SongsTab)songsFragment).redrawLayout();
-//        }
+        // Checks the orientation of the screen
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            Toast toast = Toast.makeText(this, "landscape", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+            Toast toast = Toast.makeText(this, "portrait", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+
+            tabLayout.setLayoutParams(tabLayoutLP);
+        }
     }
     
     /**
@@ -1038,7 +1027,7 @@ public class MainActivity extends AppCompatActivity {
         SongBookTheme theme = dbAdapter.getCurrentSettings().getSongBookTheme();
 
         // Apply the background color
-        View layout = findViewById(R.id.tabanim_maincontent);
+        View layout = findViewById(R.id.drawer_layout);
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.TOP_BOTTOM,
                 new int[] {theme.getBackgroundTop(),theme.getBackgroundBottom()});
