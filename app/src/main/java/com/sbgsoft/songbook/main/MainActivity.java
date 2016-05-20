@@ -279,20 +279,20 @@ public class MainActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        // Checks the orientation of the screen
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            Toast toast = Toast.makeText(this, "landscape", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-
-            ((SongsTab)songsFragment).redrawLayout();
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            Toast toast = Toast.makeText(this, "portrait", Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-
-            ((SongsTab)songsFragment).redrawLayout();
-        }
+//        // Checks the orientation of the screen
+//        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            Toast toast = Toast.makeText(this, "landscape", Toast.LENGTH_SHORT);
+//            toast.setGravity(Gravity.CENTER, 0, 0);
+//            toast.show();
+//
+//            ((SongsTab)songsFragment).redrawLayout();
+//        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
+//            Toast toast = Toast.makeText(this, "portrait", Toast.LENGTH_SHORT);
+//            toast.setGravity(Gravity.CENTER, 0, 0);
+//            toast.show();
+//
+//            ((SongsTab)songsFragment).redrawLayout();
+//        }
     }
     
     /**

@@ -10,12 +10,12 @@
     
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/tabTitleHeight"
+        android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <com.sbgsoft.songbook.views.SongBookThemeTextView
             android:id="@+id/sets_tab_title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:textStyle="bold"
@@ -33,7 +33,6 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/tabSpinnerTextSize"
             android:layout_toLeftOf="@+id/set_sort_spinner"
-            android:layout_alignParentBottom="true"
             android:textStyle="bold"
             themetv:useShadow="true"
             themetv:isTitle="true"
@@ -47,7 +46,6 @@
             android:layout_height="wrap_content"
             android:padding="10dip"
             android:layout_toLeftOf="@+id/set_group_label"
-            android:layout_alignParentBottom="true"
             android:popupBackground="@color/SemiTransparentWhite"
             android:spinnerMode="dropdown"
             android:dropDownVerticalOffset="@dimen/dropDownOffset" />
@@ -58,7 +56,6 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/tabSpinnerTextSize"
             android:layout_toLeftOf="@+id/set_group_spinner"
-            android:layout_alignParentBottom="true"
             android:textStyle="bold"
             themetv:useShadow="true"
             themetv:isTitle="true"
@@ -72,7 +69,6 @@
             android:layout_height="wrap_content"
             android:padding="10dip"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
             android:textColor="@color/defaultTextColor"
             android:popupBackground="@color/SemiTransparentWhite"
             android:spinnerMode="dropdown"
