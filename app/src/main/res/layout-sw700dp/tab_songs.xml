@@ -10,15 +10,16 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/tabTitleHeight"
         android:orientation="horizontal" >
 
         <com.sbgsoft.songbook.views.SongBookThemeTextView
             android:id="@+id/songs_tab_title"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/tabTitleTextSize"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:textSize="@dimen/tabTitleTextSize"
             android:textStyle="bold"
             android:text="@string/title_songs"
             android:paddingLeft="5dp"
@@ -30,8 +31,9 @@
             android:id="@+id/song_sort_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
             android:layout_toLeftOf="@+id/song_sort_spinner"
+            android:layout_alignParentBottom="true"
+            android:textSize="20sp"
             android:textStyle="bold"
             themetv:useShadow="true"
             themetv:isTitle="true"
@@ -43,8 +45,9 @@
             android:id="@+id/song_sort_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dip"
             android:layout_toLeftOf="@+id/song_group_label"
+            android:layout_alignParentBottom="true"
+            android:padding="10dip"
             android:popupBackground="@color/SemiTransparentWhite"
             android:spinnerMode="dropdown"
             android:dropDownVerticalOffset="@dimen/dropDownOffset" />
@@ -53,8 +56,9 @@
             android:id="@+id/song_group_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
             android:layout_toLeftOf="@+id/song_group_spinner"
+            android:layout_alignParentBottom="true"
+            android:textSize="20sp"
             android:textStyle="bold"
             themetv:useShadow="true"
             themetv:isTitle="true"
@@ -67,8 +71,9 @@
             android:id="@+id/song_group_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dip"
             android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:padding="10dip"
             android:popupBackground="@color/SemiTransparentWhite"
             android:spinnerMode="dropdown"
             android:dropDownVerticalOffset="@dimen/dropDownOffset" />

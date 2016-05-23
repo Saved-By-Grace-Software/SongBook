@@ -10,7 +10,7 @@
     
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/tabTitleHeight"
         android:orientation="horizontal" >
 
         <com.sbgsoft.songbook.views.SongBookThemeTextView
@@ -19,10 +19,11 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/tabTitleTextSize"
             android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
             android:textStyle="bold"
             android:text="@string/title_current_set"
             android:paddingLeft="5dp"
-            android:paddingBottom="5dp"
+            android:paddingBottom="7dp"
             themetv:useShadow="true"
             themetv:isTitle="true" />
 
@@ -30,13 +31,14 @@
             android:id="@+id/current_set_tab_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:textSize="@dimen/currentSetLinkTextSize"
             android:layout_alignParentRight="true"
             android:layout_marginRight="5dp"
             android:textStyle="normal"
             android:text="@string/empty_string"
             android:paddingLeft="5dp"
-            android:paddingBottom="5dp"
+            android:paddingBottom="7dp"
             android:linksClickable="true"
             themetv:useShadow="true"
             themetv:isTitle="true" />

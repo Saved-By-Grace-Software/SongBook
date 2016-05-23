@@ -10,7 +10,7 @@
     
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/tabTitleHeight"
         android:orientation="horizontal" >
 
         <com.sbgsoft.songbook.views.SongBookThemeTextView
@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/tabTitleTextSize"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
             android:textStyle="bold"
             android:text="@string/title_current_set"
             android:paddingLeft="5dp"
@@ -32,6 +33,7 @@
             android:layout_height="wrap_content"
             android:textSize="@dimen/currentSetLinkTextSize"
             android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginRight="5dp"
             android:textStyle="normal"
             android:text="@string/empty_string"
