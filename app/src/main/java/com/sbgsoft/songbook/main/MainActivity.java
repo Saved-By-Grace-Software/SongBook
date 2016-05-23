@@ -1027,7 +1027,7 @@ public class MainActivity extends AppCompatActivity {
         ((SongsTab)songsFragment).refillSongsList(true);
 
         // Apply spinner color
-        ((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
+        ((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0, true);
         ((SetsTab)setsFragment).fillSetSortSpinner();
         ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0, true);
         ((SongsTab)songsFragment).fillSongSortSpinner();
@@ -1297,7 +1297,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Refresh sets list
 				((SetsTab)setsFragment).refillSetsList();
-				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
+				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0, true);
             }
         });
 
@@ -1496,7 +1496,7 @@ public class MainActivity extends AppCompatActivity {
                 dbAdapter.deleteSet(setName);
 
                 // Refresh set and current set list
-				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
+				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0, true);
 				((SetsTab)setsFragment).refillSetsList();
                 ((CurrentSetTab)currSetFragment).refillCurrentSetList();
             }
