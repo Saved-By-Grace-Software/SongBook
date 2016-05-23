@@ -410,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         // Add items to the drawer
         mNavDrawerItems = new ArrayList<>();
