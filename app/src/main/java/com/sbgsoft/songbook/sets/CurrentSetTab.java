@@ -17,17 +17,16 @@ import com.sbgsoft.songbook.db.DBStrings;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
-import com.sbgsoft.songbook.views.SetItemAdapter;
 import com.sbgsoft.songbook.views.SongItemAdapter;
 
 import java.util.ArrayList;
 
 public class CurrentSetTab extends Fragment {
 
-    private View mView;
-    public SongItemAdapter adapter;
-    private RecyclerView currentSetRecyclerView;
-    private LinearLayoutManager recyclerViewLayoutManager;
+    private static View mView;
+    public static SongItemAdapter adapter;
+    private static RecyclerView currentSetRecyclerView;
+    private static LinearLayoutManager recyclerViewLayoutManager;
 	
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -36,7 +35,8 @@ public class CurrentSetTab extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		mView = inflater.inflate(R.layout.tab_current_set, container, false);
+        // Inflate the view
+        mView = inflater.inflate(R.layout.tab_current_set, container, false);
 
         // Get the song list for the current set
         ArrayList<SongItem> songs = getCurrentSetList();
@@ -97,34 +97,28 @@ public class CurrentSetTab extends Fragment {
     }
 
     public void refillCurrentSetList(boolean forceRedraw) {
-        // Get the list and refill the adapter
-        ArrayList<SongItem> songs = getCurrentSetList();
-        adapter.refill(songs);
 
-        // Redraw the list
-        if (forceRedraw) {
-            currentSetRecyclerView.setAdapter(null);
-            currentSetRecyclerView.setLayoutManager(null);
-            currentSetRecyclerView.setAdapter(adapter);
-            currentSetRecyclerView.setLayoutManager(recyclerViewLayoutManager);
-            adapter.notifyDataSetChanged();
+        if (adapter != null) {
+            // Get the list and refill the adapter
+            ArrayList<SongItem> songs = getCurrentSetList();
+            adapter.refill(songs);
+
+            // Redraw the list
+            if (forceRedraw) {
+                currentSetRecyclerView.setAdapter(null);
+                currentSetRecyclerView.setLayoutManager(null);
+                currentSetRecyclerView.setAdapter(adapter);
+                currentSetRecyclerView.setLayoutManager(recyclerViewLayoutManager);
+                adapter.notifyDataSetChanged();
+            }
+
+            // Set the title bar
+            setTitleBar();
         }
-
-        // Set the title bar
-        setTitleBar();
     }
 
     public void refillCurrentSetList() {
         refillCurrentSetList(false);
-    }
-
-    /**
-     * Gets the song item by its name
-     * @param songName
-     * @return
-     */
-    public SongItem getSongItem(String songName) {
-        return adapter.get(songName);
     }
 
     private void setTitleBar() {
@@ -152,6 +146,7 @@ public class CurrentSetTab extends Fragment {
     }
     //endregion
 
+    //region Helper Functions
     public void reColorSeparatorBar() {
         // Get the current theme from the database
         SongBookTheme theme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
@@ -160,4 +155,5 @@ public class CurrentSetTab extends Fragment {
         View setBar = mView.findViewById(R.id.currset_separator_bar);
         setBar.setBackgroundColor(theme.getSeparatorBarColor());
     }
+    //endregion
 }

@@ -27,9 +27,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
         SongKey
     }
 
-    private ArrayList<Item> mItems;
-    private MainActivity mMainActivity;
-    private SortType currentSortType;
+    private static ArrayList<Item> mItems;
+    private static MainActivity mMainActivity;
+    private static SortType currentSortType;
 
     public ItemAdapter(ArrayList<Item> items, MainActivity mainActivity) {
         mItems = items;
@@ -133,39 +133,43 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
      * @param sortByPosition The position in the song sort array list
      */
     private void sort() {
-        // Remove section items
-        for (int i = 0; i < mItems.size(); i++) {
-            if (mItems.get(i).getClass().equals(SectionItem.class)) {
-                mItems.remove(i);
+        // Check that we have a current sort type
+        if (currentSortType != null) {
+
+            // Remove section items
+            for (int i = 0; i < mItems.size(); i++) {
+                if (mItems.get(i).getClass().equals(SectionItem.class)) {
+                    mItems.remove(i);
+                }
             }
-        }
 
-        // Sort the array list
-        switch(currentSortType) {
-            case SongTitle: //Title
-                // Sort the list
-                Collections.sort(mItems, new Item.ItemComparableName());
+            // Sort the array list
+            switch (currentSortType) {
+                case SongTitle: //Title
+                    // Sort the list
+                    Collections.sort(mItems, new Item.ItemComparableName());
 
-                // Add the title section headers
-                addTitleSectionHeaders(mItems);
-                notifyDataSetChanged();
-                break;
-            case SongAuthor: //Author
-                // Sort the list
-                Collections.sort(mItems, new SongItem.SongItemComparableAuthor());
+                    // Add the title section headers
+                    addTitleSectionHeaders(mItems);
+                    notifyDataSetChanged();
+                    break;
+                case SongAuthor: //Author
+                    // Sort the list
+                    Collections.sort(mItems, new SongItem.SongItemComparableAuthor());
 
-                // Add the author section headers
-                addAuthorSectionHeaders(mItems);
-                notifyDataSetChanged();
-                break;
-            case SongKey: //Key
-                // Sort the list
-                Collections.sort(mItems, new SongItem.SongItemComparableKey());
+                    // Add the author section headers
+                    addAuthorSectionHeaders(mItems);
+                    notifyDataSetChanged();
+                    break;
+                case SongKey: //Key
+                    // Sort the list
+                    Collections.sort(mItems, new SongItem.SongItemComparableKey());
 
-                // Add the key section headers
-                addKeySectionHeaders(mItems);
-                notifyDataSetChanged();
-                break;
+                    // Add the key section headers
+                    addKeySectionHeaders(mItems);
+                    notifyDataSetChanged();
+                    break;
+            }
         }
     }
     //endregion

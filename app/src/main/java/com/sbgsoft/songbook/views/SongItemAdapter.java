@@ -15,8 +15,8 @@ import java.util.List;
  * Created by SamIAm on 5/18/2016.
  */
 public class SongItemAdapter extends RecyclerView.Adapter<SongItemViewHolder> {
-    private List<SongItem> mSongs;
-    private MainActivity mMainActivity;
+    private static List<SongItem> mSongs;
+    private static MainActivity mMainActivity;
 
     public SongItemAdapter(List<SongItem> sets, MainActivity mainActivity) {
         mSongs = sets;

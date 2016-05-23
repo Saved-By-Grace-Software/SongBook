@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -32,11 +33,11 @@ public class SongsTab extends Fragment {
 	public static final String ALL_SONGS_LABEL = "All Songs";
     private static String currentSongGroup = ALL_SONGS_LABEL;
 
-    private View mView;
-    private ItemAdapter adapter;
-    private RecyclerView songsRecyclerView;
-    private LinearLayoutManager recyclerViewLayoutManager;
-    private int currentSongGroupSpinnerPosition = 0;
+    private static View mView;
+    private static ItemAdapter adapter;
+    private static RecyclerView songsRecyclerView;
+    private static LinearLayoutManager recyclerViewLayoutManager;
+    private static int currentSongGroupSpinnerPosition = 0;
 
     //region Fragment Functions
 	@Override
@@ -69,8 +70,6 @@ public class SongsTab extends Fragment {
         // Populate the song spinners
         fillSongSortSpinner();
         fillSongGroupsSpinner(false, 0);
-
-        // Set default sort
 
 		return mView;
 	}
@@ -172,23 +171,26 @@ public class SongsTab extends Fragment {
      * @return
      */
     private int refillSongsList(boolean forceRedraw, SongSearchCriteria songSearch) {
-        int ret;
+        int ret = 0;
 
-        // Get the sets list and refill the adapter
-        ArrayList<Item> songs = getSongsList(songSearch);
-        adapter.refill(songs);
+        if (adapter != null) {
+            // Get the sets list and refill the adapter
+            ArrayList<Item> songs = getSongsList(songSearch);
+            adapter.refill(songs);
 
-        // Redraw the list
-        if (forceRedraw) {
-            songsRecyclerView.setAdapter(null);
-            songsRecyclerView.setLayoutManager(null);
-            songsRecyclerView.setAdapter(adapter);
-            songsRecyclerView.setLayoutManager(recyclerViewLayoutManager);
-            adapter.notifyDataSetChanged();
+            // Redraw the list
+            if (forceRedraw) {
+                songsRecyclerView.setAdapter(null);
+                songsRecyclerView.setLayoutManager(null);
+                songsRecyclerView.setAdapter(adapter);
+                songsRecyclerView.setLayoutManager(recyclerViewLayoutManager);
+                adapter.notifyDataSetChanged();
+            }
+
+            // Return the number of sets
+            ret = songs.size();
         }
 
-        // Return the number of sets
-        ret = songs.size();
         return ret;
     }
     //endregion

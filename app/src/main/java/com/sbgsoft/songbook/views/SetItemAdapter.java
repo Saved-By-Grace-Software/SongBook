@@ -21,9 +21,9 @@ public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
         Title
     }
 
-    private List<SetItem> mSets;
-    private MainActivity mMainActivity;
-    private SortType currentSortType;
+    private static List<SetItem> mSets;
+    private static MainActivity mMainActivity;
+    private static SortType currentSortType;
 
     public SetItemAdapter(List<SetItem> sets, MainActivity mainActivity) {
         mSets = sets;
