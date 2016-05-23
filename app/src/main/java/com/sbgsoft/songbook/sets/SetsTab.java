@@ -36,6 +36,7 @@ public class SetsTab extends Fragment {
     private static View mView;
     private static RecyclerView setsRecyclerView;
     private static LinearLayoutManager recyclerViewLayoutManager;
+    private static int currentSetGroupSpinnerPosition = 0;
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -65,7 +66,7 @@ public class SetsTab extends Fragment {
         reColorSeparatorBar();
 
         // Populate the set spinners
-        fillSetGroupsSpinner(false, -1);
+        fillSetGroupsSpinner(false, 0);
         fillSetSortSpinner();
 
         // Set default sort
@@ -230,6 +231,13 @@ public class SetsTab extends Fragment {
      * Fills the group list spinner
      */
     public void fillSetGroupsSpinner(final boolean showSearchResults, final int numSearchResults) {
+        fillSetGroupsSpinner(showSearchResults, numSearchResults, false);
+    }
+
+    /**
+     * Fills the group list spinner
+     */
+    public void fillSetGroupsSpinner(final boolean showSearchResults, final int numSearchResults, boolean stayInCurrentGroup) {
         ArrayAdapter<String> setGroupsAdapter;
 
         // Set the groups list
@@ -257,6 +265,7 @@ public class SetsTab extends Fragment {
                 }
 
                 // Refill set list (if not on search results)
+                currentSetGroupSpinnerPosition = position;
                 currentSetGroup = groupName;
                 if (groupName != StaticVars.searchResultsText) {
                     refillSetsList();
@@ -275,6 +284,10 @@ public class SetsTab extends Fragment {
         });
 
         groupSpinner.setAdapter(setGroupsAdapter);
+
+        // Set the selected group
+        if (stayInCurrentGroup)
+            groupSpinner.setSelection(currentSetGroupSpinnerPosition);
     }
     //endregion
 

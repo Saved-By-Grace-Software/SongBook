@@ -410,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         // Add items to the drawer
         mNavDrawerItems = new ArrayList<>();
@@ -1027,7 +1027,7 @@ public class MainActivity extends AppCompatActivity {
         ((SongsTab)songsFragment).refillSongsList(true);
 
         // Apply spinner color
-        ((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
+        ((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0, true);
         ((SetsTab)setsFragment).fillSetSortSpinner();
         ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0, true);
         ((SongsTab)songsFragment).fillSongSortSpinner();
@@ -1297,7 +1297,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Refresh sets list
 				((SetsTab)setsFragment).refillSetsList();
-				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
+				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0, true);
             }
         });
 
@@ -1496,7 +1496,7 @@ public class MainActivity extends AppCompatActivity {
                 dbAdapter.deleteSet(setName);
 
                 // Refresh set and current set list
-				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0);
+				((SetsTab)setsFragment).fillSetGroupsSpinner(false, 0, true);
 				((SetsTab)setsFragment).refillSetsList();
                 ((CurrentSetTab)currSetFragment).refillCurrentSetList();
             }
@@ -1978,7 +1978,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Refresh song group list
                 ((SongsTab)songsFragment).refillSongsList();
-                ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0);
+                ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0, true);
             }
         });
 
@@ -2222,7 +2222,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 // Refresh the song and current set view
-                ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0);
+                ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0, true);
                 ((SongsTab)songsFragment).refillSongsList();
                 ((CurrentSetTab)currSetFragment).refillCurrentSetList();
             }
@@ -3059,7 +3059,7 @@ public class MainActivity extends AppCompatActivity {
 	    			Toast.makeText(getApplicationContext(), "Cannot create a song group with no name!", Toast.LENGTH_LONG).show();
 	    		
 	    		// Refresh the song list and song group spinner
-                ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0);
+                ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0, true);
 			}
     	});
 
