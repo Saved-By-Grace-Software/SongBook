@@ -32,10 +32,10 @@ public class SetsTab extends Fragment {
 	public static final String ALL_SETS_LABEL = "All Sets";
     private static String currentSetGroup = ALL_SETS_LABEL;
 
-    public SetItemAdapter adapter;
-    private View mView;
-    private RecyclerView setsRecyclerView;
-    private LinearLayoutManager recyclerViewLayoutManager;
+    public static SetItemAdapter adapter;
+    private static View mView;
+    private static RecyclerView setsRecyclerView;
+    private static LinearLayoutManager recyclerViewLayoutManager;
 
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -163,23 +163,26 @@ public class SetsTab extends Fragment {
      * @return
      */
     private int refillSetsList(boolean forceRedraw, SetSearchCriteria setSearch) {
-        int ret;
+        int ret = 0;
 
-        // Get the sets list and refill the adapter
-        ArrayList<SetItem> sets = getSetsList(setSearch);
-        adapter.refill(sets);
+        if (adapter != null) {
+            // Get the sets list and refill the adapter
+            ArrayList<SetItem> sets = getSetsList(setSearch);
+            adapter.refill(sets);
 
-        // Redraw the list
-        if (forceRedraw) {
-            setsRecyclerView.setAdapter(null);
-            setsRecyclerView.setLayoutManager(null);
-            setsRecyclerView.setAdapter(adapter);
-            setsRecyclerView.setLayoutManager(recyclerViewLayoutManager);
-            adapter.notifyDataSetChanged();
+            // Redraw the list
+            if (forceRedraw) {
+                setsRecyclerView.setAdapter(null);
+                setsRecyclerView.setLayoutManager(null);
+                setsRecyclerView.setAdapter(adapter);
+                setsRecyclerView.setLayoutManager(recyclerViewLayoutManager);
+                adapter.notifyDataSetChanged();
+            }
+
+            // Return the number of sets
+            ret = sets.size();
         }
 
-        // Return the number of sets
-        ret = sets.size();
         return ret;
     }
 
