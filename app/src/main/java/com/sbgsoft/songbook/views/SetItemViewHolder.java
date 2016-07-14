@@ -30,6 +30,7 @@ import com.sbgsoft.songbook.songs.SongsTab;
 public class SetItemViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener , MenuItem.OnMenuItemClickListener{
     protected SongBookThemeTextView vSetName;
     protected SongBookThemeTextView vSetDate;
+    protected SongBookThemeTextView vSetSongs;
     protected ImageView vContextMenuButton;
     private MainActivity mMainActivity;
 
@@ -37,6 +38,7 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements View.O
         super(v);
         vSetName = (SongBookThemeTextView)v.findViewById(R.id.sets_row_text);
         vSetDate = (SongBookThemeTextView)v.findViewById(R.id.sets_row_date);
+        vSetSongs = (SongBookThemeTextView)v.findViewById(R.id.sets_row_songs);
         vContextMenuButton = (ImageView)v.findViewById(R.id.set_more_button);
 
         mMainActivity = mainActivity;

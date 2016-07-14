@@ -77,6 +77,22 @@ public class SetItem implements Item, Parcelable {
     public String getLink() {
         return link;
     }
+
+    public String getSongs() {
+        StringBuilder sb = new StringBuilder();
+
+        // Loop through each song in the set
+        for(SongItem s : songs) {
+            // Add the song name to the string builder
+            sb.append(s.getName());
+
+            // Check to make sure we aren't on the last song
+            if (songs.indexOf(s) < songs.size() - 1)
+                sb.append(", ");
+        }
+
+        return sb.toString();
+    }
 	
 	public void setName(String name) {
 		this.name = name;
