@@ -67,6 +67,34 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="25dp" >
+
+                <com.sbgsoft.songbook.views.SongBookThemeTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sets_row_songs_text"
+                    android:includeFontPadding="true"
+                    android:textSize="@dimen/listSubTextSize"
+                    android:textStyle="bold|italic"
+                    android:paddingRight="7dp"
+                    themetv:useShadow="false"/>
+
+                <com.sbgsoft.songbook.views.SongBookThemeTextView
+                    android:id="@+id/sets_row_songs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="true"
+                    android:textSize="@dimen/listSubTextSize"
+                    android:textStyle="italic"
+                    android:paddingRight="7dp"
+                    themetv:useShadow="false"/>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <ImageView

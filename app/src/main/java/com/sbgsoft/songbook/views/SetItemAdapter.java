@@ -41,6 +41,7 @@ public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
         SetItem item = mSets.get(position);
         holder.vSetName.setText(item.getName());
         holder.vSetDate.setText(item.getDate());
+        holder.vSetSongs.setText(item.getSongs());
     }
 
     @Override
