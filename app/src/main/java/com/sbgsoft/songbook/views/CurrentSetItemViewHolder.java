@@ -1,7 +1,9 @@
 package com.sbgsoft.songbook.views;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,17 +15,15 @@ import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.songs.EditSongRawActivity;
 
-/**
- * Created by SamIAm on 5/18/2016.
- */
-public class SongItemViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener , MenuItem.OnMenuItemClickListener {
+public class CurrentSetItemViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener ,
+        MenuItem.OnMenuItemClickListener, ItemTouchHelperViewHolder {
     protected SongBookThemeTextView vSongName;
     protected SongBookThemeTextView vSongArtist;
     protected SongBookThemeTextView vSongKey;
     protected ImageView vContextMenuButton;
     private MainActivity mMainActivity;
 
-    public SongItemViewHolder(View v, final MainActivity mainActivity) {
+    public CurrentSetItemViewHolder(View v, final MainActivity mainActivity) {
         super(v);
         vSongName = (SongBookThemeTextView)v.findViewById(R.id.songs_row_text);
         vSongArtist = (SongBookThemeTextView)v.findViewById(R.id.songs_row_author);
@@ -118,5 +118,15 @@ public class SongItemViewHolder extends RecyclerView.ViewHolder implements View.
                 return true;
         }
         return true;
+    }
+
+    @Override
+    public void onItemSelected() {
+        Log.d("SONGBOOK", "item selected");
+    }
+
+    @Override
+    public void onItemClear() {
+        Log.d("SONGBOOK", "item cleared");
     }
 }

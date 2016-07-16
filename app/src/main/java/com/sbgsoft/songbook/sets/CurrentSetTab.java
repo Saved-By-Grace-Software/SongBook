@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -17,17 +18,19 @@ import com.sbgsoft.songbook.db.DBStrings;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
-import com.sbgsoft.songbook.views.SongItemAdapter;
+import com.sbgsoft.songbook.views.CurrentSetItemAdapter;
+import com.sbgsoft.songbook.views.SongItemTouchHelperCallback;
 
 import java.util.ArrayList;
 
 public class CurrentSetTab extends Fragment {
 
     private static View mView;
-    public static SongItemAdapter adapter;
+    public static CurrentSetItemAdapter adapter;
     private static RecyclerView currentSetRecyclerView;
     private static LinearLayoutManager recyclerViewLayoutManager;
-	
+    private static ItemTouchHelper mItemTouchHelper;
+
 	@Override
     public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -50,7 +53,7 @@ public class CurrentSetTab extends Fragment {
 
         // Specify the adapter for the recycler view
         MainActivity mainActivity = (MainActivity)getActivity();
-        adapter = new SongItemAdapter(songs, mainActivity);
+        adapter = new CurrentSetItemAdapter(songs, mainActivity);
         currentSetRecyclerView.setAdapter(adapter);
 
         // Setup the title bar
@@ -58,6 +61,11 @@ public class CurrentSetTab extends Fragment {
 
         // Theme setup
         reColorSeparatorBar();
+
+        // Add the item touch helper
+        ItemTouchHelper.Callback callback = new SongItemTouchHelperCallback(adapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(currentSetRecyclerView);
 
 		return mView;
 	}
