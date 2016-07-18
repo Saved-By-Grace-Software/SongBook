@@ -5,11 +5,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
+import com.sbgsoft.songbook.main.StaticVars;
+import com.sbgsoft.songbook.sets.SetsTab;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CurrentSetItemAdapter extends RecyclerView.Adapter<CurrentSetItemViewHolder>
@@ -50,8 +54,26 @@ public class CurrentSetItemAdapter extends RecyclerView.Adapter<CurrentSetItemVi
 
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
-        Log.d("SONGBOOK", "item moved");
-        notifyItemMoved(fromPosition, toPosition);
+        // Swap the items in the list
+        Collections.swap(mSongs, fromPosition, toPosition);
+
+        // Create the string array to switch the songs in the database
+        String[] newOrder = new String[mSongs.size()];
+        for (int i = 0; i < mSongs.size(); i++) {
+            newOrder[i] = mSongs.get(i).getName();
+        }
+
+        // Get the current set name
+        String setName = MainActivity.dbAdapter.getCurrentSetName();
+
+        // Try to reorder the set
+        if(!MainActivity.dbAdapter.reorderSet(setName, newOrder)) {
+            Toast.makeText(mMainActivity, "Could not update set order!", Toast.LENGTH_LONG).show();
+        } else {
+            // Refresh set list so song order is correct and notify android of change
+            //((SetsTab)mMainActivity.setsFragment).refillSetsList();
+            notifyItemMoved(fromPosition, toPosition);
+        }
     }
 
     public void add(SongItem item) {
