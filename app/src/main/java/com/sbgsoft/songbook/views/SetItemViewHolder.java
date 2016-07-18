@@ -71,7 +71,6 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements View.O
         // Add the menu items
         MenuItem edit = menu.add(Menu.NONE, StaticVars.EDIT_SET, StaticVars.EDIT_SET, R.string.cmenu_sets_edit);
         MenuItem editAtt = menu.add(Menu.NONE, StaticVars.EDIT_SET_ATT, StaticVars.EDIT_SET_ATT, R.string.cmenu_sets_edit_att);
-        MenuItem reorder = menu.add(Menu.NONE, StaticVars.REORDER_SET, StaticVars.REORDER_SET, R.string.cmenu_sets_reorder);
         MenuItem groupAdd = menu.add(Menu.NONE, StaticVars.SET_GROUPS_ADD, StaticVars.SET_GROUPS_ADD, R.string.cmenu_set_group_add);
         MenuItem groupDel = menu.add(Menu.NONE, StaticVars.SET_GROUPS_DEL, StaticVars.SET_GROUPS_DEL, R.string.cmenu_set_group_delete);
         MenuItem share = menu.add(Menu.NONE, StaticVars.SHARE_SET, StaticVars.SHARE_SET, R.string.cmenu_sets_share);
@@ -80,7 +79,6 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements View.O
         // Add this as the listener
         edit.setOnMenuItemClickListener(this);
         editAtt.setOnMenuItemClickListener(this);
-        reorder.setOnMenuItemClickListener(this);
         groupAdd.setOnMenuItemClickListener(this);
         groupDel.setOnMenuItemClickListener(this);
         share.setOnMenuItemClickListener(this);
@@ -99,10 +97,6 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements View.O
             case StaticVars.EDIT_SET_ATT:
                 // Update the set attributes
                 mMainActivity.editSetAtt(setName);
-                return true;
-            case StaticVars.REORDER_SET:
-                // Trigger reordering of the set
-                mMainActivity.reorderSet(setName);
                 return true;
             case StaticVars.SET_GROUPS_ADD:
                 // Edit the songs groups

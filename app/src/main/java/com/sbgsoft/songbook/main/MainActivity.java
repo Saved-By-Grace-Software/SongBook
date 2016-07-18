@@ -86,7 +86,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ericharlow.dragndrop.DragNDropListActivity;
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.db.DBAdapter;
 import com.sbgsoft.songbook.db.DBStrings;
@@ -310,18 +309,6 @@ public class MainActivity extends AppCompatActivity {
                 String folder = data.getStringExtra(OpenFile.RESULT_PATH);
                 exportSet(folder);
             }
-        	// If returning from the reorder activity
-        	else if (activityType.equals(StaticVars.REORDER_ACTIVITY)) {
-        		String[] newOrder = data.getStringArrayExtra(StaticVars.SET_SONGS_KEY);
-        		String setName = data.getStringExtra(StaticVars.SET_NAME_KEY);
-        		
-        		if(!dbAdapter.reorderSet(setName, newOrder)) {
-        			Toast.makeText(getApplicationContext(), "Could not update set order!", Toast.LENGTH_LONG).show();
-        		}
-        		
-        		// Refresh the current set view
-                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
-        	}
         } 
 
     }
@@ -1726,32 +1713,6 @@ public class MainActivity extends AppCompatActivity {
     	});
     	
     	alert.show();
-    }
-
-    /**
-     * Calls the reorder activity for the specified set
-     * @param setName The set to reorder
-     */
-    public void reorderSet(String setName) {
-        // Get the set songs
-        Cursor c = dbAdapter.getSetSongs(setName);
-        String[] setSongs = new String[c.getCount()];
-        c.moveToFirst();
-        int songCounter = 0;
-
-        // Loop through each song in the current set and add it to the array
-        while(!c.isAfterLast()) {
-            String song = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_NAME));
-            setSongs[songCounter++] = song;
-            c.moveToNext();
-        }
-        c.close();
-
-        // Edit the set
-        Intent i = new Intent(getBaseContext(), DragNDropListActivity.class);
-        i.putExtra(StaticVars.SET_SONGS_KEY, setSongs);
-        i.putExtra(StaticVars.SET_NAME_KEY, setName);
-        startActivityForResult(i, 1);
     }
 
     /**
