@@ -1,6 +1,7 @@
 package com.sbgsoft.songbook.songs;
 
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ public class EditSongDetailsActivity extends AppCompatActivity {
     private EditText linkET;
     private EditText bpmET;
     private Spinner timeSpin;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class EditSongDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_song_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        coordinatorLayout = (CoordinatorLayout)findViewById(R.id.editatt_coordinatorLayout);
 
         // Get the song name from the bundle
         Bundle extras = getIntent().getExtras();
@@ -53,11 +56,13 @@ public class EditSongDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Save the details and then exit the activity
-                saveDetails();
+                boolean success = saveDetails();
 
                 // Set result to OK and finish
-                setResult(RESULT_OK, getIntent());
-                finish();
+                if (success) {
+                    setResult(RESULT_OK, getIntent());
+                    finish();
+                }
             }
         });
 
@@ -110,7 +115,7 @@ public class EditSongDetailsActivity extends AppCompatActivity {
     /**
      * Saves the song details to the database
      */
-    private void saveDetails() {
+    private boolean saveDetails() {
         String key = keyET.getText().toString();
 
         // Upper case the key
@@ -121,9 +126,9 @@ public class EditSongDetailsActivity extends AppCompatActivity {
 
         // Check for a correct key
         if (!MainActivity.isValidKey(key)) {
-            Toast.makeText(getBaseContext(), "That is not a valid key!" +
-                    StaticVars.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
-            return;
+            Snackbar.make(coordinatorLayout, "That is not a valid key!", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            return false;
         }
 
         // Check for bpm populated
@@ -137,5 +142,7 @@ public class EditSongDetailsActivity extends AppCompatActivity {
         MainActivity.dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
                 authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
                 linkET.getText().toString(), bpm);
+
+        return true;
     }
 }
