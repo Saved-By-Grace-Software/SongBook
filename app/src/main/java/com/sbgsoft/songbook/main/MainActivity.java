@@ -102,6 +102,7 @@ import com.sbgsoft.songbook.sets.SetGroupArrayAdapter;
 import com.sbgsoft.songbook.sets.SetsTab;
 import com.sbgsoft.songbook.songs.ChordDisplay;
 import com.sbgsoft.songbook.songs.ChordProParser;
+import com.sbgsoft.songbook.songs.EditSongDetailsActivity;
 import com.sbgsoft.songbook.songs.SongActivity;
 import com.sbgsoft.songbook.songs.SongsTab;
 import com.sbgsoft.songbook.songs.TextFileImporter;
@@ -309,6 +310,14 @@ public class MainActivity extends AppCompatActivity {
                 String folder = data.getStringExtra(OpenFile.RESULT_PATH);
                 exportSet(folder);
             }
+            // If returning from an edit song details activity
+            else if (activityType.equals(StaticVars.EDIT_SONG_ATT_ACTIVITY)) {
+                // Refresh lists
+                ((SongsTab)songsFragment).refillSongsList();
+                ((SetsTab)setsFragment).refillSetsList();
+                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
+            }
+
         } 
 
     }
@@ -2216,85 +2225,12 @@ public class MainActivity extends AppCompatActivity {
      * @param songName The song to edit
      */
     public void editSongAtt(final String songName) {
-    	CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
-    	alert.setTitle("Song Attributes");
+        // Create the edit activity intent
+        Intent i = new Intent(this, EditSongDetailsActivity.class);
+        i.putExtra(StaticVars.SONG_NAME_KEY, songName);
 
-    	// Set the dialog view to gather user input
-    	LayoutInflater inflater = getLayoutInflater();
-    	View dialoglayout = inflater.inflate(R.layout.add_song, (ViewGroup) findViewById(R.id.add_song_root));
-    	alert.setView(dialoglayout);
-    	final EditText songNameET = (EditText)dialoglayout.findViewById(R.id.add_song_name);
-    	final EditText authorET = (EditText)dialoglayout.findViewById(R.id.add_song_author);
-    	final EditText keyET = (EditText)dialoglayout.findViewById(R.id.add_song_key);
-        final EditText linkET = (EditText)dialoglayout.findViewById(R.id.add_song_link);
-        final EditText bpmET = (EditText)dialoglayout.findViewById(R.id.add_song_bpm);
-        final Spinner timeSpin = (Spinner)dialoglayout.findViewById(R.id.add_song_time);
-    	
-    	// Populate the text boxes
-    	songNameET.setText(songName);
-    	authorET.setText(dbAdapter.getSongAuthor(songName));
-    	keyET.setText(dbAdapter.getSongKey(songName));
-        linkET.setText(dbAdapter.getSongLink(songName));
-
-        // Get the beats per minute and populate
-        int bpm = dbAdapter.getSongBpm(songName);
-        if (bpm > 0)
-            bpmET.setText(Integer.toString(bpm));
-
-        // Get the time signature and select the spinner
-        TimeSignature ts = dbAdapter.getSongTimeSignature(songName);
-        if (ts.noteOneBeat > 0 && ts.beatsPerBar > 0) {
-            String[] timeSigs = getResources().getStringArray(R.array.time_signatures);
-            int loc = Arrays.asList(timeSigs).indexOf(ts.toString());
-            if (loc >= 0 && loc < timeSpin.getCount())
-                timeSpin.setSelection(loc);
-        } else {
-            timeSpin.setSelection(3);
-        }
-    	
-    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String key = keyET.getText().toString();
-
-                // Upper case the key
-                if (key.length() > 1)
-                    key = key.substring(0, 1).toUpperCase(Locale.US) + key.substring(1).trim();
-                else if (key.length() > 0)
-                    key = key.toUpperCase(Locale.US).trim();
-
-                // Check for a correct key
-                if (!isValidKey(key)) {
-                    Toast.makeText(getBaseContext(), "That is not a valid key!" +
-                            StaticVars.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                // Check for bpm populated
-                int bpm = 0;
-                try {
-                    bpm = Integer.parseInt(bpmET.getText().toString());
-                } catch (NumberFormatException nfe) {
-                }
-
-                // Update the song in the database
-                dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
-                        authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
-                        linkET.getText().toString(), bpm);
-
-                // Refresh lists
-                ((SongsTab)songsFragment).refillSongsList();
-                ((SetsTab)setsFragment).refillSetsList();
-                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
-
-                // Close the dialog
-                dialog.dismiss();
-            }
-        });
-    	
-    	alert.setNegativeButton("Cancel", null);
-    	alert.setCanceledOnTouchOutside(true);
-    	
-    	alert.show();
+        // Start the activity
+        startActivityForResult(i, StaticVars.EDIT_SONG_ATT);
     }
 
     /**
@@ -2808,7 +2744,7 @@ public class MainActivity extends AppCompatActivity {
      * @param songKey The key
      * @return True if valid, false if invalid
      */
-    private boolean isValidKey(String songKey) {
+    public static boolean isValidKey(String songKey) {
         boolean ret = true;
 
         // Check for a correct key

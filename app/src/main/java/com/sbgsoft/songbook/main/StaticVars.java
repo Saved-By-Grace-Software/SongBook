@@ -22,7 +22,6 @@ public class StaticVars {
 	
 	// Activity Strings
 	public static final String ACTIVITY_RESPONSE_TYPE = "activityResponseType";
-	public static final String REORDER_ACTIVITY = "reorderActivity";
 	public static final String IMPORT_SONG_ACTIVITY = "importSongActivity";
 	public static final String IMPORT_DB_ACTIVITY = "importDBActivity";
     public static final String IMPORT_SET_ACTIVITY = "importSetActivity";
@@ -30,6 +29,7 @@ public class StaticVars {
     public static final String EXPORT_SET_ACTIVITY = "exportSetActivity";
 	public static final String FILE_ACTIVITY_FILE = "fileActivityFile";
 	public static final String FILE_ACTIVITY_FOLDER = "fileActivityFolder";
+    public static final String EDIT_SONG_ATT_ACTIVITY = "editSongAttributesActivity";
 
     // Settings Strings
     public static final String SETTINGS_METRONOME_STATE_ON = "ON";
@@ -100,7 +100,6 @@ public class StaticVars {
 	// Set Context Menu Keys
 	public static final int EDIT_SET = 100;
 	public static final int EDIT_SET_ATT = 110;
-	public static final int REORDER_SET = 120;
 	public static final int SET_GROUPS_ADD = 130;
 	public static final int SET_GROUPS_DEL = 140;
 	public static final int SHARE_SET = 150;
