@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
@@ -67,8 +68,8 @@ public class SetSongFragment extends Fragment {
         scaleGestureDetector = new ScaleGestureDetector(getActivity(), new simpleOnScaleGestureListener());
 
         // Get a reference to the edit/transpose buttons
-        Button editButton = (Button)mView.findViewById(R.id.set_song_edit_button);
-        Button transposeButton = (Button)mView.findViewById(R.id.set_song_transpose_button);
+        FloatingActionButton editButton = (FloatingActionButton)mView.findViewById(R.id.set_song_edit_button);
+        FloatingActionButton transposeButton = (FloatingActionButton)mView.findViewById(R.id.set_song_transpose_button);
 
         // Get the current settings
         Settings settings = MainActivity.dbAdapter.getCurrentSettings();
