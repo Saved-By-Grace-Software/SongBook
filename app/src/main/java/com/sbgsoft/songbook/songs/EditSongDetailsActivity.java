@@ -1,5 +1,6 @@
 package com.sbgsoft.songbook.songs;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.files.OpenFile;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.sets.CurrentSetTab;
@@ -144,5 +146,19 @@ public class EditSongDetailsActivity extends AppCompatActivity {
                 linkET.getText().toString(), bpm);
 
         return true;
+    }
+
+    /**
+     * Click handler for the track edit test
+     * @param v
+     */
+    public void onTrackClick(View v) {
+        // Create the open file intent
+        Intent intent = new Intent(getBaseContext(), OpenFile.class);
+        intent.putExtra(StaticVars.FILE_ACTIVITY_KEY, StaticVars.EDIT_SONG_ATT_ACTIVITY);
+        intent.putExtra(StaticVars.FILE_ACTIVITY_TYPE_KEY, StaticVars.FILE_ACTIVITY_FILE);
+
+        // Start the activity
+        startActivityForResult(intent, 1);
     }
 }

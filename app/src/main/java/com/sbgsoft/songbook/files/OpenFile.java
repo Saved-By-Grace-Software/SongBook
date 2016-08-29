@@ -81,7 +81,9 @@ public class OpenFile extends ListActivity {
         
         // Fill the file type spinner
         if (activityType.equals(StaticVars.IMPORT_DB_ACTIVITY) || activityType.equals(StaticVars.IMPORT_SET_ACTIVITY)) {
-        	fillDBFileTypeSpinner();
+			fillDBFileTypeSpinner();
+		} else if (activityType.equals(StaticVars.EDIT_SONG_ATT_ACTIVITY)) {
+			fillAllFileTypeSpinner();
         } else {
         	fillSongFileTypeSpinner();
         }
@@ -90,12 +92,13 @@ public class OpenFile extends ListActivity {
         getDir(root);
     }
 	
-	private void fillSongFileTypeSpinner() {
+	private void fillAllFileTypeSpinner() {
 		// Set the extensions
-		extensions = new ArrayList<String>(Arrays.asList("txt", "pro", "chordpro", "chopro"));
+		extensions = new ArrayList<String>();
+		allFiles = true;
 		
 		// Create the spinner adapter
-		ArrayList<String> fileTypes = new ArrayList<String>(Arrays.asList("SongBook Files", "All Files"));
+		ArrayList<String> fileTypes = new ArrayList<String>(Arrays.asList("All Files"));
     	ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.file_spinner_item, fileTypes);
     	adapter.setDropDownViewResource( R.layout.file_spinner_dropdown_item );
     	final Spinner fileSpinner = (Spinner) findViewById(R.id.file_type_spinner);
@@ -120,6 +123,38 @@ public class OpenFile extends ListActivity {
     	
     	// Set the adapter
     	fileSpinner.setAdapter(adapter);
+	}
+
+	private void fillSongFileTypeSpinner() {
+		// Set the extensions
+		extensions = new ArrayList<String>(Arrays.asList("txt", "pro", "chordpro", "chopro"));
+
+		// Create the spinner adapter
+		ArrayList<String> fileTypes = new ArrayList<String>(Arrays.asList("SongBook Files", "All Files"));
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.file_spinner_item, fileTypes);
+		adapter.setDropDownViewResource( R.layout.file_spinner_dropdown_item );
+		final Spinner fileSpinner = (Spinner) findViewById(R.id.file_type_spinner);
+
+		// Set the on click listener for each item
+		fileSpinner.setOnItemSelectedListener(new Spinner.OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> a, View v, int position, long row) {
+				if (((String)a.getItemAtPosition(position)).equals("All Files")) {
+					allFiles = true;
+					getDir(currentDir);
+				}
+				else {
+					allFiles = false;
+					getDir(currentDir);
+				}
+			}
+
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// Nothing was clicked so ignore it
+			}
+		});
+
+		// Set the adapter
+		fileSpinner.setAdapter(adapter);
 	}
 	
 	private void fillDBFileTypeSpinner() {

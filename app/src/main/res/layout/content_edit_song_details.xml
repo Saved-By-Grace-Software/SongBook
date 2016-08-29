@@ -151,6 +151,39 @@
                     android:entries="@array/time_signatures"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_song_track"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/editatt_song_track"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="20sp"
+                    style="@android:style/Widget.EditText" />
+            </LinearLayout>
+
+            <com.sbgsoft.songbook.views.SongBookThemeButton
+                android:id="@+id/editatt_song_track_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textColor="@color/defaultTextColor"
+                android:text="@string/add_song_track_button"
+                android:onClick="onTrackClick" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
