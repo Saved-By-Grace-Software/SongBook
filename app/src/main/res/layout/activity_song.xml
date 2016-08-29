@@ -53,6 +53,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_transform_black_24dp"
         app:backgroundTint="@color/TransparentLightGrey"
         android:onClick="onTransposeButtonClick" />
@@ -67,5 +68,17 @@
         android:src="@drawable/ic_mode_edit_black_24dp"
         app:backgroundTint="@color/TransparentLightGrey"
         android:onClick="onEditButtonClick"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/song_play_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_toLeftOf="@+id/song_edit_button"
+        android:src="@drawable/ic_play_arrow_black_24dp"
+        app:backgroundTint="@color/TransparentLightGrey"
+        android:visibility="gone"
+        android:onClick="onPlayButtonClick"/>
 
 </RelativeLayout>
