@@ -11,6 +11,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -55,8 +57,9 @@ public class SongActivity extends Activity {
     private String backgroundTrack = "";
     private FloatingActionButton playButton;
     private Drawable playImage;
-    private Drawable pauseImage;
+    private Drawable stopImage;
     private boolean isPlaying = false;
+    private MediaPlayer mPlayer;
     //endregion
 
 
@@ -89,7 +92,7 @@ public class SongActivity extends Activity {
 
         // Set the play/pause button images
         playImage = ContextCompat.getDrawable(this, R.drawable.ic_play_arrow_black_24dp);
-        pauseImage = ContextCompat.getDrawable(this, R.drawable.ic_pause_black_24dp);
+        stopImage = ContextCompat.getDrawable(this, R.drawable.ic_stop_black_24dp);
         
         // Populate it with the song text
         Bundle extras = getIntent().getExtras();
@@ -116,6 +119,7 @@ public class SongActivity extends Activity {
             backgroundTrack = MainActivity.dbAdapter.getSongTrack(mSongItem.getName());
             if (backgroundTrack != null && backgroundTrack != "")
             {
+                // Enable the play button
                 playButton = (FloatingActionButton)findViewById(R.id.song_play_button);
                 playButton.setVisibility(View.VISIBLE);
             }
@@ -177,6 +181,11 @@ public class SongActivity extends Activity {
 
         // Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        // Resume the media player
+        if (mPlayer != null && isPlaying && !mPlayer.isPlaying()) {
+            startPlayer();
+        }
     }
     
     @Override 
@@ -189,6 +198,13 @@ public class SongActivity extends Activity {
         // Stop the metronome
         if (mMetronome != null)
             mMetronome.stop();
+
+        // Stop the media player and reset
+        if (mPlayer != null) {
+            stopPlayer();
+            isPlaying = false;
+            playButton.setImageDrawable(playImage);
+        }
     }
     
     @Override
@@ -201,6 +217,13 @@ public class SongActivity extends Activity {
         // Stop the metronome
         if (mMetronome != null)
             mMetronome.stop();
+
+        // Stop the media player
+        if (mPlayer != null) {
+            stopPlayer();
+            isPlaying = false;
+            playButton.setImageDrawable(playImage);
+        }
     }
 
     @Override
@@ -313,14 +336,16 @@ public class SongActivity extends Activity {
                 playButton.setImageDrawable(playImage);
 
                 // Stop playing the track
+                stopPlayer();
 
                 // Reset isPlaying
                 isPlaying = false;
             } else {
                 // Change the button image
-                playButton.setImageDrawable(pauseImage);
+                playButton.setImageDrawable(stopImage);
 
                 // Start playing the track
+                startPlayer();
 
                 // Reset isPlaying
                 isPlaying = true;
@@ -363,6 +388,41 @@ public class SongActivity extends Activity {
             LinearLayout metronomeBar = (LinearLayout)findViewById(R.id.metronome_bar);
             mMetronome.initialize(metronomeBar);
         }
+    }
+
+    /**
+     * Stops and resets the media player
+     */
+    private void stopPlayer() {
+        // Stop and release
+        if (mPlayer != null) {
+            mPlayer.stop();
+            mPlayer.release();
+            mPlayer = null;
+        }
+    }
+
+    /**
+     * Starts the media player
+     */
+    private void startPlayer() {
+        // Ensure stopped
+        stopPlayer();
+
+        // Configure the player
+        configurePlayer();
+
+        // Start the player
+        mPlayer.start();
+    }
+
+    /**
+     * Configures the media player
+     */
+    private void configurePlayer() {
+        // Configure the media player
+        mPlayer = MediaPlayer.create(this, Uri.parse(backgroundTrack));
+        mPlayer.setLooping(true);
     }
     //endregion
 

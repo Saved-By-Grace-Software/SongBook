@@ -240,14 +240,13 @@
       <file leaf-file-name="SongActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.60595447">
-              <caret line="314" column="41" selection-start-line="314" selection-start-column="41" selection-end-line="314" selection-end-column="41" />
+            <state vertical-scroll-proportion="0.78984237">
+              <caret line="224" column="51" selection-start-line="224" selection-start-column="51" selection-end-line="224" selection-end-column="51" />
               <folding>
                 <element signature="method#onCreate#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
-                <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
                 <element signature="docComment;method#onActivityResult#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onActivityResult#0;class#SongActivity#0" expanded="false" />
@@ -256,17 +255,16 @@
                 <element signature="docComment;method#onEditButtonClick#0;class#SongActivity#0" expanded="false" />
                 <element signature="method#onEditButtonClick#0;class#SongActivity#0" expanded="false" />
                 <element signature="docComment;method#onPlayButtonClick#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;method#initializeMetronome#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#initializeMetronome#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;method#stopPlayer#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#stopPlayer#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;method#startPlayer#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#startPlayer#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;method#configurePlayer#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#configurePlayer#0;class#SongActivity#0" expanded="false" />
+                <element signature="class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Metronome.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="51" column="25" selection-start-line="51" selection-start-column="25" selection-end-line="51" selection-end-column="25" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -2181,44 +2179,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="SongBook" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Songbook" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="songbook" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="songs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Metronome.java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
@@ -3190,7 +3150,7 @@
         <state vertical-scroll-proportion="0.75207984">
           <caret line="94" column="42" selection-start-line="94" selection-start-column="42" selection-end-line="94" selection-end-column="42" />
           <folding>
-            <element signature="e#2602#2663#0" expanded="true" />
+            <element signature="e#2602#2663#0" expanded="false" />
             <element signature="method#fillAllFileTypeSpinner#0;class#OpenFile#0" expanded="false" />
             <element signature="class#5122:5538" expanded="false" />
             <element signature="method#onItemSelected#0;class#5122:5538" expanded="false" />
@@ -3638,14 +3598,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.60595447">
-          <caret line="314" column="41" selection-start-line="314" selection-start-column="41" selection-end-line="314" selection-end-column="41" />
+        <state vertical-scroll-proportion="0.78984237">
+          <caret line="224" column="51" selection-start-line="224" selection-start-column="51" selection-end-line="224" selection-end-column="51" />
           <folding>
             <element signature="method#onCreate#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
-            <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
             <element signature="docComment;method#onActivityResult#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onActivityResult#0;class#SongActivity#0" expanded="false" />
@@ -3654,6 +3613,15 @@
             <element signature="docComment;method#onEditButtonClick#0;class#SongActivity#0" expanded="false" />
             <element signature="method#onEditButtonClick#0;class#SongActivity#0" expanded="false" />
             <element signature="docComment;method#onPlayButtonClick#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#initializeMetronome#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#initializeMetronome#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#stopPlayer#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#stopPlayer#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#startPlayer#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#startPlayer#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#configurePlayer#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#configurePlayer#0;class#SongActivity#0" expanded="false" />
+            <element signature="class#simpleOnScaleGestureListener#0;class#SongActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
