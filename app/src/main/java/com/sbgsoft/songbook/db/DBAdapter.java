@@ -1834,6 +1834,7 @@ public class DBAdapter {
                         DBStrings.TBLSONG_BPM + " int, " +
                         DBStrings.TBLSONG_TIME + " text, " +
                         DBStrings.TBLSONG_LINK + " text, " +
+                        DBStrings.TBLSONG_TRACK + " text, " +
     					DBStrings.TBLSONG_FILE + " text); " );
     			
     			// Song Group table
@@ -2007,6 +2008,12 @@ public class DBAdapter {
                     db.execSQL("UPDATE " + DBStrings.SETTINGS_TABLE + " " +
                             "SET " + DBStrings.TBLSETTINGS_CHORD_COLOR +
                             " = '" + StaticVars.SETTINGS_DEFAULT_CHORD_COLOR + "'");
+                }
+
+                // Updates from DB version 11 or lower
+                if (oldVersion < 11) {
+                    // Add metronome type column to the settings table
+                    db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_TRACK + " text");
                 }
     			
     			db.setTransactionSuccessful(); 

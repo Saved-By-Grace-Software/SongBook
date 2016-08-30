@@ -1,5 +1,6 @@
 package com.sbgsoft.songbook.songs;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -7,9 +8,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
@@ -29,6 +32,7 @@ public class EditSongDetailsActivity extends AppCompatActivity {
     private EditText keyET;
     private EditText linkET;
     private EditText bpmET;
+    private TextView trackTV;
     private Spinner timeSpin;
     private CoordinatorLayout coordinatorLayout;
 
@@ -80,6 +84,18 @@ public class EditSongDetailsActivity extends AppCompatActivity {
         });
     }
 
+    public synchronized void onActivityResult(final int requestCode,
+                                              int resultCode, final Intent data) {
+
+        if (resultCode == Activity.RESULT_OK) {
+            // Get the returned filepath
+            String fullTrackPath = data.getStringExtra(OpenFile.RESULT_PATH);
+
+            // Set the filepath for song track
+            trackTV.setText(getTrackDisplayName(fullTrackPath));
+        }
+    }
+
     /**
      * Fills the form with existing data from the database
      */
@@ -90,6 +106,7 @@ public class EditSongDetailsActivity extends AppCompatActivity {
         linkET = (EditText)findViewById(R.id.editatt_song_link);
         bpmET = (EditText)findViewById(R.id.editatt_song_bpm);
         timeSpin = (Spinner)findViewById(R.id.editatt_song_time);
+        trackTV = (TextView)findViewById(R.id.editatt_song_track);
 
     	// Populate the text boxes
     	songNameET.setText(songName);
@@ -160,5 +177,9 @@ public class EditSongDetailsActivity extends AppCompatActivity {
 
         // Start the activity
         startActivityForResult(intent, 1);
+    }
+
+    private String getTrackDisplayName(String fullPath) {
+        return fullPath.substring(fullPath.lastIndexOf("/")+1);
     }
 }
