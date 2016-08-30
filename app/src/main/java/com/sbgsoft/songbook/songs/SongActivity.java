@@ -10,7 +10,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -50,6 +52,11 @@ public class SongActivity extends Activity {
     private int EDIT_SONG_ACTIVITY = 1;
     private String mMetronomeState = StaticVars.SETTINGS_METRONOME_STATE_WITHBPM;
     private boolean mBrightMetronome = false;
+    private String backgroundTrack = "";
+    private FloatingActionButton playButton;
+    private Drawable playImage;
+    private Drawable pauseImage;
+    private boolean isPlaying = false;
     //endregion
 
 
@@ -79,6 +86,10 @@ public class SongActivity extends Activity {
         Settings settings = MainActivity.dbAdapter.getCurrentSettings();
         mMetronomeState = settings.getMetronomeState();
         mBrightMetronome = settings.getUseBrightMetronome();
+
+        // Set the play/pause button images
+        playImage = ContextCompat.getDrawable(this, R.drawable.ic_play_arrow_black_24dp);
+        pauseImage = ContextCompat.getDrawable(this, R.drawable.ic_pause_black_24dp);
         
         // Populate it with the song text
         Bundle extras = getIntent().getExtras();
@@ -100,6 +111,14 @@ public class SongActivity extends Activity {
 
             // Initialize the metronome
             initializeMetronome();
+
+            // Enable the play button if a background track exists
+            backgroundTrack = MainActivity.dbAdapter.getSongTrack(mSongItem.getName());
+            if (backgroundTrack != null && backgroundTrack != "")
+            {
+                playButton = (FloatingActionButton)findViewById(R.id.song_play_button);
+                playButton.setVisibility(View.VISIBLE);
+            }
         }
         
         // Keep the screen on
@@ -281,6 +300,32 @@ public class SongActivity extends Activity {
 
         // Start the activity
         startActivityForResult(i, EDIT_SONG_ACTIVITY);
+    }
+
+    /**
+     * Handles the play button click
+     * @param v
+     */
+    public void onPlayButtonClick(View v) {
+        if (playButton != null) {
+            if (isPlaying) {
+                // Change the button image
+                playButton.setImageDrawable(playImage);
+
+                // Stop playing the track
+
+                // Reset isPlaying
+                isPlaying = false;
+            } else {
+                // Change the button image
+                playButton.setImageDrawable(pauseImage);
+
+                // Start playing the track
+
+                // Reset isPlaying
+                isPlaying = true;
+            }
+        }
     }
 
     /**

@@ -11,8 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="88569f7d-c5a7-41ba-8f9d-047b1e00f31d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/EditSongDetailsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/EditSongDetailsActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
     </list>
     <ignored path="SongBook.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -56,7 +55,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="322" column="5" selection-start-line="281" selection-start-column="4" selection-end-line="322" selection-end-column="5" />
+              <caret line="276" column="5" selection-start-line="276" selection-start-column="5" selection-end-line="276" selection-end-column="5" />
               <folding>
                 <element signature="e#4224#4248#0" expanded="false" />
                 <element signature="docComment;method#onCreate#0;class#MainActivity#0" expanded="false" />
@@ -238,207 +237,50 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StaticVars.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/StaticVars.java">
+      <file leaf-file-name="SongActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="31" column="53" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="53" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="EditSongDetailsActivity.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/EditSongDetailsActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.61295974">
-              <caret line="119" column="57" selection-start-line="119" selection-start-column="57" selection-end-line="119" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.60595447">
+              <caret line="314" column="41" selection-start-line="314" selection-start-column="41" selection-end-line="314" selection-end-column="41" />
               <folding>
-                <element signature="method#onCreate#0;class#EditSongDetailsActivity#0" expanded="false" />
-                <element signature="docComment;method#saveDetails#0;class#EditSongDetailsActivity#0" expanded="false" />
-                <element signature="method#saveDetails#0;class#EditSongDetailsActivity#0" expanded="false" />
-                <element signature="docComment;method#onTrackClick#0;class#EditSongDetailsActivity#0" expanded="false" />
+                <element signature="method#onCreate#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;method#onActivityResult#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onActivityResult#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;method#onEditButtonClick#0;class#SongActivity#0" expanded="false" />
+                <element signature="method#onEditButtonClick#0;class#SongActivity#0" expanded="false" />
+                <element signature="docComment;method#onPlayButtonClick#0;class#SongActivity#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="content_edit_song_details.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_edit_song_details.xml">
+      <file leaf-file-name="Metronome.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-51.618183">
-              <caret line="167" column="55" selection-start-line="167" selection-start-column="37" selection-end-line="167" selection-end-column="55" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="51" column="25" selection-start-line="51" selection-start-column="25" selection-end-line="51" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_song.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-7.581818">
+              <caret line="78" column="55" selection-start-line="78" selection-start-column="31" selection-end-line="78" selection-end-column="55" />
               <folding />
             </state>
           </provider>
           <provider editor-type-id="android-designer">
             <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DBAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="1016" column="48" selection-start-line="1016" selection-start-column="48" selection-end-line="1016" selection-end-column="48" />
-              <folding>
-                <element signature="e#1156#1180#0" expanded="false" />
-                <element signature="docComment;method#DBAdapter#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#open#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#open#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#close#0;class#DBAdapter#0" expanded="false" />
-                <element signature="e#2164#2191#0" expanded="false" />
-                <element signature="docComment;method#getCurrentSettings#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getCurrentSettings#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#setCurrentSettings#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#setCurrentSettings#0;class#DBAdapter#0" expanded="false" />
-                <element signature="e#5371#5393#0" expanded="false" />
-                <element signature="docComment;method#createSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#createSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#createSet#1;class#DBAdapter#0" expanded="false" />
-                <element signature="method#createSet#1;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#updateSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#updateSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#reorderSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#reorderSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#addSongToSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#addSongToSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#removeSongFromSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#removeSongFromSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSets#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSets#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSetsSearch#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSetsSearch#0;class#DBAdapter#0" expanded="false" />
-                <element signature="e#15192#15257#0" expanded="false" />
-                <element signature="docComment;method#addSetToGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#addSetToGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSetSongs#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSetSongs#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#deleteAllSets#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#deleteAllSets#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#deleteSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#deleteSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#isSongInSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#isSongInSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#removeSetFromGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#removeSetFromGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSetDate#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSetDate#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSetLink#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSetLink#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#updateSetAttributes#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#updateSetAttributes#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#createSong#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#createSong#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongs#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongs#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSong#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSong#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongsSearch#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongsSearch#0;class#DBAdapter#0" expanded="false" />
-                <element signature="e#29582#29648#0" expanded="false" />
-                <element signature="docComment;method#deleteAllSongs#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#deleteAllSongs#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#deleteSong#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#deleteSong#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongFile#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongFile#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#addSongToGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#addSongToGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#isSongInGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#isSongInGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#removeSongFromGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#removeSongFromGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongAuthor#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongAuthor#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongKey#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongKey#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongBpm#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongBpm#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#setSongBpm#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#setSongBpm#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#setSongTime#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#setSongTime#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongTimeSignature#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongTimeSignature#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongLink#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongLink#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongTrack#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongTrack#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#updateSongAttributes#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#updateSongAttributes#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#setSongKeyForSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#setSongKeyForSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongKeyForSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongKeyForSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongLastFive#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongLastFive#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongTotalUsage#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongTotalUsage#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSongGroups#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongGroups#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getSetOrderForSong#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSetOrderForSong#0;class#DBAdapter#0" expanded="false" />
-                <element signature="e#48035#48065#0" expanded="false" />
-                <element signature="docComment;method#setCurrentSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#setCurrentSet#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getCurrentSetSongs#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getCurrentSetSongs#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getCurrentSetName#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getCurrentSetName#0;class#DBAdapter#0" expanded="false" />
-                <element signature="e#51016#51045#0" expanded="false" />
-                <element signature="docComment;method#getSongGroupNames#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSongGroupNames#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#createSongGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#createSongGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#deleteSongGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#deleteSongGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#deleteAllSongGroups#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#deleteAllSongGroups#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getNumSongsPerGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getNumSongsPerGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getNumSongs#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getNumSongs#0;class#DBAdapter#0" expanded="false" />
-                <element signature="e#54853#54881#0" expanded="false" />
-                <element signature="docComment;method#getSetGroupNames#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getSetGroupNames#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#createSetGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#createSetGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#deleteSetGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#deleteSetGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#deleteAllSetGroups#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#deleteAllSetGroups#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getNumSetsPerGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getNumSetsPerGroup#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#getNumSets#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#getNumSets#0;class#DBAdapter#0" expanded="false" />
-                <element signature="e#58637#58671#0" expanded="false" />
-                <element signature="docComment;method#exportDBData#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#exportDBData#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#exportSetDBData#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#exportSetDBData#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#importDBData#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#importDBData#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#clearDB#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#clearDB#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#addDBDefaults#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#addDBDefaults#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#DatabaseHelper#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#onCreate#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
-                <element signature="docComment;method#addSetOrder#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
-                <element signature="method#addSetOrder#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DBStrings.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBStrings.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="6" column="49" selection-start-line="6" selection-start-column="49" selection-end-line="6" selection-end-column="49" />
-              <folding />
-            </state>
           </provider>
         </entry>
       </file>
@@ -2081,6 +1923,7 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/EditSongDetailsActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java" />
       </list>
     </option>
   </component>
@@ -2334,8 +2177,46 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="db" />
+              <option name="myItemId" value="songs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SongBook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="songs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Metronome.java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.ClassesTreeStructureProvider$PsiClassOwnerTreeNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -2787,7 +2668,8 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17534943" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17534943" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32929516" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -2799,7 +2681,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942432" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -2815,18 +2696,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="13" />
+      <option name="time" value="15" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemViewHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="32" selection-start-line="45" selection-start-column="32" selection-end-line="45" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3228,14 +3102,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.14945056">
-          <caret line="36" column="13" selection-start-line="36" selection-start-column="13" selection-end-line="36" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongsTab.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2989011">
@@ -3300,34 +3166,10 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7197802">
-          <caret line="80" column="33" selection-start-line="80" selection-start-column="33" selection-end-line="80" selection-end-column="33" />
-          <folding>
-            <element signature="e#1218#1238#0" expanded="true" />
-            <element signature="e#1406#1434#0" expanded="true" />
-            <element signature="e#2131#2150#0" expanded="true" />
-            <element signature="e#2627#2646#0" expanded="true" />
-            <element signature="e#3073#3092#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="71" column="68" selection-start-line="71" selection-start-column="68" selection-end-line="71" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/StaticVars.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="31" column="53" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="53" />
           <folding />
         </state>
       </provider>
@@ -3400,10 +3242,201 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.653846">
+          <caret line="44" column="17" selection-start-line="44" selection-start-column="17" selection-end-line="44" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBStrings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="49" selection-start-line="6" selection-start-column="49" selection-end-line="6" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1016" column="48" selection-start-line="1016" selection-start-column="48" selection-end-line="1016" selection-end-column="48" />
+          <folding>
+            <element signature="e#1156#1180#0" expanded="false" />
+            <element signature="docComment;method#DBAdapter#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#open#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#open#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#close#0;class#DBAdapter#0" expanded="false" />
+            <element signature="e#2164#2191#0" expanded="false" />
+            <element signature="docComment;method#getCurrentSettings#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getCurrentSettings#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#setCurrentSettings#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#setCurrentSettings#0;class#DBAdapter#0" expanded="false" />
+            <element signature="e#5371#5393#0" expanded="false" />
+            <element signature="docComment;method#createSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#createSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#createSet#1;class#DBAdapter#0" expanded="false" />
+            <element signature="method#createSet#1;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#updateSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#updateSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#reorderSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#reorderSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#addSongToSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#addSongToSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#removeSongFromSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#removeSongFromSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSets#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSets#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSetsSearch#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSetsSearch#0;class#DBAdapter#0" expanded="false" />
+            <element signature="e#15192#15257#0" expanded="false" />
+            <element signature="docComment;method#addSetToGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#addSetToGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSetSongs#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSetSongs#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#deleteAllSets#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#deleteAllSets#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#deleteSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#deleteSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#isSongInSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#isSongInSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#removeSetFromGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#removeSetFromGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSetDate#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSetDate#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSetLink#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSetLink#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#updateSetAttributes#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#updateSetAttributes#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#createSong#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#createSong#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongs#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongs#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSong#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSong#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongsSearch#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongsSearch#0;class#DBAdapter#0" expanded="false" />
+            <element signature="e#29582#29648#0" expanded="false" />
+            <element signature="docComment;method#deleteAllSongs#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#deleteAllSongs#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#deleteSong#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#deleteSong#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongFile#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongFile#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#addSongToGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#addSongToGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#isSongInGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#isSongInGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#removeSongFromGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#removeSongFromGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongAuthor#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongAuthor#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongKey#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongKey#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongBpm#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongBpm#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#setSongBpm#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#setSongBpm#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#setSongTime#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#setSongTime#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongTimeSignature#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongTimeSignature#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongLink#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongLink#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongTrack#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongTrack#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#updateSongAttributes#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#updateSongAttributes#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#setSongKeyForSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#setSongKeyForSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongKeyForSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongKeyForSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongLastFive#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongLastFive#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongTotalUsage#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongTotalUsage#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSongGroups#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongGroups#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getSetOrderForSong#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSetOrderForSong#0;class#DBAdapter#0" expanded="false" />
+            <element signature="e#48035#48065#0" expanded="false" />
+            <element signature="docComment;method#setCurrentSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#setCurrentSet#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getCurrentSetSongs#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getCurrentSetSongs#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getCurrentSetName#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getCurrentSetName#0;class#DBAdapter#0" expanded="false" />
+            <element signature="e#51016#51045#0" expanded="false" />
+            <element signature="docComment;method#getSongGroupNames#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSongGroupNames#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#createSongGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#createSongGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#deleteSongGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#deleteSongGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#deleteAllSongGroups#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#deleteAllSongGroups#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getNumSongsPerGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getNumSongsPerGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getNumSongs#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getNumSongs#0;class#DBAdapter#0" expanded="false" />
+            <element signature="e#54853#54881#0" expanded="false" />
+            <element signature="docComment;method#getSetGroupNames#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getSetGroupNames#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#createSetGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#createSetGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#deleteSetGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#deleteSetGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#deleteAllSetGroups#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#deleteAllSetGroups#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getNumSetsPerGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getNumSetsPerGroup#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#getNumSets#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#getNumSets#0;class#DBAdapter#0" expanded="false" />
+            <element signature="e#58637#58671#0" expanded="false" />
+            <element signature="docComment;method#exportDBData#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#exportDBData#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#exportSetDBData#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#exportSetDBData#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#importDBData#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#importDBData#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#clearDB#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#clearDB#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#addDBDefaults#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#addDBDefaults#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#DatabaseHelper#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#onCreate#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
+            <element signature="docComment;method#addSetOrder#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
+            <element signature="method#addSetOrder#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/EditSongDetailsActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.19614711">
+          <caret line="105" column="62" selection-start-line="105" selection-start-column="62" selection-end-line="105" selection-end-column="62" />
+          <folding>
+            <element signature="method#onCreate#0;class#EditSongDetailsActivity#0" expanded="false" />
+            <element signature="docComment;method#saveDetails#0;class#EditSongDetailsActivity#0" expanded="false" />
+            <element signature="method#saveDetails#0;class#EditSongDetailsActivity#0" expanded="false" />
+            <element signature="docComment;method#onTrackClick#0;class#EditSongDetailsActivity#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/StaticVars.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.02977233">
+          <caret line="31" column="53" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="322" column="5" selection-start-line="281" selection-start-column="4" selection-end-line="322" selection-end-column="5" />
+          <caret line="276" column="5" selection-start-line="276" selection-start-column="5" selection-end-line="276" selection-end-column="5" />
           <folding>
             <element signature="e#4224#4248#0" expanded="false" />
             <element signature="docComment;method#onCreate#0;class#MainActivity#0" expanded="false" />
@@ -3584,185 +3617,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/Metronome.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-8.653846">
-          <caret line="44" column="17" selection-start-line="44" selection-start-column="17" selection-end-line="44" selection-end-column="17" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="51" column="25" selection-start-line="51" selection-start-column="25" selection-end-line="51" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBStrings.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_song.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="49" selection-start-line="6" selection-start-column="49" selection-end-line="6" selection-end-column="49" />
+        <state vertical-scroll-proportion="-7.581818">
+          <caret line="78" column="55" selection-start-line="78" selection-start-column="31" selection-end-line="78" selection-end-column="55" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1016" column="48" selection-start-line="1016" selection-start-column="48" selection-end-line="1016" selection-end-column="48" />
-          <folding>
-            <element signature="e#1156#1180#0" expanded="false" />
-            <element signature="docComment;method#DBAdapter#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#open#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#open#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#close#0;class#DBAdapter#0" expanded="false" />
-            <element signature="e#2164#2191#0" expanded="false" />
-            <element signature="docComment;method#getCurrentSettings#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getCurrentSettings#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#setCurrentSettings#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#setCurrentSettings#0;class#DBAdapter#0" expanded="false" />
-            <element signature="e#5371#5393#0" expanded="false" />
-            <element signature="docComment;method#createSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#createSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#createSet#1;class#DBAdapter#0" expanded="false" />
-            <element signature="method#createSet#1;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#updateSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#updateSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#reorderSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#reorderSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#addSongToSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#addSongToSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#removeSongFromSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#removeSongFromSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSets#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSets#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSetsSearch#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSetsSearch#0;class#DBAdapter#0" expanded="false" />
-            <element signature="e#15192#15257#0" expanded="false" />
-            <element signature="docComment;method#addSetToGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#addSetToGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSetSongs#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSetSongs#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#deleteAllSets#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#deleteAllSets#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#deleteSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#deleteSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#isSongInSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#isSongInSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#removeSetFromGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#removeSetFromGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSetDate#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSetDate#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSetLink#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSetLink#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#updateSetAttributes#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#updateSetAttributes#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#createSong#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#createSong#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongs#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongs#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSong#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSong#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongsSearch#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongsSearch#0;class#DBAdapter#0" expanded="false" />
-            <element signature="e#29582#29648#0" expanded="false" />
-            <element signature="docComment;method#deleteAllSongs#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#deleteAllSongs#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#deleteSong#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#deleteSong#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongFile#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongFile#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#addSongToGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#addSongToGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#isSongInGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#isSongInGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#removeSongFromGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#removeSongFromGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongAuthor#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongAuthor#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongKey#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongKey#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongBpm#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongBpm#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#setSongBpm#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#setSongBpm#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#setSongTime#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#setSongTime#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongTimeSignature#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongTimeSignature#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongLink#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongLink#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongTrack#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongTrack#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#updateSongAttributes#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#updateSongAttributes#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#setSongKeyForSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#setSongKeyForSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongKeyForSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongKeyForSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongLastFive#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongLastFive#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongTotalUsage#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongTotalUsage#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSongGroups#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongGroups#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getSetOrderForSong#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSetOrderForSong#0;class#DBAdapter#0" expanded="false" />
-            <element signature="e#48035#48065#0" expanded="false" />
-            <element signature="docComment;method#setCurrentSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#setCurrentSet#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getCurrentSetSongs#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getCurrentSetSongs#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getCurrentSetName#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getCurrentSetName#0;class#DBAdapter#0" expanded="false" />
-            <element signature="e#51016#51045#0" expanded="false" />
-            <element signature="docComment;method#getSongGroupNames#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSongGroupNames#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#createSongGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#createSongGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#deleteSongGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#deleteSongGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#deleteAllSongGroups#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#deleteAllSongGroups#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getNumSongsPerGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getNumSongsPerGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getNumSongs#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getNumSongs#0;class#DBAdapter#0" expanded="false" />
-            <element signature="e#54853#54881#0" expanded="false" />
-            <element signature="docComment;method#getSetGroupNames#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getSetGroupNames#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#createSetGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#createSetGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#deleteSetGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#deleteSetGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#deleteAllSetGroups#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#deleteAllSetGroups#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getNumSetsPerGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getNumSetsPerGroup#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#getNumSets#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#getNumSets#0;class#DBAdapter#0" expanded="false" />
-            <element signature="e#58637#58671#0" expanded="false" />
-            <element signature="docComment;method#exportDBData#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#exportDBData#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#exportSetDBData#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#exportSetDBData#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#importDBData#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#importDBData#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#clearDB#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#clearDB#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#addDBDefaults#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#addDBDefaults#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#DatabaseHelper#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#onCreate#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
-            <element signature="docComment;method#addSetOrder#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
-            <element signature="method#addSetOrder#0;class#DatabaseHelper#0;class#DBAdapter#0" expanded="false" />
-          </folding>
-        </state>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/EditSongDetailsActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.61295974">
-          <caret line="119" column="57" selection-start-line="119" selection-start-column="57" selection-end-line="119" selection-end-column="57" />
+        <state vertical-scroll-proportion="0.60595447">
+          <caret line="314" column="41" selection-start-line="314" selection-start-column="41" selection-end-line="314" selection-end-column="41" />
           <folding>
-            <element signature="method#onCreate#0;class#EditSongDetailsActivity#0" expanded="false" />
-            <element signature="docComment;method#saveDetails#0;class#EditSongDetailsActivity#0" expanded="false" />
-            <element signature="method#saveDetails#0;class#EditSongDetailsActivity#0" expanded="false" />
-            <element signature="docComment;method#onTrackClick#0;class#EditSongDetailsActivity#0" expanded="false" />
+            <element signature="method#onCreate#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStart#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onResume#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onPause#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onStop#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onCreateOptionsMenu#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onActivityResult#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onActivityResult#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onTransposeButtonClick#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onEditButtonClick#0;class#SongActivity#0" expanded="false" />
+            <element signature="method#onEditButtonClick#0;class#SongActivity#0" expanded="false" />
+            <element signature="docComment;method#onPlayButtonClick#0;class#SongActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>
