@@ -35,6 +35,7 @@ public class EditSongDetailsActivity extends AppCompatActivity {
     private TextView trackTV;
     private Spinner timeSpin;
     private CoordinatorLayout coordinatorLayout;
+    private String fullTrackPath = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,7 @@ public class EditSongDetailsActivity extends AppCompatActivity {
 
         if (resultCode == Activity.RESULT_OK) {
             // Get the returned filepath
-            String fullTrackPath = data.getStringExtra(OpenFile.RESULT_PATH);
+            fullTrackPath = data.getStringExtra(OpenFile.RESULT_PATH);
 
             // Set the filepath for song track
             trackTV.setText(getTrackDisplayName(fullTrackPath));
@@ -113,6 +114,10 @@ public class EditSongDetailsActivity extends AppCompatActivity {
     	authorET.setText(MainActivity.dbAdapter.getSongAuthor(songName));
     	keyET.setText(MainActivity.dbAdapter.getSongKey(songName));
         linkET.setText(MainActivity.dbAdapter.getSongLink(songName));
+
+        // Populate the background track
+        fullTrackPath = MainActivity.dbAdapter.getSongTrack(songName);
+        trackTV.setText(getTrackDisplayName(fullTrackPath));
 
         // Get the beats per minute and populate
         int bpm = MainActivity.dbAdapter.getSongBpm(songName);
@@ -160,7 +165,7 @@ public class EditSongDetailsActivity extends AppCompatActivity {
         // Update the song in the database
         MainActivity.dbAdapter.updateSongAttributes(songName, songNameET.getText().toString(),
                 authorET.getText().toString(), key, String.valueOf(timeSpin.getSelectedItem()),
-                linkET.getText().toString(), bpm);
+                linkET.getText().toString(), bpm, fullTrackPath);
 
         return true;
     }

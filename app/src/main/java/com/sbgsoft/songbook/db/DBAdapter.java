@@ -1010,6 +1010,26 @@ public class DBAdapter {
     }
 
     /**
+     * Gets the song background track
+     * @param songName The song to get the link for
+     * @return The song background track
+     */
+    public String getSongTrack(String songName) {
+        try {
+            Cursor c = mDb.rawQuery("SELECT " + DBStrings.TBLSONG_ID + " as _id, " + DBStrings.TBLSONG_NAME + ", " + DBStrings.TBLSONG_TRACK + " FROM " + DBStrings.SONGS_TABLE +
+                    " WHERE " + DBStrings.TBLSONG_NAME + " = '" + songName + "'", null);
+            c.moveToFirst();
+            String ret = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSONG_TRACK));
+            c.close();
+            return ret;
+        } catch (IndexOutOfBoundsException e) {
+            return "";
+        } catch (SQLiteException s) {
+            return "";
+        }
+    }
+
+    /**
      * Updates the song attributes
      * @param origSongName The current name of the song
      * @param newSongName The updated name of the song
@@ -1019,7 +1039,7 @@ public class DBAdapter {
      * @param timeSignature The song time signature
      * @return
      */
-    public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature, String songLink, int bpm) {
+    public boolean updateSongAttributes(String origSongName, String newSongName, String author, String key, String timeSignature, String songLink, int bpm, String trackPath) {
         try {
             String query = "UPDATE " + DBStrings.SONGS_TABLE +
                     " SET " + DBStrings.TBLSONG_NAME + " = '" + newSongName + "', " +
@@ -1027,7 +1047,8 @@ public class DBAdapter {
                     DBStrings.TBLSONG_KEY + " = '" + key + "', " +
                     DBStrings.TBLSONG_BPM + " = " + bpm + ", " +
                     DBStrings.TBLSONG_LINK + " = '" + songLink + "', " +
-                    DBStrings.TBLSONG_TIME + " = '" + timeSignature + "' " +
+                    DBStrings.TBLSONG_TIME + " = '" + timeSignature + "', " +
+                    DBStrings.TBLSONG_TRACK + " = '" + trackPath + "' " +
                     " WHERE " + DBStrings.TBLSONG_NAME + " = '" + origSongName + "'";
             mDb.execSQL(query);
         } catch (SQLException e) {
@@ -2011,8 +2032,8 @@ public class DBAdapter {
                 }
 
                 // Updates from DB version 11 or lower
-                if (oldVersion < 11) {
-                    // Add metronome type column to the settings table
+                if (oldVersion < 12) {
+                    // Add background track column
                     db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_TRACK + " text");
                 }
     			
