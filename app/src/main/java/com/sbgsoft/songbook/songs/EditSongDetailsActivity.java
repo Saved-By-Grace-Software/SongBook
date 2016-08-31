@@ -185,6 +185,11 @@ public class EditSongDetailsActivity extends AppCompatActivity {
     }
 
     private String getTrackDisplayName(String fullPath) {
-        return fullPath.substring(fullPath.lastIndexOf("/")+1);
+        String ret = "";
+
+        if (fullPath != null) {
+            ret = fullPath.substring(fullPath.lastIndexOf("/")+1);
+        }
+        return ret;
     }
 }

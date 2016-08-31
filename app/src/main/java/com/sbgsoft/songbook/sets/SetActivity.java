@@ -163,6 +163,18 @@ public class SetActivity extends FragmentActivity {
         // Transpose the current song
         ((SetSongFragment)f).onEditButtonClick();
     }
+
+    /**
+     * Plays the current song's background track
+     * @param v
+     */
+    public void onPlayButtonClick(View v) {
+        // Get the current fragment
+        Fragment f = mPagerAdapter.mFragments.get(currentSong);
+
+        // Transpose the current song
+        ((SetSongFragment)f).onPlayButtonClick();
+    }
     
     
     /*****************************************************************************
