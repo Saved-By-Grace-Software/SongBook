@@ -10,20 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="88569f7d-c5a7-41ba-8f9d-047b1e00f31d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/android_android_23.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_23_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/appcompat_v7_23_0_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/cardview_v7_23_3_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/cardview_v7_23_3_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/recyclerview_v7_23_3_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/recyclerview_v7_23_3_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_annotations_23_3_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_annotations_23_3_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_23_3_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_v4_23_3_0.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Songbook.iml" afterPath="$PROJECT_DIR$/Songbook.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/EditSongDetailsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/EditSongDetailsActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
     </list>
     <ignored path="SongBook.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -259,31 +248,67 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SetSongFragment.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SetSongFragment.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.46192893">
-              <caret line="91" column="59" selection-start-line="91" selection-start-column="59" selection-end-line="91" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="374" column="7" selection-start-line="374" selection-start-column="7" selection-end-line="374" selection-end-column="7" />
               <folding>
+                <element signature="e#1418#1440#0" expanded="false" />
                 <element signature="method#onActivityCreated#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onCreateView#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#onStart#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onResume#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onPause#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onStop#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="docComment;method#onActivityResult#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#onActivityResult#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="docComment;method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="docComment;method#onEditButtonClick#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#onEditButtonClick#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="docComment;method#onPlayButtonClick#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onPlayButtonClick#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="docComment;method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="docComment;method#stopPlayer#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#stopPlayer#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="docComment;method#startPlayer#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#startPlayer#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="docComment;method#configurePlayer#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#configurePlayer#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="e#14567#14583#0" expanded="false" />
+                <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+                <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SetActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SetActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="167" column="48" selection-start-line="167" selection-start-column="48" selection-end-line="167" selection-end-column="48" />
-              <folding />
+            <state vertical-scroll-proportion="0.6311337">
+              <caret line="94" column="50" selection-start-line="94" selection-start-column="50" selection-end-line="94" selection-end-column="50" />
+              <folding>
+                <element signature="docComment;field#mViewPager#0;class#SetActivity#0" expanded="false" />
+                <element signature="docComment;method#onCreate#0;class#SetActivity#0" expanded="false" />
+                <element signature="e#3058#3552#0" expanded="true" />
+                <element signature="e#3551#3552#0" expanded="true" />
+                <element signature="method#onStart#0;class#SetActivity#0" expanded="false" />
+                <element signature="method#onResume#0;class#SetActivity#0" expanded="false" />
+                <element signature="method#onPause#0;class#SetActivity#0" expanded="false" />
+                <element signature="method#onStop#0;class#SetActivity#0" expanded="false" />
+                <element signature="method#onCreateOptionsMenu#0;class#SetActivity#0" expanded="false" />
+                <element signature="docComment;method#onTransposeButtonClick#0;class#SetActivity#0" expanded="false" />
+                <element signature="method#onTransposeButtonClick#0;class#SetActivity#0" expanded="false" />
+                <element signature="docComment;method#onEditButtonClick#0;class#SetActivity#0" expanded="false" />
+                <element signature="method#onEditButtonClick#0;class#SetActivity#0" expanded="false" />
+                <element signature="docComment;method#onPlayButtonClick#0;class#SetActivity#0" expanded="false" />
+                <element signature="docComment;class#PagerAdapter#0;class#SetActivity#0" expanded="false" />
+                <element signature="method#addFragment#0;class#PagerAdapter#0;class#SetActivity#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -3222,14 +3247,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="167" column="48" selection-start-line="167" selection-start-column="48" selection-end-line="167" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SongActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.7461929">
@@ -3427,17 +3444,61 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46192893">
-          <caret line="91" column="59" selection-start-line="91" selection-start-column="59" selection-end-line="91" selection-end-column="59" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="374" column="7" selection-start-line="374" selection-start-column="7" selection-end-line="374" selection-end-column="7" />
           <folding>
+            <element signature="e#1418#1440#0" expanded="false" />
             <element signature="method#onActivityCreated#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onCreateView#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#onStart#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onResume#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onPause#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onStop#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="docComment;method#onActivityResult#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#onActivityResult#0;class#SetSongFragment#0" expanded="false" />
             <element signature="docComment;method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#onTransposeButtonClick#0;class#SetSongFragment#0" expanded="false" />
             <element signature="docComment;method#onEditButtonClick#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#onEditButtonClick#0;class#SetSongFragment#0" expanded="false" />
             <element signature="docComment;method#onPlayButtonClick#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onPlayButtonClick#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="docComment;method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="docComment;method#stopPlayer#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#stopPlayer#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="docComment;method#startPlayer#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#startPlayer#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="docComment;method#configurePlayer#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#configurePlayer#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="e#14567#14583#0" expanded="false" />
+            <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+            <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6311337">
+          <caret line="94" column="50" selection-start-line="94" selection-start-column="50" selection-end-line="94" selection-end-column="50" />
+          <folding>
+            <element signature="docComment;field#mViewPager#0;class#SetActivity#0" expanded="false" />
+            <element signature="docComment;method#onCreate#0;class#SetActivity#0" expanded="false" />
+            <element signature="e#3058#3552#0" expanded="true" />
+            <element signature="e#3551#3552#0" expanded="true" />
+            <element signature="method#onStart#0;class#SetActivity#0" expanded="false" />
+            <element signature="method#onResume#0;class#SetActivity#0" expanded="false" />
+            <element signature="method#onPause#0;class#SetActivity#0" expanded="false" />
+            <element signature="method#onStop#0;class#SetActivity#0" expanded="false" />
+            <element signature="method#onCreateOptionsMenu#0;class#SetActivity#0" expanded="false" />
+            <element signature="docComment;method#onTransposeButtonClick#0;class#SetActivity#0" expanded="false" />
+            <element signature="method#onTransposeButtonClick#0;class#SetActivity#0" expanded="false" />
+            <element signature="docComment;method#onEditButtonClick#0;class#SetActivity#0" expanded="false" />
+            <element signature="method#onEditButtonClick#0;class#SetActivity#0" expanded="false" />
+            <element signature="docComment;method#onPlayButtonClick#0;class#SetActivity#0" expanded="false" />
+            <element signature="docComment;class#PagerAdapter#0;class#SetActivity#0" expanded="false" />
+            <element signature="method#addFragment#0;class#PagerAdapter#0;class#SetActivity#0" expanded="false" />
           </folding>
         </state>
       </provider>

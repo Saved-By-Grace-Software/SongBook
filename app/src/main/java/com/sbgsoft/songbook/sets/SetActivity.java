@@ -31,8 +31,6 @@ public class SetActivity extends FragmentActivity {
      * Class Variables
      * 
      *****************************************************************************/
-	TextView song;
-	FragmentTransaction transaction;
 	static ViewPager mViewPager;
 	static PagerAdapter mPagerAdapter;
 	private static int currentSong = 0;
@@ -84,10 +82,17 @@ public class SetActivity extends FragmentActivity {
 		mViewPager.setOffscreenPageLimit(5);
 		mViewPager.setCurrentItem(currentSong);
 		
-		mViewPager.setOnPageChangeListener(
+		mViewPager.addOnPageChangeListener(
 	            new ViewPager.SimpleOnPageChangeListener() {
 	                @Override
 	                public void onPageSelected(int position) {
+                        // Get the previous fragment
+                        Fragment f = mPagerAdapter.mFragments.get(currentSong);
+
+                        // Stop the track
+                        ((SetSongFragment)f).stopPlayer();
+
+                        // Update the current song
 	                	currentSong = position;
 	                }
 	            });
@@ -182,69 +187,6 @@ public class SetActivity extends FragmentActivity {
      * Classes
      * 
      *****************************************************************************/
-    /**
-     * Tab Listener class for displaying each tab
-     * @author SamIAm
-     *
-     * @param <T>
-     */
-    public static class TabListener<T extends Fragment> implements ActionBar.TabListener {
-        private Fragment mFragment;
-        private final Activity mActivity;
-        private final String mTag;
-        private final Class<T> mClass;
-
-        /** Constructor used each time a new tab is created.
-          * @param activity  The host Activity, used to instantiate the fragment
-          * @param tag  The identifier tag for the fragment
-          * @param clz  The fragment's Class, used to instantiate the fragment
-          */
-        public TabListener(Activity activity, String tag, Class<T> clz) {
-            mActivity = activity;
-            mTag = tag;
-            mClass = clz;
-        }
-
-        /* The following are each of the ActionBar.TabListener callbacks */
-
-        public void onTabSelected(Tab tab, FragmentTransaction ft) {
-            // Check if the fragment is already initialized
-            if (mFragment == null) {
-                // If not, instantiate and add it to the activity
-                mFragment = Fragment.instantiate(mActivity, mClass.getName());
-                ft.add(android.R.id.content, mFragment, mTag);
-            } else {
-                // If it exists, simply attach it in order to show it
-                ft.attach(mFragment);
-            }
-        }
-
-        public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-            if (mFragment != null) {
-                // Detach the fragment, because another one is being attached
-                ft.detach(mFragment);
-            }
-        }
-
-        public void onTabReselected(Tab tab, FragmentTransaction ft) {
-            // User selected the already selected tab. Usually do nothing.
-        }
-
-		public void onTabReselected(Tab arg0,
-				android.app.FragmentTransaction arg1) {
-			
-		}
-
-		public void onTabSelected(Tab arg0, android.app.FragmentTransaction arg1) {
-			mViewPager.setCurrentItem(arg0.getPosition());
-		}
-
-		public void onTabUnselected(Tab arg0,
-				android.app.FragmentTransaction arg1) {
-			
-		}
-    }
-    
     /**
      * Page adapter for switching between tabs
      * @author SamIAm

@@ -198,8 +198,6 @@ public class SetSongFragment extends Fragment {
         // Stop the media player and reset
         if (mPlayer != null) {
             stopPlayer();
-            isPlaying = false;
-            playButton.setImageDrawable(playImage);
         }
     }
 
@@ -214,8 +212,6 @@ public class SetSongFragment extends Fragment {
         // Stop the media player
         if (mPlayer != null) {
             stopPlayer();
-            isPlaying = false;
-            playButton.setImageDrawable(playImage);
         }
     }
 
@@ -309,23 +305,11 @@ public class SetSongFragment extends Fragment {
     public void onPlayButtonClick() {
         if (playButton != null) {
             if (isPlaying) {
-                // Change the button image
-                playButton.setImageDrawable(playImage);
-
                 // Stop playing the track
                 stopPlayer();
-
-                // Reset isPlaying
-                isPlaying = false;
             } else {
-                // Change the button image
-                playButton.setImageDrawable(stopImage);
-
                 // Start playing the track
                 startPlayer();
-
-                // Reset isPlaying
-                isPlaying = true;
             }
         }
     }
@@ -372,24 +356,33 @@ public class SetSongFragment extends Fragment {
     /**
      * Stops and resets the media player
      */
-    private void stopPlayer() {
+    public void stopPlayer() {
         // Stop and release
         if (mPlayer != null) {
+            // Stop the media player
             mPlayer.stop();
             mPlayer.release();
             mPlayer = null;
+
+            // Update the button
+            isPlaying = false;
+            playButton.setImageDrawable(playImage);
         }
     }
 
     /**
      * Starts the media player
      */
-    private void startPlayer() {
+    public void startPlayer() {
         // Ensure stopped
         stopPlayer();
 
         // Configure the player
         configurePlayer();
+
+        // Change the button image
+        playButton.setImageDrawable(stopImage);
+        isPlaying = true;
 
         // Start the player
         mPlayer.start();
