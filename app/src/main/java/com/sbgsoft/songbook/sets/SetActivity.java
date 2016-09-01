@@ -85,7 +85,7 @@ public class SetActivity extends FragmentActivity {
                         Fragment f = mPagerAdapter.mFragments.get(currentSong);
 
                         // Stop the track
-                        ((SetSongFragment)f).stopPlayer();
+                        ((SetSongFragment)f).stopPlayer(4);
 
                         // Update the current song
 	                	currentSong = position;

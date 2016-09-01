@@ -19,6 +19,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -365,7 +366,44 @@ public class SetSongFragment extends Fragment {
 
             // Update the button
             isPlaying = false;
-            playButton.setImageDrawable(playImage);
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    playButton.setImageDrawable(playImage);
+                }
+            });
+
+        }
+    }
+
+    /**
+     * Stops the player after fading out the track
+     * @param fadeOutTime
+     */
+    public void stopPlayer(final int fadeOutTime) {
+        if (mPlayer != null) {
+            // Create the thread
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    long endTime = System.currentTimeMillis() + (fadeOutTime * 1000);
+                    float decrement = 1 / ((float)fadeOutTime * 4);
+                    float vol = 1.0f;
+
+                    while (System.currentTimeMillis() < endTime) {
+                        vol -= decrement;
+                        mPlayer.setVolume(vol, vol);
+
+                        try {
+                            Thread.sleep(250);
+                        } catch (Exception e) {}
+                    }
+
+                    stopPlayer();
+                }
+            };
+
+            // Start the thread
+            Thread fadeOut = new Thread(runnable);
+            fadeOut.start();
         }
     }
 
