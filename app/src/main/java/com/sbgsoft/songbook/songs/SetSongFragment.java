@@ -306,7 +306,7 @@ public class SetSongFragment extends Fragment {
         if (playButton != null) {
             if (isPlaying) {
                 // Stop playing the track
-                stopPlayer();
+                stopPlayer(2);
             } else {
                 // Start playing the track
                 startPlayer();
