@@ -25,7 +25,6 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -100,17 +99,17 @@ public class SetSongFragment extends Fragment {
             transposeButton.setVisibility(View.VISIBLE);
         else
             transposeButton.setVisibility(View.GONE);
-        
+
         // Populate it with the song text
         Bundle extras = getArguments();
         if (extras != null) {
         	mSongItem = extras.getParcelable(StaticVars.SONG_ITEM_KEY);
-            
+
         	if (mSongItem.getKey().length() > 1)
             	mSongItem.setKey(mSongItem.getKey().substring(0, 1).toUpperCase(Locale.ENGLISH) + mSongItem.getKey().substring(1).trim());
             else
             	mSongItem.setKey(mSongItem.getKey().toUpperCase(Locale.ENGLISH));
-            
+
             // Populate the song text
             if (mSongItem.getText() != "") {
                 // Set spans for the chords and add to the textview
