@@ -121,6 +121,11 @@ public class DBAdapter {
     public boolean setCurrentSettings(Settings settings) {
         // Update the app settings
         try {
+            // Convert autoplay for db
+            int autoplay = 0;
+            if (settings.getAutoplayTrack())
+                autoplay = 1;
+
             String query =
                     "UPDATE " + DBStrings.SETTINGS_TABLE +
                     " SET " +
@@ -129,7 +134,7 @@ public class DBAdapter {
                     DBStrings.TBLSETTINGS_METRONOME_TYPE + " = " + settings.getUseBrightMetronomeInt() + ", " +
                     DBStrings.TBLSETTINGS_THEME_COLOR + " = '" + settings.getSongBookTheme().getThemeName() + "', " +
                     DBStrings.TBLSETTINGS_CHORD_COLOR + " = '" + settings.getChordColor() + "', " +
-                    DBStrings.TBLSETTINGS_AUTOPLAY + " = '" + settings.getAutoplayTrack() + "', " +
+                    DBStrings.TBLSETTINGS_AUTOPLAY + " = " + autoplay + ", " +
                     DBStrings.TBLSETTINGS_SET_TRANSPOSE + " = '" + settings.getShowTransposeInSetString() + "'";
 
             mDb.execSQL(query);

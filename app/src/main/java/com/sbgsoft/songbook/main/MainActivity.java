@@ -918,6 +918,7 @@ public class MainActivity extends AppCompatActivity {
         // Get the options views
         final CheckBox transposeOnCB = (CheckBox)dialoglayout.findViewById(R.id.settings_transpose_show);
         final CheckBox editOnCB = (CheckBox)dialoglayout.findViewById(R.id.settings_edit_show);
+        final CheckBox autoplayOnCB = (CheckBox)dialoglayout.findViewById(R.id.settings_autoplay);
         final RadioGroup metronomeStateRG = (RadioGroup)dialoglayout.findViewById(R.id.settings_metronome_radio);
         final RadioGroup metronomeTypeRG = (RadioGroup)dialoglayout.findViewById(R.id.settings_metronome_type_radio);
         final Spinner themeColorSpin = (Spinner)dialoglayout.findViewById(R.id.settings_theme_color_spinner);
@@ -926,6 +927,7 @@ public class MainActivity extends AppCompatActivity {
         // Update the views with the current settings
         transposeOnCB.setChecked(settings.getShowTransposeInSet());
         editOnCB.setChecked(settings.getShowEditInSet());
+        autoplayOnCB.setChecked(settings.getAutoplayTrack());
         if (settings.getMetronomeState().equals(StaticVars.SETTINGS_METRONOME_STATE_ON))
             metronomeStateRG.check(R.id.settings_metronome_on);
         else if (settings.getMetronomeState().equals(StaticVars.SETTINGS_METRONOME_STATE_OFF))
@@ -976,6 +978,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Create the settings object to save
                 Settings settings = new Settings(metronomeState, transposeOnCB.isChecked(), editOnCB.isChecked(), metronomeType);
+                settings.setAutoplayTrack(autoplayOnCB.isChecked());
 
                 // Set the color options
                 settings.setSongBookTheme(new SongBookTheme(String.valueOf(themeColorSpin.getSelectedItem())));
