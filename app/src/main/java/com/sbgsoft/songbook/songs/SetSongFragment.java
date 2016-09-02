@@ -57,6 +57,9 @@ public class SetSongFragment extends Fragment {
     private Drawable stopImage;
     private boolean isPlaying = false;
     private MediaPlayer mPlayer;
+    private Activity mActivity;
+    private boolean autostartWhenCreated = false;
+    private boolean hasTrack = false;
     //endregion
 
     //region Class Functions
@@ -68,13 +71,17 @@ public class SetSongFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mView = inflater.inflate(R.layout.activity_set_song, container, false);
+
+        // Check that activity is set
+        if (mActivity == null)
+            mActivity = getActivity();
 		
 		// Get the song textview
         song = (AutoFitTextView)mView.findViewById(R.id.song_text);
         song.setMovementMethod(new ScrollingMovementMethod());
 
         // Instantiate the scale class
-        scaleGestureDetector = new ScaleGestureDetector(getActivity(), new simpleOnScaleGestureListener());
+        scaleGestureDetector = new ScaleGestureDetector(mActivity, new simpleOnScaleGestureListener());
 
         // Get a reference to the edit/transpose buttons
         FloatingActionButton editButton = (FloatingActionButton)mView.findViewById(R.id.set_song_edit_button);
@@ -88,8 +95,8 @@ public class SetSongFragment extends Fragment {
         mBrightMetronome = settings.getUseBrightMetronome();
 
         // Set the play/pause button images
-        playImage = ContextCompat.getDrawable(getActivity(), R.drawable.ic_play_arrow_black_24dp);
-        stopImage = ContextCompat.getDrawable(getActivity(), R.drawable.ic_stop_black_24dp);
+        playImage = ContextCompat.getDrawable(mActivity, R.drawable.ic_play_arrow_black_24dp);
+        stopImage = ContextCompat.getDrawable(mActivity, R.drawable.ic_stop_black_24dp);
 
         // Enable/Disable the buttons according to the settings
         if (showEdit)
@@ -125,9 +132,16 @@ public class SetSongFragment extends Fragment {
             backgroundTrack = MainActivity.dbAdapter.getSongTrack(mSongItem.getName());
             if (backgroundTrack != null && backgroundTrack != "")
             {
+                // Set has track
+                hasTrack = true;
+
                 // Enable the play button
                 playButton = (FloatingActionButton)mView.findViewById(R.id.set_song_play_button);
                 playButton.setVisibility(View.VISIBLE);
+
+                // Autostart if set
+                if (autostartWhenCreated)
+                    startPlayer(4);
             }
         }
 
@@ -249,19 +263,19 @@ public class SetSongFragment extends Fragment {
     	
     	// Check to make sure the song has a proper key
     	if (!StaticVars.songKeys.contains(mSongItem.getKey())) {
-    		Toast.makeText(getActivity(), 
+    		Toast.makeText(mActivity,
     				"You cannot transpose a song without an legit assigned key. Please edit the song attributes, edit the key, and try again.", Toast.LENGTH_LONG).show();
     	}
     	else {
-    		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+    		AlertDialog.Builder alert = new AlertDialog.Builder(mActivity);
 
         	alert.setTitle("Transpose to Which Key?");
         	alert.setItems(StaticVars.songKeys.toArray(new CharSequence[StaticVars.songKeys.size()]), new OnClickListener() {
         		public void onClick (DialogInterface dialog, int whichItem) {
         			// Transpose the song
 					try {
-						FileInputStream fis = getActivity().openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
-						String transposedSongText = ChordProParser.ParseSongFile(getActivity().getApplicationContext(), mSongItem, StaticVars.songKeys.get(whichItem), fis, true, false);
+						FileInputStream fis = mActivity.openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
+						String transposedSongText = ChordProParser.ParseSongFile(mActivity.getApplicationContext(), mSongItem, StaticVars.songKeys.get(whichItem), fis, true, false);
 
                         if (disp != null) {
                             song.setText(disp.setChordClickableText(transposedSongText), TextView.BufferType.SPANNABLE);
@@ -269,10 +283,10 @@ public class SetSongFragment extends Fragment {
                             song.setText(Html.fromHtml(transposedSongText));
                         }
 					} catch (FileNotFoundException e) {
-						Toast.makeText(getActivity(), "Could not open song file!", Toast.LENGTH_LONG).show();
+						Toast.makeText(mActivity, "Could not open song file!", Toast.LENGTH_LONG).show();
 						return;
 					} catch (IOException e) {
-						Toast.makeText(getActivity(), "Could not open song file!", Toast.LENGTH_LONG).show();
+						Toast.makeText(mActivity, "Could not open song file!", Toast.LENGTH_LONG).show();
 						return;
 					}
         		}
@@ -316,6 +330,18 @@ public class SetSongFragment extends Fragment {
     //endregion
 
     //region Other Functions
+    public void setAutostartWhenCreated(boolean autostart) {
+        autostartWhenCreated = autostart;
+    }
+
+    public void setActivity(Activity activity) {
+        mActivity = activity;
+    }
+
+    public boolean hasTrack() {
+        return hasTrack;
+    }
+
     /**
      * Initializes the metronome
      */
@@ -323,7 +349,7 @@ public class SetSongFragment extends Fragment {
         // Create the metronome object
         if (mSongItem != null) {
             // Create the metronome object
-            mMetronome = new Metronome(getActivity(), mSongItem.getBpm(), new TimeSignature(mSongItem.getTimeSignature()), mSongItem.getName());
+            mMetronome = new Metronome(mActivity, mSongItem.getBpm(), new TimeSignature(mSongItem.getTimeSignature()), mSongItem.getName());
 
             // Set the state
             mMetronome.setmMetronomeState(mMetronomeState);
@@ -455,7 +481,7 @@ public class SetSongFragment extends Fragment {
      */
     private void configurePlayer() {
         // Configure the media player
-        mPlayer = MediaPlayer.create(getActivity(), Uri.parse(backgroundTrack));
+        mPlayer = MediaPlayer.create(mActivity, Uri.parse(backgroundTrack));
         mPlayer.setLooping(true);
     }
 
@@ -463,7 +489,7 @@ public class SetSongFragment extends Fragment {
      * Disables the play or stop button
      */
     private void setPlayButtonEnabled(final boolean isEnabled) {
-        getActivity().runOnUiThread(new Runnable() {
+        mActivity.runOnUiThread(new Runnable() {
             public void run() {
                 playButton.setEnabled(isEnabled);
             }
@@ -474,7 +500,7 @@ public class SetSongFragment extends Fragment {
      * Shows the play button
      */
     private void showPlayButton() {
-        getActivity().runOnUiThread(new Runnable() {
+        mActivity.runOnUiThread(new Runnable() {
             public void run() {
                 playButton.setImageDrawable(playImage);
                 playButton.setEnabled(true);
@@ -486,7 +512,7 @@ public class SetSongFragment extends Fragment {
      * Shows the stop button
      */
     private void showStopButton() {
-        getActivity().runOnUiThread(new Runnable() {
+        mActivity.runOnUiThread(new Runnable() {
             public void run() {
                 playButton.setImageDrawable(stopImage);
                 playButton.setEnabled(true);

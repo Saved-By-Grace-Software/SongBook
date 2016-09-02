@@ -15,7 +15,9 @@ import android.view.WindowManager;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.SetItem;
+import com.sbgsoft.songbook.items.Settings;
 import com.sbgsoft.songbook.items.SongItem;
+import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.songs.SetSongFragment;
 
@@ -29,6 +31,7 @@ public class SetActivity extends FragmentActivity {
 	static ViewPager mViewPager;
 	static PagerAdapter mPagerAdapter;
 	private static int currentSong = 0;
+    private boolean autoplayTrack = false;
 	
 	
 	/*****************************************************************************
@@ -49,6 +52,10 @@ public class SetActivity extends FragmentActivity {
         // Create page adapter
         mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
 
+        // Get the current settings
+        Settings settings = MainActivity.dbAdapter.getCurrentSettings();
+        autoplayTrack = settings.getAutoplayTrack();
+
         // Get songs and add them to the page adapter
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -60,6 +67,7 @@ public class SetActivity extends FragmentActivity {
             for (SongItem song : setItem.songs) {
             	// Create song fragment
             	Fragment songFrag = new SetSongFragment();
+                ((SetSongFragment)songFrag).setActivity(this);
             	Bundle bSong = new Bundle();
             	bSong.putParcelable(StaticVars.SONG_ITEM_KEY, song);
             	songFrag.setArguments(bSong);
@@ -81,16 +89,15 @@ public class SetActivity extends FragmentActivity {
 	            new ViewPager.SimpleOnPageChangeListener() {
 	                @Override
 	                public void onPageSelected(int position) {
-                        // Get the previous fragment
-                        Fragment f = mPagerAdapter.mFragments.get(currentSong);
-
-                        // Stop the track
-                        ((SetSongFragment)f).stopPlayer(4);
-
-                        // Update the current song
-	                	currentSong = position;
+                        switchPages(position);
 	                }
 	            });
+
+        // Start the current song track
+        if (autoplayTrack) {
+            Fragment f = mPagerAdapter.mFragments.get(currentSong);
+            ((SetSongFragment) f).setAutostartWhenCreated(true);
+        }
         
         // Keep the screen on
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -174,6 +181,31 @@ public class SetActivity extends FragmentActivity {
 
         // Transpose the current song
         ((SetSongFragment)f).onPlayButtonClick();
+    }
+
+    /**
+     * Handles the switching of pages
+     * @param newPage the new page number
+     */
+    private void switchPages(int newPage) {
+        // Get the previous fragment
+        Fragment prev = mPagerAdapter.mFragments.get(currentSong);
+
+        // Update the current song
+        currentSong = newPage;
+
+        // Get the current fragment
+        Fragment curr = mPagerAdapter.mFragments.get(currentSong);
+
+        // Stop the current track
+        if (((SetSongFragment)prev).hasTrack()) {
+            ((SetSongFragment) prev).stopPlayer(3);
+        }
+
+        // Start the next track
+        if (((SetSongFragment)curr).hasTrack() && autoplayTrack) {
+                ((SetSongFragment) curr).startPlayer(3);
+        }
     }
     
     
