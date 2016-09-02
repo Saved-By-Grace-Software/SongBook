@@ -12,7 +12,6 @@
   <component name="ChangeListManager">
     <list default="true" id="88569f7d-c5a7-41ba-8f9d-047b1e00f31d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
     </list>
     <ignored path="SongBook.iws" />
@@ -272,13 +271,11 @@
       <file leaf-file-name="SetSongFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7678883">
-              <caret line="421" column="20" selection-start-line="421" selection-start-column="20" selection-end-line="421" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.3950178">
+              <caret line="342" column="5" selection-start-line="342" selection-start-column="5" selection-end-line="342" selection-end-column="5" />
               <folding>
                 <element signature="e#1413#1435#0" expanded="false" />
-                <element signature="e#2154#2178#0" expanded="false" />
                 <element signature="method#onActivityCreated#0;class#SetSongFragment#0" expanded="false" />
-                <element signature="method#onCreateView#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#onStart#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#onResume#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#onPause#0;class#SetSongFragment#0" expanded="false" />
@@ -292,10 +289,8 @@
                 <element signature="method#onEditButtonClick#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="docComment;method#onPlayButtonClick#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#onPlayButtonClick#0;class#SetSongFragment#0" expanded="false" />
-                <element signature="docComment;method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="docComment;method#stopPlayer#0;class#SetSongFragment#0" expanded="false" />
-                <element signature="method#stopPlayer#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="docComment;method#startPlayer#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#startPlayer#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="docComment;method#endPlayer#0;class#SetSongFragment#0" expanded="false" />
@@ -308,7 +303,7 @@
                 <element signature="method#showPlayButton#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="docComment;method#showStopButton#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#showStopButton#0;class#SetSongFragment#0" expanded="false" />
-                <element signature="e#18063#18079#0" expanded="false" />
+                <element signature="e#18280#18296#0" expanded="false" />
                 <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
                 <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
@@ -2195,8 +2190,8 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/settings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/db/DBAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java" />
       </list>
     </option>
   </component>
@@ -2990,7 +2985,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="54" y="-8" width="1874" height="1096" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32942432" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2998,7 +2993,7 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3400853" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3400853" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296582" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3283582" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -3008,7 +3003,7 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17530319" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3283582" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3283582" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -3910,13 +3905,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/songs/SetSongFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7678883">
-          <caret line="421" column="20" selection-start-line="421" selection-start-column="20" selection-end-line="421" selection-end-column="20" />
+        <state vertical-scroll-proportion="0.3950178">
+          <caret line="342" column="5" selection-start-line="342" selection-start-column="5" selection-end-line="342" selection-end-column="5" />
           <folding>
             <element signature="e#1413#1435#0" expanded="false" />
-            <element signature="e#2154#2178#0" expanded="false" />
             <element signature="method#onActivityCreated#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="method#onCreateView#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#onStart#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#onResume#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#onPause#0;class#SetSongFragment#0" expanded="false" />
@@ -3930,10 +3923,8 @@
             <element signature="method#onEditButtonClick#0;class#SetSongFragment#0" expanded="false" />
             <element signature="docComment;method#onPlayButtonClick#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#onPlayButtonClick#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="docComment;method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#initializeMetronome#0;class#SetSongFragment#0" expanded="false" />
             <element signature="docComment;method#stopPlayer#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="method#stopPlayer#0;class#SetSongFragment#0" expanded="false" />
             <element signature="docComment;method#startPlayer#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#startPlayer#0;class#SetSongFragment#0" expanded="false" />
             <element signature="docComment;method#endPlayer#0;class#SetSongFragment#0" expanded="false" />
@@ -3946,7 +3937,7 @@
             <element signature="method#showPlayButton#0;class#SetSongFragment#0" expanded="false" />
             <element signature="docComment;method#showStopButton#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#showStopButton#0;class#SetSongFragment#0" expanded="false" />
-            <element signature="e#18063#18079#0" expanded="false" />
+            <element signature="e#18280#18296#0" expanded="false" />
             <element signature="docComment;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
             <element signature="class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />
             <element signature="method#onScale#0;class#simpleOnScaleGestureListener#0;class#SetSongFragment#0" expanded="false" />

@@ -397,7 +397,8 @@ public class SetSongFragment extends Fragment {
 
                     while (System.currentTimeMillis() < endTime && vol >= 0.0f) {
                         vol -= decrement;
-                        mPlayer.setVolume(vol, vol);
+                        if (mPlayer != null)
+                            mPlayer.setVolume(vol, vol);
 
                         try {
                             Thread.sleep(250);
@@ -438,12 +439,15 @@ public class SetSongFragment extends Fragment {
                 float vol = 0.0f;
 
                 // Set initial volume and start player
-                mPlayer.setVolume(vol, vol);
-                mPlayer.start();
+                if (mPlayer != null)
+                    mPlayer.setVolume(vol, vol);
+                if (mPlayer != null)
+                    mPlayer.start();
 
                 while (System.currentTimeMillis() < endTime && vol <= 1.0f) {
                     vol += increment;
-                    mPlayer.setVolume(vol, vol);
+                    if (mPlayer != null)
+                        mPlayer.setVolume(vol, vol);
 
                     try {
                         Thread.sleep(250);
@@ -451,7 +455,8 @@ public class SetSongFragment extends Fragment {
                 }
 
                 // Make sure we are at max volume
-                mPlayer.setVolume(1.0f, 1.0f);
+                if (mPlayer != null)
+                    mPlayer.setVolume(1.0f, 1.0f);
             }
         };
 
