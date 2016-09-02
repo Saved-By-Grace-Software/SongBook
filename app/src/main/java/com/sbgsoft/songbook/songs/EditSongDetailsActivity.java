@@ -83,6 +83,17 @@ public class EditSongDetailsActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        // Setup clear track button
+        FloatingActionButton clearTrackButton = (FloatingActionButton) findViewById(R.id.editatt_clear_track);
+        clearTrackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Clear the song track view
+                trackTV.setText("");
+                fullTrackPath = "";
+            }
+        });
     }
 
     public synchronized void onActivityResult(final int requestCode,
