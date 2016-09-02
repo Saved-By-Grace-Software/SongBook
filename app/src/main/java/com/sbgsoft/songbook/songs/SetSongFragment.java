@@ -366,12 +366,7 @@ public class SetSongFragment extends Fragment {
 
             // Update the button
             isPlaying = false;
-            getActivity().runOnUiThread(new Runnable() {
-                public void run() {
-                    playButton.setImageDrawable(playImage);
-                }
-            });
-
+            showPlayButton();
         }
     }
 
@@ -381,6 +376,9 @@ public class SetSongFragment extends Fragment {
      */
     public void stopPlayer(final int fadeOutTime) {
         if (mPlayer != null) {
+            // Disable the play button until its done
+            setPlayButtonEnabled(false);
+
             // Create the thread
             Runnable runnable = new Runnable() {
                 public void run() {
@@ -418,7 +416,7 @@ public class SetSongFragment extends Fragment {
         configurePlayer();
 
         // Change the button image
-        playButton.setImageDrawable(stopImage);
+        showStopButton();
         isPlaying = true;
 
         // Start the player
@@ -432,6 +430,41 @@ public class SetSongFragment extends Fragment {
         // Configure the media player
         mPlayer = MediaPlayer.create(getActivity(), Uri.parse(backgroundTrack));
         mPlayer.setLooping(true);
+    }
+
+    /**
+     * Disables the play or stop button
+     */
+    private void setPlayButtonEnabled(final boolean isEnabled) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                playButton.setEnabled(isEnabled);
+            }
+        });
+    }
+
+    /**
+     * Shows the play button
+     */
+    private void showPlayButton() {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                playButton.setImageDrawable(playImage);
+                playButton.setEnabled(true);
+            }
+        });
+    }
+
+    /**
+     * Shows the stop button
+     */
+    private void showStopButton() {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                playButton.setImageDrawable(stopImage);
+                playButton.setEnabled(true);
+            }
+        });
     }
     //endregion
 
