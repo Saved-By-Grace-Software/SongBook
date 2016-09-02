@@ -183,7 +183,7 @@ public class SetSongFragment extends Fragment {
 
         // Resume the media player
         if (mPlayer != null && isPlaying && !mPlayer.isPlaying()) {
-            startPlayer();
+            startPlayer(0);
         }
     }
 
@@ -197,7 +197,7 @@ public class SetSongFragment extends Fragment {
 
         // Stop the media player and reset
         if (mPlayer != null) {
-            stopPlayer();
+            stopPlayer(0);
         }
     }
 
@@ -211,7 +211,7 @@ public class SetSongFragment extends Fragment {
 
         // Stop the media player
         if (mPlayer != null) {
-            stopPlayer();
+            stopPlayer(0);
         }
     }
 
@@ -309,7 +309,7 @@ public class SetSongFragment extends Fragment {
                 stopPlayer(2);
             } else {
                 // Start playing the track
-                startPlayer();
+                startPlayer(2);
             }
         }
     }
@@ -354,23 +354,6 @@ public class SetSongFragment extends Fragment {
     }
 
     /**
-     * Stops and resets the media player
-     */
-    public void stopPlayer() {
-        // Stop and release
-        if (mPlayer != null) {
-            // Stop the media player
-            mPlayer.stop();
-            mPlayer.release();
-            mPlayer = null;
-
-            // Update the button
-            isPlaying = false;
-            showPlayButton();
-        }
-    }
-
-    /**
      * Stops the player after fading out the track
      * @param fadeOutTime
      */
@@ -386,7 +369,7 @@ public class SetSongFragment extends Fragment {
                     float decrement = 1 / ((float)fadeOutTime * 4);
                     float vol = 1.0f;
 
-                    while (System.currentTimeMillis() < endTime) {
+                    while (System.currentTimeMillis() < endTime && vol >= 0.0f) {
                         vol -= decrement;
                         mPlayer.setVolume(vol, vol);
 
@@ -395,7 +378,8 @@ public class SetSongFragment extends Fragment {
                         } catch (Exception e) {}
                     }
 
-                    stopPlayer();
+                    // Stop the media player
+                    endPlayer();
                 }
             };
 
@@ -406,11 +390,12 @@ public class SetSongFragment extends Fragment {
     }
 
     /**
-     * Starts the media player
+     * Fades the track in
+     * @param fadeInTime Time in secods to fade in over
      */
-    public void startPlayer() {
+    public void startPlayer(final int fadeInTime) {
         // Ensure stopped
-        stopPlayer();
+        endPlayer();
 
         // Configure the player
         configurePlayer();
@@ -419,8 +404,50 @@ public class SetSongFragment extends Fragment {
         showStopButton();
         isPlaying = true;
 
-        // Start the player
-        mPlayer.start();
+        // Create the thread
+        Runnable runnable = new Runnable() {
+            public void run() {
+                long endTime = System.currentTimeMillis() + (fadeInTime * 1000);
+                float increment = 1 / ((float)fadeInTime * 4);
+                float vol = 0.0f;
+
+                // Set initial volume and start player
+                mPlayer.setVolume(vol, vol);
+                mPlayer.start();
+
+                while (System.currentTimeMillis() < endTime && vol <= 1.0f) {
+                    vol += increment;
+                    mPlayer.setVolume(vol, vol);
+
+                    try {
+                        Thread.sleep(250);
+                    } catch (Exception e) {}
+                }
+
+                // Make sure we are at max volume
+                mPlayer.setVolume(1.0f, 1.0f);
+            }
+        };
+
+        // Start the thread
+        Thread fadeOut = new Thread(runnable);
+        fadeOut.start();
+    }
+
+    /**
+     * Completely stops the media player
+     */
+    private void endPlayer() {
+        if (mPlayer != null) {
+            // Stop the media player
+            mPlayer.stop();
+            mPlayer.release();
+            mPlayer = null;
+        }
+
+        // Update the button
+        isPlaying = false;
+        showPlayButton();
     }
 
     /**
