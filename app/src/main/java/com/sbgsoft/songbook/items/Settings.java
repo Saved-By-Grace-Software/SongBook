@@ -14,6 +14,7 @@ public class Settings {
     private boolean mUseBrightMetronome;
     private SongBookTheme mSongBookTheme;
     private String mChordColor;
+    private boolean mAutoplayTrack;
     //endregion
 
     //region Constructors
@@ -22,6 +23,7 @@ public class Settings {
         mShowEditInSet = true;
         mMetronomeState = "";
         mSongBookTheme = new SongBookTheme();
+        mAutoplayTrack = false;
     }
 
     public Settings(String metronomeState, boolean transposeOn, boolean editOn) {
@@ -29,6 +31,7 @@ public class Settings {
         mShowEditInSet = editOn;
         mMetronomeState = metronomeState;
         mSongBookTheme = new SongBookTheme();
+        mAutoplayTrack = false;
     }
 
     public Settings(String metronomeState, boolean transposeOn, boolean editOn, boolean useBrightMetronome) {
@@ -37,6 +40,7 @@ public class Settings {
         mMetronomeState = metronomeState;
         mUseBrightMetronome = useBrightMetronome;
         mSongBookTheme = new SongBookTheme();
+        mAutoplayTrack = false;
     }
 
     public Settings(String metronomeState, String transposeOn, String editOn) {
@@ -60,6 +64,7 @@ public class Settings {
         mMetronomeState = metronomeState;
 
         mSongBookTheme = new SongBookTheme();
+        mAutoplayTrack = false;
     }
 
     public Settings(String metronomeState, String transposeOn, String editOn, int useBrightMetronome) {
@@ -86,6 +91,7 @@ public class Settings {
         mMetronomeState = metronomeState;
 
         mSongBookTheme = new SongBookTheme();
+        mAutoplayTrack = false;
     }
     //endregion
 
@@ -164,6 +170,14 @@ public class Settings {
 
     public void setChordColor(String chordColor) {
         this.mChordColor = chordColor;
+    }
+
+    public boolean getAutoplayTrack() {
+        return mAutoplayTrack;
+    }
+
+    public void setAutoplayTrack(boolean autoplayTrack) {
+        this.mAutoplayTrack = autoplayTrack;
     }
     //endregion
 }

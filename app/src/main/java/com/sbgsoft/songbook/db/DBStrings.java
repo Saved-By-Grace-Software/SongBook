@@ -4,7 +4,7 @@ public class DBStrings {
 
 	// Database Strings
 	public static final String DATABASE_NAME = "tabAppDB";
-	public static final int DATABASE_VERSION = 12;
+	public static final int DATABASE_VERSION = 13;
 	
 	// Sets Table
 	public static final String SETS_TABLE = "tblSets";
@@ -73,4 +73,5 @@ public class DBStrings {
     public static final String TBLSETTINGS_METRONOME_TYPE = "metronomeType";
     public static final String TBLSETTINGS_THEME_COLOR = "themeColor";
     public static final String TBLSETTINGS_CHORD_COLOR = "chordColor";
+	public static final String TBLSETTINGS_AUTOPLAY = "autoPlayTrack";
 }

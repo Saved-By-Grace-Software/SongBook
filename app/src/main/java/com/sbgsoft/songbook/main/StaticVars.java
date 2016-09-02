@@ -43,6 +43,7 @@ public class StaticVars {
     public static final int SETTINGS_STANDARD_METRONOME = 0;
     public static final String SETTINGS_DEFAULT_THEME_COLOR = "Default (Blue)";
     public static final String SETTINGS_DEFAULT_CHORD_COLOR = "Default (Blue)";
+	public static final int SETTINGS_DEFAULT_AUTOPLAY = 0;
 
 	// General
 	public static final String EOL = System.getProperty("line.separator");

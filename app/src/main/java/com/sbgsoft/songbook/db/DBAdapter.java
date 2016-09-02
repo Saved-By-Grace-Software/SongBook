@@ -83,6 +83,7 @@ public class DBAdapter {
                             DBStrings.TBLSETTINGS_METRONOME_TYPE + ", " +
                             DBStrings.TBLSETTINGS_THEME_COLOR + ", " +
                             DBStrings.TBLSETTINGS_CHORD_COLOR + ", " +
+                            DBStrings.TBLSETTINGS_AUTOPLAY + ", " +
                             DBStrings.TBLSETTINGS_SET_EDIT +
                     " FROM " + DBStrings.SETTINGS_TABLE;
 
@@ -96,12 +97,14 @@ public class DBAdapter {
             int brightMetronome = c.getInt(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_METRONOME_TYPE));
             String themeColor = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_THEME_COLOR));
             String chordColor = c.getString(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_CHORD_COLOR));
+            int autoplayTrack = c.getInt(c.getColumnIndexOrThrow(DBStrings.TBLSETTINGS_AUTOPLAY));
             c.close();
 
             // Return the settings object
             Settings tmp = new Settings(metronomeState, transposeOn, editOn, brightMetronome);
             tmp.setSongBookTheme(new SongBookTheme(themeColor));
             tmp.setChordColor(chordColor);
+            tmp.setAutoplayTrack((autoplayTrack == 1));
             return tmp;
         } catch (IndexOutOfBoundsException e) {
             return null;
@@ -126,6 +129,7 @@ public class DBAdapter {
                     DBStrings.TBLSETTINGS_METRONOME_TYPE + " = " + settings.getUseBrightMetronomeInt() + ", " +
                     DBStrings.TBLSETTINGS_THEME_COLOR + " = '" + settings.getSongBookTheme().getThemeName() + "', " +
                     DBStrings.TBLSETTINGS_CHORD_COLOR + " = '" + settings.getChordColor() + "', " +
+                    DBStrings.TBLSETTINGS_AUTOPLAY + " = '" + settings.getAutoplayTrack() + "', " +
                     DBStrings.TBLSETTINGS_SET_TRANSPOSE + " = '" + settings.getShowTransposeInSetString() + "'";
 
             mDb.execSQL(query);
@@ -1903,6 +1907,7 @@ public class DBAdapter {
                         DBStrings.TBLSETTINGS_METRONOME_TYPE + " int, " +
                         DBStrings.TBLSETTINGS_THEME_COLOR + " text, " +
                         DBStrings.TBLSETTINGS_CHORD_COLOR + " text, " +
+						DBStrings.TBLSETTINGS_AUTOPLAY + " int, " +
                         DBStrings.TBLSETTINGS_SET_TRANSPOSE + " text ); " );
     			
     			// Add default values
@@ -1917,6 +1922,7 @@ public class DBAdapter {
                         DBStrings.TBLSETTINGS_METRONOME_TYPE + ", " +
                         DBStrings.TBLSETTINGS_THEME_COLOR + ", " +
                         DBStrings.TBLSETTINGS_CHORD_COLOR + ", " +
+						DBStrings.TBLSETTINGS_AUTOPLAY + ", " +
                         DBStrings.TBLSETTINGS_SET_TRANSPOSE +
                         ") VALUES (" +
                         "'" + StaticVars.SETTINGS_METRONOME_STATE_WITHBPM + "', " +
@@ -1924,6 +1930,7 @@ public class DBAdapter {
                         " " + StaticVars.SETTINGS_STANDARD_METRONOME + ", " +
                         "'" + StaticVars.SETTINGS_DEFAULT_THEME_COLOR + "', " +
                         "'" + StaticVars.SETTINGS_DEFAULT_CHORD_COLOR + "', " +
+						" " + StaticVars.SETTINGS_DEFAULT_AUTOPLAY + ", " +
                         "'" + StaticVars.SETTINGS_SET_TRANSPOSE_ON + "')");
     			
     			db.setTransactionSuccessful(); 
@@ -2036,6 +2043,17 @@ public class DBAdapter {
                     // Add background track column
                     db.execSQL("ALTER TABLE " + DBStrings.SONGS_TABLE + " ADD COLUMN " + DBStrings.TBLSONG_TRACK + " text");
                 }
+
+				// Updates from DB version 12 or lower
+				if (oldVersion < 13) {
+					// Add metronome type column to the settings table
+					db.execSQL("ALTER TABLE " + DBStrings.SETTINGS_TABLE + " ADD COLUMN " + DBStrings.TBLSETTINGS_AUTOPLAY + " int");
+
+					// Set the autoplay off by default
+					db.execSQL("UPDATE " + DBStrings.SETTINGS_TABLE + " " +
+							"SET " + DBStrings.TBLSETTINGS_AUTOPLAY +
+							" = " + StaticVars.SETTINGS_DEFAULT_AUTOPLAY);
+				}
     			
     			db.setTransactionSuccessful(); 
     		}catch(SQLiteException e) {
