@@ -130,7 +130,7 @@ public class SetSongFragment extends Fragment {
 
             // Enable the play button if a background track exists
             backgroundTrack = MainActivity.dbAdapter.getSongTrack(mSongItem.getName());
-            if (backgroundTrack != null && backgroundTrack != "")
+            if (backgroundTrack != null && !backgroundTrack.isEmpty())
             {
                 // Set has track
                 hasTrack = true;

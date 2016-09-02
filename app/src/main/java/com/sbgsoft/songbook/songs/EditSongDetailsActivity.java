@@ -2,6 +2,8 @@ package com.sbgsoft.songbook.songs;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -171,6 +173,17 @@ public class EditSongDetailsActivity extends AppCompatActivity {
         try {
             bpm = Integer.parseInt(bpmET.getText().toString());
         } catch (NumberFormatException nfe) {
+        }
+
+        // Check for valid media file
+        if (!fullTrackPath.isEmpty()) {
+            MediaPlayer m = MediaPlayer.create(this, Uri.parse(fullTrackPath));
+            if (m == null) {
+                // Not a valid file
+                Snackbar.make(coordinatorLayout, "That is not a valid media file!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return false;
+            }
         }
 
         // Update the song in the database

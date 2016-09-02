@@ -117,7 +117,7 @@ public class SongActivity extends Activity {
 
             // Enable the play button if a background track exists
             backgroundTrack = MainActivity.dbAdapter.getSongTrack(mSongItem.getName());
-            if (backgroundTrack != null && backgroundTrack != "")
+            if (backgroundTrack != null && !backgroundTrack.isEmpty())
             {
                 // Enable the play button
                 playButton = (FloatingActionButton)findViewById(R.id.song_play_button);
