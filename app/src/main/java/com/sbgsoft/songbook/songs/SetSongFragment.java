@@ -21,6 +21,7 @@ import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -43,6 +44,7 @@ public class SetSongFragment extends Fragment {
 
     //region Class Members
 	public AutoFitTextView song;
+    private ScrollView scrollView;
 	private SongItem mSongItem;
     private View mView;
     ScaleGestureDetector scaleGestureDetector;
@@ -79,6 +81,36 @@ public class SetSongFragment extends Fragment {
 		// Get the song textview
         song = (AutoFitTextView)mView.findViewById(R.id.song_text);
         song.setMovementMethod(new ScrollingMovementMethod());
+        scrollView = (ScrollView)mView.findViewById(R.id.set_scrollView);
+
+        song.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                // Check for key pressed
+                if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    switch (keyCode) {
+                        case KeyEvent.KEYCODE_DPAD_UP:
+                            downArrowPress();
+                            return true;
+                        case KeyEvent.KEYCODE_DPAD_DOWN:
+                            upArrowPress();
+                            return true;
+                        case KeyEvent.KEYCODE_ENTER:
+                        case KeyEvent.KEYCODE_SPACE:
+                            enterSpacePress();
+                            return true;
+                        case KeyEvent.KEYCODE_PAGE_DOWN:
+                            return true;
+                        case KeyEvent.KEYCODE_PAGE_UP:
+                            return true;
+                        default:
+                            return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        });
 
         // Instantiate the scale class
         scaleGestureDetector = new ScaleGestureDetector(mActivity, new simpleOnScaleGestureListener());
@@ -249,6 +281,27 @@ public class SetSongFragment extends Fragment {
         }
     }
     //endregion
+
+
+    //region Key Press Functions
+    private void enterSpacePress() {
+        // Call the button press action for the play button
+        if (playButton != null) {
+            playButton.performClick();
+        }
+    }
+
+    private void downArrowPress() {
+        // Scroll down
+        scrollView.scrollTo(0, scrollView.getScrollY() + 50);
+    }
+
+    private void upArrowPress() {
+        // Scroll up
+        scrollView.scrollTo(0, scrollView.getScrollY() - 50);
+    }
+    //endregion
+
 
     //region Click Functions
 	/**

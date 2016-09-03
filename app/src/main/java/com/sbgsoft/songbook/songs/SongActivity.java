@@ -49,6 +49,7 @@ public class SongActivity extends Activity {
      * 
      *****************************************************************************/
 	AutoFitTextView song;
+    ScrollView scrollView;
     ChordDisplay disp;
     ScaleGestureDetector scaleGestureDetector;
     private Metronome mMetronome;
@@ -81,8 +82,9 @@ public class SongActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_song);
         
-        // Get the song textview
+        // Get the song and scroll view
         song = (AutoFitTextView)findViewById(R.id.song_text);
+        scrollView = (ScrollView)findViewById(R.id.song_scrollview);
 
         // Instantiate the scale class
         scaleGestureDetector = new ScaleGestureDetector(this, new simpleOnScaleGestureListener());
@@ -113,6 +115,35 @@ public class SongActivity extends Activity {
             // Set spans for the chords and add to the textview
             disp = new ChordDisplay(this);
             song.setText(disp.setChordClickableText(mSongItem.getText()), TextView.BufferType.SPANNABLE);
+
+            song.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                    // Check for key pressed
+                    if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                        switch (keyCode) {
+                            case KeyEvent.KEYCODE_DPAD_UP:
+                                upArrowPress();
+                                return true;
+                            case KeyEvent.KEYCODE_DPAD_DOWN:
+                                downArrowPress();
+                                return true;
+                            case KeyEvent.KEYCODE_ENTER:
+                            case KeyEvent.KEYCODE_SPACE:
+                                enterSpacePress();
+                                return true;
+                            case KeyEvent.KEYCODE_PAGE_DOWN:
+                                return true;
+                            case KeyEvent.KEYCODE_PAGE_UP:
+                                return true;
+                            default:
+                                return false;
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+            });
 
             // Initialize the metronome
             initializeMetronome();
@@ -249,30 +280,11 @@ public class SongActivity extends Activity {
             } catch (Exception e) { }
         }
     }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        // Check for key pressed
-        switch (keyCode) {
-            case KeyEvent.KEYCODE_DPAD_UP:
-                downArrowPress();
-                return true;
-            case KeyEvent.KEYCODE_DPAD_DOWN:
-                upArrowPress();
-                return true;
-            case KeyEvent.KEYCODE_PAGE_DOWN:
-            case KeyEvent.KEYCODE_PAGE_UP:
-                pageUpDownPress();
-                return true;
-            default:
-                return super.onKeyUp(keyCode, event);
-        }
-    }
     //endregion
 
 
     //region Key Press Functions
-    private void pageUpDownPress() {
+    private void enterSpacePress() {
         // Call the button press action for the play button
         if (playButton != null) {
             playButton.performClick();
@@ -280,11 +292,13 @@ public class SongActivity extends Activity {
     }
 
     private void downArrowPress() {
-        Log.d("SONGBOOK", "DOWN PRESS");
+        // Scroll down
+        scrollView.scrollTo(0, scrollView.getScrollY() + 50);
     }
 
     private void upArrowPress() {
-        Log.d("SONGBOOK", "UP PRESS");
+        // Scroll up
+        scrollView.scrollTo(0, scrollView.getScrollY() - 50);
     }
     //endregion
 
