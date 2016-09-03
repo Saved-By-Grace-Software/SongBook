@@ -160,6 +160,10 @@ public class SetActivity extends FragmentActivity {
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 upArrowPress();
                 return true;
+            case KeyEvent.KEYCODE_PAGE_DOWN:
+            case KeyEvent.KEYCODE_PAGE_UP:
+                pageUpDownPress();
+                return true;
             default:
                 return super.onKeyUp(keyCode, event);
         }
@@ -183,6 +187,12 @@ public class SetActivity extends FragmentActivity {
             // Increment the page
             mViewPager.setCurrentItem(currentSong + 1);
         }
+    }
+
+    private void pageUpDownPress() {
+        // Call the button press action for the play button
+        Fragment f = mPagerAdapter.mFragments.get(currentSong);
+        ((SetSongFragment)f).onPlayButtonClick();
     }
 
     private void downArrowPress() {

@@ -18,7 +18,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -184,7 +186,7 @@ public class SongActivity extends Activity {
 
         // Resume the media player
         if (mPlayer != null && isPlaying && !mPlayer.isPlaying()) {
-            startPlayer();
+            startPlayer(0);
         }
     }
     
@@ -201,9 +203,7 @@ public class SongActivity extends Activity {
 
         // Stop the media player and reset
         if (mPlayer != null) {
-            stopPlayer();
-            isPlaying = false;
-            playButton.setImageDrawable(playImage);
+            stopPlayer(0);
         }
     }
     
@@ -220,9 +220,7 @@ public class SongActivity extends Activity {
 
         // Stop the media player
         if (mPlayer != null) {
-            stopPlayer();
-            isPlaying = false;
-            playButton.setImageDrawable(playImage);
+            stopPlayer(0);
         }
     }
 
@@ -251,15 +249,47 @@ public class SongActivity extends Activity {
             } catch (Exception e) { }
         }
     }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        // Check for key pressed
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_UP:
+                downArrowPress();
+                return true;
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                upArrowPress();
+                return true;
+            case KeyEvent.KEYCODE_PAGE_DOWN:
+            case KeyEvent.KEYCODE_PAGE_UP:
+                pageUpDownPress();
+                return true;
+            default:
+                return super.onKeyUp(keyCode, event);
+        }
+    }
+    //endregion
+
+
+    //region Key Press Functions
+    private void pageUpDownPress() {
+        // Call the button press action for the play button
+        if (playButton != null) {
+            playButton.performClick();
+        }
+    }
+
+    private void downArrowPress() {
+        Log.d("SONGBOOK", "DOWN PRESS");
+    }
+
+    private void upArrowPress() {
+        Log.d("SONGBOOK", "UP PRESS");
+    }
     //endregion
 
 
     //region Song Functions
-    /*****************************************************************************
-     * 
-     * Song Functions
-     * 
-     *****************************************************************************/
     /**
      * Shows the transpose menu
      * @param v
@@ -332,23 +362,11 @@ public class SongActivity extends Activity {
     public void onPlayButtonClick(View v) {
         if (playButton != null) {
             if (isPlaying) {
-                // Change the button image
-                playButton.setImageDrawable(playImage);
-
                 // Stop playing the track
-                stopPlayer();
-
-                // Reset isPlaying
-                isPlaying = false;
+                stopPlayer(2);
             } else {
-                // Change the button image
-                playButton.setImageDrawable(stopImage);
-
                 // Start playing the track
-                startPlayer();
-
-                // Reset isPlaying
-                isPlaying = true;
+                startPlayer(2);
             }
         }
     }
@@ -389,31 +407,110 @@ public class SongActivity extends Activity {
             mMetronome.initialize(metronomeBar);
         }
     }
+    //endregion
 
+
+    //region Media Player Functions
     /**
-     * Stops and resets the media player
+     * Stops the player after fading out the track
+     * @param fadeOutTime
      */
-    private void stopPlayer() {
-        // Stop and release
+    public void stopPlayer(final int fadeOutTime) {
         if (mPlayer != null) {
-            mPlayer.stop();
-            mPlayer.release();
-            mPlayer = null;
+            // Disable the play button until its done
+            setPlayButtonEnabled(false);
+
+            // Create the thread
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    long endTime = System.currentTimeMillis() + (fadeOutTime * 1000);
+                    float decrement = 1 / ((float)fadeOutTime * 4);
+                    float vol = 1.0f;
+
+                    while (System.currentTimeMillis() < endTime && vol >= 0.0f) {
+                        vol -= decrement;
+                        if (mPlayer != null)
+                            mPlayer.setVolume(vol, vol);
+
+                        try {
+                            Thread.sleep(250);
+                        } catch (Exception e) {}
+                    }
+
+                    // Stop the media player
+                    endPlayer();
+                }
+            };
+
+            // Start the thread
+            Thread fadeOut = new Thread(runnable);
+            fadeOut.start();
         }
     }
 
     /**
-     * Starts the media player
+     * Fades the track in
+     * @param fadeInTime Time in secods to fade in over
      */
-    private void startPlayer() {
+    public void startPlayer(final int fadeInTime) {
         // Ensure stopped
-        stopPlayer();
+        endPlayer();
 
         // Configure the player
         configurePlayer();
 
-        // Start the player
-        mPlayer.start();
+        // Change the button image
+        showStopButton();
+        isPlaying = true;
+
+        // Create the thread
+        Runnable runnable = new Runnable() {
+            public void run() {
+                long endTime = System.currentTimeMillis() + (fadeInTime * 1000);
+                float increment = 1 / ((float)fadeInTime * 4);
+                float vol = 0.0f;
+
+                // Set initial volume and start player
+                if (mPlayer != null)
+                    mPlayer.setVolume(vol, vol);
+                if (mPlayer != null)
+                    mPlayer.start();
+
+                while (System.currentTimeMillis() < endTime && vol <= 1.0f) {
+                    vol += increment;
+                    if (mPlayer != null)
+                        mPlayer.setVolume(vol, vol);
+
+                    try {
+                        Thread.sleep(250);
+                    } catch (Exception e) {}
+                }
+
+                // Make sure we are at max volume
+                if (mPlayer != null)
+                    mPlayer.setVolume(1.0f, 1.0f);
+            }
+        };
+
+        // Start the thread
+        Thread fadeOut = new Thread(runnable);
+        fadeOut.start();
+    }
+
+    /**
+     * Completely stops the media player
+     */
+    private void endPlayer() {
+        if (mPlayer != null) {
+            // Stop the media player
+            mPlayer.stop();
+            mPlayer.release();
+            mPlayer = null;
+        }
+
+        // Update the button
+        isPlaying = false;
+        showPlayButton();
     }
 
     /**
@@ -423,6 +520,41 @@ public class SongActivity extends Activity {
         // Configure the media player
         mPlayer = MediaPlayer.create(this, Uri.parse(backgroundTrack));
         mPlayer.setLooping(true);
+    }
+
+    /**
+     * Disables the play or stop button
+     */
+    private void setPlayButtonEnabled(final boolean isEnabled) {
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                playButton.setEnabled(isEnabled);
+            }
+        });
+    }
+
+    /**
+     * Shows the play button
+     */
+    private void showPlayButton() {
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                playButton.setImageDrawable(playImage);
+                playButton.setEnabled(true);
+            }
+        });
+    }
+
+    /**
+     * Shows the stop button
+     */
+    private void showStopButton() {
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                playButton.setImageDrawable(stopImage);
+                playButton.setEnabled(true);
+            }
+        });
     }
     //endregion
 
