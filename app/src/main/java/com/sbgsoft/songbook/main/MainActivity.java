@@ -193,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
         // Create the tab layout
         tabLayout = (TabLayout) findViewById(R.id.tabanim_tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        //tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setBackgroundColor(theme.getToolbarColor());
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

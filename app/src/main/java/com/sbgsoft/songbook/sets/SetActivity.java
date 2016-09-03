@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.Window;
@@ -32,6 +34,7 @@ public class SetActivity extends FragmentActivity {
 	static PagerAdapter mPagerAdapter;
 	private static int currentSong = 0;
     private boolean autoplayTrack = false;
+    private SetItem mSetItem;
 	
 	
 	/*****************************************************************************
@@ -61,10 +64,10 @@ public class SetActivity extends FragmentActivity {
         if (extras != null) {
             // Get the extras
             int currSong = extras.getInt(StaticVars.CURRENT_SONG_KEY);
-            SetItem setItem = extras.getParcelable(StaticVars.SET_SONGS_KEY);
+            mSetItem = extras.getParcelable(StaticVars.SET_SONGS_KEY);
             
             // Create each song fragment
-            for (SongItem song : setItem.songs) {
+            for (SongItem song : mSetItem.songs) {
             	// Create song fragment
             	Fragment songFrag = new SetSongFragment();
                 ((SetSongFragment)songFrag).setActivity(this);
@@ -139,6 +142,55 @@ public class SetActivity extends FragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         //getMenuInflater().inflate(R.menu.activity_set, menu);
         return true;
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        // Check for key pressed
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                leftArrowPress();
+                return true;
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                rightArrowPress();
+                return true;
+            case KeyEvent.KEYCODE_DPAD_UP:
+                downArrowPress();
+                return true;
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                upArrowPress();
+                return true;
+            default:
+                return super.onKeyUp(keyCode, event);
+        }
+    }
+
+
+    /*****************************************************************************
+     *
+     * Key Press Functions
+     *
+     *****************************************************************************/
+    private void leftArrowPress() {
+        if (currentSong > 0) {
+            // Decrement the page
+            mViewPager.setCurrentItem(currentSong - 1);
+        }
+    }
+
+    private void rightArrowPress() {
+        if (mSetItem != null && currentSong < mSetItem.getSongs().length()) {
+            // Increment the page
+            mViewPager.setCurrentItem(currentSong + 1);
+        }
+    }
+
+    private void downArrowPress() {
+        Log.d("SONGBOOK", "LEFT PRESS");
+    }
+
+    private void upArrowPress() {
+        Log.d("SONGBOOK", "LEFT PRESS");
     }
     
     
