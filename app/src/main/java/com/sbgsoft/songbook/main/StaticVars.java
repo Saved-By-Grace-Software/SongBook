@@ -187,5 +187,14 @@ public class StaticVars {
                     "In Tap Tempo - select Yes to permanently set that tempo for the song")
 
     );
+	public static final ArrayList<String> howToUsePageFlip = new ArrayList<String>(
+			Arrays.asList(
+					"Virtual SongBook has been designed to work with the PageFlip bluetooth pedals. Below is the list of functions available with the pedal. *Note: Any other pedal that uses these key combinations will also work",
+					"Left/Right Arrows - Switch songs in a set",
+					"Up/Down Arrows - Scroll a song up and down",
+					"Page Up/Down - Scroll to the top or bottom of a song",
+					"Enter/Space - Play or stop the song's background track")
+
+	);
     //endregion
 }

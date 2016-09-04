@@ -804,6 +804,9 @@ public class MainActivity extends AppCompatActivity {
                     case 5:     // Use the metronome
                         instructions = StaticVars.howToUseMetronome;
                         break;
+                    case 6:
+                        instructions = StaticVars.howToUsePageFlip;
+                        break;
                 }
 
                 // Build the how to message string
