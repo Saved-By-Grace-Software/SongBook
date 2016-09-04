@@ -412,7 +412,7 @@ public class SongActivity extends Activity {
             // Check for drummer mode
             if (mBrightMetronome) {
                 // Do not show words behind metronome
-                ScrollView scrollView = (ScrollView)findViewById(R.id.scrollView);
+                ScrollView scrollView = (ScrollView)findViewById(R.id.song_scrollview);
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)scrollView.getLayoutParams();
                 params.addRule(RelativeLayout.ABOVE, R.id.metronome_bar);
                 scrollView.setLayoutParams(params);

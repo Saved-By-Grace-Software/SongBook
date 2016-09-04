@@ -103,10 +103,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="@dimen/cardSideMargin"
-                android:layout_marginLeft="@dimen/cardSideMargin"
-                android:layout_marginTop="@dimen/cardTopBottomMargin"
-                android:layout_marginBottom="@dimen/cardTopBottomMargin"
+                android:paddingRight="@dimen/cardSideMargin"
+                android:paddingLeft="@dimen/cardSideMargin"
+                android:paddingTop="@dimen/cardTopBottomMargin"
+                android:paddingBottom="@dimen/cardTopBottomMargin"
                 android:src="@drawable/ic_more_vert_black_24dp"/>
 
         </RelativeLayout>
