@@ -87,13 +87,13 @@ public class SetSongFragment extends Fragment {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
                 // Check for key pressed
-                if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
                     switch (keyCode) {
                         case KeyEvent.KEYCODE_DPAD_UP:
-                            downArrowPress();
+                            upArrowPress();
                             return true;
                         case KeyEvent.KEYCODE_DPAD_DOWN:
-                            upArrowPress();
+                            downArrowPress();
                             return true;
                         case KeyEvent.KEYCODE_ENTER:
                         case KeyEvent.KEYCODE_SPACE:

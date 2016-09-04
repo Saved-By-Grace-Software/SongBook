@@ -120,7 +120,7 @@ public class SongActivity extends Activity {
                 @Override
                 public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
                     // Check for key pressed
-                    if (keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                    if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
                         switch (keyCode) {
                             case KeyEvent.KEYCODE_DPAD_UP:
                                 upArrowPress();
@@ -304,7 +304,7 @@ public class SongActivity extends Activity {
     }
 
     private void pageDownPress() {
-        // Scroll down to bottome
+        // Scroll down to bottom
         scrollView.scrollTo(0, scrollView.getBottom());
     }
 

@@ -145,7 +145,7 @@ public class SetActivity extends FragmentActivity {
     }
 
     @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
+    public boolean onKeyUp (int keyCode, KeyEvent event) {
         // Check for key pressed
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT:
