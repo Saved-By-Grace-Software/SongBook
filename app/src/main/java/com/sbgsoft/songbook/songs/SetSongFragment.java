@@ -100,8 +100,10 @@ public class SetSongFragment extends Fragment {
                             enterSpacePress();
                             return true;
                         case KeyEvent.KEYCODE_PAGE_DOWN:
+                            pageDownPress();
                             return true;
                         case KeyEvent.KEYCODE_PAGE_UP:
+                            pageUpPress();
                             return true;
                         default:
                             return false;
@@ -299,6 +301,16 @@ public class SetSongFragment extends Fragment {
     private void upArrowPress() {
         // Scroll up
         scrollView.scrollTo(0, scrollView.getScrollY() - 50);
+    }
+
+    private void pageDownPress() {
+        // Scroll down to bottome
+        scrollView.scrollTo(0, scrollView.getBottom());
+    }
+
+    private void pageUpPress() {
+        // Scroll up to top
+        scrollView.scrollTo(0, scrollView.getTop());
     }
     //endregion
 
