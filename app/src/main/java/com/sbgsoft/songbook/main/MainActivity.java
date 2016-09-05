@@ -3340,10 +3340,19 @@ public class MainActivity extends AppCompatActivity {
                     out.close();
 
                     // Get a list of all the files in the app files folder
-                    String[] files = fileList();
-                    for (int i = 0; i < files.length; i++) {
-                        files[i] = getFilesDir() + "/" + files[i];
+                    String[] tmpFiles = fileList();
+                    ArrayList<String> filesAL = new ArrayList<>();
+                    for (int i = 0; i < tmpFiles.length; i++) {
+                        // Check for .txt or .sql file
+                        String fileName = tmpFiles[i];
+                        if (fileName.equals(StaticVars.EXPORT_SQL_FILE) ||
+                                fileName.substring(fileName.length() - 4).equals(".txt"))
+                            filesAL.add(getFilesDir() + "/" + fileName);
                     }
+
+                    // Convert to string array
+                    String[] files = new String[filesAL.size()];
+                    files = filesAL.toArray(files);
 
                     // Zip the files and save to the external storage
                     Compress newZip = new Compress(files, exportZipLocation);
