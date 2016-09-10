@@ -462,10 +462,11 @@ public class SetSongFragment extends Fragment {
 
                     while (System.currentTimeMillis() < endTime && vol >= 0.0f) {
                         vol -= decrement;
-                        if (mPlayer != null)
-                            mPlayer.setVolume(vol, vol);
 
                         try {
+                            if (mPlayer != null)
+                                mPlayer.setVolume(vol, vol);
+
                             Thread.sleep(250);
                         } catch (Exception e) {}
                     }
@@ -503,25 +504,26 @@ public class SetSongFragment extends Fragment {
                 float increment = 1 / ((float)fadeInTime * 4);
                 float vol = 0.0f;
 
-                // Set initial volume and start player
-                if (mPlayer != null)
-                    mPlayer.setVolume(vol, vol);
-                if (mPlayer != null)
-                    mPlayer.start();
-
-                while (System.currentTimeMillis() < endTime && vol <= 1.0f) {
-                    vol += increment;
+                try {
+                    // Set initial volume and start player
                     if (mPlayer != null)
                         mPlayer.setVolume(vol, vol);
+                    if (mPlayer != null)
+                        mPlayer.start();
 
-                    try {
+                    while (System.currentTimeMillis() < endTime && vol <= 1.0f) {
+                        vol += increment;
+
+                        if (mPlayer != null)
+                            mPlayer.setVolume(vol, vol);
+
                         Thread.sleep(250);
-                    } catch (Exception e) {}
-                }
+                    }
 
-                // Make sure we are at max volume
-                if (mPlayer != null)
-                    mPlayer.setVolume(1.0f, 1.0f);
+                    // Make sure we are at max volume
+                    if (mPlayer != null)
+                        mPlayer.setVolume(1.0f, 1.0f);
+                } catch (Exception e) { }
             }
         };
 
@@ -535,10 +537,12 @@ public class SetSongFragment extends Fragment {
      */
     private void endPlayer() {
         if (mPlayer != null) {
-            // Stop the media player
-            mPlayer.stop();
-            mPlayer.release();
-            mPlayer = null;
+            try {
+                // Stop the media player
+                mPlayer.stop();
+                mPlayer.release();
+                mPlayer = null;
+            } catch (Exception e) { }
         }
 
         // Update the button
