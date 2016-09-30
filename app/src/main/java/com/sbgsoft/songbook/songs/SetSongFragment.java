@@ -105,12 +105,25 @@ public class SetSongFragment extends Fragment {
                         case KeyEvent.KEYCODE_PAGE_UP:
                             pageUpPress();
                             return true;
+                        case KeyEvent.KEYCODE_DPAD_LEFT:
+                            // Prevent view handling the event
+                            return true;
+                        case KeyEvent.KEYCODE_DPAD_RIGHT:
+                            // Prevent view handling the event
+                            return true;
                         default:
                             return false;
                     }
                 } else {
                     return false;
                 }
+            }
+        });
+
+        scrollView.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                return true;
             }
         });
 
@@ -284,7 +297,6 @@ public class SetSongFragment extends Fragment {
     }
     //endregion
 
-
     //region Key Press Functions
     private void enterSpacePress() {
         // Call the button press action for the play button
@@ -313,7 +325,6 @@ public class SetSongFragment extends Fragment {
         scrollView.scrollTo(0, scrollView.getTop());
     }
     //endregion
-
 
     //region Click Functions
 	/**

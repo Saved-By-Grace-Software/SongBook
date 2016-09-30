@@ -160,14 +160,13 @@ public class SetActivity extends FragmentActivity {
         }
     }
 
-
     /*****************************************************************************
      *
      * Key Press Functions
      *
      *****************************************************************************/
     private void leftArrowPress() {
-        if (currentSong > 0 && allowPageTurn) {
+        if (allowPageTurn && currentSong > 0) {
             // Disable further page turning
             allowPageTurn = false;
 
@@ -179,7 +178,7 @@ public class SetActivity extends FragmentActivity {
                 public void run() {
                     try {
                         // Wait for 1 second
-                        Thread.sleep(2000);
+                        Thread.sleep(1000);
 
                         // Reenable the ability to change pages
                         allowPageTurn = true;
@@ -194,9 +193,29 @@ public class SetActivity extends FragmentActivity {
     }
 
     private void rightArrowPress() {
-        if (mSetItem != null && currentSong < mSetItem.getSongs().length()) {
+        if (allowPageTurn && mSetItem != null && currentSong < mSetItem.getSongs().length()) {
+            // Disable further page turning
+            allowPageTurn = false;
+
             // Increment the page
             mViewPager.setCurrentItem(currentSong + 1);
+
+            // Create the thread
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    try {
+                        // Wait for 1 second
+                        Thread.sleep(1000);
+
+                        // Reenable the ability to change pages
+                        allowPageTurn = true;
+                    } catch (Exception e) { }
+                }
+            };
+
+            // Start the thread
+            Thread waitForNextPage = new Thread(runnable);
+            waitForNextPage.start();
         }
     }
     
