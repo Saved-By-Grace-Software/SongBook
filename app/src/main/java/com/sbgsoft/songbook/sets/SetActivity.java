@@ -35,6 +35,7 @@ public class SetActivity extends FragmentActivity {
 	private static int currentSong = 0;
     private boolean autoplayTrack = false;
     private SetItem mSetItem;
+    private boolean allowPageTurn = true;
 	
 	
 	/*****************************************************************************
@@ -166,9 +167,29 @@ public class SetActivity extends FragmentActivity {
      *
      *****************************************************************************/
     private void leftArrowPress() {
-        if (currentSong > 0) {
+        if (currentSong > 0 && allowPageTurn) {
+            // Disable further page turning
+            allowPageTurn = false;
+
             // Decrement the page
             mViewPager.setCurrentItem(currentSong - 1);
+
+            // Create the thread
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    try {
+                        // Wait for 1 second
+                        Thread.sleep(2000);
+
+                        // Reenable the ability to change pages
+                        allowPageTurn = true;
+                    } catch (Exception e) { }
+                }
+            };
+
+            // Start the thread
+            Thread waitForNextPage = new Thread(runnable);
+            waitForNextPage.start();
         }
     }
 
