@@ -4,14 +4,10 @@
     android:versionCode="74"
     android:versionName="5.2.3">
 
-    <uses-sdk
-        android:minSdkVersion="13"
-        android:targetSdkVersion="23" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="false"
