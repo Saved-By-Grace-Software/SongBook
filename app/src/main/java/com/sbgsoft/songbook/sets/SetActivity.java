@@ -177,8 +177,8 @@ public class SetActivity extends FragmentActivity {
             Runnable runnable = new Runnable() {
                 public void run() {
                     try {
-                        // Wait for 1 second
-                        Thread.sleep(1000);
+                        // Wait for 1/2 second
+                        Thread.sleep(500);
 
                         // Reenable the ability to change pages
                         allowPageTurn = true;
@@ -204,8 +204,8 @@ public class SetActivity extends FragmentActivity {
             Runnable runnable = new Runnable() {
                 public void run() {
                     try {
-                        // Wait for 1 second
-                        Thread.sleep(1000);
+                        // Wait for 1/2 second
+                        Thread.sleep(500);
 
                         // Reenable the ability to change pages
                         allowPageTurn = true;
