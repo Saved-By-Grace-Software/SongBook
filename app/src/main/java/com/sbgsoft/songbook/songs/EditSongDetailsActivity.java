@@ -176,7 +176,7 @@ public class EditSongDetailsActivity extends AppCompatActivity {
         }
 
         // Check for valid media file
-        if (!fullTrackPath.isEmpty()) {
+        if (fullTrackPath != null && !fullTrackPath.isEmpty()) {
             MediaPlayer m = MediaPlayer.create(this, Uri.parse(fullTrackPath));
             if (m == null) {
                 // Not a valid file
