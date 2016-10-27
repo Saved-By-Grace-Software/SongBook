@@ -1996,7 +1996,7 @@ public class MainActivity extends AppCompatActivity {
     	final ArrayAdapter<String> setsAD;
     	
     	// Fill the list view
-    	setsLV.setEmptyView(findViewById(R.id.empty_sets));
+    	setsLV.setEmptyView(findViewById(R.id.empty_songs));
     	setsLV.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     	setsLV.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long row) {

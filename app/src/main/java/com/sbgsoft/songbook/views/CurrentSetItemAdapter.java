@@ -10,8 +10,6 @@ import android.widget.Toast;
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
-import com.sbgsoft.songbook.main.StaticVars;
-import com.sbgsoft.songbook.sets.SetsTab;
 
 import java.util.Collections;
 import java.util.List;

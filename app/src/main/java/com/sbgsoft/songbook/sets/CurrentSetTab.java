@@ -1,6 +1,7 @@
 package com.sbgsoft.songbook.sets;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
 import com.sbgsoft.songbook.views.CurrentSetItemAdapter;
 import com.sbgsoft.songbook.views.SongItemTouchHelperCallback;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
 
@@ -27,7 +29,7 @@ public class CurrentSetTab extends Fragment {
 
     private static View mView;
     public static CurrentSetItemAdapter adapter;
-    private static RecyclerView currentSetRecyclerView;
+    private static FastScrollRecyclerView currentSetRecyclerView;
     private static LinearLayoutManager recyclerViewLayoutManager;
     private static ItemTouchHelper mItemTouchHelper;
 
@@ -45,11 +47,14 @@ public class CurrentSetTab extends Fragment {
         ArrayList<SongItem> songs = getCurrentSetList();
 
         // Set up the current set recycler view
-        currentSetRecyclerView = (RecyclerView)mView.findViewById(R.id.current_list);
+        currentSetRecyclerView = (FastScrollRecyclerView)mView.findViewById(R.id.current_list);
         currentSetRecyclerView.setHasFixedSize(true);
         recyclerViewLayoutManager = new LinearLayoutManager(mView.getContext());
         recyclerViewLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         currentSetRecyclerView.setLayoutManager(recyclerViewLayoutManager);
+        currentSetRecyclerView.setPopupBgColor(Color.LTGRAY);
+        currentSetRecyclerView.setPopupTextColor(Color.WHITE);
+        currentSetRecyclerView.setThumbColor(Color.LTGRAY);
 
         // Specify the adapter for the recycler view
         MainActivity mainActivity = (MainActivity)getActivity();

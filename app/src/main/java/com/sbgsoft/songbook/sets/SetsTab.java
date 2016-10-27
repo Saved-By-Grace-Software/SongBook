@@ -1,6 +1,7 @@
 package com.sbgsoft.songbook.sets;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.views.SetItemAdapter;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,7 +36,7 @@ public class SetsTab extends Fragment {
 
     public static SetItemAdapter adapter;
     private static View mView;
-    private static RecyclerView setsRecyclerView;
+    private static FastScrollRecyclerView setsRecyclerView;
     private static LinearLayoutManager recyclerViewLayoutManager;
     private static int currentSetGroupSpinnerPosition = 0;
 
@@ -51,11 +53,14 @@ public class SetsTab extends Fragment {
         ArrayList<SetItem> sets = getSetsList(null);
 
         // Set up the sets recycler view
-        setsRecyclerView = (RecyclerView)mView.findViewById(R.id.sets_list);
+        setsRecyclerView = (FastScrollRecyclerView)mView.findViewById(R.id.sets_list);
         setsRecyclerView.setHasFixedSize(true);
         recyclerViewLayoutManager = new LinearLayoutManager(mView.getContext());
         recyclerViewLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         setsRecyclerView.setLayoutManager(recyclerViewLayoutManager);
+        setsRecyclerView.setPopupBgColor(Color.LTGRAY);
+        setsRecyclerView.setPopupTextColor(Color.WHITE);
+        setsRecyclerView.setThumbColor(Color.LTGRAY);
 
         // Specify the adapter for the recycler view
         MainActivity mainActivity = (MainActivity)getActivity();

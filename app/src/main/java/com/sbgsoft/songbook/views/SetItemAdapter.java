@@ -1,5 +1,6 @@
 package com.sbgsoft.songbook.views;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,12 @@ import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.Item;
 import com.sbgsoft.songbook.items.SetItem;
 import com.sbgsoft.songbook.main.MainActivity;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.Collections;
 import java.util.List;
 
-public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
+public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
 
     public enum SortType {
         DateRecent,
@@ -47,6 +49,12 @@ public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> {
     @Override
     public int getItemCount() {
         return mSets.size();
+    }
+
+    @NonNull
+    @Override
+    public String getSectionName(int position) {
+        return mSets.get(position).getName().substring(0, 1);
     }
 
     public void add(SetItem item) {
