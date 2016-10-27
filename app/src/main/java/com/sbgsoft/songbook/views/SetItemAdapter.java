@@ -54,7 +54,17 @@ public class SetItemAdapter extends RecyclerView.Adapter<SetItemViewHolder> impl
     @NonNull
     @Override
     public String getSectionName(int position) {
-        return mSets.get(position).getName().substring(0, 1);
+        Item item = mSets.get(position);
+        String ret = "";
+
+        if (currentSortType == SortType.Title) {
+            ret = item.getName().substring(0, 1);
+        } else if ((currentSortType == SortType.DateOldest || currentSortType == SortType.DateRecent)
+                && item instanceof SetItem) {
+            ret = ((SetItem)item).getShortDate();
+        }
+
+        return ret;
     }
 
     public void add(SetItem item) {

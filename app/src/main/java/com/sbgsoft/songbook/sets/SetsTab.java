@@ -118,7 +118,7 @@ public class SetsTab extends Fragment {
             // Get the strings from the cursor
             String setName = c.getString(c.getColumnIndex(DBStrings.TBLSETS_NAME));
             String setLink = c.getString(c.getColumnIndex(DBStrings.TBLSETS_LINK));
-            String setDate = c.getString(c.getColumnIndex(DBStrings.TBLSETS_DATE));
+            String setDate = c.getString(c.getColumnIndex(DBStrings.TBLSETS_DATE)).replaceAll("\\s", "");
             String[] datesplit = setDate.split("-");
             setDate = datesplit[1] + "/" + datesplit[2] + "/" + datesplit[0];
 

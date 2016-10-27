@@ -1,7 +1,10 @@
 package com.sbgsoft.songbook.items;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 
 import com.sbgsoft.songbook.db.DBStrings;
 import com.sbgsoft.songbook.main.MainActivity;
@@ -74,6 +77,22 @@ public class SetItem implements Item, Parcelable {
 		return date;
 	}
 
+    public String getShortDate() {
+        String ret = "";
+
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+            Date tmp = df.parse(date);
+
+            SimpleDateFormat dfO = new SimpleDateFormat("MMM yy");
+            ret = dfO.format(tmp);
+        } catch (ParseException e) {
+
+        }
+
+        return ret;
+    }
+
     public String getLink() {
         return link;
     }
@@ -99,7 +118,7 @@ public class SetItem implements Item, Parcelable {
 	}
 
 	public void setDate(String date) {
-		this.date = date;
+		this.date = date.replaceAll("\\s", "");
 	}
 
     public void setLink(String link) {
