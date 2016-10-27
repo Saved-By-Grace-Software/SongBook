@@ -1,17 +1,18 @@
 package com.sbgsoft.songbook.views;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.Item;
 import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +22,7 @@ import java.util.Locale;
 /**
  * Created by SamIAm on 5/18/2016.
  */
-public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements SectionTitleProvider {
+public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
     public enum SortType {
         SongTitle,
         SongAuthor,
@@ -82,9 +83,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements
         return mItems.size();
     }
 
+    @NonNull
     @Override
-    public String getSectionTitle(int position) {
-        //this String will be shown in a bubble for specified position
+    public String getSectionName(int position) {
         return mItems.get(position).getName().substring(0, 1);
     }
 

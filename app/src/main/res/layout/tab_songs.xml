@@ -65,18 +65,10 @@
 		android:layout_height="3dip"
         android:layout_below="@+id/songs_tab_title_bar"/>
 
-    <android.support.v7.widget.RecyclerView
+    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
         android:id="@+id/songs_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/song_separator_bar"/>
-
-    <com.futuremind.recyclerviewfastscroll.FastScroller
-        android:id="@+id/fastscroll"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/song_separator_bar"/>
+        android:layout_below="@+id/song_separator_bar" />
 
 </RelativeLayout>
