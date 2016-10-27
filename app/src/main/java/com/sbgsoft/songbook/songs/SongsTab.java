@@ -1,16 +1,17 @@
 package com.sbgsoft.songbook.songs;
 
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.views.ItemAdapter;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +37,7 @@ public class SongsTab extends Fragment {
 
     private static View mView;
     private static ItemAdapter adapter;
-    private static RecyclerView songsRecyclerView;
+    private static FastScrollRecyclerView songsRecyclerView;
     private static LinearLayoutManager recyclerViewLayoutManager;
     private static int currentSongGroupSpinnerPosition = 0;
 
@@ -53,11 +55,14 @@ public class SongsTab extends Fragment {
         ArrayList<Item> songs = getSongsList(null);
 
         // Set up the songs recycler view
-        songsRecyclerView = (RecyclerView)mView.findViewById(R.id.songs_list);
+        songsRecyclerView = (FastScrollRecyclerView)mView.findViewById(R.id.songs_list);
         songsRecyclerView.setHasFixedSize(true);
-        recyclerViewLayoutManager = new LinearLayoutManager(mView.getContext());
+        recyclerViewLayoutManager = new LinearLayoutManager(mView.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerViewLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         songsRecyclerView.setLayoutManager(recyclerViewLayoutManager);
+        songsRecyclerView.setPopupBgColor(Color.LTGRAY);
+        songsRecyclerView.setPopupTextColor(Color.WHITE);
+        songsRecyclerView.setThumbColor(Color.LTGRAY);
 
         // Specify the adapter for the recycler view
         MainActivity mainActivity = (MainActivity)getActivity();
@@ -167,7 +172,7 @@ public class SongsTab extends Fragment {
     /**
      * Refills the set list
      * @param forceRedraw Determines whether or not to redraw the list
-     * @param setSearch The search criteria for filling the list
+     * @param songSearch The search criteria for filling the list
      * @return
      */
     private int refillSongsList(boolean forceRedraw, SongSearchCriteria songSearch) {

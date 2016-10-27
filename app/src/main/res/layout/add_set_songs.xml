@@ -30,5 +30,12 @@
         android:layout_height="wrap_content"
         android:padding="10dip"
         android:fastScrollEnabled="true" />
+
+    <TextView android:id="@+id/empty_songs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/no_songs"
+        android:textColor="@color/defaultTextColor" />
     
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.sbgsoft.songbook.views;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.SongBookTheme;
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,7 +22,7 @@ import java.util.Locale;
 /**
  * Created by SamIAm on 5/18/2016.
  */
-public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements FastScrollRecyclerView.SectionedAdapter {
     public enum SortType {
         SongTitle,
         SongAuthor,
@@ -79,6 +81,21 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     @Override
     public int getItemCount() {
         return mItems.size();
+    }
+
+    @NonNull
+    @Override
+    public String getSectionName(int position) {
+        Item item = mItems.get(position);
+        String ret = item.getName().substring(0, 1);
+
+        if (currentSortType == SortType.SongAuthor && item instanceof SongItem) {
+            ret = ((SongItem)item).getAuthor().substring(0, 1);
+        } else if (currentSortType == SortType.SongKey && item instanceof SongItem) {
+            ret = ((SongItem)item).getKey();
+        }
+
+        return ret;
     }
 
     public void add(Item item) {
