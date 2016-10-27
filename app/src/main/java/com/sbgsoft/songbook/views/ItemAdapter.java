@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.futuremind.recyclerviewfastscroll.SectionTitleProvider;
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.Item;
 import com.sbgsoft.songbook.items.SectionItem;
@@ -20,7 +21,7 @@ import java.util.Locale;
 /**
  * Created by SamIAm on 5/18/2016.
  */
-public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
+public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements SectionTitleProvider {
     public enum SortType {
         SongTitle,
         SongAuthor,
@@ -79,6 +80,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> {
     @Override
     public int getItemCount() {
         return mItems.size();
+    }
+
+    @Override
+    public String getSectionTitle(int position) {
+        //this String will be shown in a bubble for specified position
+        return mItems.get(position).getName().substring(0, 1);
     }
 
     public void add(Item item) {
