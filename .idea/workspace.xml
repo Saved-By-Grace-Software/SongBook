@@ -12,17 +12,7 @@
   <component name="ChangeListManager">
     <list default="true" id="88569f7d-c5a7-41ba-8f9d-047b1e00f31d" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/CurrentSetTab.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/CurrentSetTab.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetsTab.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/sets/SetsTab.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/CurrentSetItemAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/CurrentSetItemAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_current_set.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_current_set.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_sets.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_sets.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_current_set.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_current_set.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_sets.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_sets.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/tab_current_set.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/tab_current_set.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/tab_sets.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/tab_sets.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/ItemAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/ItemAdapter.java" />
     </list>
     <ignored path="SongBook.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -93,25 +83,21 @@
       <file leaf-file-name="ItemAdapter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/ItemAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
+            <state relative-caret-position="612">
+              <caret line="94" column="44" selection-start-line="94" selection-start-column="44" selection-end-line="94" selection-end-column="44" />
               <folding>
                 <element signature="docComment;class#ItemAdapter#0" expanded="false" />
-                <element signature="class#SortType#0;class#ItemAdapter#0" expanded="false" />
                 <element signature="method#ItemAdapter#0;class#ItemAdapter#0" expanded="false" />
                 <element signature="method#onCreateViewHolder#0;class#ItemAdapter#0" expanded="false" />
                 <element signature="method#onBindViewHolder#0;class#ItemAdapter#0" expanded="false" />
-                <element signature="method#getSectionName#0;class#ItemAdapter#0" expanded="false" />
                 <element signature="method#add#0;class#ItemAdapter#0" expanded="false" />
                 <element signature="method#remove#0;class#ItemAdapter#0" expanded="false" />
                 <element signature="method#get#0;class#ItemAdapter#0" expanded="false" />
                 <element signature="method#clear#0;class#ItemAdapter#0" expanded="false" />
                 <element signature="method#refill#0;class#ItemAdapter#0" expanded="false" />
-                <element signature="e#3878#3901#0" expanded="false" />
-                <element signature="method#sort#0;class#ItemAdapter#0" expanded="false" />
                 <element signature="docComment;method#sort#1;class#ItemAdapter#0" expanded="false" />
                 <element signature="method#sort#1;class#ItemAdapter#0" expanded="false" />
-                <element signature="e#5619#5649#0" expanded="false" />
+                <element signature="e#5960#5990#0" expanded="false" />
                 <element signature="method#addTitleSectionHeaders#0;class#ItemAdapter#0" expanded="false" />
                 <element signature="method#addAuthorSectionHeaders#0;class#ItemAdapter#0" expanded="false" />
                 <element signature="method#addKeySectionHeaders#0;class#ItemAdapter#0" expanded="false" />
@@ -2079,7 +2065,6 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/settings.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/add_set_songs.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/ItemAdapter.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/tab_songs.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_songs.xml" />
@@ -2096,6 +2081,7 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout-sw600dp/tab_sets.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/tab_sets.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/main/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/ItemAdapter.java" />
       </list>
     </option>
   </component>
@@ -2547,6 +2533,40 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="sets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="songbook" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="items" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -3006,18 +3026,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="49" />
+      <option name="time" value="50" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_open_file.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="73" column="40" selection-start-line="66" selection-start-column="8" selection-end-line="73" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/attrs.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -3341,14 +3354,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="56" column="20" selection-start-line="56" selection-start-column="20" selection-end-line="56" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout-sw700dp/tab_current_set.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -3462,27 +3467,39 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/SetItemAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="56" column="20" selection-start-line="56" selection-start-column="20" selection-end-line="56" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/items/Item.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/sbgsoft/songbook/views/ItemAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
+        <state relative-caret-position="612">
+          <caret line="94" column="44" selection-start-line="94" selection-start-column="44" selection-end-line="94" selection-end-column="44" />
           <folding>
             <element signature="docComment;class#ItemAdapter#0" expanded="false" />
-            <element signature="class#SortType#0;class#ItemAdapter#0" expanded="false" />
             <element signature="method#ItemAdapter#0;class#ItemAdapter#0" expanded="false" />
             <element signature="method#onCreateViewHolder#0;class#ItemAdapter#0" expanded="false" />
             <element signature="method#onBindViewHolder#0;class#ItemAdapter#0" expanded="false" />
-            <element signature="method#getSectionName#0;class#ItemAdapter#0" expanded="false" />
             <element signature="method#add#0;class#ItemAdapter#0" expanded="false" />
             <element signature="method#remove#0;class#ItemAdapter#0" expanded="false" />
             <element signature="method#get#0;class#ItemAdapter#0" expanded="false" />
             <element signature="method#clear#0;class#ItemAdapter#0" expanded="false" />
             <element signature="method#refill#0;class#ItemAdapter#0" expanded="false" />
-            <element signature="e#3878#3901#0" expanded="false" />
-            <element signature="method#sort#0;class#ItemAdapter#0" expanded="false" />
             <element signature="docComment;method#sort#1;class#ItemAdapter#0" expanded="false" />
             <element signature="method#sort#1;class#ItemAdapter#0" expanded="false" />
-            <element signature="e#5619#5649#0" expanded="false" />
+            <element signature="e#5960#5990#0" expanded="false" />
             <element signature="method#addTitleSectionHeaders#0;class#ItemAdapter#0" expanded="false" />
             <element signature="method#addAuthorSectionHeaders#0;class#ItemAdapter#0" expanded="false" />
             <element signature="method#addKeySectionHeaders#0;class#ItemAdapter#0" expanded="false" />

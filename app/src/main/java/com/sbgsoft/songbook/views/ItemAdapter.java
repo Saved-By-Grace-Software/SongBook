@@ -86,7 +86,16 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder> implements
     @NonNull
     @Override
     public String getSectionName(int position) {
-        return mItems.get(position).getName().substring(0, 1);
+        Item item = mItems.get(position);
+        String ret = item.getName().substring(0, 1);
+
+        if (currentSortType == SortType.SongAuthor && item instanceof SongItem) {
+            ret = ((SongItem)item).getAuthor().substring(0, 1);
+        } else if (currentSortType == SortType.SongKey && item instanceof SongItem) {
+            ret = ((SongItem)item).getKey();
+        }
+
+        return ret;
     }
 
     public void add(Item item) {
