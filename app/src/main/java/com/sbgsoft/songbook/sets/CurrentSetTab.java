@@ -52,12 +52,7 @@ public class CurrentSetTab extends Fragment {
         recyclerViewLayoutManager = new LinearLayoutManager(mView.getContext());
         recyclerViewLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         currentSetRecyclerView.setLayoutManager(recyclerViewLayoutManager);
-
-        // Theme the fast scroller
-        SongBookTheme theme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
-        currentSetRecyclerView.setPopupBgColor(theme.getSpinnerFontColor());
-        currentSetRecyclerView.setPopupTextColor(theme.getMainFontColor());
-        currentSetRecyclerView.setThumbColor(theme.getTitleFontColor());
+        reColorFastScroll();
 
         // Specify the adapter for the recycler view
         MainActivity mainActivity = (MainActivity)getActivity();
@@ -170,6 +165,16 @@ public class CurrentSetTab extends Fragment {
         // Color the separator bars
         View setBar = mView.findViewById(R.id.currset_separator_bar);
         setBar.setBackgroundColor(theme.getSeparatorBarColor());
+    }
+
+    public void reColorFastScroll() {
+        // Get the current theme from the database
+        SongBookTheme theme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
+
+        // Theme the fast scroller
+        currentSetRecyclerView.setPopupBgColor(theme.getSpinnerFontColor());
+        currentSetRecyclerView.setPopupTextColor(theme.getMainFontColor());
+        currentSetRecyclerView.setThumbColor(theme.getTitleFontColor());
     }
     //endregion
 }

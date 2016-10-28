@@ -1070,6 +1070,11 @@ public class MainActivity extends AppCompatActivity {
         ((SongsTab)songsFragment).reColorSeparatorBar();
         ((CurrentSetTab)currSetFragment).reColorSeparatorBar();
 
+        // Update the fast scroller color
+        ((SetsTab)setsFragment).reColorFastScroll();
+        ((SongsTab)songsFragment).reColorFastScroll();
+        ((CurrentSetTab)currSetFragment).reColorFastScroll();
+
         // Update the navigation drawer list colors
         mNavDrawerAdapter.resetTheme();
         setMainNavDrawerItems();

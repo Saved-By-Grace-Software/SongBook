@@ -60,12 +60,7 @@ public class SongsTab extends Fragment {
         recyclerViewLayoutManager = new LinearLayoutManager(mView.getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerViewLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         songsRecyclerView.setLayoutManager(recyclerViewLayoutManager);
-
-        // Theme the fast scroller
-        SongBookTheme theme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
-        songsRecyclerView.setPopupBgColor(theme.getSpinnerFontColor());
-        songsRecyclerView.setPopupTextColor(theme.getMainFontColor());
-        songsRecyclerView.setThumbColor(theme.getTitleFontColor());
+        reColorFastScroll();
 
         // Specify the adapter for the recycler view
         MainActivity mainActivity = (MainActivity)getActivity();
@@ -338,6 +333,16 @@ public class SongsTab extends Fragment {
         // Color the separator bars
         View setBar = mView.findViewById(R.id.song_separator_bar);
         setBar.setBackgroundColor(theme.getSeparatorBarColor());
+    }
+
+    public void reColorFastScroll() {
+        // Get the current theme from the database
+        SongBookTheme theme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
+
+        // Theme the fast scroller
+        songsRecyclerView.setPopupBgColor(theme.getSpinnerFontColor());
+        songsRecyclerView.setPopupTextColor(theme.getMainFontColor());
+        songsRecyclerView.setThumbColor(theme.getTitleFontColor());
     }
     //endregion
 }
