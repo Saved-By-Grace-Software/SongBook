@@ -153,5 +153,5 @@ public class CustomAlertDialogBuilder extends AlertDialog.Builder {
         }
 
         return alertDialog;
-    }   
+    }
 }

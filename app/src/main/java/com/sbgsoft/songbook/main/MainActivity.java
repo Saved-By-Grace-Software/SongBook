@@ -55,6 +55,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -1147,7 +1148,7 @@ public class MainActivity extends AppCompatActivity {
 	    	}
     	});
 
-    	alert.show();
+        alert.show();
     }
     
     /**
