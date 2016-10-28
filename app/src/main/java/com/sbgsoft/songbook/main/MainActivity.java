@@ -46,6 +46,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -1097,12 +1098,13 @@ public class MainActivity extends AppCompatActivity {
      */
     private void createSet() {
     	// Create the alert dialog
-    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
+    	//AlertDialog.Builder alert = new AlertDialog.Builder(this);
     	alert.setTitle("Create Set");
     	
     	// Set the dialog view to gather user input
     	LayoutInflater inflater = getLayoutInflater();
-    	View dialoglayout = inflater.inflate(R.layout.add_set, (ViewGroup) findViewById(R.id.add_set_root));
+    	final View dialoglayout = inflater.inflate(R.layout.add_set, (ViewGroup) findViewById(R.id.add_set_root));
     	alert.setView(dialoglayout);
     	final EditText setNameET = (EditText)dialoglayout.findViewById(R.id.add_set_name);
         final EditText setLinkET = (EditText)dialoglayout.findViewById(R.id.add_set_link);
@@ -1120,10 +1122,14 @@ public class MainActivity extends AppCompatActivity {
                     setLink = "";
 	    		
 	    		if (setName.length() > 0) {
-		    			selectSetSongs(setName, setDate, setLink);
+                    dialog.dismiss();
+                    selectSetSongs(setName, setDate, setLink);
 	    		}
-	    		else
-	    			Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
+	    		else {
+                    //Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
+                    Snackbar.make(dialoglayout, "Cannot create a set with no name!", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
 			}
     	});
 
