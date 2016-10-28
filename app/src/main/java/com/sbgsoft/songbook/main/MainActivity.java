@@ -45,6 +45,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -71,6 +72,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -108,6 +110,7 @@ import com.sbgsoft.songbook.songs.SongActivity;
 import com.sbgsoft.songbook.songs.SongsTab;
 import com.sbgsoft.songbook.songs.TextFileImporter;
 import com.sbgsoft.songbook.songs.TimeSignature;
+import com.sbgsoft.songbook.util.SystemUiHider;
 import com.sbgsoft.songbook.views.AutoFitTextView;
 import com.sbgsoft.songbook.views.SongBookThemeTextView;
 import com.sbgsoft.songbook.zip.Compress;
@@ -195,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabanim_tabs);
         tabLayout.setupWithViewPager(mViewPager);
         tabLayout.setBackgroundColor(theme.getToolbarColor());
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
@@ -1099,7 +1102,6 @@ public class MainActivity extends AppCompatActivity {
     private void createSet() {
     	// Create the alert dialog
         CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
-    	//AlertDialog.Builder alert = new AlertDialog.Builder(this);
     	alert.setTitle("Create Set");
     	
     	// Set the dialog view to gather user input
@@ -1126,7 +1128,6 @@ public class MainActivity extends AppCompatActivity {
                     selectSetSongs(setName, setDate, setLink);
 	    		}
 	    		else {
-                    //Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
                     Snackbar.make(dialoglayout, "Cannot create a set with no name!", Snackbar.LENGTH_LONG).show();
                     return;
                 }
@@ -1136,6 +1137,7 @@ public class MainActivity extends AppCompatActivity {
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    	    // Canceled.
+                dialog.dismiss();
 	    	}
     	});
 
@@ -1234,7 +1236,7 @@ public class MainActivity extends AppCompatActivity {
 	    		
 	    		// Create the set and refresh the list
 	    		if(!dbAdapter.createSet(setName, setSongs, setDate + " ", setLink))
-	    			Toast.makeText(getApplicationContext(), "Failed to create set!", Toast.LENGTH_LONG).show();
+                    Snackbar.make(getWindow().getDecorView().getRootView(), "Failed to create set!", Snackbar.LENGTH_LONG).show();
 	    		else {
                     // Refresh set and current set list
 					((SetsTab)setsFragment).refillSetsList();
@@ -1439,7 +1441,7 @@ public class MainActivity extends AppCompatActivity {
 	    		
 	    		// Create the set and refresh the list
 	    		if(!dbAdapter.updateSet(setName, setSongs.toArray(new String[setSongs.size()])))
-	    			Toast.makeText(getApplicationContext(), "Failed to update set!", Toast.LENGTH_LONG).show();
+                    Snackbar.make(getWindow().getDecorView().getRootView(), "Failed to update set!", Snackbar.LENGTH_LONG).show();
 	    		else {
 	    			// Update current set list
                     ((CurrentSetTab)currSetFragment).refillCurrentSetList();
@@ -1529,12 +1531,12 @@ public class MainActivity extends AppCompatActivity {
      */
     public void editSetAtt(final String setName) {
     	// Create the alert dialog
-    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
     	alert.setTitle("Edit Set");
     	
     	// Set the dialog view to gather user input
     	LayoutInflater inflater = getLayoutInflater();
-    	View dialoglayout = inflater.inflate(R.layout.add_set, (ViewGroup) findViewById(R.id.add_set_root));
+    	final View dialoglayout = inflater.inflate(R.layout.add_set, (ViewGroup) findViewById(R.id.add_set_root));
     	alert.setView(dialoglayout);
     	final EditText setNameET = (EditText)dialoglayout.findViewById(R.id.add_set_name);
         final EditText setLinkET = (EditText)dialoglayout.findViewById(R.id.add_set_link);
@@ -1564,14 +1566,17 @@ public class MainActivity extends AppCompatActivity {
                     // Refresh set and current set list
 					((SetsTab)setsFragment).refillSetsList();
                     ((CurrentSetTab)currSetFragment).refillCurrentSetList();
+
+                    dialog.dismiss();
                 } else
-                    Toast.makeText(getApplicationContext(), "Cannot create a set with no name!", Toast.LENGTH_LONG).show();
+                    Snackbar.make(dialoglayout, "Cannot create a set with no name!", Snackbar.LENGTH_LONG).show();
             }
         });
 
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // Canceled.
+                dialog.dismiss();
             }
         });
 
@@ -1669,8 +1674,8 @@ public class MainActivity extends AppCompatActivity {
     	for (SongItem songItem : setItem.songs) {
 			saveSong(songItem, songFileType, songItem.getSetKey(), false);
     	}
-    	
-    	Toast.makeText(getBaseContext(), "Saved set files to: " + Environment.getExternalStorageDirectory() + "!", Toast.LENGTH_LONG).show();
+
+        Snackbar.make(getWindow().getDecorView().getRootView(), "Saved set files to: " + Environment.getExternalStorageDirectory() + "!", Snackbar.LENGTH_LONG).show();
     }
      
     /**
@@ -1748,7 +1753,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the dialog view to gather user input
         LayoutInflater inflater = getLayoutInflater();
-        View dialoglayout = inflater.inflate(R.layout.search_dialog, (ViewGroup) findViewById(R.id.search_dialog_root));
+        final View dialoglayout = inflater.inflate(R.layout.search_dialog, (ViewGroup) findViewById(R.id.search_dialog_root));
         alert.setView(dialoglayout);
         final EditText setNameSearch = (EditText)dialoglayout.findViewById(R.id.search_dialog_text);
 
@@ -1762,7 +1767,7 @@ public class MainActivity extends AppCompatActivity {
                 String searchText = setNameSearch.getText().toString();
 
                 if (searchText.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "You must enter text to search. Please try again.", Toast.LENGTH_LONG).show();
+                    Snackbar.make(dialoglayout, "You must enter text to search. Please try again.", Snackbar.LENGTH_LONG).show();
                 } else {
                     // Create the song search object
                     SetSearchCriteria setSearch = new SetSearchCriteria();
