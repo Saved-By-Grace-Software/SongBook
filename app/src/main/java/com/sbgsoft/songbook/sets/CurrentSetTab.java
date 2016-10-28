@@ -52,9 +52,12 @@ public class CurrentSetTab extends Fragment {
         recyclerViewLayoutManager = new LinearLayoutManager(mView.getContext());
         recyclerViewLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         currentSetRecyclerView.setLayoutManager(recyclerViewLayoutManager);
-        currentSetRecyclerView.setPopupBgColor(Color.LTGRAY);
-        currentSetRecyclerView.setPopupTextColor(Color.WHITE);
-        currentSetRecyclerView.setThumbColor(Color.LTGRAY);
+
+        // Theme the fast scroller
+        SongBookTheme theme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
+        currentSetRecyclerView.setPopupBgColor(theme.getSpinnerFontColor());
+        currentSetRecyclerView.setPopupTextColor(theme.getMainFontColor());
+        currentSetRecyclerView.setThumbColor(theme.getTitleFontColor());
 
         // Specify the adapter for the recycler view
         MainActivity mainActivity = (MainActivity)getActivity();

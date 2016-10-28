@@ -58,9 +58,12 @@ public class SetsTab extends Fragment {
         recyclerViewLayoutManager = new LinearLayoutManager(mView.getContext());
         recyclerViewLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         setsRecyclerView.setLayoutManager(recyclerViewLayoutManager);
-        setsRecyclerView.setPopupBgColor(Color.LTGRAY);
-        setsRecyclerView.setPopupTextColor(Color.WHITE);
-        setsRecyclerView.setThumbColor(Color.LTGRAY);
+
+        // Theme the fast scroller
+        SongBookTheme theme = MainActivity.dbAdapter.getCurrentSettings().getSongBookTheme();
+        setsRecyclerView.setPopupBgColor(theme.getSpinnerFontColor());
+        setsRecyclerView.setPopupTextColor(theme.getMainFontColor());
+        setsRecyclerView.setThumbColor(theme.getTitleFontColor());
 
         // Specify the adapter for the recycler view
         MainActivity mainActivity = (MainActivity)getActivity();
