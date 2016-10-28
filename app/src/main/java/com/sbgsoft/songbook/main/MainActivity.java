@@ -1806,7 +1806,7 @@ public class MainActivity extends AppCompatActivity {
     	
     	// Set the dialog view to gather user input
     	LayoutInflater inflater = getLayoutInflater();
-    	View dialoglayout = inflater.inflate(R.layout.add_song, (ViewGroup) findViewById(R.id.add_song_root));
+    	final View dialoglayout = inflater.inflate(R.layout.add_song, (ViewGroup) findViewById(R.id.add_song_root));
     	alert.setView(dialoglayout);
     	final EditText songNameET = (EditText)dialoglayout.findViewById(R.id.add_song_name);
     	final EditText authorET = (EditText)dialoglayout.findViewById(R.id.add_song_author);
@@ -1852,16 +1852,17 @@ public class MainActivity extends AppCompatActivity {
 
                 // Check for a correct key
                 if (!isValidKey(songKey)) {
-                    Toast.makeText(getBaseContext(), "That is not a valid key!" +
-                            StaticVars.EOL + "Please enter a valid key and try again.", Toast.LENGTH_LONG).show();
+                    Snackbar.make(dialoglayout, "That is not a valid key!" +
+                            StaticVars.EOL + "Please enter a valid key and try again.", Snackbar.LENGTH_LONG).show();
                     return;
                 }
 
                 // Create the song
                 if (songName.length() > 0) {
                     String songFile = songName + ".txt";
-                    if (!dbAdapter.createSong(songName, songFile, songAuthor, songKey, songTime, songLink, bpm))
-                        Toast.makeText(getApplicationContext(), "Failed to create song!", Toast.LENGTH_LONG).show();
+                    if (!dbAdapter.createSong(songName, songFile, songAuthor, songKey, songTime, songLink, bpm)) {
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "Failed to create song!", Snackbar.LENGTH_LONG).show();
+                    }
                     else {
                         // If a file is waiting to be imported
                         if (importFilePath != "") {
@@ -1886,7 +1887,7 @@ public class MainActivity extends AppCompatActivity {
                                 dbAdapter.deleteSong(songName);
 
                                 // Alert that the song failed
-                                Toast.makeText(getApplicationContext(), "Could not import file, Song deleted.", Toast.LENGTH_LONG).show();
+                                Snackbar.make(getWindow().getDecorView().getRootView(), "Could not import file, Song deleted.", Snackbar.LENGTH_LONG).show();
                             }
 
                             // Clear the import file path
@@ -1900,7 +1901,7 @@ public class MainActivity extends AppCompatActivity {
                                 dbAdapter.deleteSong(songName);
 
                                 // Alert that the song failed
-                                Toast.makeText(getApplicationContext(), "Could not create song file, Song deleted.", Toast.LENGTH_LONG).show();
+                                Snackbar.make(getWindow().getDecorView().getRootView(), "Could not create song file, Song deleted.", Snackbar.LENGTH_LONG).show();
                             }
 
                         }
@@ -1908,8 +1909,10 @@ public class MainActivity extends AppCompatActivity {
                         // Add the song to a group
                         addSongToGroup(songName);
                     }
-                } else
-                    Toast.makeText(getApplicationContext(), "Cannot create a song with no name!", Toast.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(dialoglayout, "Cannot create a song with no name!", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
 
                 // Close the dialog
                 dialog.dismiss();
@@ -2364,11 +2367,11 @@ public class MainActivity extends AppCompatActivity {
     				
     			} catch (Exception e) {
     				if (showToast)
-    					Toast.makeText(getBaseContext(), "Unable to save text file!", Toast.LENGTH_LONG).show();
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "Unable to save text file!", Snackbar.LENGTH_LONG).show();
     			}
 				
 				if (showToast)
-					Toast.makeText(getBaseContext(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Toast.LENGTH_LONG).show();
+                    Snackbar.make(getWindow().getDecorView().getRootView(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Snackbar.LENGTH_LONG).show();
 				
 				break;
 			case chordPro:
@@ -2396,11 +2399,11 @@ public class MainActivity extends AppCompatActivity {
     				
     			} catch (Exception e) {
     				if (showToast)
-    					Toast.makeText(getBaseContext(), "Unable to save ChordPro file!", Toast.LENGTH_LONG).show();
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "Unable to save ChordPro file!", Snackbar.LENGTH_LONG).show();
     			}
 				
 				if (showToast)
-					Toast.makeText(getBaseContext(), "Text file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Toast.LENGTH_LONG).show();
+                    Snackbar.make(getWindow().getDecorView().getRootView(), "ChordPro file saved to: " + Environment.getExternalStorageDirectory() + "/" + fileName + "!", Snackbar.LENGTH_LONG).show();
 				
 				break;
 			case PDF:
@@ -2643,9 +2646,9 @@ public class MainActivity extends AppCompatActivity {
 	    	document.writeTo(out);
     	} catch (Exception e) {
     		if (showToast)
-    			Toast.makeText(getApplicationContext(), 
-        			"Failed to save \"" + songItem.getName() + "\" to \"" + Environment.getExternalStorageDirectory() + "/" + fileName,
-        			Toast.LENGTH_LONG).show();
+                Snackbar.make(getWindow().getDecorView().getRootView(),
+                        "Failed to save \"" + songItem.getName() + "\" to \"" + Environment.getExternalStorageDirectory() + "/" + fileName,
+                        Snackbar.LENGTH_LONG).show();
     	}
     	
     	// Close the document
@@ -2653,9 +2656,9 @@ public class MainActivity extends AppCompatActivity {
     	
     	// Alert on success
     	if (showToast)
-    		Toast.makeText(getApplicationContext(), 
-    			"Saved \"" + songItem.getName() + "\" to \"" + Environment.getExternalStorageDirectory() + "/" + fileName,
-    			Toast.LENGTH_LONG).show();
+            Snackbar.make(getWindow().getDecorView().getRootView(),
+                    "Saved \"" + songItem.getName() + "\" to \"" + Environment.getExternalStorageDirectory() + "/" + fileName,
+                    Snackbar.LENGTH_LONG).show();
     	
     	return att;
     }
@@ -2784,7 +2787,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set the dialog view to gather user input
         LayoutInflater inflater = getLayoutInflater();
-        View dialoglayout = inflater.inflate(R.layout.search_dialog, (ViewGroup) findViewById(R.id.search_dialog_root));
+        final View dialoglayout = inflater.inflate(R.layout.search_dialog, (ViewGroup) findViewById(R.id.search_dialog_root));
         alert.setView(dialoglayout);
         final EditText songNameSearch = (EditText)dialoglayout.findViewById(R.id.search_dialog_text);
 
@@ -2798,7 +2801,7 @@ public class MainActivity extends AppCompatActivity {
                 String searchText = songNameSearch.getText().toString();
 
                 if (searchText.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "You must enter text to search. Please try again.", Toast.LENGTH_LONG).show();
+                    Snackbar.make(dialoglayout, "You must enter text to search. Please try again.", Snackbar.LENGTH_LONG).show();
                 } else {
                     // Create the song search object
                     SongSearchCriteria songSearch = new SongSearchCriteria();
@@ -2839,9 +2842,9 @@ public class MainActivity extends AppCompatActivity {
             startActivity(showSong);
 
         } catch (FileNotFoundException e) {
-            Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+            Snackbar.make(getWindow().getDecorView().getRootView(), "Could not open song file!", Snackbar.LENGTH_LONG).show();
         } catch (IOException e) {
-            Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+            Snackbar.make(getWindow().getDecorView().getRootView(), "Could not open song file!", Snackbar.LENGTH_LONG).show();
         }
     }
     //endregion
@@ -2897,10 +2900,10 @@ public class MainActivity extends AppCompatActivity {
 
                 setItem.songs.add(currSong);
             } catch (FileNotFoundException e) {
-                Toast.makeText(getBaseContext(), "Could not open one of the song files!", Toast.LENGTH_LONG).show();
+                Snackbar.make(getWindow().getDecorView().getRootView(), "Could not open one of the song files!", Snackbar.LENGTH_LONG).show();
                 return;
             } catch (IOException e) {
-                Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+                Snackbar.make(getWindow().getDecorView().getRootView(), "Could not open song file!", Snackbar.LENGTH_LONG).show();
             }
         }
 
@@ -2955,7 +2958,7 @@ public class MainActivity extends AppCompatActivity {
      * Creates a new song group
      */
     private void createSongGroup() {
-    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
 
     	alert.setTitle("Create Song Group");
     	alert.setMessage("Please enter the name of the song group (must be unique)");
@@ -2969,12 +2972,16 @@ public class MainActivity extends AppCompatActivity {
 	    		String groupName = input.getText().toString();
 	    		if (groupName.length() > 0) {
 	    			if(!dbAdapter.createSongGroup(groupName))
-		    			Toast.makeText(getApplicationContext(), "Failed to create song group!", Toast.LENGTH_LONG).show();
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "Failed to create song group!", Snackbar.LENGTH_LONG).show();
 	    			else
 	    				addSongsToGroup(groupName);
+
+                    dialog.dismiss();
 	    		}
-	    		else
-	    			Toast.makeText(getApplicationContext(), "Cannot create a song group with no name!", Toast.LENGTH_LONG).show();
+	    		else {
+                    Snackbar.make(input, "Cannot create a song group with no name!", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
 	    		
 	    		// Refresh the song list and song group spinner
                 ((SongsTab)songsFragment).fillSongGroupsSpinner(false, 0, true);
@@ -2984,6 +2991,7 @@ public class MainActivity extends AppCompatActivity {
     	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 	    	public void onClick(DialogInterface dialog, int whichButton) {
 	    	    // Canceled.
+                dialog.dismiss();
 	    	}
     	});
 
