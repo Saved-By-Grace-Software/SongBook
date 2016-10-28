@@ -1,14 +1,12 @@
 package com.sbgsoft.songbook.songs;
 
-import android.animation.StateListAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
+import android.support.design.widget.Snackbar;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -22,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.main.CustomAlertDialogBuilder;
@@ -419,7 +416,7 @@ public class Metronome {
                     // Check to set as default
                     setTempoAsSongDefaultDialog();
                 } else {
-                    Toast.makeText(mActivity, "You must tap a tempo to set it.", Toast.LENGTH_LONG).show();
+                    Snackbar.make(dialoglayout, "You must tap a tempo to set it.", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -470,7 +467,7 @@ public class Metronome {
                     // Check to set as default
                     setTempoAsSongDefaultDialog();
                 } else {
-                    Toast.makeText(mActivity, "To manually set the tempo, you must enter a tempo.", Toast.LENGTH_LONG).show();
+                    Snackbar.make(dialoglayout, "To manually set the tempo, you must enter a tempo.", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -541,14 +538,14 @@ public class Metronome {
 
                     if (ret1 && ret2) {
                         // Alert the user of the new bpm
-                        Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute + "\nSet as song default", Toast.LENGTH_LONG).show();
+                        Snackbar.make(mActivity.getWindow().getDecorView().getRootView(), "New Tempo: " + mBeatsPerMinute + "\nSet as song default", Snackbar.LENGTH_LONG).show();
                     } else {
                         // Alert the user of the new bpm
-                        Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute + "\nFailed to set tempo as default!", Toast.LENGTH_LONG).show();
+                        Snackbar.make(mActivity.getWindow().getDecorView().getRootView(), "New Tempo: " + mBeatsPerMinute + "\nFailed to set tempo as default!", Snackbar.LENGTH_LONG).show();
                     }
                 } else {
                     // Alert the user of the new bpm
-                    Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute + "\nFailed to set tempo as default!", Toast.LENGTH_LONG).show();
+                    Snackbar.make(mActivity.getWindow().getDecorView().getRootView(), "New Tempo: " + mBeatsPerMinute + "\nFailed to set tempo as default!", Snackbar.LENGTH_LONG).show();
                 }
             }
         });
@@ -556,7 +553,7 @@ public class Metronome {
         alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // Alert the user of the new bpm
-                Toast.makeText(mActivity, "New Tempo: " + mBeatsPerMinute, Toast.LENGTH_LONG).show();
+                Snackbar.make(mActivity.getWindow().getDecorView().getRootView(), "New Tempo: " + mBeatsPerMinute, Snackbar.LENGTH_LONG).show();
             }
         });
 

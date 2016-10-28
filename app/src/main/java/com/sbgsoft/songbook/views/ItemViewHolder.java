@@ -1,6 +1,7 @@
 package com.sbgsoft.songbook.views;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -8,14 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
-import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
-import com.sbgsoft.songbook.main.SongBookTheme;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.songs.EditSongRawActivity;
 import com.sbgsoft.songbook.songs.SongsTab;
@@ -143,7 +140,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCr
                 if (!groupName.equals(SongsTab.ALL_SONGS_LABEL))
                     mMainActivity.removeSongFromGroup(songName, groupName);
                 else
-                    Toast.makeText(mView.getContext(), "Cannot remove song from " + SongsTab.ALL_SONGS_LABEL + " group", Toast.LENGTH_LONG).show();
+                    Snackbar.make(mView, "Cannot remove song from " + SongsTab.ALL_SONGS_LABEL + " group", Snackbar.LENGTH_LONG).show();
 
                 // Go back to the current group
                 s.setSelection(currSelection);

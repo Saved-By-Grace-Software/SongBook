@@ -1,19 +1,16 @@
 package com.sbgsoft.songbook.songs;
 
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.db.DBStrings;
@@ -94,7 +91,7 @@ public class SongsTab extends Fragment {
 
         // Display error message for searching
         if (c.getCount() <= 0 && songSearch != null)
-            Toast.makeText(mView.getContext(), "No songs match that search", Toast.LENGTH_LONG).show();
+            Snackbar.make(mView, "No songs match that search", Snackbar.LENGTH_LONG).show();
 
         // Populate the ArrayList
         while (!c.isAfterLast()) {
