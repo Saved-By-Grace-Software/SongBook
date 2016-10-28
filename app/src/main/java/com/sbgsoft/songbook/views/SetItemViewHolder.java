@@ -1,28 +1,18 @@
 package com.sbgsoft.songbook.views;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.media.Image;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
-import com.sbgsoft.songbook.items.SetItem;
-import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.sets.SetsTab;
-import com.sbgsoft.songbook.songs.EditSongRawActivity;
-import com.sbgsoft.songbook.songs.SongsTab;
 
 /**
  * Created by SamIAm on 5/4/2016.
@@ -111,7 +101,7 @@ public class SetItemViewHolder extends RecyclerView.ViewHolder implements View.O
                 if (!groupName.equals(SetsTab.ALL_SETS_LABEL))
                     mMainActivity.removeSetFromGroup(setName, groupName);
                 else
-                    Toast.makeText(mMainActivity, "Cannot remove set from " + SetsTab.ALL_SETS_LABEL + " group", Toast.LENGTH_LONG).show();
+                    Snackbar.make(mMainActivity.getWindow().getDecorView().getRootView(), "Cannot remove set from " + SetsTab.ALL_SETS_LABEL + " group", Snackbar.LENGTH_LONG).show();
                 return true;
             case StaticVars.SHARE_SET:
                 // Email the song

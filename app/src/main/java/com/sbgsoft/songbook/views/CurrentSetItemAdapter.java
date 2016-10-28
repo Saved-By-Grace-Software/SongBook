@@ -1,11 +1,11 @@
 package com.sbgsoft.songbook.views;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.SongItem;
@@ -66,7 +66,7 @@ public class CurrentSetItemAdapter extends RecyclerView.Adapter<CurrentSetItemVi
 
         // Try to reorder the set
         if(!MainActivity.dbAdapter.reorderSet(setName, newOrder)) {
-            Toast.makeText(mMainActivity, "Could not update set order!", Toast.LENGTH_LONG).show();
+            Snackbar.make(mMainActivity.getWindow().getDecorView().getRootView(), "Could not update set order!", Snackbar.LENGTH_LONG).show();
         } else {
             // Refresh set list so song order is correct and notify android of change
             //((SetsTab)mMainActivity.setsFragment).refillSetsList();

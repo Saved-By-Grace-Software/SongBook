@@ -1,10 +1,5 @@
 package com.sbgsoft.songbook.songs;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,10 +10,10 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -31,7 +26,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.items.Settings;
@@ -39,6 +33,11 @@ import com.sbgsoft.songbook.items.SongItem;
 import com.sbgsoft.songbook.main.MainActivity;
 import com.sbgsoft.songbook.main.StaticVars;
 import com.sbgsoft.songbook.views.AutoFitTextView;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Locale;
 
 public class SongActivity extends Activity {
 
@@ -330,8 +329,8 @@ public class SongActivity extends Activity {
 
     	// Check to make sure the song has a proper key
     	if (!StaticVars.songKeys.contains(mSongItem.getKey())) {
-    		Toast.makeText(getBaseContext(),
-    				"You cannot transpose a song without an legit assigned key. Please edit the song attributes, edit the key, and try again.", Toast.LENGTH_LONG).show();
+            Snackbar.make(getWindow().getDecorView().getRootView(),
+                    "You cannot transpose a song without an legit assigned key. Please edit the song attributes, edit the key, and try again.", Snackbar.LENGTH_LONG).show();
     	}
     	else {
     		AlertDialog.Builder alert = new AlertDialog.Builder(this);
@@ -350,10 +349,10 @@ public class SongActivity extends Activity {
                             song.setText(Html.fromHtml(transposedSongText));
                         }
                     } catch (FileNotFoundException e) {
-                        Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "Could not open song file!", Snackbar.LENGTH_LONG).show();
                         return;
                     } catch (IOException e) {
-                        Toast.makeText(getBaseContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "Could not open song file!", Snackbar.LENGTH_LONG).show();
                         return;
                     }
                 }

@@ -1,5 +1,17 @@
 package com.sbgsoft.songbook.songs;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.view.Menu;
+import android.view.View;
+import android.widget.EditText;
+
+import com.sbgsoft.songbook.R;
+import com.sbgsoft.songbook.main.MainActivity;
+import com.sbgsoft.songbook.main.StaticVars;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -7,18 +19,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
-
-import android.app.Activity;
-import android.content.Context;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.sbgsoft.songbook.R;
-import com.sbgsoft.songbook.main.MainActivity;
-import com.sbgsoft.songbook.main.StaticVars;
 
 public class EditSongRawActivity extends Activity {
 	private String songName = "";
@@ -64,7 +64,7 @@ public class EditSongRawActivity extends Activity {
 	    	printStream.print(songText);
 	    	printStream.close();
 	    } catch (FileNotFoundException fnf) {
-	    		Toast.makeText(getApplicationContext(), "Could not save song file!", Toast.LENGTH_LONG).show();
+            Snackbar.make(getWindow().getDecorView().getRootView(), "Could not save song file!", Snackbar.LENGTH_LONG).show();
     	}
     	
     	// Close the activity
@@ -104,7 +104,7 @@ public class EditSongRawActivity extends Activity {
             songText = sb.toString();
             br.close();
         } catch (Exception e) {
-    		Toast.makeText(getApplicationContext(), "Could not open song file!", Toast.LENGTH_LONG).show();
+            Snackbar.make(getWindow().getDecorView().getRootView(), "Could not open song file!", Snackbar.LENGTH_LONG).show();
         }  
     	
     	EditText et = (EditText)findViewById(R.id.song_edit_text);

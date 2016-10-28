@@ -1,24 +1,19 @@
 package com.sbgsoft.songbook.sets;
 
 import android.database.Cursor;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.db.DBStrings;
-import com.sbgsoft.songbook.items.Item;
-import com.sbgsoft.songbook.items.SectionItem;
 import com.sbgsoft.songbook.items.SetItem;
 import com.sbgsoft.songbook.items.SetSearchCriteria;
 import com.sbgsoft.songbook.main.MainActivity;
@@ -119,7 +114,7 @@ public class SetsTab extends Fragment {
 
         // Display error message for searching
         if (c.getCount() <= 0 && setSearch != null)
-            Toast.makeText(mView.getContext(), "No sets match that search", Toast.LENGTH_LONG).show();
+            Snackbar.make(mView, "No sets match that search", Snackbar.LENGTH_LONG).show();
 
         // Populate the ArrayList
         while (!c.isAfterLast()) {
