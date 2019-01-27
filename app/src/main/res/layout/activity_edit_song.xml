@@ -1,8 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true" >
     
     <ScrollView
         android:id="@+id/vscroll_view"
@@ -11,14 +12,16 @@
         android:layout_alignParentTop="true"
         android:layout_above="@+id/button_bottom"
         android:fadeScrollbars="true"
-        android:fillViewport="true" >
+        android:fillViewport="true"
+		android:isScrollContainer="false" >
         
         <HorizontalScrollView
 	        android:id="@+id/hscroll_view"
 	        android:layout_width="fill_parent"
 	        android:layout_height="0dp"
 	        android:fadeScrollbars="true"
-	        android:fillViewport="true" >
+	        android:fillViewport="true"
+            android:isScrollContainer="false" >
 	        
 			<EditText
 		        android:id="@+id/song_edit_text"
