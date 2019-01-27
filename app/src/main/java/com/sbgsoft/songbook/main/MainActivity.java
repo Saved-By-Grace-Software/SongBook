@@ -55,7 +55,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -87,6 +86,7 @@ import com.sbgsoft.songbook.songs.EditSongDetailsActivity;
 import com.sbgsoft.songbook.songs.SongActivity;
 import com.sbgsoft.songbook.songs.SongsTab;
 import com.sbgsoft.songbook.songs.TextFileImporter;
+import com.sbgsoft.songbook.songs.Transpose;
 import com.sbgsoft.songbook.views.AutoFitTextView;
 import com.sbgsoft.songbook.views.SongBookThemeTextView;
 import com.sbgsoft.songbook.zip.Compress;
@@ -2678,8 +2678,9 @@ public class MainActivity extends AppCompatActivity {
         final SongItem songItem = dbAdapter.getSong(songName);
 
     	// Create the key array
-		CharSequence[] keys = StaticVars.songKeys.toArray(new CharSequence[StaticVars.songKeys.size() + 1]);
+		CharSequence[] keys = StaticVars.songKeys.toArray(new CharSequence[StaticVars.songKeys.size() + 2]);
 		keys[StaticVars.songKeys.size()] = "Original Key";
+        keys[StaticVars.songKeys.size() + 1] = "Baritone";
 		
 		AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -2687,8 +2688,15 @@ public class MainActivity extends AppCompatActivity {
     	alert.setItems(keys, new OnClickListener() {
     		public void onClick (DialogInterface dialog, int whichItem) {
     			// Set the new song key for the set
-    			if (whichItem < StaticVars.songKeys.size())
-    				dbAdapter.setSongKeyForSet(setName, songItem.getName(), StaticVars.songKeys.get(whichItem));
+    			if (whichItem < StaticVars.songKeys.size()) {   // Named key
+                    dbAdapter.setSongKeyForSet(setName, songItem.getName(), StaticVars.songKeys.get(whichItem));
+                } else if (whichItem == StaticVars.songKeys.size()) {   // Original key
+                    dbAdapter.setSongKeyForSet(setName, songItem.getName(), songItem.getKey());
+                } else if (whichItem == StaticVars.songKeys.size() + 1) {   // Baritone key
+                    String newKey = Transpose.getBaritoneKey(songItem.getKey());
+                    dbAdapter.setSongKeyForSet(setName, songItem.getName(), newKey);
+                }
+
     			
     			// Refresh current set list
                 ((CurrentSetTab)currSetFragment).refillCurrentSetList();

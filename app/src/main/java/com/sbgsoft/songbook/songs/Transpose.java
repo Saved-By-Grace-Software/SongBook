@@ -1,5 +1,7 @@
 package com.sbgsoft.songbook.songs;
 
+import android.text.StaticLayout;
+
 import java.util.ListIterator;
 
 import com.sbgsoft.songbook.main.StaticVars;
@@ -117,6 +119,27 @@ public class Transpose {
     		newCapo -= 12;
     	
     	return newCapo;
+    }
+
+    /**
+     * Returns the baritone equivalent key for the given key
+     * @param key
+     * @return
+     */
+    public static String getBaritoneKey(String key) {
+        String ret = "";
+
+        // Find the key in the circle of fifths
+        int pos = StaticVars.circleOfFifths.lastIndexOf(key);
+
+        // Move back one step around the circle
+        if (pos == 0) {
+            ret = StaticVars.circleOfFifths.get(StaticVars.circleOfFifths.size() - 1);
+        } else {
+            ret = StaticVars.circleOfFifths.get(pos - 1);
+        }
+
+        return ret;
     }
     
     /**

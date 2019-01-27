@@ -55,6 +55,7 @@ public class StaticVars {
 	public static final ArrayList<String> songKeys = new ArrayList<String>(Arrays.asList("G#", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G"));
 	public static final ArrayList<String> songKeys_transpose = new ArrayList<String>(
 			Arrays.asList("C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B", "C", "C#", "D", "Eb", "E", "F", "F#", "G", "G#", "A", "Bb", "B", "C"));
+	public static final ArrayList<String> circleOfFifths = new ArrayList<>(Arrays.asList("C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "Eb", "Bb", "F"));
 	public static final HashMap<String, String> songKeyMap = new HashMap<String, String>() {
 		private static final long serialVersionUID = 94512194672735973L;
 		{
