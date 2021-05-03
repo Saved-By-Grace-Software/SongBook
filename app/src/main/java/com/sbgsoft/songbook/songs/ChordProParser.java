@@ -21,7 +21,7 @@ import com.sbgsoft.songbook.main.StaticVars;
  */
 public class ChordProParser {
 	public static final ArrayList<String> validDelimeters = new ArrayList<String>(
-			Arrays.asList("author", "title", "cc", "lc", "capo", "intro",
+			Arrays.asList("author", "artist", "title", "cc", "lc", "capo", "intro",
                     "single", "comment", "sot", "start_of_tab", "eot", "end_of_tab",
                     "soc", "start_of_chorus", "eoc", "end_of_chorus"));
 	
@@ -170,7 +170,7 @@ public class ChordProParser {
 							}
 							
 							// Author delimeter
-							if (delim.toString().equals("author")) {
+							if (delim.toString().equals("author") || delim.toString().equals("artist")) {
 								if (useHtml) {
 									// Add beginning of bold 
 									lyricLine.append("<b>");
