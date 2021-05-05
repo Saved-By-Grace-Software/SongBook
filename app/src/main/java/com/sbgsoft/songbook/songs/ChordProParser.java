@@ -59,10 +59,13 @@ public class ChordProParser {
             parsedOutput.append(transposeKey);
         else
             parsedOutput.append(songItem.getKey());
-        if (useHtml) {
-            // Close song title header
-            parsedOutput.append("</big></b><br />");
-        }
+
+        // Add time signature and tempo to title
+		if (useHtml) {
+			parsedOutput.append("</big></b> <i>(" + songItem.getBpm() + "bpm</i> | <i>" + songItem.getTimeSignature() + ")</i><br />");
+		} else {
+			parsedOutput.append(" (" + songItem.getBpm() + "bpm | " + songItem.getTimeSignature() + ")");
+		}
 		parsedOutput.append(lineFeed);
 
         // Add the song link
