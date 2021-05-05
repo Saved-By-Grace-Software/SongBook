@@ -75,9 +75,9 @@ public class StaticVars {
             put("Gb", "F#"); put("Gbm", "F#m");
         }
     };
-    public static final String chordMarkupStart = "|";
-    public static final String chordMarkupEnd = "|";
-    public static final String chordMarkupRegex = "\\|[\\w/#]+\\|";
+    public static final String chordMarkupStart = "$";
+    public static final String chordMarkupEnd = "$";
+    public static final String chordMarkupRegex = "\\$[\\w/#]+\\$";
     public static final String chordClickHackFix = "http://this.is.a.hack.fix";
     public static final String searchResultsText = "Search Results";
 

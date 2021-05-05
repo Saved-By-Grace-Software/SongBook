@@ -21,7 +21,7 @@ import com.sbgsoft.songbook.main.StaticVars;
  */
 public class ChordProParser {
 	public static final ArrayList<String> validDelimeters = new ArrayList<String>(
-			Arrays.asList("author", "title", "cc", "lc", "capo", "intro",
+			Arrays.asList("author", "artist", "title", "cc", "lc", "capo", "intro",
                     "single", "comment", "sot", "start_of_tab", "eot", "end_of_tab",
                     "soc", "start_of_chorus", "eoc", "end_of_chorus"));
 	
@@ -59,10 +59,13 @@ public class ChordProParser {
             parsedOutput.append(transposeKey);
         else
             parsedOutput.append(songItem.getKey());
-        if (useHtml) {
-            // Close song title header
-            parsedOutput.append("</big></b><br />");
-        }
+
+        // Add time signature and tempo to title
+		if (useHtml) {
+			parsedOutput.append("</big></b> <i>(" + songItem.getBpm() + "bpm</i> | <i>" + songItem.getTimeSignature() + ")</i><br />");
+		} else {
+			parsedOutput.append(" (" + songItem.getBpm() + "bpm | " + songItem.getTimeSignature() + ")");
+		}
 		parsedOutput.append(lineFeed);
 
         // Add the song link
@@ -169,8 +172,8 @@ public class ChordProParser {
 								break;
 							}
 							
-							// Author delimeter
-							if (delim.toString().equals("author")) {
+							// Author/Artist delimeter
+							if (delim.toString().equals("author") || delim.toString().equals("artist")) {
 								if (useHtml) {
 									// Add beginning of bold 
 									lyricLine.append("<b>");

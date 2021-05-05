@@ -13,7 +13,7 @@ import android.view.Display;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-public class AutoFitTextView extends TextView {
+public class AutoFitTextView extends android.support.v7.widget.AppCompatTextView {
 	
 	static final String TAG = "AutoFitTextView";
 	
