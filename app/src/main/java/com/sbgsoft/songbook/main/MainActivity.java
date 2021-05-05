@@ -726,9 +726,9 @@ public class MainActivity extends AppCompatActivity {
     	message.append("Database Version " + DBStrings.DATABASE_VERSION + StaticVars.EOL);
         endTitle = message.length();
     	message.append(StaticVars.EOL);
-    	message.append("Truth Gaming & Saved By Grace Software" + StaticVars.EOL);
-    	message.append("Pittsburgh, PA" + StaticVars.EOL);
-    	message.append("http://truthgaming.net" + StaticVars.EOL);
+    	message.append("Saved By Grace Software" + StaticVars.EOL);
+    	message.append("Saxonburg, PA" + StaticVars.EOL);
+    	message.append("https://fahnfam.com" + StaticVars.EOL);
         message.append("savedbygracesoft@gmail.com" + StaticVars.EOL);
     	message.append(StaticVars.EOL);
     	message.append("Virtual SongBook is designed to allow you to carry all of your guitar music with you wherever " + 
