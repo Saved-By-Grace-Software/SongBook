@@ -169,7 +169,7 @@ public class ChordProParser {
 								break;
 							}
 							
-							// Author delimeter
+							// Author/Artist delimeter
 							if (delim.toString().equals("author") || delim.toString().equals("artist")) {
 								if (useHtml) {
 									// Add beginning of bold 
