@@ -639,11 +639,11 @@ public class MainActivity extends AppCompatActivity {
                 //endregion
 
                 //region Import Export Menu
-                case "Import/Export":
+                case "Upload/Download\u2026":
                     // Show the import/export submenu
                     setNavDrawerItems(R.array.impexp_nav_menu, R.array.impexp_nav_icons);
                     break;
-                case "Import Database":
+                case "Download from Cloud":
                     // Reset the nav drawer items
                     setMainNavDrawerItems();
 
@@ -652,7 +652,7 @@ public class MainActivity extends AppCompatActivity {
 
                     permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_IMPORT);
                     break;
-                case "Export Database":
+                case "Upload to Cloud":
                     // Reset the nav drawer items
                     setMainNavDrawerItems();
 
