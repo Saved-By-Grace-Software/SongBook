@@ -66,6 +66,11 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.*;
+import com.android.volley.toolbox.*;
+import org.json.*;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.db.DBAdapter;
@@ -896,8 +901,7 @@ public class MainActivity extends AppCompatActivity {
     private void executePermReqFunction (int permissionRequestType) {
         switch (permissionRequestType) {
             case StaticVars.PERMISSIONS_BACKUP_IMPORT:
-                //selectImportFile(StaticVars.IMPORT_DB_ACTIVITY);
-                importFile("/storage/emulated/0/Download/sbgvsb_05-05-21.bak", true, "This will erase all data currently in your database.  Do you want to continue?");
+                importFileFromCloud();
                 break;
             case StaticVars.PERMISSIONS_BACKUP_EXPORT:
                 selectExportFolder(StaticVars.EXPORT_DB_ACTIVITY);
@@ -3506,9 +3510,7 @@ public class MainActivity extends AppCompatActivity {
     private void importFile(final String filePath, final boolean clearDB, String warningMessage) {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-        Log.v("Import", "File Name: " + filePath);
-
-        alert.setTitle("Download From Cloud");
+        alert.setTitle("Import");
     	alert.setMessage(warningMessage);
     	
     	final ImportDatabase importDBTask = new ImportDatabase();
@@ -3562,6 +3564,72 @@ public class MainActivity extends AppCompatActivity {
         });
 
     	alert.show();
+    }
+
+    /**
+     * Downloads the backup file from the cloud and imports it into SongBook
+     */
+    private void importFileFromCloud() {
+        String filePath = "/storage/emulated/0/Download/sbgvsb_05-05-21.bak";
+        String warningMessage = "This will erase all data currently in your database.  Do you want to continue?";
+        Context context = this;
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Download From Cloud");
+        alert.setMessage(warningMessage);
+
+        final ImportDatabase importDBTask = new ImportDatabase();
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Configure progress dialog
+                progressDialog = new ProgressDialog(MainActivity.this);
+                progressDialog.setMessage("Importing Data. This may take a few minutes." + System.getProperty("line.separator") + "Please wait...");
+                progressDialog.setTitle("Please Wait!");
+                progressDialog.setCancelable(true);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", (DialogInterface.OnClickListener) null);
+
+                progressDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        Button b = progressDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                        b.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View view) {
+                                // Update the progress dialog text
+                                progressDialog.setMessage("Please wait while we stop the import..." + System.getProperty("line.separator") + "This may take a few minutes.");
+
+                                // Hide the cancel button
+                                progressDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.INVISIBLE);
+
+                                // Cancel the import task
+                                importDBTask.cancel(true);
+                            }
+                        });
+                    }
+                });
+
+
+                // Show progress dialog
+                progressDialog.show();
+
+                // Start the import task
+                ImportDBParams params = new ImportDBParams(filePath, true);
+                importDBTask.execute(new ImportDBParams[]{params});
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled, do not import
+            }
+        });
+
+        alert.show();
     }
     //endregion
 
@@ -3633,8 +3701,36 @@ public class MainActivity extends AppCompatActivity {
             // Get the parameters
             String filePath = params[0].getFilePath();
             boolean clearDB = params[0].getClearDB();
+
+            // Get the backup file from the cloud
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            String url = StaticVars.BACKUP_WEB_API;
+
+            // synchronous:  https://stackoverflow.com/questions/16904741/can-i-do-a-synchronous-request-with-volley
+
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.v("RESP", "Response: " + response.toString());
+                        Toast.makeText(getApplicationContext(), "Good", Toast.LENGTH_LONG);
+                        ret.setResult("good");
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        Log.v("RESP", "Error: " + error.getMessage());
+                        Toast.makeText(getApplicationContext(), "Bad", Toast.LENGTH_LONG);
+                        ret.setResult("bad");
+                    }
+                });
+
+            queue.add(jsonObjectRequest);
     		
-    		// Decompress the backup file
+    		/*// Decompress the backup file
     		String unzipFolder = "sbg_unzipped";
         	String unzipLocation = Environment.getExternalStorageDirectory() + "/" + unzipFolder + "/"; 
         	 
@@ -3743,12 +3839,12 @@ public class MainActivity extends AppCompatActivity {
             			new File(dir, f).delete();
             		}
             	}
-        	}
+        	}*/
         	
         	// Set return value
-        	if (ret.getResult().equals("")) {
-                ret.setResult("Successfully imported your data!");
-        	}
+        	//if (ret.getResult().equals("")) {
+                //ret.setResult("Successfully imported your data!");
+        	//}
         	
         	return ret;
     	}
