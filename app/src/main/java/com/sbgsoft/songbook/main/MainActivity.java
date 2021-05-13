@@ -47,6 +47,7 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -895,7 +896,8 @@ public class MainActivity extends AppCompatActivity {
     private void executePermReqFunction (int permissionRequestType) {
         switch (permissionRequestType) {
             case StaticVars.PERMISSIONS_BACKUP_IMPORT:
-                selectImportFile(StaticVars.IMPORT_DB_ACTIVITY);
+                //selectImportFile(StaticVars.IMPORT_DB_ACTIVITY);
+                importFile("/storage/emulated/0/Download/sbgvsb_05-05-21.bak", true, "This will erase all data currently in your database.  Do you want to continue?");
                 break;
             case StaticVars.PERMISSIONS_BACKUP_EXPORT:
                 selectExportFolder(StaticVars.EXPORT_DB_ACTIVITY);
@@ -3504,7 +3506,9 @@ public class MainActivity extends AppCompatActivity {
     private void importFile(final String filePath, final boolean clearDB, String warningMessage) {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-    	alert.setTitle("Import");
+        Log.v("Import", "File Name: " + filePath);
+
+        alert.setTitle("Download From Cloud");
     	alert.setMessage(warningMessage);
     	
     	final ImportDatabase importDBTask = new ImportDatabase();
