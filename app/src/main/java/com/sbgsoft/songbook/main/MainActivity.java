@@ -97,6 +97,7 @@ import com.sbgsoft.songbook.views.AutoFitTextView;
 import com.sbgsoft.songbook.views.SongBookThemeTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
+import com.sbgsoft.songbook.util.*;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -3703,32 +3704,33 @@ public class MainActivity extends AppCompatActivity {
             boolean clearDB = params[0].getClearDB();
 
             // Get the backup file from the cloud
+            RequestFuture<byte[]> future = RequestFuture.newFuture();
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = StaticVars.BACKUP_WEB_API;
 
             // synchronous:  https://stackoverflow.com/questions/16904741/can-i-do-a-synchronous-request-with-volley
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            InputStreamVolleyRequest request = new InputStreamVolleyRequest(Request.Method.GET, url, future, future, null);
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.v("RESP", "Response: " + response.toString());
-                        Toast.makeText(getApplicationContext(), "Good", Toast.LENGTH_LONG);
-                        ret.setResult("good");
-                    }
-                }, new Response.ErrorListener() {
+            queue.add(request);
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
-                        Log.v("RESP", "Error: " + error.getMessage());
-                        Toast.makeText(getApplicationContext(), "Bad", Toast.LENGTH_LONG);
-                        ret.setResult("bad");
-                    }
-                });
+            try {
+                byte[] response = future.get(); // this will block
 
-            queue.add(jsonObjectRequest);
+                if (response != null && response.length > 0) {
+                    Log.v("TESTING TESTING TESTING", new String(response, 0));
+                    FileOutputStream outputStream;
+                    String name="sbgsongbook.bak";
+                    outputStream = openFileOutput(name, Context.MODE_PRIVATE);
+                    outputStream.write(response);
+                    outputStream.close();
+
+                    Log.v("FILES", getApplicationContext().getFilesDir().list().toString());
+                }
+            } catch (Exception e) {
+                // exception handling
+                Log.v("TESTING TESTING TESTING", e.getMessage());
+            }
     		
     		/*// Decompress the backup file
     		String unzipFolder = "sbg_unzipped";
