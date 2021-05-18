@@ -3695,48 +3695,45 @@ public class MainActivity extends AppCompatActivity {
     public class ImportDatabase extends AsyncTask<ImportDBParams, Void, ImportDBParams> {
     	@Override
     	protected ImportDBParams doInBackground(ImportDBParams... params) {
+            // Setup backup file name and path
+    	    String backupFileName="sbgsongbook.bak";
+            String fullBackupFilepath = getApplicationContext().getFilesDir().getAbsolutePath() + "/" + backupFileName;
+            Log.v("TESTING", fullBackupFilepath);
+
             // Setup return
             ImportDBParams ret = new ImportDBParams();
     		ret.setResult("");
 
             // Get the parameters
-            String filePath = params[0].getFilePath();
             boolean clearDB = params[0].getClearDB();
 
             // Get the backup file from the cloud
             RequestFuture<byte[]> future = RequestFuture.newFuture();
             RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
             String url = StaticVars.BACKUP_WEB_API;
-
-            // synchronous:  https://stackoverflow.com/questions/16904741/can-i-do-a-synchronous-request-with-volley
-
             InputStreamVolleyRequest request = new InputStreamVolleyRequest(Request.Method.GET, url, future, future, null);
-
             queue.add(request);
 
+            // Wait for a response and pull the file
             try {
                 byte[] response = future.get(); // this will block
 
+                // Save the byte array to a local file
                 if (response != null && response.length > 0) {
-                    Log.v("TESTING TESTING TESTING", new String(response, 0));
                     FileOutputStream outputStream;
-                    String name="sbgsongbook.bak";
-                    outputStream = openFileOutput(name, Context.MODE_PRIVATE);
+                    outputStream = openFileOutput(backupFileName, Context.MODE_PRIVATE);
                     outputStream.write(response);
                     outputStream.close();
-
-                    Log.v("FILES", getApplicationContext().getFilesDir().list().toString());
                 }
             } catch (Exception e) {
-                // exception handling
-                Log.v("TESTING TESTING TESTING", e.getMessage());
+                ret.setResult("There was an error downloading your backup file. Please try again.");
             }
     		
-    		/*// Decompress the backup file
+    		// Decompress the backup file
     		String unzipFolder = "sbg_unzipped";
         	String unzipLocation = Environment.getExternalStorageDirectory() + "/" + unzipFolder + "/"; 
         	 
-        	Decompress d = new Decompress(filePath, unzipLocation);
+        	Decompress d = new Decompress(fullBackupFilepath, unzipLocation);
         	if (!d.unzip()) {
                 ret.setResult("There was an error decompressing your backup file. Please try again.");
         	}
@@ -3841,12 +3838,12 @@ public class MainActivity extends AppCompatActivity {
             			new File(dir, f).delete();
             		}
             	}
-        	}*/
+        	}
         	
         	// Set return value
-        	//if (ret.getResult().equals("")) {
-                //ret.setResult("Successfully imported your data!");
-        	//}
+        	if (ret.getResult().equals("")) {
+                ret.setResult("Successfully imported your data!");
+        	}
         	
         	return ret;
     	}
