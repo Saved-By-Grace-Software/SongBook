@@ -47,6 +47,7 @@ import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -65,6 +66,11 @@ import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.*;
+import com.android.volley.toolbox.*;
+import org.json.*;
 
 import com.sbgsoft.songbook.R;
 import com.sbgsoft.songbook.db.DBAdapter;
@@ -91,9 +97,11 @@ import com.sbgsoft.songbook.views.AutoFitTextView;
 import com.sbgsoft.songbook.views.SongBookThemeTextView;
 import com.sbgsoft.songbook.zip.Compress;
 import com.sbgsoft.songbook.zip.Decompress;
+import com.sbgsoft.songbook.util.*;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -109,6 +117,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -300,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
         	// If returning from an export database activity
         	else if (activityType.equals(StaticVars.EXPORT_DB_ACTIVITY)) {
         		String folder = data.getStringExtra(OpenFile.RESULT_PATH);
-        		exportAll(folder);
+        		exportAll();
         	}
             // If returning from an export set activity
             else if (activityType.equals(StaticVars.EXPORT_SET_ACTIVITY)) {
@@ -639,11 +648,11 @@ public class MainActivity extends AppCompatActivity {
                 //endregion
 
                 //region Import Export Menu
-                case "Import/Export":
+                case "Upload/Download\u2026":
                     // Show the import/export submenu
                     setNavDrawerItems(R.array.impexp_nav_menu, R.array.impexp_nav_icons);
                     break;
-                case "Import Database":
+                case "Download from Cloud":
                     // Reset the nav drawer items
                     setMainNavDrawerItems();
 
@@ -652,7 +661,7 @@ public class MainActivity extends AppCompatActivity {
 
                     permissionRequiredFunction(StaticVars.PERMISSIONS_BACKUP_IMPORT);
                     break;
-                case "Export Database":
+                case "Upload to Cloud":
                     // Reset the nav drawer items
                     setMainNavDrawerItems();
 
@@ -895,10 +904,10 @@ public class MainActivity extends AppCompatActivity {
     private void executePermReqFunction (int permissionRequestType) {
         switch (permissionRequestType) {
             case StaticVars.PERMISSIONS_BACKUP_IMPORT:
-                selectImportFile(StaticVars.IMPORT_DB_ACTIVITY);
+                importFileFromCloud();
                 break;
             case StaticVars.PERMISSIONS_BACKUP_EXPORT:
-                selectExportFolder(StaticVars.EXPORT_DB_ACTIVITY);
+                exportAll();
                 break;
             case StaticVars.PERMISSIONS_SONG_IMPORT:
                 importSong();
@@ -3364,13 +3373,14 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Exports all songbook files and db
      */
-    private void exportAll(String folder) {
-    	final String exportZipLocation = folder + "/" + StaticVars.EXPORT_ZIP_FILE;
+    private void exportAll() {
+        String fullBackupFilepath = getApplicationContext().getFilesDir().getAbsolutePath();
+    	final String exportZipLocation = fullBackupFilepath + "/" + StaticVars.EXPORT_ZIP_FILE;
     	
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-    	alert.setTitle("Export");
-    	alert.setMessage("Are you sure you want to export your data to '" + exportZipLocation + "'?");
+    	alert.setTitle("Upload to Cloud");
+        alert.setMessage("Are you sure you want to upload your data to the cloud?  This will overwrite the data in the cloud!");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -3400,18 +3410,61 @@ public class MainActivity extends AppCompatActivity {
 
                     // Zip the files and save to the external storage
                     Compress newZip = new Compress(files, exportZipLocation);
-                    if (newZip.zip())
-                        Snackbar.make(getWindow().getDecorView().getRootView(), "Your data has been successfully saved to: " + exportZipLocation, Snackbar.LENGTH_LONG).show();
-                    else
+                    if (newZip.zip()) {
+                        // Upload the file to the cloud
+                        RequestFuture<NetworkResponse> future = RequestFuture.newFuture();
+                        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, StaticVars.BACKUP_WEB_API,
+                                new Response.Listener<NetworkResponse>() {
+                                    @Override
+                                    public void onResponse(NetworkResponse response) {
+                                        Snackbar.make(getWindow().getDecorView().getRootView(), "Your data has been successfully uploaded!", Snackbar.LENGTH_LONG).show();
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Snackbar.make(getWindow().getDecorView().getRootView(), "Your data failed to upload. Please try again.", Snackbar.LENGTH_LONG).show();
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, DataPart> getByteData() {
+                                // Get file bytes
+                                File file = new File(exportZipLocation);
+                                int size = (int) file.length();
+                                byte[] bytes = new byte[size];
+                                try {
+                                    BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+                                    buf.read(bytes, 0, bytes.length);
+                                    buf.close();
+                                } catch (FileNotFoundException e) {
+                                    // TODO Auto-generated catch block
+                                    Log.e("ERROR", e.getMessage());
+                                } catch (IOException e) {
+                                    // TODO Auto-generated catch block
+                                    Log.e("ERROR", e.getMessage());
+                                }
+
+                                // Add file to upload
+                                Map<String, DataPart> params = new HashMap<>();
+                                params.put("backupFile", new DataPart(StaticVars.EXPORT_ZIP_FILE, bytes));
+                                return params;
+                            }
+                        };
+
+                        //adding the request to volley
+                        queue.add(request);
+
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "Your data is being uploaded in the background.", Snackbar.LENGTH_LONG).show();
+                    } else {
                         Snackbar.make(getWindow().getDecorView().getRootView(), "There was an error backing up your data. Please try again.", Snackbar.LENGTH_LONG).show();
+                    }
 
                     // Delete the backup script
                     deleteFile(StaticVars.EXPORT_SQL_FILE);
                 } catch (Exception e) {
                     Snackbar.make(getWindow().getDecorView().getRootView(), "Could not write db file!", Snackbar.LENGTH_LONG).show();
                 }
-
-
             }
         });
 
@@ -3504,7 +3557,7 @@ public class MainActivity extends AppCompatActivity {
     private void importFile(final String filePath, final boolean clearDB, String warningMessage) {
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-    	alert.setTitle("Import");
+        alert.setTitle("Import");
     	alert.setMessage(warningMessage);
     	
     	final ImportDatabase importDBTask = new ImportDatabase();
@@ -3558,6 +3611,72 @@ public class MainActivity extends AppCompatActivity {
         });
 
     	alert.show();
+    }
+
+    /**
+     * Downloads the backup file from the cloud and imports it into SongBook
+     */
+    private void importFileFromCloud() {
+        String filePath = "/storage/emulated/0/Download/sbgvsb_05-05-21.bak";
+        String warningMessage = "This will erase all data currently in your database.  Do you want to continue?";
+        Context context = this;
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Download From Cloud");
+        alert.setMessage(warningMessage);
+
+        final ImportDatabase importDBTask = new ImportDatabase();
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Configure progress dialog
+                progressDialog = new ProgressDialog(MainActivity.this);
+                progressDialog.setMessage("Importing Data. This may take a few minutes." + System.getProperty("line.separator") + "Please wait...");
+                progressDialog.setTitle("Please Wait!");
+                progressDialog.setCancelable(true);
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", (DialogInterface.OnClickListener) null);
+
+                progressDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        Button b = progressDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                        b.setOnClickListener(new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View view) {
+                                // Update the progress dialog text
+                                progressDialog.setMessage("Please wait while we stop the import..." + System.getProperty("line.separator") + "This may take a few minutes.");
+
+                                // Hide the cancel button
+                                progressDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setVisibility(View.INVISIBLE);
+
+                                // Cancel the import task
+                                importDBTask.cancel(true);
+                            }
+                        });
+                    }
+                });
+
+
+                // Show progress dialog
+                progressDialog.show();
+
+                // Start the import task
+                ImportDBParams params = new ImportDBParams(filePath, true);
+                importDBTask.execute(new ImportDBParams[]{params});
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled, do not import
+            }
+        });
+
+        alert.show();
     }
     //endregion
 
@@ -3622,19 +3741,43 @@ public class MainActivity extends AppCompatActivity {
     public class ImportDatabase extends AsyncTask<ImportDBParams, Void, ImportDBParams> {
     	@Override
     	protected ImportDBParams doInBackground(ImportDBParams... params) {
+            // Setup backup file name and path
+            String fullBackupFilepath = getApplicationContext().getFilesDir().getAbsolutePath() + "/" + StaticVars.EXPORT_ZIP_FILE;
+
             // Setup return
             ImportDBParams ret = new ImportDBParams();
     		ret.setResult("");
 
             // Get the parameters
-            String filePath = params[0].getFilePath();
             boolean clearDB = params[0].getClearDB();
+
+            // Get the backup file from the cloud
+            RequestFuture<byte[]> future = RequestFuture.newFuture();
+            RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+            String url = StaticVars.BACKUP_WEB_API;
+            InputStreamVolleyRequest request = new InputStreamVolleyRequest(Request.Method.GET, url, future, future, null);
+            queue.add(request);
+
+            // Wait for a response and pull the file
+            try {
+                byte[] response = future.get(10, TimeUnit.SECONDS);
+
+                // Save the byte array to a local file
+                if (response != null && response.length > 0) {
+                    FileOutputStream outputStream;
+                    outputStream = openFileOutput(StaticVars.EXPORT_ZIP_FILE, Context.MODE_PRIVATE);
+                    outputStream.write(response);
+                    outputStream.close();
+                }
+            } catch (Exception e) {
+                ret.setResult("There was an error downloading your backup file. Please try again.");
+            }
     		
     		// Decompress the backup file
     		String unzipFolder = "sbg_unzipped";
         	String unzipLocation = Environment.getExternalStorageDirectory() + "/" + unzipFolder + "/"; 
         	 
-        	Decompress d = new Decompress(filePath, unzipLocation);
+        	Decompress d = new Decompress(fullBackupFilepath, unzipLocation);
         	if (!d.unzip()) {
                 ret.setResult("There was an error decompressing your backup file. Please try again.");
         	}

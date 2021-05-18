@@ -46,6 +46,7 @@ public class StaticVars {
 	public static final int SETTINGS_DEFAULT_AUTOPLAY = 0;
 
 	// General
+	public static final String BACKUP_WEB_API = "https://virtualsongbook.azurewebsites.net/api/backup";
 	public static final String EOL = System.getProperty("line.separator");
 	public static final String UNKNOWN = "Unknown";
 	public static final String EXPORT_SQL_FILE = "dbbak.sql";

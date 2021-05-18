@@ -94,9 +94,6 @@
     <string name="menu_sets_clear">Delete All Sets</string>
     <string name="menu_songs_clear">Delete All Songs</string>
     <string name="menu_song_groups">Song Groups&#8230;</string>
-    <string name="menu_backup">Import/Export&#8230;</string>
-    <string name="menu_backup_import">Import Database</string>
-    <string name="menu_backup_export">Export Database</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_about">About SongBook</string>
     <string name="menu_about_howto">How To...</string>
@@ -144,7 +141,7 @@
         <item>Sets&#8230;</item>
         <item>Song Groups&#8230;</item>
         <item>Set Groups&#8230;</item>
-        <item>Import/Export</item>
+        <item>Upload/Download&#8230;</item>
         <item>Settings</item>
         <item>How To&#8230;</item>
         <item>About SongBook</item>
@@ -227,8 +224,8 @@
 
     <!-- Navigation Drawer Import Export Items -->
     <string-array name="impexp_nav_menu">
-        <item>Import Database</item>
-        <item>Export Database</item>
+        <item>Download from Cloud</item>
+        <item>Upload to Cloud</item>
         <item>Back</item>
     </string-array>
     <!-- Keep them in order as the titles are in -->
