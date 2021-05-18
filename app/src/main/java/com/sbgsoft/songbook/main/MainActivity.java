@@ -101,6 +101,7 @@ import com.sbgsoft.songbook.util.*;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -116,6 +117,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -3408,10 +3410,55 @@ public class MainActivity extends AppCompatActivity {
 
                     // Zip the files and save to the external storage
                     Compress newZip = new Compress(files, exportZipLocation);
-                    if (newZip.zip())
-                        Snackbar.make(getWindow().getDecorView().getRootView(), "Your data has been successfully saved to: " + exportZipLocation, Snackbar.LENGTH_LONG).show();
-                    else
+                    if (newZip.zip()) {
+                        // Upload the file to the cloud
+                        RequestFuture<NetworkResponse> future = RequestFuture.newFuture();
+                        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, StaticVars.BACKUP_WEB_API,
+                                new Response.Listener<NetworkResponse>() {
+                                    @Override
+                                    public void onResponse(NetworkResponse response) {
+                                        Snackbar.make(getWindow().getDecorView().getRootView(), "Your data has been successfully uploaded!", Snackbar.LENGTH_LONG).show();
+                                    }
+                                },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Snackbar.make(getWindow().getDecorView().getRootView(), "Your data failed to upload. Please try again.", Snackbar.LENGTH_LONG).show();
+                                    }
+                                }) {
+                            @Override
+                            protected Map<String, DataPart> getByteData() {
+                                // Get file bytes
+                                File file = new File(exportZipLocation);
+                                int size = (int) file.length();
+                                byte[] bytes = new byte[size];
+                                try {
+                                    BufferedInputStream buf = new BufferedInputStream(new FileInputStream(file));
+                                    buf.read(bytes, 0, bytes.length);
+                                    buf.close();
+                                } catch (FileNotFoundException e) {
+                                    // TODO Auto-generated catch block
+                                    Log.e("ERROR", e.getMessage());
+                                } catch (IOException e) {
+                                    // TODO Auto-generated catch block
+                                    Log.e("ERROR", e.getMessage());
+                                }
+
+                                // Add file to upload
+                                Map<String, DataPart> params = new HashMap<>();
+                                params.put("backupFile", new DataPart(StaticVars.EXPORT_ZIP_FILE, bytes));
+                                return params;
+                            }
+                        };
+
+                        //adding the request to volley
+                        queue.add(request);
+
+                        Snackbar.make(getWindow().getDecorView().getRootView(), "Your data is being uploaded in the background.", Snackbar.LENGTH_LONG).show();
+                    } else {
                         Snackbar.make(getWindow().getDecorView().getRootView(), "There was an error backing up your data. Please try again.", Snackbar.LENGTH_LONG).show();
+                    }
 
                     // Delete the backup script
                     deleteFile(StaticVars.EXPORT_SQL_FILE);
@@ -3697,7 +3744,6 @@ public class MainActivity extends AppCompatActivity {
             // Setup backup file name and path
     	    String backupFileName="sbgsongbook.bak";
             String fullBackupFilepath = getApplicationContext().getFilesDir().getAbsolutePath() + "/" + backupFileName;
-            Log.v("TESTING", fullBackupFilepath);
 
             // Setup return
             ImportDBParams ret = new ImportDBParams();
@@ -3715,7 +3761,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Wait for a response and pull the file
             try {
-                byte[] response = future.get(); // this will block
+                byte[] response = future.get(10, TimeUnit.SECONDS);
 
                 // Save the byte array to a local file
                 if (response != null && response.length > 0) {
