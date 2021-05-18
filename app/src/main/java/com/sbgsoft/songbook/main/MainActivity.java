@@ -3742,8 +3742,7 @@ public class MainActivity extends AppCompatActivity {
     	@Override
     	protected ImportDBParams doInBackground(ImportDBParams... params) {
             // Setup backup file name and path
-    	    String backupFileName="sbgsongbook.bak";
-            String fullBackupFilepath = getApplicationContext().getFilesDir().getAbsolutePath() + "/" + backupFileName;
+            String fullBackupFilepath = getApplicationContext().getFilesDir().getAbsolutePath() + "/" + StaticVars.EXPORT_ZIP_FILE;
 
             // Setup return
             ImportDBParams ret = new ImportDBParams();
@@ -3766,7 +3765,7 @@ public class MainActivity extends AppCompatActivity {
                 // Save the byte array to a local file
                 if (response != null && response.length > 0) {
                     FileOutputStream outputStream;
-                    outputStream = openFileOutput(backupFileName, Context.MODE_PRIVATE);
+                    outputStream = openFileOutput(StaticVars.EXPORT_ZIP_FILE, Context.MODE_PRIVATE);
                     outputStream.write(response);
                     outputStream.close();
                 }
