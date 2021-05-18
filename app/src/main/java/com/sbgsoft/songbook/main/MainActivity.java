@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
         	// If returning from an export database activity
         	else if (activityType.equals(StaticVars.EXPORT_DB_ACTIVITY)) {
         		String folder = data.getStringExtra(OpenFile.RESULT_PATH);
-        		exportAll(folder);
+        		exportAll();
         	}
             // If returning from an export set activity
             else if (activityType.equals(StaticVars.EXPORT_SET_ACTIVITY)) {
@@ -905,7 +905,7 @@ public class MainActivity extends AppCompatActivity {
                 importFileFromCloud();
                 break;
             case StaticVars.PERMISSIONS_BACKUP_EXPORT:
-                selectExportFolder(StaticVars.EXPORT_DB_ACTIVITY);
+                exportAll();
                 break;
             case StaticVars.PERMISSIONS_SONG_IMPORT:
                 importSong();
@@ -3371,13 +3371,14 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Exports all songbook files and db
      */
-    private void exportAll(String folder) {
-    	final String exportZipLocation = folder + "/" + StaticVars.EXPORT_ZIP_FILE;
+    private void exportAll() {
+        String fullBackupFilepath = getApplicationContext().getFilesDir().getAbsolutePath();
+    	final String exportZipLocation = fullBackupFilepath + "/" + StaticVars.EXPORT_ZIP_FILE;
     	
     	AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-    	alert.setTitle("Export");
-    	alert.setMessage("Are you sure you want to export your data to '" + exportZipLocation + "'?");
+    	alert.setTitle("Upload to Cloud");
+        alert.setMessage("Are you sure you want to upload your data to the cloud?  This will overwrite the data in the cloud!");
 
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
@@ -3417,8 +3418,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Snackbar.make(getWindow().getDecorView().getRootView(), "Could not write db file!", Snackbar.LENGTH_LONG).show();
                 }
-
-
             }
         });
 
