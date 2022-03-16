@@ -1,10 +1,10 @@
 package com.sbgsoft.songbook.zip;
 
-import android.util.Log; 
+import android.util.Log;
 import java.io.File; 
 import java.io.FileInputStream; 
-import java.io.FileOutputStream; 
-import java.util.zip.ZipEntry; 
+import java.io.FileOutputStream;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream; 
  
 /** 
@@ -13,9 +13,9 @@ import java.util.zip.ZipInputStream;
  */ 
 public class Decompress { 
 	private String _zipFile; 
-	private String _location; 
+	private File _location;
  
-	public Decompress(String zipFile, String location) { 
+	public Decompress(String zipFile, File location) {
 		_zipFile = zipFile; 
 		_location = location; 
  
@@ -23,17 +23,20 @@ public class Decompress {
 	} 
  
 	public boolean unzip() { 
-		try  { 
+		try  {
 			FileInputStream fin = new FileInputStream(_zipFile); 
 			ZipInputStream zin = new ZipInputStream(fin); 
-			ZipEntry ze = null; 
+			ZipEntry ze = null;
+			String folderLocation = _location.getAbsolutePath() + "/";
+
 			while ((ze = zin.getNextEntry()) != null) { 
-				Log.v("Decompress", "Unzipping " + ze.getName()); 
+				Log.v("Decompress", "Unzipping " + ze.getName());
+
  
 				if(ze.isDirectory()) { 
 					_dirChecker(ze.getName()); 
-				} else { 
-					FileOutputStream fout = new FileOutputStream(_location + ze.getName()); 
+				} else {
+					FileOutputStream fout = new FileOutputStream(folderLocation + ze.getName());
 					for (int c = zin.read(); c != -1; c = zin.read()) { 
 						fout.write(c); 
 					}

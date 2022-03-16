@@ -37,6 +37,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.os.storage.StorageManager;
 import android.text.Html;
 import android.text.Layout;
 import android.text.SpannableStringBuilder;
@@ -115,6 +117,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
@@ -2854,6 +2857,7 @@ public class MainActivity extends AppCompatActivity {
         SongItem song = dbAdapter.getSong(songName);
 
         try {
+            String tmp = dbAdapter.getSongFile(song.getName());
             FileInputStream fis = openFileInput(dbAdapter.getSongFile(song.getName()));
             song.setText(ChordProParser.ParseSongFile(getApplicationContext(), song, song.getKey(), fis, true, false));
 
@@ -3615,9 +3619,8 @@ public class MainActivity extends AppCompatActivity {
      * Downloads the backup file from the cloud and imports it into SongBook
      */
     private void importFileFromCloud() {
-        String filePath = "/storage/emulated/0/Download/sbgvsb_05-05-21.bak";
         String warningMessage = "This will erase all data currently in your database.  Do you want to continue?";
-        Context context = this;
+        long availableBytes = 0;
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
@@ -3658,12 +3661,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-
                 // Show progress dialog
                 progressDialog.show();
 
                 // Start the import task
-                ImportDBParams params = new ImportDBParams(filePath, true);
+                ImportDBParams params = new ImportDBParams(true);
                 importDBTask.execute(new ImportDBParams[]{params});
             }
         });
@@ -3687,9 +3689,19 @@ public class MainActivity extends AppCompatActivity {
     // *****************************************************************************
     public class ImportDBParams {
 
+        public String filePath;
+        public boolean clearDB;
+        public String result;
+
         public ImportDBParams() {
             filePath = "";
             clearDB = false;
+            result = "";
+        }
+
+        public ImportDBParams(boolean _clearDB) {
+            filePath = "";
+            clearDB = _clearDB;
             result = "";
         }
 
@@ -3713,8 +3725,6 @@ public class MainActivity extends AppCompatActivity {
             this.filePath = filePath;
         }
 
-        public String filePath;
-
         public boolean getClearDB() {
             return clearDB;
         }
@@ -3723,8 +3733,6 @@ public class MainActivity extends AppCompatActivity {
             this.clearDB = clearDB;
         }
 
-        public boolean clearDB;
-
         public String getResult() {
             return result;
         }
@@ -3732,22 +3740,30 @@ public class MainActivity extends AppCompatActivity {
         public void setResult(String result) {
             this.result = result;
         }
-
-        public String result;
     }
 
     public class ImportDatabase extends AsyncTask<ImportDBParams, Void, ImportDBParams> {
     	@Override
     	protected ImportDBParams doInBackground(ImportDBParams... params) {
-            // Setup backup file name and path
-            String fullBackupFilepath = getApplicationContext().getFilesDir().getAbsolutePath() + "/" + StaticVars.EXPORT_ZIP_FILE;
+            // Get the parameters
+            boolean clearDB = params[0].getClearDB();
+            Context context = getApplicationContext();
+
+    	    // Setup backup file name and path
+            String fullBackupFilepath = getApplicationContext().getCacheDir().getAbsolutePath() + "/" + StaticVars.EXPORT_ZIP_FILE;
 
             // Setup return
             ImportDBParams ret = new ImportDBParams();
     		ret.setResult("");
 
-            // Get the parameters
-            boolean clearDB = params[0].getClearDB();
+            // Clear the database and files
+            if (clearDB) {
+                dbAdapter.clearDB();
+                String[] files = fileList();
+                for (int i = 0; i < files.length; i++) {
+                    deleteFile(files[i]);
+                }
+            }
 
             // Get the backup file from the cloud
             RequestFuture<byte[]> future = RequestFuture.newFuture();
@@ -3762,8 +3778,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Save the byte array to a local file
                 if (response != null && response.length > 0) {
-                    FileOutputStream outputStream;
-                    outputStream = openFileOutput(StaticVars.EXPORT_ZIP_FILE, Context.MODE_PRIVATE);
+                    FileOutputStream outputStream = new FileOutputStream(fullBackupFilepath);
                     outputStream.write(response);
                     outputStream.close();
                 }
@@ -3772,16 +3787,19 @@ public class MainActivity extends AppCompatActivity {
             }
     		
     		// Decompress the backup file
-    		String unzipFolder = "sbg_unzipped";
-        	String unzipLocation = Environment.getExternalStorageDirectory() + "/" + unzipFolder + "/"; 
-        	 
-        	Decompress d = new Decompress(fullBackupFilepath, unzipLocation);
+            File unzipLocation = context.getFilesDir();
+            Decompress d = new Decompress(fullBackupFilepath, unzipLocation);
         	if (!d.unzip()) {
                 ret.setResult("There was an error decompressing your backup file. Please try again.");
         	}
         	else {
             	// Run the sql script to import songs
             	try {
+                    // Check for cancel
+                    if (isCancelled()) {
+                        return ret;
+                    }
+
             		// Open and read the export file
         	    	InputStream fis = new FileInputStream(unzipLocation + "/" + StaticVars.EXPORT_SQL_FILE);
         	    	DataInputStream din = new DataInputStream(fis);
@@ -3801,20 +3819,6 @@ public class MainActivity extends AppCompatActivity {
                 	if (isCancelled()) {
                 		return ret;
                 	}
-                	
-                	// Clear the database and files
-                    if (clearDB) {
-                        dbAdapter.clearDB();
-                        String[] files = fileList();
-                        for (int i = 0; i < files.length; i++) {
-                            deleteFile(files[i]);
-                        }
-                    }
-                	
-                	// Check for cancel
-                	if (isCancelled()) {
-                		return ret;
-                	}
         	        
         	        // Execute the SQL file
         	        if (!dbAdapter.importDBData(sb.toString())) {
@@ -3822,47 +3826,10 @@ public class MainActivity extends AppCompatActivity {
                         ret.setResult("Failed to import the database file. Import aborted.");
                         return ret;
                     }
-        	        
-        	        // Check for cancel
-                	if (isCancelled()) {
-                		return ret;
-                	}
-        	        
-        	        // Add the song files to the files directory
-                	File dir = new File(unzipLocation);
-                	for (File child : dir.listFiles()) {
-                		// Try to add the song file
-                		try {
-            	    		InputStream in = new FileInputStream(child);
-            	    		OutputStream out = openFileOutput(child.getName(), Context.MODE_PRIVATE);
-            	    		byte[] buf = new byte[1024];
-            	    		int len;
-            	    		while ((len = in.read(buf)) > 0) {
-            	    		   out.write(buf, 0, len);
-            	    		}
-            	    		in.close();
-            	    		out.close(); 
-                		}
-                		catch (Exception e) {
-                			// If the song file failed, remove the song from the DB
-                            if (clearDB) {
-                                String songName = child.getName();
-                                songName = songName.substring(0, songName.lastIndexOf("."));
-                                dbAdapter.deleteSong(songName);
 
-                                if (ret.equals("")) {
-                                    ret.setResult("Import complete, some songs failed: " + songName);
-                                } else {
-                                    ret.setResult(ret.getResult() + ", " + songName );
-                                }
-                            }
-                		}
-                		
-                		// Check for cancel
-                    	if (isCancelled()) {
-                    		return ret;
-                    	}
-                	}
+        	        // Delete the SQL script file
+                    File sqlFile = new File(unzipLocation + "/" + StaticVars.EXPORT_SQL_FILE);
+        	        sqlFile.delete();
             	}
             	catch (Exception e) {
             		// Add the default values back into the db
@@ -3870,15 +3837,6 @@ public class MainActivity extends AppCompatActivity {
                         dbAdapter.addDBDefaults();
                     }
                     ret.setResult("Could not import database file. Import aborted.");
-            	}
-            	
-            	// Delete the unzipped temp files
-            	File dir = new File(Environment.getExternalStorageDirectory(), unzipFolder);
-            	if (dir.isDirectory()) {
-            		String filesList[] = dir.list();
-            		for (String f : filesList) {
-            			new File(dir, f).delete();
-            		}
             	}
         	}
         	
