@@ -356,7 +356,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case StaticVars.PERMISSIONS_BACKUP_IMPORT:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P || grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
                     executePermReqFunction(requestCode);
                 } else {
@@ -3595,7 +3595,6 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 });
-
 
                 // Show progress dialog
                 progressDialog.show();

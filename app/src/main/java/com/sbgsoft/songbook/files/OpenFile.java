@@ -194,8 +194,7 @@ public class OpenFile extends ListActivity {
 	 * Show the files
 	 * @param dirPath The path to show
 	 */
-    private void getDir(String dirPath)
-    {
+    private void getDir(String dirPath) {
     	myPath.setText("Location: " + dirPath);
     	item = new ArrayList<>();
     	path = new ArrayList<>();

@@ -32,7 +32,6 @@ public class Decompress {
 			while ((ze = zin.getNextEntry()) != null) { 
 				Log.v("Decompress", "Unzipping " + ze.getName());
 
- 
 				if(ze.isDirectory()) { 
 					_dirChecker(ze.getName()); 
 				} else {
