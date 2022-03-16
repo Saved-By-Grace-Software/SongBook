@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.support.design.widget.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;

@@ -39,7 +39,7 @@
         android:visibility="visible">
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/set_song_transpose_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
         app:backgroundTint="@color/LightGrey"
         android:onClick="onTransposeButtonClick" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/set_song_edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
         app:backgroundTint="@color/LightGrey"
         android:onClick="onEditButtonClick"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/set_song_play_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

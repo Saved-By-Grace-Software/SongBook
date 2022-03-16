@@ -1,11 +1,10 @@
 package com.sbgsoft.songbook.views;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.ContextMenu;
+
+import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;

@@ -3,7 +3,7 @@ package com.sbgsoft.songbook.songs;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;

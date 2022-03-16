@@ -11,9 +11,8 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
-import android.widget.TextView;
 
-public class AutoFitTextView extends android.support.v7.widget.AppCompatTextView {
+public class AutoFitTextView extends androidx.appcompat.widget.AppCompatTextView {
 	
 	static final String TAG = "AutoFitTextView";
 	
