@@ -20,7 +20,7 @@ public class StaticVars {
 	public static final String FILE_ACTIVITY_KEY = "fileActivityKey";
 	public static final String FILE_ACTIVITY_TYPE_KEY = "fileActivityTypeKey";
 	
-	// Activity Strings
+	// Activity Strings & Response Codes
 	public static final String ACTIVITY_RESPONSE_TYPE = "activityResponseType";
 	public static final String IMPORT_SONG_ACTIVITY = "importSongActivity";
 	public static final String IMPORT_DB_ACTIVITY = "importDBActivity";
@@ -30,6 +30,7 @@ public class StaticVars {
 	public static final String FILE_ACTIVITY_FILE = "fileActivityFile";
 	public static final String FILE_ACTIVITY_FOLDER = "fileActivityFolder";
     public static final String EDIT_SONG_ATT_ACTIVITY = "editSongAttributesActivity";
+    public static final int IMPORT_SONG_RESPONSE_CODE = 10;
 
     // Settings Strings
     public static final String SETTINGS_METRONOME_STATE_ON = "ON";

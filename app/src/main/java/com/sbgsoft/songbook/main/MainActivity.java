@@ -39,6 +39,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.storage.StorageManager;
+import android.provider.OpenableColumns;
 import android.text.Html;
 import android.text.Layout;
 import android.text.SpannableStringBuilder;
@@ -142,8 +143,6 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<NavDrawerItem> mNavDrawerItems;
     private NavDrawerListAdapter mNavDrawerAdapter;
     private ViewGroup.LayoutParams tabLayoutLP;
-
-	private String importFilePath = "";
 	
 	private Map<String, Boolean> addSongsDialogMap = new HashMap<String, Boolean>();
 	private ArrayList<String> addSongsDialogList = new ArrayList<String>();
@@ -286,47 +285,44 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Get the return from the file dialog activity
      */
-    public synchronized void onActivityResult(final int requestCode,
-        int resultCode, final Intent data) {
-
+    public synchronized void onActivityResult(final int requestCode, int resultCode, final Intent returnIntent) {
         if (resultCode == Activity.RESULT_OK) {
-        	String activityType = data.getStringExtra(StaticVars.ACTIVITY_RESPONSE_TYPE);
-        	
         	// If returning from an import song activity
-        	if (activityType.equals(StaticVars.IMPORT_SONG_ACTIVITY)) {
-	            importFilePath = data.getStringExtra(OpenFile.RESULT_PATH);
-	            createSong();
-        	}
-        	// If returning from an import database activity
-        	else if (activityType.equals(StaticVars.IMPORT_DB_ACTIVITY)) {
-        		String filePath = data.getStringExtra(OpenFile.RESULT_PATH);
-        		importFile(filePath, true, "This will erase all data currently in your database.  Do you want to continue?");
-        	}
-            // If returning from an import set activity
-            else if (activityType.equals(StaticVars.IMPORT_SET_ACTIVITY)) {
-                String filePath = data.getStringExtra(OpenFile.RESULT_PATH);
-                importFile(filePath, false, "Are you sure you want to import \"" + filePath + "\"");
-            }
-        	// If returning from an export database activity
-        	else if (activityType.equals(StaticVars.EXPORT_DB_ACTIVITY)) {
-        		String folder = data.getStringExtra(OpenFile.RESULT_PATH);
-        		exportAll();
-        	}
-            // If returning from an export set activity
-            else if (activityType.equals(StaticVars.EXPORT_SET_ACTIVITY)) {
-                String folder = data.getStringExtra(OpenFile.RESULT_PATH);
-                exportSet(folder);
-            }
-            // If returning from an edit song details activity
-            else if (activityType.equals(StaticVars.EDIT_SONG_ATT_ACTIVITY)) {
-                // Refresh lists
-                ((SongsTab)songsFragment).refillSongsList();
-                ((SetsTab)setsFragment).refillSetsList();
-                ((CurrentSetTab)currSetFragment).refillCurrentSetList();
-            }
+        	if (requestCode == StaticVars.IMPORT_SONG_RESPONSE_CODE) {
+        	    Uri selectedFile = returnIntent.getData();
+        	    createSong(selectedFile);
+        	} else {
+                String activityType = returnIntent.getStringExtra(StaticVars.ACTIVITY_RESPONSE_TYPE);
 
-        } 
-
+                // If returning from an import database activity
+                if (activityType.equals(StaticVars.IMPORT_DB_ACTIVITY)) {
+                    String filePath = returnIntent.getStringExtra(OpenFile.RESULT_PATH);
+                    importFile(filePath, true, "This will erase all data currently in your database.  Do you want to continue?");
+                }
+                // If returning from an import set activity
+                else if (activityType.equals(StaticVars.IMPORT_SET_ACTIVITY)) {
+                    String filePath = returnIntent.getStringExtra(OpenFile.RESULT_PATH);
+                    importFile(filePath, false, "Are you sure you want to import \"" + filePath + "\"");
+                }
+                // If returning from an export database activity
+                else if (activityType.equals(StaticVars.EXPORT_DB_ACTIVITY)) {
+                    String folder = returnIntent.getStringExtra(OpenFile.RESULT_PATH);
+                    exportAll();
+                }
+                // If returning from an export set activity
+                else if (activityType.equals(StaticVars.EXPORT_SET_ACTIVITY)) {
+                    String folder = returnIntent.getStringExtra(OpenFile.RESULT_PATH);
+                    exportSet(folder);
+                }
+                // If returning from an edit song details activity
+                else if (activityType.equals(StaticVars.EDIT_SONG_ATT_ACTIVITY)) {
+                    // Refresh lists
+                    ((SongsTab)songsFragment).refillSongsList();
+                    ((SetsTab)setsFragment).refillSetsList();
+                    ((CurrentSetTab)currSetFragment).refillCurrentSetList();
+                }
+            }
+        }
     }
     
     /**
@@ -506,7 +502,7 @@ public class MainActivity extends AppCompatActivity {
                     // Close the app drawer before taking action
                     mDrawerLayout.closeDrawer(Gravity.LEFT);
 
-                    createSong();
+                    createSong(null);
                     break;
                 case "Import Song":
                     // Reset the nav drawer items
@@ -888,10 +884,13 @@ public class MainActivity extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         permissionRequestType);
 
+                // We now have permissions, run the function
+                executePermReqFunction(permissionRequestType);
+
             } else {
                 // We already have permissions, run the function
                 executePermReqFunction(permissionRequestType);
-            }/**/
+            }
         } else {
             // Below SDK 23, don't need runtime permissions
             executePermReqFunction(permissionRequestType);
@@ -1817,9 +1816,11 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Prompts the user for a name and creates the set
      */
-    public void createSong() {
+    public void createSong(Uri selectedFile) {
     	CustomAlertDialogBuilder alert = new CustomAlertDialogBuilder(this);
-    	String[] pathSplit = importFilePath.split("/");
+    	String fileName = "";
+    	String songTitle = "";
+    	String songArtist = "";
     	
     	// Set the dialog view to gather user input
     	LayoutInflater inflater = getLayoutInflater();
@@ -1833,15 +1834,33 @@ public class MainActivity extends AppCompatActivity {
         final Spinner timeSpin = (Spinner)dialoglayout.findViewById(R.id.add_song_time);
         timeSpin.setSelection(3);
     	
-    	// Add the dialog title
-    	if (importFilePath != "") {
-    		alert.setTitle("Add Song - " + pathSplit[pathSplit.length - 1]);
+    	// Check if we are creating a new song from a file
+    	if (selectedFile != null) {
+            // Parse the file name from the URI
+            Cursor fileCursor = getContentResolver().query(selectedFile, null, null, null, null);
+            int nameIndex = fileCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+            fileCursor.moveToFirst();
+            fileName = fileCursor.getString(nameIndex);
+
+            // Check if the file follows the standard pattern [SongName - SongArtist.pro]
+            String[] nameSplit = fileName.split(" - ");
+            if (nameSplit.length == 2) {
+                songTitle = nameSplit[0];
+                String artistSplit[] = nameSplit[1].split("\\.");
+                if (artistSplit.length == 2) {
+                    songArtist = artistSplit[0];
+                }
+            }
+
+            // Add the dialog title
+    		alert.setTitle("Add Song - " + songTitle);
     		
-    		// Populate the song name with the file name
-        	songNameET.setText(pathSplit[pathSplit.length - 1].substring(0, pathSplit[pathSplit.length - 1].lastIndexOf(".")));
-    	}
-    	else
-    		alert.setTitle("Add Song");
+    		// Populate the song name and song artist fields
+        	songNameET.setText(songTitle);
+            authorET.setText(songArtist);
+    	} else {
+            alert.setTitle("Add Song");
+        }
 
     	// Set the OK button
     	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -1882,23 +1901,18 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else {
                         // If a file is waiting to be imported
-                        if (importFilePath != "") {
+                        if (selectedFile != null) {
                             // Copy the file into the tabapp songs directory
                             try {
-                                if (importFilePath.substring(importFilePath.length() - 3).equals("txt")) {
-                                    TextFileImporter.importTextFile(importFilePath, songFile, songAuthor, getApplicationContext());
-                                } else {
-                                    InputStream in = new FileInputStream(importFilePath);
-                                    //OutputStream out = new FileOutputStream(songFile);
-                                    OutputStream out = openFileOutput(songFile, Context.MODE_PRIVATE);
-                                    byte[] buf = new byte[1024];
-                                    int len;
-                                    while ((len = in.read(buf)) > 0) {
-                                        out.write(buf, 0, len);
-                                    }
-                                    in.close();
-                                    out.close();
+                                InputStream in = getContentResolver().openInputStream(selectedFile);
+                                OutputStream out = openFileOutput(songFile, Context.MODE_PRIVATE);
+                                byte[] buf = new byte[1024];
+                                int len;
+                                while ((len = in.read(buf)) > 0) {
+                                    out.write(buf, 0, len);
                                 }
+                                in.close();
+                                out.close();
                             } catch (Exception e) {
                                 // Delete the song since the file could not be imported
                                 dbAdapter.deleteSong(songName);
@@ -1906,9 +1920,6 @@ public class MainActivity extends AppCompatActivity {
                                 // Alert that the song failed
                                 Snackbar.make(getWindow().getDecorView().getRootView(), "Could not import file, Song deleted.", Snackbar.LENGTH_LONG).show();
                             }
-
-                            // Clear the import file path
-                            importFilePath = "";
                         } else {
                             try {
                                 OutputStream out = openFileOutput(songFile, Context.MODE_PRIVATE);
@@ -2253,12 +2264,20 @@ public class MainActivity extends AppCompatActivity {
      */
     private void importSong() {
         // Create the open file intent
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+
+        // Start the activity
+        startActivityForResult(intent, StaticVars.IMPORT_SONG_RESPONSE_CODE);
+
+        /*// Create the open file intent
         Intent intent = new Intent(getBaseContext(), OpenFile.class);
         intent.putExtra(StaticVars.FILE_ACTIVITY_KEY, StaticVars.IMPORT_SONG_ACTIVITY);
         intent.putExtra(StaticVars.FILE_ACTIVITY_TYPE_KEY, StaticVars.FILE_ACTIVITY_FILE);
         
         // Start the activity
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, 1);*/
     }
     
     /**
