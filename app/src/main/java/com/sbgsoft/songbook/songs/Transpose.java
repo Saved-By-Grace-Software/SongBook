@@ -141,7 +141,28 @@ public class Transpose {
 
         return ret;
     }
-    
+
+	/**
+	 * Gets the baritone capo to play in
+	 * @param songKey The original key of the song
+	 * @param transposeKey The new key the song is being transposed into
+	 * @param currentCapo The capo for the song in the original key
+	 * @return The baritone capo number
+	 */
+	public static int getBaritoneCapo(String songKey, String transposeKey, int currentCapo) {
+    	// Get the current standard capo
+		int newCapo = getCapo(songKey, transposeKey, currentCapo);
+
+		// Calculate the baritone capo
+		newCapo += 5;
+		if (newCapo == 12)
+			newCapo = 0;
+		else if (newCapo > 12)
+			newCapo -= 12;
+
+    	return newCapo;
+	}
+
     /**
      * Returns the last index of the specified key, starting at the specified position
      * @param indexKey The key to search for

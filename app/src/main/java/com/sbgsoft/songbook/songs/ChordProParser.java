@@ -30,7 +30,7 @@ public class ChordProParser {
 		StringBuilder chordLine = new StringBuilder();
 		StringBuilder lyricLine = new StringBuilder();
 		String line, lineFeed;
-		boolean inHtml, transposeSong = false, addedCapo = false, inTab = false, closingChorus = false;
+		boolean inHtml, transposeSong = false, inTab = false, closingChorus = false;
 		int skipCounter;
 		
 		// Set the line feed to use
@@ -148,25 +148,27 @@ public class ChordProParser {
 								
 								// Get the new capo
 								int newCapo = Transpose.getCapo(songItem.getKey(), transposeKey, currentCapo);
+								int baritoneCapo = Transpose.getBaritoneCapo(songItem.getKey(), transposeKey, currentCapo);
 								
 								// Append the capo
-								if (newCapo != 0 && !(newCapo >= 12)) {
-									if (useHtml) {
-										// Add beginning of italics 
-										lyricLine.append("<i>");
-									}
-									
-									// Append the capo
-									lyricLine.append("Capo ");
-									lyricLine.append(newCapo);
-									
-									if (useHtml) {
-										// Close the italics
-										lyricLine.append("</i>");
-									}
+								if (useHtml) {
+									// Add beginning of italics
+									lyricLine.append("<i>");
 								}
-								
-								addedCapo = true;
+
+								// Append the capo
+								lyricLine.append("Capo ");
+								lyricLine.append(newCapo);
+
+								// Append the baritone capo
+								lyricLine.append(" (BCapo ");
+								lyricLine.append(baritoneCapo);
+								lyricLine.append(")");
+
+								if (useHtml) {
+									// Close the italics
+									lyricLine.append("</i>");
+								}
 								
 								// Nothing else allowed after the capo delimeter
 								break;
@@ -816,21 +818,6 @@ public class ChordProParser {
 		// Close HTML tags in output
 		if (useHtml)
 			parsedOutput.append("</body></html>");
-		
-		// Check to see if capo needs added
-		if (transposeSong && !addedCapo) {
-			int newCapo = Transpose.getCapo(songItem.getKey(), transposeKey, 0);
-			if (newCapo != 0) {
-				// Find the end of the title
-				int eot = parsedOutput.toString().indexOf("</h2>") + 5;
-				
-				// Build the capo string
-				String capoString = "<i>Capo " + newCapo + "</i><br />";
-				
-				// Insert the new capo
-				parsedOutput.insert(eot, capoString);
-			}
-		}
         
         // Close the input stream and reader
     	in.close();
