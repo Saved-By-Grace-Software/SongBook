@@ -343,13 +343,28 @@ public class SetSongFragment extends Fragment {
     	else {
     		AlertDialog.Builder alert = new AlertDialog.Builder(mActivity);
 
+            // Create the key array
+            CharSequence[] keys = StaticVars.songKeys.toArray(new CharSequence[StaticVars.songKeys.size() + 2]);
+            keys[StaticVars.songKeys.size()] = "Original Key";
+            keys[StaticVars.songKeys.size() + 1] = "Baritone";
+
         	alert.setTitle("Transpose to Which Key?");
-        	alert.setItems(StaticVars.songKeys.toArray(new CharSequence[StaticVars.songKeys.size()]), new OnClickListener() {
+        	alert.setItems(keys, new OnClickListener() {
         		public void onClick (DialogInterface dialog, int whichItem) {
         			// Transpose the song
 					try {
+                        // Set the new song key for the song
+                        String newKey = "";
+                        if (whichItem < StaticVars.songKeys.size()) {   // Named key
+                            newKey = StaticVars.songKeys.get(whichItem);
+                        } else if (whichItem == StaticVars.songKeys.size()) {   // Original key
+                            newKey = mSongItem.getKey();
+                        } else if (whichItem == StaticVars.songKeys.size() + 1) {   // Baritone key
+                            newKey = Transpose.getBaritoneKey(mSongItem.getKey());
+                        }
+
 						FileInputStream fis = mActivity.openFileInput(MainActivity.dbAdapter.getSongFile(mSongItem.getName()));
-						String transposedSongText = ChordProParser.ParseSongFile(mActivity.getApplicationContext(), mSongItem, StaticVars.songKeys.get(whichItem), fis, true, false);
+						String transposedSongText = ChordProParser.ParseSongFile(mActivity.getApplicationContext(), mSongItem, newKey, fis, true, false);
 
                         if (disp != null) {
                             song.setText(disp.setChordClickableText(transposedSongText), TextView.BufferType.SPANNABLE);
