@@ -3471,6 +3471,15 @@ public class MainActivity extends AppCompatActivity {
                                 params.put("backupFile", new DataPart(StaticVars.EXPORT_ZIP_FILE, bytes));
                                 return params;
                             }
+
+                            @Override
+                            public RetryPolicy getRetryPolicy() {
+                                // Set the custom retry policy with the desired timeout
+                                return new DefaultRetryPolicy(
+                                        60000,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                            }
                         };
 
                         //adding the request to volley
